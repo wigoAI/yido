@@ -19,6 +19,15 @@ public class DataBaseTest {
 
 
     /*
+     * Connection test with mariaDB
+     * */
+    @Test
+    public void mariadbConnectionTest() throws Exception {
+        DataBase db = new DataBase("mariadb");
+    }
+
+
+    /*
     * Get Roles in WIGO Database
     * */
     @Test

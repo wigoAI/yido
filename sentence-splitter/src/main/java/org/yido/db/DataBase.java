@@ -12,8 +12,19 @@ public class DataBase {
 
     public DataBase() throws Exception {
         Class.forName("oracle.jdbc.driver.OracleDriver");
-        this.connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:localwigo", "SYSTEM", "wigo1234");
+        this.connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:lcoalwigolig", "SYSTEM", "wigo1234");
         this.statement = connection.createStatement();
+    }
+    public DataBase(String db) throws Exception {
+        if(db.equals("mariadb")) {
+            Class.forName("org.mariadb.jdbc.Driver");
+            this.connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306/localwigo",
+                    "localwigo",
+                    "wigo1234");
+            this.statement = connection.createStatement();
+        }
+
+
     }
 
 
