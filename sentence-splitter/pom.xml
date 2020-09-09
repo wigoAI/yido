@@ -32,6 +32,13 @@
       <artifactId>koalanlp-eunjeon</artifactId>
       <version>2.1.6</version>
     </dependency>
+
+  <!-- IOUtils -->
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.5</version>
+    </dependency>
   </dependencies>
 
   <build>
