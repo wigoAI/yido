@@ -5,14 +5,22 @@ import org.junit.Test;
 
 public class DataBaseTest {
 
+
+
+    /*
+    * Connection test with oracle
+    * */
     @Test
-    public void dbConntectionTest() throws Exception {
+    public void dbConnectionTest() throws Exception {
         DataBase db = new DataBase();
 
 
     }
 
 
+    /*
+    * Get Roles in WIGO Database
+    * */
     @Test
     public void getRolesTest() throws Exception {
         DataBase db = new DataBase();

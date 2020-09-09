@@ -69,7 +69,7 @@ public class AppTest
 
     @Test
     public void sentenceEojeolAnalysisTest() {
-        FileReader filereader = new FileReader("/data/test2.txt");
+        FileReader filereader = new FileReader("/data/rev5.txt");
 
 
         for(String str : filereader.getSplitFile("|")) {
