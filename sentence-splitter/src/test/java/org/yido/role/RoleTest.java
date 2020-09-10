@@ -13,7 +13,7 @@ public class RoleTest {
 
     @Test
     public void createRoleTest() {
-        FileReader filereader = new FileReader("/data/test2.txt");
+        FileReader filereader = new FileReader("/data/revData.txt");
 
 
         /*
@@ -39,10 +39,14 @@ public class RoleTest {
                 // 이 어절의 형태소를 분석한다.
                 if(eojeol.endOffset() == str.length()) {
                     System.out.println(eojeol.surface());
+                    List<LNode> hts = new ArrayList<LNode>();
                     for (LNode node : Analyzer.parseJava(eojeol.surface())) {
-                        System.out.print("[" + node + "]");
+//                        System.out.print("[" + node + "]");
+                        hts.add(node);
+
                     }
-                    System.out.println();
+                    System.out.println(hts.get(hts.size()-1));
+//                    System.out.println();
                 }
 //                System.out.print(eojeol.surface() + " : ");
 //                System.out.print(eojeol.beginOffset() + " ~ ");

@@ -31,6 +31,8 @@ public class FileReader {
         List<String> splitList = new ArrayList<String>();
         if(splitter == "|") splitter = "\\|";
         for(String str : this.getFile().split(splitter)) {
+
+            str = str.replaceAll("\\.", "");
             splitList.add(str);
         }
 
