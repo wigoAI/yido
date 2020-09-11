@@ -25,9 +25,9 @@ public class RoleTest {
     public void createRoleTest() {
         FileReader filereader = new FileReader("/data/revData.txt");
 //      role을 HashMap에 저장
-        HashMap<String, Integer> roles = new HashMap<String, Integer>();
-
-
+        HashMap<String, Integer> roles = new HashMap<>();
+        HashMap<String, LNode> morphemeRole = new HashMap<>();
+        List<String> roleList = new ArrayList<>();
 
 
         for(String str : filereader.getSplitFile("|")) {
@@ -42,35 +42,47 @@ public class RoleTest {
 
                 // 해당 어절의 endOffset이 문장의 길이와 같다면 문장의 끝에 있는 어절이다.
                 // 이 어절의 형태소를 분석한다.
-                if(eojeol.endOffset() == str.length()) {
+//                if(eojeol.endOffset() == str.length()) {
                     System.out.println(eojeol.surface());
                     List<LNode> hts = new ArrayList<LNode>();
                     for (LNode node : Analyzer.parseJava(eojeol.surface())) {
-//                        System.out.print("[" + node + "]");
+                        System.out.print("[" + node + "]");
                         hts.add(node);
 
                     }
 
+                    // 마지막 어절을 key로 사용
                     String key = hts.get(hts.size()-1).morpheme().getSurface();
+                    LNode morphemeKey = hts.get(hts.size()-1);
 
+                    // 해당 키가 있다면 카운트만 증가
                     if(roles.containsKey(key)){
                         roles.replace(key, roles.get(key) + 1);
+
+
                     } else {
                         roles.put(key, 1);
+                        roleList.add(key);
+
                     }
                     System.out.println(hts.get(hts.size()-1).morpheme().getSurface());
-//                    System.out.println();
-                }
-//                System.out.print(eojeol.surface() + " : ");
-//                System.out.print(eojeol.beginOffset() + " ~ ");
-//                System.out.println(eojeol.endOffset());
+                    System.out.println();
+//                }
+                System.out.print(eojeol.surface() + " : ");
+                System.out.print(eojeol.beginOffset() + " ~ ");
+                System.out.println(eojeol.endOffset());
 
             }
         }
 
         System.out.println("role size : " + roles.size());
-        System.out.println("role 다 : " + roles.get("다") );
 
+        for(String role : roleList) {
+            if(roles.get(role) > 30)
+                System.out.println("role : " + role + " " + roles.get(role));
+        }
+
+        System.out.println(roleList.size());
 
     }
 }
