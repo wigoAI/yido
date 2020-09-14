@@ -28,14 +28,19 @@ public class FileReader {
     }
 
     public List<String> getSplitFile(String splitter) {
-        List<String> splitList = new ArrayList<String>();
+        List<String> splitList = new ArrayList<>();
         if(splitter == "|") splitter = "\\|";
-        for(String str : this.getFile().split(splitter)) {
 
-            str = str.replaceAll("\\.", "");
-            splitList.add(str);
+        for(String str : this.getFile().split(splitter)) {
+            splitList.add(str.trim());
         }
 
         return splitList;
     }
+
+    public List<String> getSplitFileByLine() {
+
+        return this.getSplitFile("\\n");
+    }
+
 }

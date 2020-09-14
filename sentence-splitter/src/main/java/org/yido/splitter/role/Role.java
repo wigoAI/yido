@@ -1,4 +1,4 @@
-package org.yido.role;
+package org.yido.splitter.role;
 
 import java.util.List;
 
