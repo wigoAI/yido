@@ -1,4 +1,4 @@
-package org.yido.role;
+package org.yido.splitter.role;
 
 import org.bitbucket.eunjeon.seunjeon.Analyzer;
 import org.bitbucket.eunjeon.seunjeon.Eojeol;
