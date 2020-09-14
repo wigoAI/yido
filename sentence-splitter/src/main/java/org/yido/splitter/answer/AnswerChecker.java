@@ -5,14 +5,17 @@ import org.yido.dataInput.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 정답체크클래스
+ * 줄바꿈으로 나눠진 정답 파일로 초기화한다.
+ * 또는 리스트 형태의 정답 데이터로 초기화
+ * 생성자로 접근하지 않고 인스턴스를 반환하는 메서드로 접근
+ *
+ * */
 public class AnswerChecker {
     private List<String> answerList = new ArrayList<>();
     private int sizeOfAnswerList;
-    /**
-     * 정답체크클래스
-     * 줄바꿈으로 나눠진 정답 파일로 초기화한다.
-     * 생성자로 접근하지 않고 인스턴스를 반환하는 함수로 접근
-     * */
+
     private AnswerChecker(String answerFilePath) {
         FileReader fileReader = new FileReader(answerFilePath);
         this.answerList = fileReader.getSplitFileByLine();
@@ -143,6 +146,10 @@ public class AnswerChecker {
 
             // 길이만 같고 답이 아닐 때
             } else {
+                /**
+                 * 예외사항 생각할 것
+                 *
+                 * */
 
             }
 
