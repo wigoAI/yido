@@ -118,6 +118,7 @@ public class AppTest
 //        System.out.println( "실행 시간 : " + ( end - start ) + "ms");
 
         String string = data1;
+        float time = 0;
         List stl = new ArrayList();
         for(int i = 0 ; i < 10 ; i++) {
             long start = System.nanoTime();
@@ -137,6 +138,10 @@ public class AppTest
             long end = System.nanoTime();
             System.out.print("start : " + start + " end : " + end);
             System.out.println( " -> 실행 시간 : " + ( end - start )/1000000L + "ms");
+            if(i > 4)
+                time += ( end - start )/1000000L;
+
+
             Thread.sleep(100);
         }
         // print the result
@@ -147,6 +152,8 @@ public class AppTest
 //                System.out.println(st.get(j));
 //            }
         }
+
+        System.out.println("time : " + time/5);
 
 
         ma.closeLogger();
