@@ -41,14 +41,16 @@ public class AnswerChecker {
         float unCorrectCnt = 0;
         float correctCnt = 0;
 
-        String answer = this.answerList.get(answerIndex).replace(" ", "");
-        String sheet = submittedSheet.get(sheetIndex).replace(" ", "");
-
         // 제출지 임시 저장소
         // 구분점을 지났을 때 사용
         String tmpSheet = "";
         String tmpAnswer = "";
-        while(true) {
+
+        while(answerIndex < sizeOfAnswerList) {
+
+            String answer = this.answerList.get(answerIndex).replace(" ", "");
+            String sheet = submittedSheet.get(sheetIndex).replace(" ", "");
+
             String targetSheet = "";
             String targetAnswer = "";
 
@@ -73,13 +75,12 @@ public class AnswerChecker {
 
             System.out.println();
 
+            boolean isSheetContainsAnswer = targetSheet.contains(targetAnswer);
+            boolean isAnswerContainsSheet = targetAnswer.contains(targetSheet);
+
             // 정답
             if( targetAnswer.equals(targetSheet)) {
 //                System.out.println("Correct!" );
-
-                // 다음 문장을 이동
-                sheetIndex++;
-                answerIndex++;
 
                 // 온전한 문장으로 나눴을 때 정답으로 인정한다.
                 // 임시 정답지를 사용하지 않았다면 온전한 정답을 맞춘 것이다.
@@ -88,82 +89,66 @@ public class AnswerChecker {
                 if(tmpAnswer.length() == 0) {
                     correctCnt++;
 //                    System.out.println("and correct count!");
-                } else {
-                    break;
                 }
-
-
-                // 임시 구분 문장 초기화화
-               tmpSheet = "";
-               tmpAnswer = "";
-
-
 
             // 구분점을 지나쳤을 떄
-            } else if(targetAnswer.length() < targetSheet.length()){
+            } else if(targetAnswer.length() < targetSheet.length() && isSheetContainsAnswer){
 //                System.out.println("pass splitter");
-                // 제출된 문장은 답안 문장을 포함하고 있을 것이다.
-                // 혹시 모르니 체크
-                if(targetSheet.contains(targetAnswer)) {
-
-                    unCorrectCnt++;
-
-                    // 구분점으로 임의로 자르기
-                    tmpSheet = targetSheet.substring(
-                            targetSheet.indexOf(targetAnswer) + targetAnswer.length()).replace(" ", "");
 
 
-                    tmpAnswer = "";
-                    // 다음 정답지로 이동
-                    answerIndex++;
-                } else {
-                    System.out.println("something is wrong");
-                    break;
-                }
+                unCorrectCnt++;
+
+                // 구분점으로 임의로 자르기
+                tmpSheet = targetSheet.substring(
+                        targetSheet.indexOf(targetAnswer) + targetAnswer.length()).replace(" ", "");
 
 
             // 잘못된 문장 구분점을 적용했을 때
-            } else if(targetAnswer.length() > targetSheet.length()){
+            } else if(targetAnswer.length() > targetSheet.length() && isAnswerContainsSheet){
 //                System.out.println("unCorrect splitter");
                 // 답안 문장은 잘문 구분된 문장을 포함하고 있을것이다.
                 // 혹시 모르니 체크
-                if(targetAnswer.contains(targetSheet)) {
 
-                    unCorrectCnt++;
+                unCorrectCnt++;
 
-                    // 구분점을 임의로 자른다.
-                    tmpAnswer = targetAnswer.substring(
-                            targetAnswer.indexOf(targetSheet) + targetSheet.length()).replace(" ", "");
+                // 구분점을 임의로 자른다.
+                tmpAnswer = targetAnswer.substring(
+                        targetAnswer.indexOf(targetSheet) + targetSheet.length()).replace(" ", "");
 
-                    tmpSheet = "";
-                    // 다음 문장 구분으로 이동
-                    sheetIndex++;
 
-                } else {
-                    System.out.println("something is wrong");
-                    break;
-                }
 
-            // 길이만 같고 답이 아닐 때
+            // 길이만 같고 답이 아닐 때 혹은 길이가 긴 쪽이 짧은쪽을 포함 안할 때
             } else {
                 /**
                  * 예외사항 생각할 것
                  *
                  * */
+                System.out.println("something is wrong");
+                break;
 
             }
 
-            // 모든 답을 체크했을 때 반복 중지
-            if( answerIndex >= sizeOfAnswerList)
-                break;
+            if(isAnswerContainsSheet){
+                tmpSheet = "";
+                // 다음 문장 구분으로 이동
+                sheetIndex++;
+            }
+            if(isSheetContainsAnswer) {
+                tmpAnswer = "";
+                // 다음 정답지로 이동
+                answerIndex++;
+            }
 
-            answer = this.answerList.get(answerIndex).replace(" ", "");
-            sheet = submittedSheet.get(sheetIndex).replace(" ", "");
+
+
+
         }
 
         System.out.println("Answer List Size : " + this.sizeOfAnswerList);
         System.out.println("Wrong split count : " + unCorrectCnt);
         System.out.println("Correct split count : " + correctCnt);
+
+        // 정확도 0.0 ~ 1.0
         return correctCnt / this.sizeOfAnswerList;
     }
 
