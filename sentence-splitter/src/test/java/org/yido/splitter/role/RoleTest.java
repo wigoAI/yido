@@ -4,7 +4,7 @@ import org.bitbucket.eunjeon.seunjeon.Analyzer;
 import org.bitbucket.eunjeon.seunjeon.Eojeol;
 import org.bitbucket.eunjeon.seunjeon.LNode;
 import org.junit.Test;
-import org.yido.dataInput.FileReader;
+import org.yido.fileIO.FileReader;
 
 import java.util.ArrayList;
 import java.util.HashMap;

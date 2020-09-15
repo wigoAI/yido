@@ -2,16 +2,14 @@ package org.yido;
 
 import static org.junit.Assert.assertTrue;
 
-import org.apache.commons.io.IOUtils;
 import org.bitbucket.eunjeon.seunjeon.Analyzer;
 import org.bitbucket.eunjeon.seunjeon.Eojeol;
 import org.bitbucket.eunjeon.seunjeon.LNode;
 import org.junit.Assert;
 import org.junit.Test;
 import org.snu.ids.ha.ma.MorphemeAnalyzer;
-import org.yido.dataInput.FileReader;
+import org.yido.fileIO.FileReader;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

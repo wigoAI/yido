@@ -1,6 +1,6 @@
 package org.yido.splitter.answer;
 
-import org.yido.dataInput.FileReader;
+import org.yido.fileIO.FileReader;
 
 import java.util.ArrayList;
 import java.util.List;

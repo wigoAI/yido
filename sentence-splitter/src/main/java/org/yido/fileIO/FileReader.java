@@ -1,23 +1,22 @@
-package org.yido.dataInput;
+package org.yido.fileIO;
 
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileReader {
 
+    String pathName;
     String file;
 
-    public FileReader(String path) {
+
+    public FileReader(String pathName) {
+        this.pathName = pathName;
         try {
-            this.file = IOUtils.toString(getClass().getResourceAsStream(path), "UTF-8");
+            this.file = IOUtils.toString(getClass().getResourceAsStream(pathName), "UTF-8");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
