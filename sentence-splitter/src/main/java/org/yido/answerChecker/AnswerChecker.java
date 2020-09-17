@@ -1,4 +1,4 @@
-package org.yido.splitter.answer;
+package org.yido.answerChecker;
 
 import org.yido.fileIO.FileReader;
 

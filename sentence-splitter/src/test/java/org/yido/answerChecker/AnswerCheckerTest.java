@@ -1,10 +1,9 @@
-package org.yido.splitter.answer;
+package org.yido.answerChecker;
 
 
 
 
 import kr.bydelta.koala.hnn.SentenceSplitter;
-import kr.bydelta.koala.eunjeon.Tagger;
 import org.junit.Test;
 import org.snu.ids.ha.ma.MorphemeAnalyzer;
 import org.snu.ids.ha.ma.Sentence;

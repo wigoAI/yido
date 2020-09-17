@@ -1,6 +1,7 @@
 package org.yido.fileIO;
 
-import org.yido.App;
+
+import org.yido.SentenceSplitter;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,7 +12,7 @@ import java.util.List;
 public class FileWriter {
 
     // class 파일의 절대경로로 상대경로 습득
-    final String ABSTRACT_PATH = App.class.getResource("").getPath().split("/target")[0] + "/src/main/resources";
+    final String ABSTRACT_PATH = SentenceSplitter.class.getResource("").getPath().split("/target")[0] + "/src/main/resources";
     String pathName;
     File file;
     public FileWriter(String pathName) {
