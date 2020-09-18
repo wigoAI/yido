@@ -11,6 +11,9 @@ import java.util.List;
  * 룰 관리 클래스
  *
  * TODO 1. history 파일을 생성하여 관리할 것
+ * TODO 2. role data 생성 후 바로 안읽혀지는 문제 해결\
+ *          - 실행이 끝난 뒤 파일이 생성된다.
+ *
  *
  *
  */
@@ -20,27 +23,12 @@ public class RoleManager {
     List<String> terminator;
 
     private RoleManager() {
-
-        try {
-            this.roleUpdate();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        FileReader connectiveFileReader = new FileReader("/data/connective.txt");
-        FileReader terminatorFileReader = new FileReader("/data/terminator.txt");
-
-        this.connective = connectiveFileReader.getSplitFileByLine();
-        this.terminator = terminatorFileReader.getSplitFileByLine();
-    }
-
-    public static RoleManager getRoleManager() {
-        return roleManager;
+        RoleManager.roleUpdate();
     }
 
 
-    private void roleUpdate() throws Exception {
+
+    public static void roleUpdate() {
 
         DataBase db1 = new DataBase();
         DataBase db2 = new DataBase();
@@ -60,12 +48,20 @@ public class RoleManager {
 
     }
 
-    public List<String> getConnective() {
-        return this.connective;
+    public void initRoleData() {
+        FileReader connectiveFileReader = new FileReader("/data/connective.txt");
+        FileReader terminatorFileReader = new FileReader("/data/terminator.txt");
 
+        this.connective = connectiveFileReader.getSplitFileByLine();
+        this.terminator = terminatorFileReader.getSplitFileByLine();
     }
 
-    public List<String> getTerminator() {
-        return this.terminator;
+    public List<String> getConnective() { return this.connective; }
+
+    public List<String> getTerminator() { return this.terminator; }
+
+    public static RoleManager getRoleManager() {
+        return roleManager;
     }
+
 }

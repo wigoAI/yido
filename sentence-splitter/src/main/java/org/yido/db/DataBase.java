@@ -10,10 +10,16 @@ public class DataBase {
     private Statement statement;
     private PreparedStatement pstm;
 
-    public DataBase() throws Exception {
-        Class.forName("oracle.jdbc.driver.OracleDriver");
-        this.connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:lcoalwigolig", "SYSTEM", "wigo1234");
-        this.statement = connection.createStatement();
+    public DataBase() {
+
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            this.connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:lcoalwigolig", "SYSTEM", "wigo1234");
+            this.statement = connection.createStatement();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
     public DataBase(String db) throws Exception {
         if(db.equals("mariadb")) {

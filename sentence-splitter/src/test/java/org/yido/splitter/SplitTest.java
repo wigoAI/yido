@@ -47,4 +47,19 @@ public class SplitTest {
     }
 
 
+    @Test
+    public void initSplitterTest() {
+        SentenceSplitter sentenceSplitter = new SentenceSplitter(5);
+
+    }
+
+    @Test
+    public void sentenceSplitTest() {
+        SentenceSplitter sentenceSplitter = new SentenceSplitter(5);
+        List<String> result = new ArrayList<>();
+        result = sentenceSplitter.sentenceSplit(data[2]);
+        for(String str : result)
+            System.out.println(str);
+    }
+
 }
