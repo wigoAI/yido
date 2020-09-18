@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
  *
  * TODO 1. 단어 길이별로 여러번 반복 5 ~> 2
  *      2. 유효성 검사
+ *      3. URL pattern check
  */
 public class SentenceSplitter {
     private final String URL_PATTERN = "^((https?:\\/\\/)|(www\\.))([^:\\/\\s]+)(:([^\\/]*))?((\\/[^\\s/\\/]+)*)?\\/?([^#\\s\\?]*)(\\?([^#\\s]*))?(#(\\w*))?$";
