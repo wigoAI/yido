@@ -1,10 +1,7 @@
 package org.yido.regular;
 
 import org.junit.Test;
-import org.yido.Area;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,24 +21,31 @@ public class RegularTest {
     }
 
     @Test
-    public void deleteAreaMethodTest() {
-        List<Area> exceptionArea = new ArrayList<>();
 
-        exceptionArea.add(new Area(1,2));
-        exceptionArea.add(new Area(4,5));
-        exceptionArea.add(new Area(6,42));
-        deleteAreaList(exceptionArea);
+    public void urlCheck() {
 
-        for (Area area : exceptionArea) {
-            System.out.println(area.getStartIndex() + " " + area.getEndIndex());
-        }
+        String regex = "^((https?:\\/\\/)|(www\\.))([^:\\/\\s]+)(:([^\\/]*))?((\\/[^\\s/\\/]+)*)?\\/?([^#\\s\\?]*)(\\?([^#\\s]*))?(#(\\w*))?$";
 
-    }
+        Pattern p = Pattern.compile(regex);
 
-    private void deleteAreaList(List<Area> exceptionArea) {
 
-        for(int i = 0 ; i < exceptionArea.size() ; i++) {
-            if(i == 1) exceptionArea.remove(i);
-        }
+
+        p.matcher("https://goodidea.tistory.com:8888/qr/aaa/ddd.html?abc=def&ddd=fgf#sharp").matches();
+
+        System.out.println(p.matcher("http://dextto.tistory.com").matches());
+
+        System.out.println(p.matcher("http://blog.daum.net/dexter").matches());
+
+        System.out.println(p.matcher("http://www.daum.net:80/index.cfm").matches());
+
+        System.out.println(p.matcher("http://xxx:password@www.daum.net").matches());
+
+        System.out.println(p.matcher("http://localhost/index.php?ab=1&c=2").matches());
+
+        System.out.println(p.matcher("http://localhost:8080").matches());
+
+        System.out.println(p.matcher("http://dextto.tistory.com/admin/entry/post/?id=150&returnURL=/entry/JAVA-Regular-Expression-%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D-%EC%98%88%EC%A0%9C").matches());
+        System.out.println(p.matcher("ww.web.site").matches());
+        System.out.println(p.matcher("www.web.site").matches());
     }
 }

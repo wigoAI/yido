@@ -1,6 +1,7 @@
 package org.yido.splitter;
 
 import org.junit.Test;
+import org.yido.SentenceSplitter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,5 +45,6 @@ public class SplitTest {
 
 
     }
+
 
 }

@@ -35,11 +35,14 @@ public class FileTest {
 
     @Test
     public void createRoleFile() throws Exception {
-        FileWriter fileWriter = new FileWriter("/data/roleTest.txt");
+        FileWriter fileWriter = new FileWriter("/data/connective.txt");
         List<String> data = new ArrayList<>();
         DataBase db = new DataBase();
+        String select = "VAL_STRING";
+        String from = "TB_ARA_SEN_GROUP_STRING";
+        String where = "CD_GROUP='S9'";
 
-        for(String str : db.getRoles()){
+        for(String str : db.doQueryAndGetList(select, from, where)){
             data.add(str);
         }
 

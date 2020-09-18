@@ -2,14 +2,15 @@ package org.yido.db;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.yido.fileIO.FileWriter;
 
 public class DataBaseTest {
 
 
 
-    /*
+    /**
     * Connection test with oracle
-    * */
+    * *
     @Test
     public void dbConnectionTest() throws Exception {
         DataBase db = new DataBase();
@@ -18,7 +19,7 @@ public class DataBaseTest {
     }
 
 
-    /*
+    /**
      * Connection test with mariaDB
      * */
     @Test
@@ -27,23 +28,30 @@ public class DataBaseTest {
     }
 
 
-    /*
+    /**
     * Get Roles in WIGO Database
     * */
     @Test
     public void getRolesTest() throws Exception {
         DataBase db = new DataBase();
-        int cnt = 0;
-        for(String str : db.getRoles()){
+
+        String sentenceStringDataTable = "TB_ARA_SEN_GROUP_STRING";
+        String sentenceStringDataColumn = "VAL_STRING";
+        String connectiveDataGroup = "CD_GROUP='S2'";
+        String terminatorDataGroup = "CD_GROUP='S4'";
+        for(String str : db.doQueryAndGetList(sentenceStringDataColumn, sentenceStringDataTable, terminatorDataGroup)){
             System.out.println(str);
-            cnt++;
+
         }
 
-        System.out.println(cnt);
 
 
-        Assert.assertEquals(1643, cnt);
+    }
 
-
+    @Test
+    public void getRoleToFile() throws Exception {
+        DataBase db = new DataBase();
+        FileWriter fileWriter = new FileWriter("/data/role.txt");
+//        fileWriter.writeFileByList(db.getRoles(), false);
     }
 }

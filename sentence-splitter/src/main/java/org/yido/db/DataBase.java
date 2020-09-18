@@ -28,10 +28,10 @@ public class DataBase {
     }
 
 
-    public List<String> getRoles() {
-        List<String> roles = new ArrayList<String>();
+    public List<String> doQueryAndGetList(String select, String from, String where) {
+        List<String> roles = new ArrayList<>();
 
-        String query = "SELECT VAL_STRING FROM TB_ARA_SEN_GROUP_STRING";
+        String query = "SELECT " + select + " FROM " + from + " WHERE " + where;
         try {
             this.pstm = this.connection.prepareStatement(query);
             ResultSet rs = this.pstm.executeQuery();

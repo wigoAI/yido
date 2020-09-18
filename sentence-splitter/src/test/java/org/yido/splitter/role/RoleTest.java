@@ -5,6 +5,7 @@ import org.bitbucket.eunjeon.seunjeon.Eojeol;
 import org.bitbucket.eunjeon.seunjeon.LNode;
 import org.junit.Test;
 import org.yido.fileIO.FileReader;
+import org.yido.role.RoleManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +45,7 @@ public class RoleTest {
                 // 이 어절의 형태소를 분석한다.
 //                if(eojeol.endOffset() == str.length()) {
                     System.out.println(eojeol.surface());
-                    List<LNode> hts = new ArrayList<LNode>();
+                    List<LNode> hts = new ArrayList<>();
                     for (LNode node : Analyzer.parseJava(eojeol.surface())) {
                         System.out.print("[" + node + "]");
                         hts.add(node);
@@ -84,5 +85,13 @@ public class RoleTest {
 
         System.out.println(roleList.size());
 
+    }
+
+    @Test
+    public void roleManagerTest() {
+        RoleManager roleManager = RoleManager.getRoleManager();
+
+        for(String str : roleManager.getConnective())
+            System.out.println(str);
     }
 }
