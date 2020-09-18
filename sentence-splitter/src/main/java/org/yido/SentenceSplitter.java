@@ -38,7 +38,7 @@ public class SentenceSplitter {
 
 
     private boolean isExceptionSign(char sign) {
-        for(char exceptionSign : this.exceptionSignList) {
+        for (char exceptionSign : this.exceptionSignList) {
 
             // exceptionSign [] {} ()
             if (exceptionSign == sign)
@@ -52,3 +52,4 @@ public class SentenceSplitter {
     }
 
 }
+
