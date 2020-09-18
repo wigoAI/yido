@@ -8,4 +8,12 @@ public class Area {
         this.startIndex = startIndex;
         this.endIndex = endIndex;
     }
+
+    public int getStartIndex() {
+        return this.startIndex;
+    }
+
+    public int getEndIndex() {
+        return this.endIndex;
+    }
 }
