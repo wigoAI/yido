@@ -9,6 +9,16 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
+
+
+/**
+ *
+ * 문장 구분기 클래스
+ *
+ * TODO 1. 단어 길이별로 여러번 반복 5 ~> 2
+ *      2. 유효성 검사
+ */
 public class SentenceSplitter {
     private final String URL_PATTERN = "^((https?:\\/\\/)|(www\\.))([^:\\/\\s]+)(:([^\\/]*))?((\\/[^\\s/\\/]+)*)?\\/?([^#\\s\\?]*)(\\?([^#\\s]*))?(#(\\w*))?$";
     private final String BRACKET_PATTERN = "[\\(*\\{*\\[*][^\\)\\]\\}]*[\\)\\]\\}]";
@@ -40,30 +50,15 @@ public class SentenceSplitter {
     }
 
     public List<String> sentenceSplit(String inputData) {
-        List<Area> exceptionArea = checkExceptionArea(inputData);
-        List<Integer> splitPoint = new ArrayList<>();
-        int targetLength = 2;
-
-        for(int dataIndex = 0 ; dataIndex < inputData.length() - targetLength ; dataIndex++) {
-            int targetIndex = avoidExceptionArea(exceptionArea, dataIndex);
-            String targetString = inputData.substring(targetIndex, targetIndex + targetLength);
-
-            if(this.terminatorHash.contains(targetString)) {
-//                System.out.println(targetString);
-                splitPoint.add(targetIndex + targetLength);
-            }
-
-
-            dataIndex = targetIndex;
-        }
-
+        List<Area> exceptionArea = findExceptionArea(inputData);
+        List<Integer> splitPoint = findSplitPoint(inputData, exceptionArea);
         this.result = doSplit(inputData, splitPoint);
 
         return this.result;
     }
 
 
-    private List<Area> checkExceptionArea(String inputData) {
+    private List<Area> findExceptionArea(String inputData) {
         List<Area> exceptionArea = new ArrayList<>();
         Pattern bracketPattern = Pattern.compile(this.URL_PATTERN);
         Pattern urlPatter = Pattern.compile(this.BRACKET_PATTERN);
@@ -96,6 +91,28 @@ public class SentenceSplitter {
         }
 
         return dataIndex;
+    }
+
+    private List<Integer> findSplitPoint(String inputData, List<Area> exceptionArea) {
+        List<Integer> splitPoint = new ArrayList<>();
+        int targetLength = 2;
+
+
+        for(int dataIndex = 0 ; dataIndex < inputData.length() - targetLength ; dataIndex++) {
+            int targetIndex = avoidExceptionArea(exceptionArea, dataIndex);
+            String targetString = inputData.substring(targetIndex, targetIndex + targetLength);
+
+            if(this.terminatorHash.contains(targetString)) {
+//                System.out.println(targetString);
+                splitPoint.add(targetIndex + targetLength);
+            }
+
+            dataIndex = targetIndex;
+        }
+
+
+
+        return splitPoint;
     }
 
     private List<String> doSplit(String inputData, List<Integer> splitPoint) {

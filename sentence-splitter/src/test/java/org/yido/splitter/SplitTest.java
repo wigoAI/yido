@@ -57,9 +57,34 @@ public class SplitTest {
     public void sentenceSplitTest() {
         SentenceSplitter sentenceSplitter = new SentenceSplitter(5);
         List<String> result = new ArrayList<>();
-        result = sentenceSplitter.sentenceSplit(data[2]);
+
+
+
+
+        double timeAverage = 0;
+
+        for(int i = 0 ; i < 10 ; i++) {
+            long start = System.nanoTime();
+
+            result = sentenceSplitter.sentenceSplit(data[2]);
+            long end = System.nanoTime();
+            double time = ( end - start )/1000000.0;
+            if( i > 4 )
+                timeAverage += time;
+            System.out.print("start : " + start + " end : " + end);
+            System.out.println( " -> 실행 시간 : " + time + "ms");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+
         for(String str : result)
             System.out.println(str);
+
+        System.out.println("time average : " + timeAverage);
     }
 
 }

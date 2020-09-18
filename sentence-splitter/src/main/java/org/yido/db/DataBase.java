@@ -43,7 +43,7 @@ public class DataBase {
             ResultSet rs = this.pstm.executeQuery();
 
             while (rs.next()) {
-                roles.add(rs.getString("VAL_STRING"));
+                roles.add(rs.getString("VAL_STRING").trim());
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
