@@ -38,14 +38,8 @@ public class SentenceSplitter {
         this.terminatorHash = new HashSet<>();
         this.minimumSentenceLength = minimumSentenceLength;
 
-        for(String str : connectiveFileReader.getSplitFileByLine()) {
-            connectiveHash.add(str);
-//            System.out.println(str);
-        }
-        for(String str : terminatorFileReadr.getSplitFileByLine()) {
-            terminatorHash.add(str);
-//            System.out.println(str);
-        }
+        connectiveHash.addAll(connectiveFileReader.getSplitFileByLine());
+        terminatorHash.addAll(terminatorFileReadr.getSplitFileByLine());
 
 
     }
@@ -100,20 +94,37 @@ public class SentenceSplitter {
 
 
         for(int dataIndex = 0 ; dataIndex < inputData.length() - targetLength ; dataIndex++) {
-            int targetIndex = avoidExceptionArea(exceptionArea, dataIndex);
-            String targetString = inputData.substring(targetIndex, targetIndex + targetLength);
+            int targetStartIndex = avoidExceptionArea(exceptionArea, dataIndex);
+            int targetEndIndex = targetStartIndex + targetLength;
+            String targetString = inputData.substring(targetStartIndex, targetEndIndex);
+            int connectiveCheckLength = 5;
 
-            if(this.terminatorHash.contains(targetString)) {
-//                System.out.println(targetString);
-                splitPoint.add(targetIndex + targetLength);
+            if(targetEndIndex + connectiveCheckLength > inputData.length()) {
+                connectiveCheckLength -= (targetEndIndex + connectiveCheckLength - inputData.length());
             }
 
-            dataIndex = targetIndex;
+            if(this.terminatorHash.contains(targetString)
+                    && !isConnective(inputData.substring(targetEndIndex, targetEndIndex +  connectiveCheckLength))) {
+
+                splitPoint.add(targetEndIndex);
+            }
+
+            dataIndex = targetStartIndex;
         }
 
 
 
         return splitPoint;
+    }
+
+    private boolean isConnective(String nextStr) {
+        for(int i = 0 ; i < nextStr.length() ; i++) {
+            String targetString = nextStr.substring(0, nextStr.length() - i);
+            if(this.connectiveHash.contains(targetString)) { return true; }
+        }
+
+        return false;
+
     }
 
     private List<String> doSplit(String inputData, List<Integer> splitPoint) {

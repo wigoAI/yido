@@ -2,6 +2,7 @@ package org.yido.splitter;
 
 import org.junit.Test;
 import org.yido.SentenceSplitter;
+import org.yido.answerChecker.AnswerChecker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,8 @@ public class SplitTest {
         SentenceSplitter sentenceSplitter = new SentenceSplitter(5);
         List<String> result = new ArrayList<>();
 
+        int USED_CASE = 3;
+        AnswerChecker answerChecker = AnswerChecker.setAnswerCheckerByAnswerFile("/data/data" + USED_CASE +"Answer.txt");
 
 
 
@@ -65,14 +68,15 @@ public class SplitTest {
 
         for(int i = 0 ; i < 10 ; i++) {
             long start = System.nanoTime();
-
-            result = sentenceSplitter.sentenceSplit(data[2]);
+            result = sentenceSplitter.sentenceSplit(data[USED_CASE - 1]);
             long end = System.nanoTime();
-            double time = ( end - start )/1000000.0;
+            double time = ( end - start ) / 1000000.0;
             if( i > 4 )
                 timeAverage += time;
+
             System.out.print("start : " + start + " end : " + end);
             System.out.println( " -> 실행 시간 : " + time + "ms");
+
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -84,7 +88,8 @@ public class SplitTest {
         for(String str : result)
             System.out.println(str);
 
-        System.out.println("time average : " + timeAverage);
+        System.out.println("time average : " + timeAverage / 5);
+        System.out.println(answerChecker.checkAnswer(result));
     }
 
 }
