@@ -70,28 +70,9 @@ public class SentenceSplitter {
         return exceptionArea;
     }
 
-    private int avoidExceptionArea(List<Area> exceptionArea, int dataIndex) {
-
-        for(int listIndex = 0 ; listIndex < exceptionArea.size() ; listIndex++) {
-            Area targetArea = exceptionArea.get(listIndex);
-
-            /** 연속된 예외구간 처리할 것
-             *  ex) (hello)(My name)
-             */
-            if(dataIndex == targetArea.getStartIndex()) {
-                dataIndex = targetArea.getEndIndex();
-                exceptionArea.remove(listIndex);
-                break;
-            }
-        }
-
-        return dataIndex;
-    }
-
     private List<Integer> findSplitPoint(String inputData, List<Area> exceptionArea) {
         List<Integer> splitPoint = new ArrayList<>();
         int targetLength = 2;
-
 
         for(int dataIndex = 0 ; dataIndex < inputData.length() - targetLength ; dataIndex++) {
             int targetStartIndex = avoidExceptionArea(exceptionArea, dataIndex);
@@ -115,6 +96,24 @@ public class SentenceSplitter {
 
 
         return splitPoint;
+    }
+
+    private int avoidExceptionArea(List<Area> exceptionArea, int dataIndex) {
+
+        for(int listIndex = 0 ; listIndex < exceptionArea.size() ; listIndex++) {
+            Area targetArea = exceptionArea.get(listIndex);
+
+            /** 연속된 예외구간 처리할 것
+             *  ex) (hello)(My name)
+             */
+            if(dataIndex == targetArea.getStartIndex()) {
+                dataIndex = targetArea.getEndIndex();
+                exceptionArea.remove(listIndex);
+                break;
+            }
+        }
+
+        return dataIndex;
     }
 
     private boolean isConnective(String nextStr) {

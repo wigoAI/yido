@@ -48,4 +48,25 @@ public class RegularTest {
         System.out.println(p.matcher("ww.web.site").matches());
         System.out.println(p.matcher("www.web.site").matches());
     }
+
+    @Test
+    public void checkConnectiveTest() {
+        String re = "[ㄱ-ㅎㅏ-ㅣ\\.]+";
+        Pattern p = Pattern.compile(re);
+        Matcher matcher = p.matcher("안녕하세요...");
+
+        while(matcher.find()){
+            System.out.println(matcher.start());
+            System.out.println(matcher.end());
+            System.out.println(matcher.group());
+        }
+
+        matcher = p.matcher("안녕하세요ㅋㅋㅋㅋ");
+
+        while(matcher.find()){
+            System.out.println(matcher.start());
+            System.out.println(matcher.end());
+            System.out.println(matcher.group());
+        }
+    }
 }
