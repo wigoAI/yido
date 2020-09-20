@@ -45,8 +45,8 @@ public class SentenceSplitter {
     }
 
     public List<String> sentenceSplit(String inputData) {
-        List<Area> exceptionArea = findExceptionArea(inputData);
-        List<Integer> splitPoint = findSplitPoint(inputData, exceptionArea);
+        List<Area> exceptionAreaList = findExceptionArea(inputData);
+        List<Integer> splitPoint = findSplitPoint(inputData, exceptionAreaList);
         this.result = doSplit(inputData, splitPoint);
 
         return this.result;
@@ -54,43 +54,46 @@ public class SentenceSplitter {
 
 
     private List<Area> findExceptionArea(String inputData) {
-        List<Area> exceptionArea = new ArrayList<>();
+        List<Area> exceptionAreaList = new ArrayList<>();
         Pattern bracketPattern = Pattern.compile(this.URL_PATTERN);
         Pattern urlPatter = Pattern.compile(this.BRACKET_PATTERN);
         Matcher bracketMatcher = bracketPattern.matcher(inputData);
         Matcher urlMatcher = urlPatter.matcher(inputData);
 
         while(bracketMatcher.find()) {
-            exceptionArea.add(new Area(bracketMatcher.start(), bracketMatcher.end()));
+            exceptionAreaList.add(new Area(bracketMatcher.start(), bracketMatcher.end()));
         }
         while(urlMatcher.find()) {
-            exceptionArea.add(new Area(urlMatcher.start(), urlMatcher.end()));
+            exceptionAreaList.add(new Area(urlMatcher.start(), urlMatcher.end()));
         }
 
-        return exceptionArea;
+        return exceptionAreaList;
     }
 
-    private List<Integer> findSplitPoint(String inputData, List<Area> exceptionArea) {
+    private List<Integer> findSplitPoint(String inputData, List<Area> exceptionAreaList) {
         List<Integer> splitPoint = new ArrayList<>();
         int targetLength = 2;
 
         for(int dataIndex = 0 ; dataIndex < inputData.length() - targetLength ; dataIndex++) {
-            int targetStartIndex = avoidExceptionArea(exceptionArea, dataIndex);
-            int targetEndIndex = targetStartIndex + targetLength;
-            String targetString = inputData.substring(targetStartIndex, targetEndIndex);
-            int connectiveCheckLength = 5;
+            Area targetArea = new Area(dataIndex, dataIndex + targetLength);
+            targetArea = avoidExceptionArea(exceptionAreaList, targetArea);
 
-            if(targetEndIndex + connectiveCheckLength > inputData.length()) {
-                connectiveCheckLength -= (targetEndIndex + connectiveCheckLength - inputData.length());
+            String targetString = inputData.substring(targetArea.getStartIndex(),
+                    targetArea.getEndIndex());
+
+            int connectiveCheckLength = 5;
+            if(targetArea.getEndIndex() + connectiveCheckLength > inputData.length()) {
+                connectiveCheckLength -= (targetArea.getEndIndex() + connectiveCheckLength - inputData.length());
             }
 
             if(this.terminatorHash.contains(targetString)
-                    && !isConnective(inputData.substring(targetEndIndex, targetEndIndex +  connectiveCheckLength))) {
+                    && !isConnective(inputData.substring(targetArea.getEndIndex(),
+                        targetArea.getEndIndex() +  connectiveCheckLength))) {
 
-                splitPoint.add(targetEndIndex);
+                splitPoint.add(targetArea.getEndIndex());
             }
 
-            dataIndex = targetStartIndex;
+            dataIndex = targetArea.getStartIndex();
         }
 
 
@@ -98,22 +101,23 @@ public class SentenceSplitter {
         return splitPoint;
     }
 
-    private int avoidExceptionArea(List<Area> exceptionArea, int dataIndex) {
+    private Area avoidExceptionArea(List<Area> exceptionAreaList, Area targetArea) {
 
-        for(int listIndex = 0 ; listIndex < exceptionArea.size() ; listIndex++) {
-            Area targetArea = exceptionArea.get(listIndex);
+        for(int i = 0 ; i < exceptionAreaList.size() ; i++) {
+
+            Area exceptionArea = exceptionAreaList.get(i);
 
             /** 연속된 예외구간 처리할 것
              *  ex) (hello)(My name)
              */
-            if(dataIndex == targetArea.getStartIndex()) {
-                dataIndex = targetArea.getEndIndex();
-                exceptionArea.remove(listIndex);
+            if(targetArea.isOverlap(exceptionArea)) {
+                targetArea.moveStartIndex(exceptionArea.getEndIndex());
                 break;
             }
+
         }
 
-        return dataIndex;
+        return targetArea;
     }
 
     private boolean isConnective(String nextStr) {
