@@ -78,26 +78,30 @@ public class SentenceSplitter {
 
     private List<Integer> findSplitPoint(List<Area> exceptionAreaList) {
         List<Integer> splitPoint = new ArrayList<>();
-        int targetLength = 2;
 
-        for(int dataIndex = 0 ; dataIndex < this.inputDataLength - targetLength ; dataIndex++) {
-            Area targetArea = new Area(dataIndex, dataIndex + targetLength);
-            targetArea = avoidExceptionArea(exceptionAreaList, targetArea);
+        for(int targetLength = 2 ; targetLength >= 2 ; targetLength--) {
+            for(int dataIndex = 0 ; dataIndex < this.inputDataLength - targetLength ; dataIndex++) {
+                Area targetArea = new Area(dataIndex, dataIndex + targetLength);
+                targetArea = avoidExceptionArea(exceptionAreaList, targetArea);
 
-            String targetString = this.inputData.substring(targetArea.getStartIndex(),
-                    targetArea.getEndIndex());
+                String targetString = this.inputData.substring(targetArea.getStartIndex(),
+                        targetArea.getEndIndex());
 
 
 
-            if(this.terminatorHash.contains(targetString)
-                    && !isConnective(targetArea.getEndIndex())) {
-                int additionalSignLength = getAdditionalSignLength(targetArea.getEndIndex());
-                splitPoint.add(targetArea.getEndIndex() + additionalSignLength);
+                if(this.terminatorHash.contains(targetString)
+                        && !isConnective(targetArea.getEndIndex())) {
+                    int additionalSignLength = getAdditionalSignLength(targetArea.getEndIndex());
+                    int targetSplitPoint = targetArea.getEndIndex() + additionalSignLength;
+                    splitPoint.add(targetSplitPoint);
+                    exceptionAreaList.add(new Area(targetSplitPoint, targetSplitPoint));
 //                splitPoint.add(targetArea.getEndIndex());
-             }
+                }
 
-            dataIndex = targetArea.getStartIndex();
+                dataIndex = targetArea.getStartIndex();
+            }
         }
+
 
 
 
