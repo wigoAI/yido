@@ -10,13 +10,16 @@ public class Area {
         this.endIndex = endIndex;
         this.length = endIndex - startIndex;
     }
-
+    // compareArea -> exceptionArea
     public boolean isOverlap(Area compareArea) {
         if(compareArea.getStartIndex() > this.startIndex
                 && compareArea.getStartIndex() < this.endIndex) {
             return true;
         } else if(compareArea.getEndIndex() > this.startIndex
                 && compareArea.getEndIndex() < this.endIndex) {
+            return true;
+        } else if(compareArea.getStartIndex() < this.startIndex
+                && compareArea.getEndIndex() > this.endIndex) {
             return true;
         }
 

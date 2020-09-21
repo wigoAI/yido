@@ -5,6 +5,7 @@ import org.moara.yido.fileIO.FileReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,7 +53,7 @@ public class SentenceSplitter {
 
     public List<String> sentenceSplit() {
         List<Area> exceptionAreaList = findExceptionArea();
-        List<Integer> splitPoint = findSplitPoint(exceptionAreaList);
+        TreeSet<Integer> splitPoint = findSplitPoint(exceptionAreaList);
         this.result = doSplit(splitPoint);
 
         return this.result;
@@ -61,48 +62,72 @@ public class SentenceSplitter {
 
     private List<Area> findExceptionArea() {
         List<Area> exceptionAreaList = new ArrayList<>();
-        Pattern bracketPattern = Pattern.compile(this.URL_PATTERN);
-        Pattern urlPatter = Pattern.compile(this.BRACKET_PATTERN);
-        Matcher bracketMatcher = bracketPattern.matcher(this.inputData);
-        Matcher urlMatcher = urlPatter.matcher(this.inputData);
 
-        while(bracketMatcher.find()) {
-            exceptionAreaList.add(new Area(bracketMatcher.start(), bracketMatcher.end()));
-        }
-        while(urlMatcher.find()) {
-            exceptionAreaList.add(new Area(urlMatcher.start(), urlMatcher.end()));
-        }
+        exceptionAreaList = findBracketPattern(exceptionAreaList);
+        exceptionAreaList = findUrlPattern(exceptionAreaList);
 
         return exceptionAreaList;
     }
 
-    private List<Integer> findSplitPoint(List<Area> exceptionAreaList) {
-        List<Integer> splitPoint = new ArrayList<>();
+    private List<Area> findBracketPattern(List<Area> exceptionAreaList) {
+        Pattern bracketPattern = Pattern.compile(this.BRACKET_PATTERN);
+        Matcher bracketMatcher = bracketPattern.matcher(this.inputData);
 
-        for(int targetLength = 2 ; targetLength >= 2 ; targetLength--) {
-            for(int dataIndex = 0 ; dataIndex < this.inputDataLength - targetLength ; dataIndex++) {
+        while(bracketMatcher.find()) { exceptionAreaList.add(new Area(bracketMatcher.start(), bracketMatcher.end())); }
+
+        return exceptionAreaList;
+    }
+
+    private List<Area> findUrlPattern(List<Area> exceptionAreaList) {
+        Pattern urlPatter = Pattern.compile(this.URL_PATTERN);
+        Matcher urlMatcher = urlPatter.matcher(this.inputData);
+
+        while(urlMatcher.find()) { exceptionAreaList.add(new Area(urlMatcher.start(), urlMatcher.end())); }
+
+        return exceptionAreaList;
+    }
+
+    private TreeSet<Integer> findSplitPoint(List<Area> exceptionAreaList) {
+        TreeSet<Integer> splitPoint = new TreeSet<>();
+
+
+        /**
+         * TODO 1. 조회 방식 결정할 것
+         *          - 전체를 조회할 때 마다 조회 범위 증가
+         *          - 2 ~ 5 의 범위를 계속 이동시키며 조회
+         */
+//        for(int targetLength = 3 ; targetLength >= 2 ; targetLength--) {
+//            for(int dataIndex = 0 ; dataIndex < this.inputDataLength - targetLength ; dataIndex++) {
+        for(int dataIndex = 0 ; dataIndex < this.inputDataLength - 5 ; dataIndex++) {
+            for(int targetLength = 3 ; targetLength >= 2 ; targetLength--) {
                 Area targetArea = new Area(dataIndex, dataIndex + targetLength);
                 targetArea = avoidExceptionArea(exceptionAreaList, targetArea);
 
                 String targetString = this.inputData.substring(targetArea.getStartIndex(),
                         targetArea.getEndIndex());
+                System.out.println("[" + targetString + "] " + targetArea.getStartIndex() + " , " + targetArea.getEndIndex());
 
 
-
-                if(this.terminatorHash.contains(targetString)
-                        && !isConnective(targetArea.getEndIndex())) {
+                if(this.terminatorHash.contains(targetString) && !isConnective(targetArea.getEndIndex())) {
                     int additionalSignLength = getAdditionalSignLength(targetArea.getEndIndex());
                     int targetSplitPoint = targetArea.getEndIndex() + additionalSignLength;
+
+                    System.out.println("-> " + targetString);
+
                     splitPoint.add(targetSplitPoint);
-                    exceptionAreaList.add(new Area(targetSplitPoint, targetSplitPoint));
-//                splitPoint.add(targetArea.getEndIndex());
+
+                    //  한 점을 예외영역으로 지정하는 것이 의미가 있는가?
+//                    exceptionAreaList.add(new Area(targetSplitPoint, targetSplitPoint));
+                    targetArea.moveStartIndex(targetArea.getStartIndex() + additionalSignLength);
+
+
+                    dataIndex = targetArea.getStartIndex();
+                    break;
                 }
 
                 dataIndex = targetArea.getStartIndex();
             }
         }
-
-
 
 
         return splitPoint;
@@ -127,25 +152,27 @@ public class SentenceSplitter {
         return targetArea;
     }
 
+    /**
+     * TODO 1. ?, !와 같은 기호 연결어미에서 제거할 것
+     *      2. 하다, 해, 해서, 등등 추가할 것
+     */
     private boolean isConnective(int startIndex) {
-
-
-        int connectiveCheckLength = 5;
-
-        if(startIndex + connectiveCheckLength > this.inputDataLength) {
-            connectiveCheckLength -= (startIndex + connectiveCheckLength - this.inputDataLength);
-        }
-
+        int connectiveCheckLength = (startIndex + 5 > this.inputDataLength) ? (startIndex + 5 - this.inputDataLength) : 5;
         String nextStr = this.inputData.substring(startIndex, startIndex +  connectiveCheckLength);
 
         for(int i = 0 ; i < nextStr.length() ; i++) {
             String targetString = nextStr.substring(0, nextStr.length() - i);
-            if(this.connectiveHash.contains(targetString)) { return true; }
+
+            if(this.connectiveHash.contains(targetString)) {
+                System.out.println("connective! : " + targetString);
+                return true;
+            }
         }
 
         return false;
 
     }
+
     private int getAdditionalSignLength(int startIndex) {
         int additionalSignLength = 0;
         String regular = "[ㄱ-ㅎㅏ-ㅣ\\.\\?\\!\\~\\;\\^]";
@@ -164,7 +191,7 @@ public class SentenceSplitter {
         return additionalSignLength;
     }
 
-    private List<String> doSplit(List<Integer> splitPoint) {
+    private List<String> doSplit(TreeSet<Integer> splitPoint) {
         int startIndex = 0;
 
         List<String> result = new ArrayList<>();
@@ -173,10 +200,7 @@ public class SentenceSplitter {
             int endIndex = point;
             String sentence = this.inputData.substring(startIndex, endIndex).trim();
 
-            if(!(sentence.length() == 0)) {
-                result.add(sentence);
-            }
-
+            result.add(sentence);
             startIndex = endIndex;
 
         }
