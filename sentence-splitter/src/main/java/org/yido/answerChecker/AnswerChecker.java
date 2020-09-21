@@ -56,7 +56,7 @@ public class AnswerChecker {
 
             if(tmpAnswer.length() == 0){
                 targetAnswer = answer;
-                System.out.println("Answer : " + targetAnswer);
+                System.out.println("Answer : [" + targetAnswer + "]");
             } else{
                 targetAnswer = tmpAnswer;
 //                System.out.print("tmp ");
@@ -66,7 +66,7 @@ public class AnswerChecker {
 
             if(tmpSheet.length() == 0){
                 targetSheet = sheet;
-                System.out.println("Sheet  : " + targetSheet);
+                System.out.println("Sheet  : [" + targetSheet + "]");
             } else{
                 targetSheet = tmpSheet;
 //                System.out.print("tmp ");

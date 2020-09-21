@@ -56,10 +56,12 @@ public class SplitTest {
 
     @Test
     public void sentenceSplitTest() {
+        int USED_CASE = 3;
         SentenceSplitter sentenceSplitter = new SentenceSplitter(5);
+        sentenceSplitter.setData(data[USED_CASE - 1]);
         List<String> result = new ArrayList<>();
 
-        int USED_CASE = 3;
+
         AnswerChecker answerChecker = AnswerChecker.setAnswerCheckerByAnswerFile("/data/data" + USED_CASE +"Answer.txt");
 
 
@@ -68,7 +70,7 @@ public class SplitTest {
 
         for(int i = 0 ; i < 10 ; i++) {
             long start = System.nanoTime();
-            result = sentenceSplitter.sentenceSplit(data[USED_CASE - 1]);
+            result = sentenceSplitter.sentenceSplit();
             long end = System.nanoTime();
             double time = ( end - start ) / 1000000.0;
             if( i > 4 )
@@ -90,6 +92,13 @@ public class SplitTest {
 
         System.out.println("time average : " + timeAverage / 5);
         System.out.println(answerChecker.checkAnswer(result));
+    }
+
+    @Test
+    public void emptyStringTest() {
+        String str = "  ";
+        System.out.println("[" + str.trim() + "]");
+        System.out.println(str.trim().length());
     }
 
 }

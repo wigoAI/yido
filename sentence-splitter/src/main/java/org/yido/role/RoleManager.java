@@ -22,9 +22,7 @@ public class RoleManager {
     List<String> connective;
     List<String> terminator;
 
-    private RoleManager() {
-        RoleManager.roleUpdate();
-    }
+    private RoleManager() { RoleManager.roleUpdate(); }
 
 
 
@@ -46,22 +44,22 @@ public class RoleManager {
         terminatorData.writeFileByList(db2.doQueryAndGetList(
                 sentenceStringDataColumn, sentenceStringDataTable, terminatorDataGroup), false);
 
+
+
     }
 
     public void initRoleData() {
+
         FileReader connectiveFileReader = new FileReader("/data/connective.txt");
         FileReader terminatorFileReader = new FileReader("/data/terminator.txt");
 
         this.connective = connectiveFileReader.getSplitFileByLine();
         this.terminator = terminatorFileReader.getSplitFileByLine();
+
     }
 
     public List<String> getConnective() { return this.connective; }
-
     public List<String> getTerminator() { return this.terminator; }
-
-    public static RoleManager getRoleManager() {
-        return roleManager;
-    }
+    public static RoleManager getRoleManager() { return roleManager; }
 
 }

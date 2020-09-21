@@ -28,6 +28,8 @@ public class SentenceSplitter {
     private List<Character> exceptionSignList;
     private HashSet<String> connectiveHash;
     private HashSet<String> terminatorHash;
+    private String inputData;
+    private int inputDataLength;
 
 
     public SentenceSplitter(int minimumSentenceLength) {
@@ -44,21 +46,26 @@ public class SentenceSplitter {
 
     }
 
-    public List<String> sentenceSplit(String inputData) {
-        List<Area> exceptionAreaList = findExceptionArea(inputData);
-        List<Integer> splitPoint = findSplitPoint(inputData, exceptionAreaList);
-        this.result = doSplit(inputData, splitPoint);
+    public void setData(String inputData) {
+        this.inputData = inputData;
+        this.inputDataLength = inputData.length();
+    }
+
+    public List<String> sentenceSplit() {
+        List<Area> exceptionAreaList = findExceptionArea();
+        List<Integer> splitPoint = findSplitPoint(exceptionAreaList);
+        this.result = doSplit(splitPoint);
 
         return this.result;
     }
 
 
-    private List<Area> findExceptionArea(String inputData) {
+    private List<Area> findExceptionArea() {
         List<Area> exceptionAreaList = new ArrayList<>();
         Pattern bracketPattern = Pattern.compile(this.URL_PATTERN);
         Pattern urlPatter = Pattern.compile(this.BRACKET_PATTERN);
-        Matcher bracketMatcher = bracketPattern.matcher(inputData);
-        Matcher urlMatcher = urlPatter.matcher(inputData);
+        Matcher bracketMatcher = bracketPattern.matcher(this.inputData);
+        Matcher urlMatcher = urlPatter.matcher(this.inputData);
 
         while(bracketMatcher.find()) {
             exceptionAreaList.add(new Area(bracketMatcher.start(), bracketMatcher.end()));
@@ -70,28 +77,25 @@ public class SentenceSplitter {
         return exceptionAreaList;
     }
 
-    private List<Integer> findSplitPoint(String inputData, List<Area> exceptionAreaList) {
+    private List<Integer> findSplitPoint(List<Area> exceptionAreaList) {
         List<Integer> splitPoint = new ArrayList<>();
         int targetLength = 2;
 
-        for(int dataIndex = 0 ; dataIndex < inputData.length() - targetLength ; dataIndex++) {
+        for(int dataIndex = 0 ; dataIndex < this.inputDataLength - targetLength ; dataIndex++) {
             Area targetArea = new Area(dataIndex, dataIndex + targetLength);
             targetArea = avoidExceptionArea(exceptionAreaList, targetArea);
 
-            String targetString = inputData.substring(targetArea.getStartIndex(),
+            String targetString = this.inputData.substring(targetArea.getStartIndex(),
                     targetArea.getEndIndex());
 
-            int connectiveCheckLength = 5;
-            if(targetArea.getEndIndex() + connectiveCheckLength > inputData.length()) {
-                connectiveCheckLength -= (targetArea.getEndIndex() + connectiveCheckLength - inputData.length());
-            }
+
 
             if(this.terminatorHash.contains(targetString)
-                    && !isConnective(inputData.substring(targetArea.getEndIndex(),
-                        targetArea.getEndIndex() +  connectiveCheckLength))) {
-
-                splitPoint.add(targetArea.getEndIndex());
-            }
+                    && !isConnective(targetArea.getEndIndex())) {
+                int additionalSignLength = getAdditionalSignLength(targetArea.getEndIndex());
+                splitPoint.add(targetArea.getEndIndex() + additionalSignLength);
+//                splitPoint.add(targetArea.getEndIndex());
+             }
 
             dataIndex = targetArea.getStartIndex();
         }
@@ -120,7 +124,17 @@ public class SentenceSplitter {
         return targetArea;
     }
 
-    private boolean isConnective(String nextStr) {
+    private boolean isConnective(int startIndex) {
+
+
+        int connectiveCheckLength = 5;
+
+        if(startIndex + connectiveCheckLength > this.inputDataLength) {
+            connectiveCheckLength -= (startIndex + connectiveCheckLength - this.inputDataLength);
+        }
+
+        String nextStr = this.inputData.substring(startIndex, startIndex +  connectiveCheckLength);
+
         for(int i = 0 ; i < nextStr.length() ; i++) {
             String targetString = nextStr.substring(0, nextStr.length() - i);
             if(this.connectiveHash.contains(targetString)) { return true; }
@@ -129,21 +143,42 @@ public class SentenceSplitter {
         return false;
 
     }
+    private int getAdditionalSignLength(int startIndex) {
+        int additionalSignLength = 0;
+        String regular = "[ㄱ-ㅎㅏ-ㅣ\\.\\?\\!\\~\\;\\^]";
+        Pattern pattern = Pattern.compile(regular);
 
-    private List<String> doSplit(String inputData, List<Integer> splitPoint) {
+        for(int i = 0 ; i + startIndex < this.inputDataLength ; i++ ) {
+            String targetStr = this.inputData.substring(startIndex + i, startIndex + i + 1);
+
+            if(!pattern.matcher(targetStr).matches()) {
+                break;
+            } else {
+                additionalSignLength++;
+            }
+        }
+
+        return additionalSignLength;
+    }
+
+    private List<String> doSplit(List<Integer> splitPoint) {
         int startIndex = 0;
 
         List<String> result = new ArrayList<>();
 
         for(int point : splitPoint) {
             int endIndex = point;
-            result.add(inputData.substring(startIndex, endIndex));
+            String sentence = this.inputData.substring(startIndex, endIndex).trim();
+
+            if(!(sentence.length() == 0)) {
+                result.add(sentence);
+            }
 
             startIndex = endIndex;
 
         }
 
-        result.add(inputData.substring(startIndex, inputData.length()));
+        result.add(this.inputData.substring(startIndex, this.inputDataLength));
 
         return result;
     }

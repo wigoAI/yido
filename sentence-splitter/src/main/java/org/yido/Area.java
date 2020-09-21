@@ -23,8 +23,11 @@ public class Area {
         return false;
 
     }
+
     public int getStartIndex() { return this.startIndex; }
     public int getEndIndex() { return this.endIndex; }
+    public int getLength() { return this.length; }
+
     public void moveStartIndex(int newStartIndex) {
         this.startIndex = newStartIndex;
         this.endIndex = this.startIndex + this.length;
@@ -33,5 +36,5 @@ public class Area {
         this.endIndex = newEndIndex;
         this.startIndex = this.endIndex - this.length;
     }
-    public int getLength() { return this.length; }
+
 }
