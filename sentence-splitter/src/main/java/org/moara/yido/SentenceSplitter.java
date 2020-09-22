@@ -17,8 +17,11 @@ import java.util.regex.Pattern;
  * 문장 구분기 클래스
  *
  * TODO 1. 단어 길이별로 여러번 반복 5 ~> 2
+ *          - 적용
  *      2. 유효성 검사
+ *          - 연결어미로 확인 중
  *      3. URL pattern check
+ *
  */
 public class SentenceSplitter {
     private final String URL_PATTERN = "^((https?:\\/\\/)|(www\\.))([^:\\/\\s]+)(:([^\\/]*))?((\\/[^\\s/\\/]+)*)?\\/?([^#\\s\\?]*)(\\?([^#\\s]*))?(#(\\w*))?$";
@@ -35,7 +38,9 @@ public class SentenceSplitter {
     public SentenceSplitter(int minimumSentenceLength) {
         FileReader connectiveFileReader = new FileReader("/data/connective.txt");
         FileReader terminatorFileReadr = new FileReader("/data/terminator.txt");
-
+//        FileReader terminatorFileReadr = new FileReader("/data/talkTerminator.txt");
+//        FileReader terminatorFileReadr = new FileReader("/data/newTerminator.txt");
+//        FileReader terminatorFileReadr = new FileReader("/data/koTerminator.txt");
         this.connectiveHash = new HashSet<>();
         this.terminatorHash = new HashSet<>();
         this.minimumSentenceLength = minimumSentenceLength;

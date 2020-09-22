@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Set;
 
 public class FileWriter {
 
@@ -21,7 +22,6 @@ public class FileWriter {
     }
 
     public void writeFileByList(List<String> inputList, boolean append) {
-
 
         PrintWriter pw = null;
         try {
@@ -37,7 +37,24 @@ public class FileWriter {
             e.printStackTrace();
         }
 
+    }
 
+    public void writeFileBySet(Set<String> inputSet, boolean append) {
+
+        PrintWriter pw = null;
+        try {
+            pw = new PrintWriter(new BufferedWriter(new java.io.FileWriter(this.file, append)));
+
+            for(String str : inputSet) {
+                pw.println(str);
+            }
+
+            pw.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
+
 }

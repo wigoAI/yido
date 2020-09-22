@@ -56,7 +56,7 @@ public class SplitTest {
 
     @Test
     public void sentenceSplitTest() {
-        int USED_CASE = 3;
+        int USED_CASE = 1;
         SentenceSplitter sentenceSplitter = new SentenceSplitter(5);
         sentenceSplitter.setData(data[USED_CASE - 1]);
         List<String> result = new ArrayList<>();
@@ -94,11 +94,6 @@ public class SplitTest {
         System.out.println(answerChecker.checkAnswer(result));
     }
 
-    @Test
-    public void emptyStringTest() {
-        String str = "  ";
-        System.out.println("[" + str.trim() + "]");
-        System.out.println(str.trim().length());
-    }
+
 
 }

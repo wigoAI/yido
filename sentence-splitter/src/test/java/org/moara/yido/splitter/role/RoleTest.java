@@ -5,87 +5,17 @@ import org.bitbucket.eunjeon.seunjeon.Eojeol;
 import org.bitbucket.eunjeon.seunjeon.LNode;
 import org.junit.Test;
 import org.moara.yido.fileIO.FileReader;
+import org.moara.yido.fileIO.FileWriter;
 import org.moara.yido.role.RoleManager;
+import org.snu.ids.ha.ma.MorphemeAnalyzer;
+import org.snu.ids.ha.ma.Sentence;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RoleTest {
 
-    /**
-     *   한명의 리뷰 데이터를 조사한다.
-     *   이 때 모든 문장을 구분한 데이터를 생성하기는 어려우므로
-     *   모든 리뷰의 마지막은 문장의 끝인것을 이용하여
-     *   마지막 어절의 데이터를 수집, 분석하여 룰을 생성한다.
-     *
-     *
-     *   온점이 왔을 때 이전 어절 확인을 처리할 것
-     *  */
-    @Test
-    public void createRoleTest() {
-        FileReader filereader = new FileReader("/data/revData.txt");
-//      role을 HashMap에 저장
-        HashMap<String, Integer> roles = new HashMap<>();
-        HashMap<String, LNode> morphemeRole = new HashMap<>();
-        List<String> roleList = new ArrayList<>();
-
-
-        for(String str : filereader.getSplitFile("|")) {
-            System.out.println(str + " : " + str.length());
-
-            // 어절 분석기
-            for (Eojeol eojeol: Analyzer.parseEojeolJava(str)) {
-                int targetOffset = str.length();
-
-                List<String> list = new ArrayList<String>();
-
-
-                // 해당 어절의 endOffset이 문장의 길이와 같다면 문장의 끝에 있는 어절이다.
-                // 이 어절의 형태소를 분석한다.
-//                if(eojeol.endOffset() == str.length()) {
-                    System.out.println(eojeol.surface());
-                    List<LNode> hts = new ArrayList<>();
-                    for (LNode node : Analyzer.parseJava(eojeol.surface())) {
-                        System.out.print("[" + node + "]");
-                        hts.add(node);
-
-                    }
-
-                    // 마지막 어절을 key로 사용
-                    String key = hts.get(hts.size()-1).morpheme().getSurface();
-                    LNode morphemeKey = hts.get(hts.size()-1);
-
-                    // 해당 키가 있다면 카운트만 증가
-                    if(roles.containsKey(key)){
-                        roles.replace(key, roles.get(key) + 1);
-
-
-                    } else {
-                        roles.put(key, 1);
-                        roleList.add(key);
-
-                    }
-                    System.out.println(hts.get(hts.size()-1).morpheme().getSurface());
-                    System.out.println();
-//                }
-                System.out.print(eojeol.surface() + " : ");
-                System.out.print(eojeol.beginOffset() + " ~ ");
-                System.out.println(eojeol.endOffset());
-
-            }
-        }
-
-        System.out.println("role size : " + roles.size());
-
-        for(String role : roleList) {
-            if(roles.get(role) > 30)
-                System.out.println("role : " + role + " " + roles.get(role));
-        }
-
-        System.out.println(roleList.size());
-
-    }
 
     @Test
     public void roleManagerTest() {
@@ -95,5 +25,156 @@ public class RoleTest {
 //
         for(String str : roleManager.getConnective())
             System.out.println(str);
+    }
+
+    @Test
+    public void editTerminatorTest() {
+        String allSpecialCharacter = "[\\!-\\/\\:-\\@\\[-\\`\\{-\\~]";
+        FileReader fileReader = new FileReader("/data/terminator.txt");
+        FileWriter fileWriter = new FileWriter("/data/newTerminator.txt");
+        List<String> terminatorList = new ArrayList<>();
+        Set<String> terminatorSet = new HashSet<>();
+
+        terminatorList = fileReader.getSplitFileByLine();
+        for(String str : terminatorList) {
+            str = str.replaceAll(allSpecialCharacter, "");
+            if(str.length() < 6 && str.length() > 1)
+                terminatorSet.add(str);
+        }
+
+        fileWriter.writeFileBySet(terminatorSet, false);
+
+
+    }
+
+    @Test
+    public void createNewTerminatorTest() {
+        String allSpecialCharacter = "[\\!-\\/\\:-\\@\\[-\\`\\{-\\~]";
+        FileReader fileReader = new FileReader("/data/terminator.txt");
+        FileWriter fileWriter = new FileWriter("/data/newTerminator.txt");
+        List<String> terminatorList = new ArrayList<>();
+        Set<String> terminatorSet = new HashSet<>();
+
+        terminatorList = fileReader.getSplitFileByLine();
+        for(String str : terminatorList) {
+            str = str.replaceAll(allSpecialCharacter, "");
+            if(str.length() < 6 && str.length() > 1)
+                terminatorSet.add(str);
+        }
+
+        fileWriter.writeFileBySet(terminatorSet, false);
+    }
+
+    @Test
+    public void getTerminatorFromKkoDic() {
+        String ef = "\\tEF";
+        String deleteHan = "[ㄱ-ㅎㅏ-ㅣ]";
+        Pattern p = Pattern.compile(ef);
+
+        FileReader fileReader = new FileReader("/data/lnpr_pos_g_morp_intra.dic");
+        FileWriter fileWriter = new FileWriter("/data/koTerminator.txt");
+
+        List<String> kkoDicList = new ArrayList<>();
+        Set<String> terminatorSet = new HashSet<>();
+
+        kkoDicList = fileReader.getSplitFileByLine();
+        for(String str : kkoDicList) {
+            Matcher matcher = p.matcher(str);
+            if(matcher.find()) {
+                String targetEF = str.split("\t")[1];
+                targetEF = targetEF.replaceAll(deleteHan, "");
+
+                if(targetEF.length() > 1)
+                    terminatorSet.add(targetEF);
+            }
+
+
+//            System.out.println(str);
+        }
+
+        int cnt = 0;
+        for(String str : terminatorSet) {
+            cnt++;
+            System.out.println(str);
+        }
+
+        fileWriter.writeFileBySet(terminatorSet, false);
+        System.out.println(cnt);
+    }
+
+
+    @Test
+    public void getTerminatorFromJson() {
+        String efPattern = "[가-힣]+\\/[A-Z]*\\+*EF";
+        Pattern p = Pattern.compile(efPattern);
+
+        FileReader fileReader = new FileReader("/data/dialog.json");
+        FileWriter fileWriter = new FileWriter("/data/talkTerminator.txt");
+
+        Set<String> terminatorSet = new HashSet<>();
+
+        List<String> json = fileReader.getSplitFileByLine();
+
+        for(String str : json) {
+            if(str.contains("a_morpheme")) {
+                Matcher matcher = p.matcher(str);
+                if(matcher.find()) {
+                    String efStr = matcher.group().split("\\/")[0];
+//                    System.out.println(efStr);
+                    if(efStr.length() > 1 && efStr.length() < 6)
+                        terminatorSet.add(efStr);
+                }
+
+            }
+
+        }
+        fileWriter.writeFileBySet(terminatorSet, false);
+        int cnt = 0;
+        for(String str : terminatorSet) {
+            cnt++;
+            System.out.println(str);
+        }
+
+        System.out.println(cnt);
+    }
+
+    @Test
+    public void getTerminatorFromJsonWithConnective() {
+        String efPattern = "[가-힣]*[\\/][A-Z\\+]*[가-힣]+\\/[A-Z]*\\+*EF";
+        String koreanPattern = "[가-힣]";
+        Pattern p = Pattern.compile(efPattern);
+        Pattern koreanP = Pattern.compile(koreanPattern);
+
+        FileReader fileReader = new FileReader("/data/dialog.json");
+        FileWriter fileWriter = new FileWriter("/data/longTalkTerminator.txt");
+
+        Set<String> terminatorSet = new HashSet<>();
+
+        List<String> json = fileReader.getSplitFileByLine();
+
+        for(String str : json) {
+            if(str.contains("a_morpheme")) {
+                Matcher matcher = p.matcher(str);
+                if(matcher.find()) {
+                    String efStr = matcher.group();
+                    Matcher koreanMatcher= koreanP.matcher(efStr);
+                    String set = "";
+                    while(koreanMatcher.find()) {
+                        set += koreanMatcher.group();
+
+                    }
+                    terminatorSet.add(set);
+                }
+            }
+
+        }
+        fileWriter.writeFileBySet(terminatorSet, false);
+        int cnt = 0;
+        for(String str : terminatorSet) {
+            cnt++;
+            System.out.println(str);
+        }
+
+        System.out.println(cnt);
     }
 }

@@ -5,6 +5,14 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 public class JSONTest {
 
 
@@ -32,5 +40,30 @@ public class JSONTest {
         JSONObject jsonObjectStr = (JSONObject) parser.parse(jsonData);
 
         System.out.println(jsonObjectStr.get("title"));
+    }
+
+    @Test
+    public void JSONFileReadToFileReader() {
+        org.moara.yido.fileIO.FileReader fileReader = new org.moara.yido.fileIO.FileReader("/data/dialog.json");
+        List<String> json = fileReader.getSplitFileByLine();
+
+        for(String str : json) {
+            if(str.contains("a_morpheme"))
+                System.out.println(str);
+        }
+    }
+    @Test
+    public void JSONFileReadTest() throws IOException, ParseException {
+        JSONParser parser = new JSONParser();
+
+        Object obj = parser.parse(new FileReader("/data/dialog.json"));
+        JSONObject jsonObject = (JSONObject) obj;
+
+        Map<String, Object> map = new HashMap<>();
+        JSONObject jsonObj = (JSONObject) jsonObject.get("DATA");
+
+        Iterator<String> keysItr = jsonObj.keySet().iterator();
+
+
     }
 }

@@ -6,18 +6,24 @@ import org.moara.yido.fileIO.FileWriter;
 import org.moara.yido.db.DataBase;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class FileTest {
 
     @Test
     public void getFileTest() {
-        FileReader fileReader = new FileReader("/data/data1Answer.txt");
-
+        FileReader fileReader = new FileReader("/data/ratings_train.txt");
+        List<String> revData = new ArrayList<>();
 
         for(String str : fileReader.getSplitFileByLine()) {
-            System.out.println(" : " + str);
+            System.out.println(str.split("\t")[1]);
+            revData.add(str.split("\t")[1]);
         }
+
+        FileWriter fileWriter = new FileWriter("/data/newRevData.txt");
+        fileWriter.writeFileByList(revData, false);
     }
 
     @Test
@@ -48,4 +54,6 @@ public class FileTest {
 
         fileWriter.writeFileByList(data, false);
     }
+
+
 }

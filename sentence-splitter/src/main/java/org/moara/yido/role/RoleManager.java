@@ -13,9 +13,6 @@ import java.util.List;
  * TODO 1. history 파일을 생성하여 관리할 것
  *      2. role data 생성 후 바로 안읽혀지는 문제 해결
  *          - 실행이 끝난 뒤 파일이 생성된다.
- *
- *
- *
  */
 public class RoleManager {
     private static RoleManager roleManager = new RoleManager();
