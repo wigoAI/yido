@@ -16,11 +16,6 @@ import java.util.regex.Pattern;
  *
  * 문장 구분기 클래스
  *
- * TODO 1. 단어 길이별로 여러번 반복 5 ~> 2
- *          - 적용
- *      2. 유효성 검사
- *          - 연결어미로 확인 중
- *      3. URL pattern check
  *
  */
 public class SentenceSplitter {
@@ -95,12 +90,6 @@ public class SentenceSplitter {
     private TreeSet<Integer> findSplitPoint(List<Area> exceptionAreaList) {
         TreeSet<Integer> splitPoint = new TreeSet<>();
 
-
-        /**
-         * TODO 1. 조회 방식 결정할 것
-         *          - 전체를 조회할 때 마다 조회 범위 증가
-         *          - 2 ~ 5 의 범위를 계속 이동시키며 조회
-         */
 //        for(int targetLength = 3 ; targetLength >= 2 ; targetLength--) {
 //            for(int dataIndex = 0 ; dataIndex < this.inputDataLength - targetLength ; dataIndex++) {
         for(int dataIndex = 0 ; dataIndex < this.inputDataLength - 5 ; dataIndex++) {
@@ -113,7 +102,7 @@ public class SentenceSplitter {
                 System.out.println("[" + targetString + "] " + targetArea.getStartIndex() + " , " + targetArea.getEndIndex());
 
 
-                if(this.terminatorHash.contains(targetString) && !isConnective(targetArea.getEndIndex())) {
+                if(this.terminatorHash.contains(targetSㄹtring) && !isConnective(targetArea.getEndIndex())) {
                     int additionalSignLength = getAdditionalSignLength(targetArea.getEndIndex());
                     int targetSplitPoint = targetArea.getEndIndex() + additionalSignLength;
 
@@ -156,11 +145,6 @@ public class SentenceSplitter {
 
         return targetArea;
     }
-
-    /**
-     * TODO 1. ?, !와 같은 기호 연결어미에서 제거할 것
-     *      2. 하다, 해, 해서, 등등 추가할 것
-     */
     private boolean isConnective(int startIndex) {
         int connectiveCheckLength = (startIndex + 5 > this.inputDataLength) ? (startIndex + 5 - this.inputDataLength) : 5;
         String nextStr = this.inputData.substring(startIndex, startIndex +  connectiveCheckLength);
