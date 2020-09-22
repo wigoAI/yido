@@ -16,13 +16,11 @@ import java.util.List;
 import org.snu.ids.ha.ma.Sentence;
 
 /**
- * Unit test for simple App.
+ * TODO 1. Test Code 정리
  */
 public class AppTest 
 {
-    /**
-     * file input test
-     */
+
     @Test
     public void inputFileTest() throws IOException {
 

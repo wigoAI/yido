@@ -10,6 +10,7 @@ public class Area {
         this.endIndex = endIndex;
         this.length = endIndex - startIndex;
     }
+
     // compareArea -> exceptionArea
     public boolean isOverlap(Area compareArea) {
         if(compareArea.getStartIndex() > this.startIndex
@@ -27,10 +28,6 @@ public class Area {
 
     }
 
-    public int getStartIndex() { return this.startIndex; }
-    public int getEndIndex() { return this.endIndex; }
-    public int getLength() { return this.length; }
-
     public void moveStartIndex(int newStartIndex) {
         this.startIndex = newStartIndex;
         this.endIndex = this.startIndex + this.length;
@@ -39,5 +36,11 @@ public class Area {
         this.endIndex = newEndIndex;
         this.startIndex = this.endIndex - this.length;
     }
+
+    public int getStartIndex() { return this.startIndex; }
+    public int getEndIndex() { return this.endIndex; }
+    public int getLength() { return this.length; }
+
+
 
 }

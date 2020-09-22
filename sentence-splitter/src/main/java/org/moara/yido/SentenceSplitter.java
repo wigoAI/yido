@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
  *
  * 문장 구분기 클래스
  *
+ * TODO 1. Thread 적용
  *
  */
 public class SentenceSplitter {
@@ -33,9 +34,11 @@ public class SentenceSplitter {
     public SentenceSplitter(int minimumSentenceLength) {
         FileReader connectiveFileReader = new FileReader("/data/connective.txt");
         FileReader terminatorFileReadr = new FileReader("/data/terminator.txt");
+
 //        FileReader terminatorFileReadr = new FileReader("/data/talkTerminator.txt");
 //        FileReader terminatorFileReadr = new FileReader("/data/newTerminator.txt");
 //        FileReader terminatorFileReadr = new FileReader("/data/koTerminator.txt");
+
         this.connectiveHash = new HashSet<>();
         this.terminatorHash = new HashSet<>();
         this.minimumSentenceLength = minimumSentenceLength;
@@ -90,6 +93,10 @@ public class SentenceSplitter {
     private TreeSet<Integer> findSplitPoint(List<Area> exceptionAreaList) {
         TreeSet<Integer> splitPoint = new TreeSet<>();
 
+        /**
+         * 1. 전체조회 -> 2 ~ 3 길이로 반복
+         * 2. 2 ~ 3 길이로 반복 -> 전체조회
+         */
 //        for(int targetLength = 3 ; targetLength >= 2 ; targetLength--) {
 //            for(int dataIndex = 0 ; dataIndex < this.inputDataLength - targetLength ; dataIndex++) {
         for(int dataIndex = 0 ; dataIndex < this.inputDataLength - 5 ; dataIndex++) {
@@ -102,7 +109,7 @@ public class SentenceSplitter {
                 System.out.println("[" + targetString + "] " + targetArea.getStartIndex() + " , " + targetArea.getEndIndex());
 
 
-                if(this.terminatorHash.contains(targetSㄹtring) && !isConnective(targetArea.getEndIndex())) {
+                if(this.terminatorHash.contains(targetString) && !isConnective(targetArea.getEndIndex())) {
                     int additionalSignLength = getAdditionalSignLength(targetArea.getEndIndex());
                     int targetSplitPoint = targetArea.getEndIndex() + additionalSignLength;
 
