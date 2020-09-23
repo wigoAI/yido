@@ -1,22 +1,8 @@
 package org.moara.yido.db;
 
 import org.junit.Test;
-import org.moara.yido.fileIO.FileWriter;
 
 public class DataBaseTest {
-
-
-
-    /**
-    * Connection test with oracle
-    * *
-    @Test
-    public void dbConnectionTest() throws Exception {
-        DataBase db = new DataBase();
-
-
-    }
-
 
     /**
      * Connection test with mariaDB
@@ -45,12 +31,5 @@ public class DataBaseTest {
 
 
 
-    }
-
-    @Test
-    public void getRoleToFile() throws Exception {
-        DataBase db = new DataBase();
-        FileWriter fileWriter = new FileWriter("/data/role.txt");
-//        fileWriter.writeFileByList(db.getRoles(), false);
     }
 }

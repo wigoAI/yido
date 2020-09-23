@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  *
  * 문장 구분기 클래스
  *
- * TODO 1. Thread 적용
  *
  */
 public class SentenceSplitter {
@@ -24,7 +23,7 @@ public class SentenceSplitter {
     private final String BRACKET_PATTERN = "[\\(*\\{*\\[*][^\\)\\]\\}]*[\\)\\]\\}]";
     private List<String> result = new ArrayList<>();
     private int minimumSentenceLength;
-    private List<Character> exceptionSignList;
+//    private List<Character> exceptionSignList;
     private HashSet<String> connectiveHash;
     private HashSet<String> terminatorHash;
     private String inputData;
@@ -54,7 +53,7 @@ public class SentenceSplitter {
         this.inputDataLength = inputData.length();
     }
 
-    public List<String> sentenceSplit() {
+    public List<String> split() {
         List<Area> exceptionAreaList = findExceptionArea();
         TreeSet<Integer> splitPoint = findSplitPoint(exceptionAreaList);
         this.result = doSplit(splitPoint);
@@ -93,35 +92,29 @@ public class SentenceSplitter {
     private TreeSet<Integer> findSplitPoint(List<Area> exceptionAreaList) {
         TreeSet<Integer> splitPoint = new TreeSet<>();
 
-        /**
-         * 1. 전체조회 -> 2 ~ 3 길이로 반복
-         * 2. 2 ~ 3 길이로 반복 -> 전체조회
-         */
 //        for(int targetLength = 3 ; targetLength >= 2 ; targetLength--) {
-//            for(int dataIndex = 0 ; dataIndex < this.inputDataLength - targetLength ; dataIndex++) {
-        for(int dataIndex = 0 ; dataIndex < this.inputDataLength - 5 ; dataIndex++) {
+//            for(int dataIndex = 0 ; dataIndex < this.inputDataLength - minimumSentenceLength ; dataIndex++) {
+        for(int dataIndex = 0 ; dataIndex < this.inputDataLength - minimumSentenceLength ; dataIndex++) {
             for(int targetLength = 3 ; targetLength >= 2 ; targetLength--) {
-                Area targetArea = new Area(dataIndex, dataIndex + targetLength);
-                targetArea = avoidExceptionArea(exceptionAreaList, targetArea);
+
+                Area targetArea = avoidExceptionArea(exceptionAreaList, new Area(dataIndex, dataIndex + targetLength));
 
                 String targetString = this.inputData.substring(targetArea.getStartIndex(),
                         targetArea.getEndIndex());
-                System.out.println("[" + targetString + "] " + targetArea.getStartIndex() + " , " + targetArea.getEndIndex());
+//                System.out.println("[" + targetString + "] " + targetArea.getStartIndex() + " , " + targetArea.getEndIndex());
+
 
 
                 if(this.terminatorHash.contains(targetString) && !isConnective(targetArea.getEndIndex())) {
                     int additionalSignLength = getAdditionalSignLength(targetArea.getEndIndex());
                     int targetSplitPoint = targetArea.getEndIndex() + additionalSignLength;
-
-                    System.out.println("-> " + targetString);
+//                    System.out.println("-> " + targetString);
 
                     splitPoint.add(targetSplitPoint);
 
                     //  한 점을 예외영역으로 지정하는 것이 의미가 있는가?
 //                    exceptionAreaList.add(new Area(targetSplitPoint, targetSplitPoint));
                     targetArea.moveStartIndex(targetArea.getStartIndex() + additionalSignLength);
-
-
                     dataIndex = targetArea.getStartIndex();
                     break;
                 }
@@ -140,12 +133,12 @@ public class SentenceSplitter {
 
             Area exceptionArea = exceptionAreaList.get(i);
 
-            /** 연속된 예외구간 처리할 것
-             *  ex) (hello)(My name)
-             */
+
             if(targetArea.isOverlap(exceptionArea)) {
                 targetArea.moveStartIndex(exceptionArea.getEndIndex());
-                break;
+
+                // 이동시킨 위치가 예외 영역에 포함되지 않는지 다시 체크
+                i = -1;
             }
 
         }
@@ -160,7 +153,7 @@ public class SentenceSplitter {
             String targetString = nextStr.substring(0, nextStr.length() - i);
 
             if(this.connectiveHash.contains(targetString)) {
-                System.out.println("connective! : " + targetString);
+//                System.out.println("connective! : " + targetString);
                 return true;
             }
         }
@@ -208,6 +201,7 @@ public class SentenceSplitter {
 
 
     public List<String> getResult() { return this.result; }
+
 
 }
 

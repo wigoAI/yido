@@ -25,48 +25,6 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- 은전한닢-->
-    <dependency>
-      <groupId>kr.bydelta</groupId>
-      <artifactId>koalanlp-eunjeon</artifactId>
-      <version>2.1.6</version>
-    </dependency>
-
-    <!-- 꼬꼬마-->
-    <dependency>
-      <groupId>kr.bydelta</groupId>
-      <artifactId>koalanlp-kkma_2.12</artifactId>
-      <classifier>assembly</classifier>
-      <version>1.8.2</version>
-    </dependency>
-
-<!--  코모란  -->
-    <dependency>
-      <groupId>kr.bydelta</groupId>
-      <artifactId>koalanlp-kmr</artifactId>
-      <version>2.1.4</version>
-    </dependency>
-<!-- Core -->
-    <dependency>
-      <groupId>kr.bydelta</groupId>
-      <artifactId>koalanlp-core</artifactId>
-      <version>2.1.4</version>
-    </dependency>
-
-    <!--    Open Korean Text Wrapper-->
-    <dependency>
-      <groupId>kr.bydelta</groupId>
-      <artifactId>koalanlp-okt</artifactId>
-      <version>2.1.4</version>
-    </dependency>
-    <!--    한나눔 -->
-    <dependency>
-      <groupId>kr.bydelta</groupId>
-      <artifactId>koalanlp-hnn</artifactId>
-      <classifier>assembly</classifier>
-      <version>2.1.4</version>
-    </dependency>
-
 
     <!-- IOUtils -->
     <dependency>

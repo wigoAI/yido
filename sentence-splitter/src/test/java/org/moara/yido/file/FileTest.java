@@ -1,33 +1,34 @@
 package org.moara.yido.file;
 
 import org.junit.Test;
+import static org.junit.Assert.*;
+
+
 import org.moara.yido.fileIO.FileReader;
 import org.moara.yido.fileIO.FileWriter;
 import org.moara.yido.db.DataBase;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class FileTest {
 
     @Test
     public void getFileTest() {
-        FileReader fileReader = new FileReader("/data/ratings_train.txt");
+        FileReader fileReader = new FileReader("/data/newRevData.txt");
         List<String> revData = new ArrayList<>();
 
         for(String str : fileReader.getSplitFileByLine()) {
-            System.out.println(str.split("\t")[1]);
-            revData.add(str.split("\t")[1]);
+            System.out.println(str);
+            revData.add(str);
         }
 
-        FileWriter fileWriter = new FileWriter("/data/newRevData.txt");
-        fileWriter.writeFileByList(revData, false);
+        assertEquals(revData.get(0), "아 더빙.. 진짜 짜증나네요 목소리");
+
     }
 
     @Test
-    public void writeFileTest() {
+    public void writeFileTest() throws InterruptedException {
 
         FileWriter fileWriter = new FileWriter("/data/test.txt");
         List<String> data = new ArrayList<>();
@@ -36,23 +37,24 @@ public class FileTest {
         data.add("hello!");
         data.add("hello!2");
 
-        fileWriter.writeFileByList(data, false);
+        fileWriter.writeFileByList(data, true);
     }
 
     @Test
-    public void createRoleFile() throws Exception {
-        FileWriter fileWriter = new FileWriter("/data/connective.txt");
-        List<String> data = new ArrayList<>();
-        DataBase db = new DataBase();
-        String select = "VAL_STRING";
-        String from = "TB_ARA_SEN_GROUP_STRING";
-        String where = "CD_GROUP='S9'";
+    public void createTestData() {
+        FileReader fileReader = new FileReader("/data/data5Answer.txt");
+        FileWriter fileWriter = new FileWriter("/data/data5.txt");
 
-        for(String str : db.doQueryAndGetList(select, from, where)){
-            data.add(str);
+        List<String> data = fileReader.getSplitFileByLine();
+        String dataStr = "";
+
+        for(String str : data) {
+            dataStr += (str + " ");
+
         }
-
-        fileWriter.writeFileByList(data, false);
+        ArrayList<String> dataList = new ArrayList<>();
+        dataList.add(dataStr);
+        fileWriter.writeFileByList(dataList, false);
     }
 
 

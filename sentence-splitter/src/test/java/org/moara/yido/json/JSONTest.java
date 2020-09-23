@@ -52,18 +52,6 @@ public class JSONTest {
                 System.out.println(str);
         }
     }
-    @Test
-    public void JSONFileReadTest() throws IOException, ParseException {
-        JSONParser parser = new JSONParser();
-
-        Object obj = parser.parse(new FileReader("/data/dialog.json"));
-        JSONObject jsonObject = (JSONObject) obj;
-
-        Map<String, Object> map = new HashMap<>();
-        JSONObject jsonObj = (JSONObject) jsonObject.get("DATA");
-
-        Iterator<String> keysItr = jsonObj.keySet().iterator();
 
 
-    }
 }

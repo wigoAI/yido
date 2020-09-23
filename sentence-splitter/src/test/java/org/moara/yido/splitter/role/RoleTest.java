@@ -1,14 +1,9 @@
 package org.moara.yido.splitter.role;
 
-import org.bitbucket.eunjeon.seunjeon.Analyzer;
-import org.bitbucket.eunjeon.seunjeon.Eojeol;
-import org.bitbucket.eunjeon.seunjeon.LNode;
 import org.junit.Test;
 import org.moara.yido.fileIO.FileReader;
 import org.moara.yido.fileIO.FileWriter;
 import org.moara.yido.role.RoleManager;
-import org.snu.ids.ha.ma.MorphemeAnalyzer;
-import org.snu.ids.ha.ma.Sentence;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -19,7 +14,7 @@ public class RoleTest {
 
     @Test
     public void roleManagerTest() {
-        System.out.println("test Start");
+
         RoleManager roleManager = RoleManager.getRoleManager();
         roleManager.initRoleData();
 //
@@ -32,7 +27,7 @@ public class RoleTest {
         String allSpecialCharacter = "[\\!-\\/\\:-\\@\\[-\\`\\{-\\~]";
         FileReader fileReader = new FileReader("/data/terminator.txt");
         FileWriter fileWriter = new FileWriter("/data/newTerminator.txt");
-        List<String> terminatorList = new ArrayList<>();
+        List<String> terminatorList;
         Set<String> terminatorSet = new HashSet<>();
 
         terminatorList = fileReader.getSplitFileByLine();
