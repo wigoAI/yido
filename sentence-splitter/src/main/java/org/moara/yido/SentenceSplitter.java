@@ -1,6 +1,7 @@
 package org.moara.yido;
 
 import org.moara.yido.fileIO.FileReader;
+import org.moara.yido.role.RoleManager;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,37 +21,25 @@ import java.util.regex.Pattern;
  */
 public class SentenceSplitter {
     private final String URL_PATTERN = "^((https?:\\/\\/)|(www\\.))([^:\\/\\s]+)(:([^\\/]*))?((\\/[^\\s/\\/]+)*)?\\/?([^#\\s\\?]*)(\\?([^#\\s]*))?(#(\\w*))?$";
-    private final String BRACKET_PATTERN = "[\\(*\\{*\\[*][^\\)\\]\\}]*[\\)\\]\\}]";
+    private final String BRACKET_PATTERN = "[\\(*\\{*\\[*][^\\)\\]\\}]*[^\\(\\[\\{]*[\\)\\]\\}]";
     private List<String> result = new ArrayList<>();
     private int minimumSentenceLength;
-//    private List<Character> exceptionSignList;
+
     private HashSet<String> connectiveHash;
     private HashSet<String> terminatorHash;
     private String inputData;
     private int inputDataLength;
 
 
-    public SentenceSplitter(int minimumSentenceLength) {
-        FileReader connectiveFileReader = new FileReader("/data/connective.txt");
-        FileReader terminatorFileReadr = new FileReader("/data/terminator.txt");
+    public SentenceSplitter(int minimumSentenceLength, String inputData) {
+        RoleManager roleManager = RoleManager.getRoleManager();
 
-//        FileReader terminatorFileReadr = new FileReader("/data/talkTerminator.txt");
-//        FileReader terminatorFileReadr = new FileReader("/data/newTerminator.txt");
-//        FileReader terminatorFileReadr = new FileReader("/data/koTerminator.txt");
-
-        this.connectiveHash = new HashSet<>();
-        this.terminatorHash = new HashSet<>();
-        this.minimumSentenceLength = minimumSentenceLength;
-
-        connectiveHash.addAll(connectiveFileReader.getSplitFileByLine());
-        terminatorHash.addAll(terminatorFileReadr.getSplitFileByLine());
-
-
-    }
-
-    public void setData(String inputData) {
+        this.connectiveHash = roleManager.getConnective();
+        this.terminatorHash = roleManager.getTerminator();
         this.inputData = inputData;
         this.inputDataLength = inputData.length();
+        this.minimumSentenceLength = minimumSentenceLength;
+
     }
 
     public List<String> split() {
@@ -140,7 +129,6 @@ public class SentenceSplitter {
                 // 이동시킨 위치가 예외 영역에 포함되지 않는지 다시 체크
                 i = -1;
             }
-
         }
 
         return targetArea;

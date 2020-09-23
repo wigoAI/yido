@@ -4,6 +4,7 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class FileReader {
@@ -22,9 +23,7 @@ public class FileReader {
         }
     }
 
-    public String getFile() {
-        return this.file;
-    }
+    public String getFile() { return this.file; }
 
     public List<String> getSplitFile(String splitter) {
         List<String> splitList = new ArrayList<>();
@@ -36,9 +35,6 @@ public class FileReader {
         return splitList;
     }
 
-    public List<String> getSplitFileByLine() {
-
-        return this.getSplitFile("\\n");
-    }
+    public List<String> getSplitFileByLine() { return this.getSplitFile("\\n"); }
 
 }

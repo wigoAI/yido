@@ -13,19 +13,15 @@ public class Area {
 
     // compareArea -> exceptionArea
     public boolean isOverlap(Area compareArea) {
-        if(compareArea.getStartIndex() > this.startIndex
-                && compareArea.getStartIndex() < this.endIndex) {
+        if(compareArea.getStartIndex() > this.startIndex && compareArea.getStartIndex() < this.endIndex) {
             return true;
-        } else if(compareArea.getEndIndex() > this.startIndex
-                && compareArea.getEndIndex() < this.endIndex) {
+        } else if(compareArea.getEndIndex() > this.startIndex && compareArea.getEndIndex() < this.endIndex) {
             return true;
-        } else if(compareArea.getStartIndex() < this.startIndex
-                && compareArea.getEndIndex() > this.endIndex) {
+        } else if(compareArea.getStartIndex() < this.startIndex && compareArea.getEndIndex() > this.endIndex) {
             return true;
         }
 
         return false;
-
     }
 
     public void moveStartIndex(int newStartIndex) {

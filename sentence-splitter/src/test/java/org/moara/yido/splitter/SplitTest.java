@@ -18,15 +18,14 @@ public class SplitTest {
 
     @Test
     public void initSplitterTest() {
-        SentenceSplitter sentenceSplitter = new SentenceSplitter(5);
+        SentenceSplitter sentenceSplitter = new SentenceSplitter(5, data[1]);
 
     }
 
     @Test
     public void sentenceSplitTest() {
         for (int USED_CASE = 1 ; USED_CASE <= 5 ; USED_CASE++) {
-            SentenceSplitter sentenceSplitter = new SentenceSplitter(5);
-            sentenceSplitter.setData(data[USED_CASE - 1]);
+            SentenceSplitter sentenceSplitter = new SentenceSplitter(5, data[USED_CASE - 1]);
             List<String> result = new ArrayList<>();
 
             AnswerChecker answerChecker = AnswerChecker.setAnswerCheckerByAnswerFile("/data/data" + USED_CASE +"Answer.txt");

@@ -16,8 +16,7 @@ public class RoleTest {
     public void roleManagerTest() {
 
         RoleManager roleManager = RoleManager.getRoleManager();
-        roleManager.initRoleData();
-//
+
         for(String str : roleManager.getConnective())
             System.out.println(str);
     }
