@@ -3,7 +3,7 @@ package org.moara.yido.splitter.role;
 import org.junit.Test;
 import org.moara.yido.fileIO.FileReader;
 import org.moara.yido.fileIO.FileWriter;
-import org.moara.yido.role.RoleManager;
+import org.moara.yido.role.RoleManagerTemp;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -15,9 +15,9 @@ public class RoleTest {
     @Test
     public void roleManagerTest() {
 
-        RoleManager roleManager = RoleManager.getRoleManager();
+        RoleManagerTemp roleManagerTemp = RoleManagerTemp.getRoleManager();
 
-        for(String str : roleManager.getConnective())
+        for(String str : roleManagerTemp.getConnective())
             System.out.println(str);
     }
 

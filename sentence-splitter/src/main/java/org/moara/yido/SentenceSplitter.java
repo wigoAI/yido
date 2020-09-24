@@ -1,7 +1,7 @@
 package org.moara.yido;
 
-import org.moara.yido.fileIO.FileReader;
-import org.moara.yido.role.RoleManager;
+import org.moara.yido.area.Area;
+import org.moara.yido.role.RoleManagerTemp;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  */
 public class SentenceSplitter {
     private final String URL_PATTERN = "^((https?:\\/\\/)|(www\\.))([^:\\/\\s]+)(:([^\\/]*))?((\\/[^\\s/\\/]+)*)?\\/?([^#\\s\\?]*)(\\?([^#\\s]*))?(#(\\w*))?$";
-    private final String BRACKET_PATTERN = "[\\(*\\{*\\[*][^\\)\\]\\}]*[^\\(\\[\\{]*[\\)\\]\\}]";
+    private final String BRACKET_PATTERN = "[\\(\\{\\[][^\\)\\]\\}]*[^\\(\\[\\{]*[\\)\\]\\}]";
     private List<String> result = new ArrayList<>();
     private int minimumSentenceLength;
 
@@ -32,10 +32,10 @@ public class SentenceSplitter {
 
 
     public SentenceSplitter(int minimumSentenceLength, String inputData) {
-        RoleManager roleManager = RoleManager.getRoleManager();
+        RoleManagerTemp roleManagerTemp = RoleManagerTemp.getRoleManager();
 
-        this.connectiveHash = roleManager.getConnective();
-        this.terminatorHash = roleManager.getTerminator();
+        this.connectiveHash = roleManagerTemp.getConnective();
+        this.terminatorHash = roleManagerTemp.getTerminator();
         this.inputData = inputData;
         this.inputDataLength = inputData.length();
         this.minimumSentenceLength = minimumSentenceLength;
@@ -88,27 +88,27 @@ public class SentenceSplitter {
 
                 Area targetArea = avoidExceptionArea(exceptionAreaList, new Area(dataIndex, dataIndex + targetLength));
 
-                String targetString = this.inputData.substring(targetArea.getStartIndex(),
-                        targetArea.getEndIndex());
+                String targetString = this.inputData.substring(targetArea.getStart(),
+                        targetArea.getEnd());
 //                System.out.println("[" + targetString + "] " + targetArea.getStartIndex() + " , " + targetArea.getEndIndex());
 
 
 
-                if(this.terminatorHash.contains(targetString) && !isConnective(targetArea.getEndIndex())) {
-                    int additionalSignLength = getAdditionalSignLength(targetArea.getEndIndex());
-                    int targetSplitPoint = targetArea.getEndIndex() + additionalSignLength;
+                if(this.terminatorHash.contains(targetString) && !isConnective(targetArea.getEnd())) {
+                    int additionalSignLength = getAdditionalSignLength(targetArea.getEnd());
+                    int targetSplitPoint = targetArea.getEnd() + additionalSignLength;
 //                    System.out.println("-> " + targetString);
 
                     splitPoint.add(targetSplitPoint);
 
                     //  한 점을 예외영역으로 지정하는 것이 의미가 있는가?
 //                    exceptionAreaList.add(new Area(targetSplitPoint, targetSplitPoint));
-                    targetArea.moveStartIndex(targetArea.getStartIndex() + additionalSignLength);
-                    dataIndex = targetArea.getStartIndex();
+                    targetArea.moveStart(targetArea.getStart() + additionalSignLength);
+                    dataIndex = targetArea.getStart();
                     break;
                 }
 
-                dataIndex = targetArea.getStartIndex();
+                dataIndex = targetArea.getStart();
             }
         }
 
@@ -124,7 +124,7 @@ public class SentenceSplitter {
 
 
             if(targetArea.isOverlap(exceptionArea)) {
-                targetArea.moveStartIndex(exceptionArea.getEndIndex());
+                targetArea.moveStart(exceptionArea.getEnd());
 
                 // 이동시킨 위치가 예외 영역에 포함되지 않는지 다시 체크
                 i = -1;

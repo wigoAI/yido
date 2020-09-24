@@ -1,11 +1,10 @@
 package org.moara.yido.regular;
 
-import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
-import org.moara.yido.Area;
+import org.moara.yido.area.Area;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +33,12 @@ public class RegularTest {
         }
 
         for(Area area : exceptionAreaList) {
-            System.out.println(area.getStartIndex() + " , " + area.getEndIndex());
+            System.out.println(area.getStart() + " , " + area.getEnd());
         }
 
 
-        assertEquals(exceptionAreaList.get(0).getStartIndex(), 834);
-        assertEquals(exceptionAreaList.get(0).getEndIndex(), 841);
+        assertEquals(exceptionAreaList.get(0).getStart(), 834);
+        assertEquals(exceptionAreaList.get(0).getEnd(), 841);
 
     }
 
