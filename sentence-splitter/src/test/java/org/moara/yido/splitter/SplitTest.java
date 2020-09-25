@@ -2,7 +2,7 @@ package org.moara.yido.splitter;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.moara.yido.SentenceSplitter;
+import org.moara.yido.SentenceSplitterImpl;
 import org.moara.yido.answerChecker.AnswerChecker;
 
 import java.util.ArrayList;
@@ -18,14 +18,14 @@ public class SplitTest {
 
     @Test
     public void initSplitterTest() {
-        SentenceSplitter sentenceSplitter = new SentenceSplitter(5, data[1]);
+        SentenceSplitterImpl sentenceSplitterImpl = new SentenceSplitterImpl(5, data[1]);
 
     }
 
     @Test
     public void sentenceSplitTest() {
         for (int USED_CASE = 1 ; USED_CASE <= 5 ; USED_CASE++) {
-            SentenceSplitter sentenceSplitter = new SentenceSplitter(5, data[USED_CASE - 1]);
+            SentenceSplitterImpl sentenceSplitterImpl = new SentenceSplitterImpl(5, data[USED_CASE - 1]);
             List<String> result = new ArrayList<>();
 
             AnswerChecker answerChecker = AnswerChecker.setAnswerCheckerByAnswerFile("/data/data" + USED_CASE +"Answer.txt");
@@ -34,7 +34,7 @@ public class SplitTest {
             int i;
             for( i = 0 ; i < 10 ; i++) {
                 long start = System.nanoTime();
-                result = sentenceSplitter.split();
+                result = sentenceSplitterImpl.split();
                 long end = System.nanoTime();
                 double time = ( end - start ) / 1000000.0;
                 if( i > 4 )

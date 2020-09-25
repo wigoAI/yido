@@ -1,7 +1,7 @@
 package org.moara.yido.fileIO;
 
 
-import org.moara.yido.SentenceSplitter;
+import org.moara.yido.SentenceSplitterImpl;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,7 +13,7 @@ import java.util.Set;
 public class FileWriter {
 
     // class 파일의 절대경로로 상대경로 습득
-    final String ABSTRACT_PATH = SentenceSplitter.class.getResource("").getPath().split("/target")[0] + "/src/main/resources";
+    final String ABSTRACT_PATH = SentenceSplitterImpl.class.getResource("").getPath().split("/target")[0] + "/src/main/resources";
     String pathName;
     File file;
     public FileWriter(String pathName) {
