@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
  *
  *
  */
-public class SentenceSplitterImpl {
+public class BasicSentenceSplitter implements SentenceSplitter {
     private final String URL_PATTERN = "^((https?:\\/\\/)|(www\\.))([^:\\/\\s]+)(:([^\\/]*))?((\\/[^\\s/\\/]+)*)?\\/?([^#\\s\\?]*)(\\?([^#\\s]*))?(#(\\w*))?$";
     private final String BRACKET_PATTERN = "[\\(\\{\\[][^\\)\\]\\}]*[^\\(\\[\\{]*[\\)\\]\\}]";
     private List<String> result = new ArrayList<>();
@@ -30,7 +30,7 @@ public class SentenceSplitterImpl {
     private String inputData;
     private int inputDataLength;
 
-    public SentenceSplitterImpl(int minimumSentenceLength, String inputData) {
+    BasicSentenceSplitter(int minimumSentenceLength, String inputData) {
         RoleManagerTemp roleManagerTemp = RoleManagerTemp.getRoleManager();
 
         this.connectiveHash = roleManagerTemp.getConnective();
@@ -47,6 +47,10 @@ public class SentenceSplitterImpl {
         this.result = doSplit(splitPoint);
 
         return this.result;
+    }
+    @Override
+    public Sentence[] split(String text) {
+        return new Sentence[0];
     }
 
 
@@ -188,6 +192,7 @@ public class SentenceSplitterImpl {
 
 
     public List<String> getResult() { return this.result; }
+
 
 
 }
