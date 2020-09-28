@@ -2,6 +2,9 @@ package org.moara.yido;
 
 import java.util.HashMap;
 
+/**
+ * 사용자가 원하는 문장 구분기를 제공해주는 클래스
+ */
 public class SentenceSplitterManager {
     private static final int BASIC_SENTENCE_SPLITTER_ID = 1;
     private static final String JSON_DATA_TYPE = "json";
@@ -31,6 +34,14 @@ public class SentenceSplitterManager {
         return sentenceSplitter.split(text);
     }
 
+    private void createSentenceSplitter(int id) {
+        if(id == 1) {
+            this.sentenceSplitterHashMap.put(BASIC_SENTENCE_SPLITTER_ID,
+                    new BasicSentenceSplitter(5));
+        }
+
+    }
+
     public SentenceSplitter getSentenceSplitter() {
         if(!this.sentenceSplitterHashMap.containsKey(BASIC_SENTENCE_SPLITTER_ID)) {
             createSentenceSplitter(BASIC_SENTENCE_SPLITTER_ID);
@@ -41,15 +52,7 @@ public class SentenceSplitterManager {
     public SentenceSplitter getSentenceSplitter(String docType, String dataType) { return null; }
     public SentenceSplitter getSentenceSplitter(int id) { return null; }
 
-    private void createSentenceSplitter(int id) {
-        if(id == 1) {
-            this.sentenceSplitterHashMap.put(BASIC_SENTENCE_SPLITTER_ID,
-                    new BasicSentenceSplitter(5));
-        }
 
-    }
 
-    public static SentenceSplitterManager getInstance() {
-        return SentenceSplitterManager.sentenceSplitterManager;
-    }
+    public static SentenceSplitterManager getInstance() { return SentenceSplitterManager.sentenceSplitterManager; }
 }

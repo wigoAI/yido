@@ -33,12 +33,13 @@ public class BasicSentenceSplitter implements SentenceSplitter {
 
     private HashSet<String> connectiveHash;
     private HashSet<String> terminatorHash;
+
     private String inputData;
     private int inputDataLength;
 
     /**
      * Default constructor
-     * only can use this SentenceSplitterManager
+     * only SentenceSplitterManager can use this
      *
      * @param minimumSentenceLength
      */
@@ -49,7 +50,6 @@ public class BasicSentenceSplitter implements SentenceSplitter {
 
         this.connectiveHash = roleManagerTemp.getConnective();
         this.terminatorHash = roleManagerTemp.getTerminator();
-
         this.minimumSentenceLength = minimumSentenceLength;
 
     }
@@ -58,17 +58,13 @@ public class BasicSentenceSplitter implements SentenceSplitter {
         this.terminatorAreaProcessor = new TerminatorAreaProcessor();
         this.connectiveAreaProcessor = new ConnectiveAreaProcessor();
         this.exceptionAreaProcessor = new ExceptionAreaProcessor();
-
     }
 
     @Override
     public Sentence[] split(String inputData) {
-
         this.inputData = inputData;
         this.inputDataLength = inputData.length();
-
         exceptionAreaProcessor.find(inputData);
-
         TreeSet<Integer> splitPoint = findSplitPoint();
 
         return doSplit(splitPoint);
@@ -85,9 +81,7 @@ public class BasicSentenceSplitter implements SentenceSplitter {
             for(int targetLength = 3 ; targetLength >= 2 ; targetLength--) {
 
                 Area targetArea = exceptionAreaProcessor.avoid(new Area(dataIndex, dataIndex + targetLength));
-
-                String targetString = this.inputData.substring(targetArea.getStart(),
-                        targetArea.getEnd());
+                String targetString = this.inputData.substring(targetArea.getStart(), targetArea.getEnd());
 //                System.out.println("[" + targetString + "] " + targetArea.getStartIndex() + " , " + targetArea.getEndIndex());
 
 
@@ -113,7 +107,7 @@ public class BasicSentenceSplitter implements SentenceSplitter {
 
         return splitPoint;
     }
-    
+
     private boolean isConnective(int startIndex) {
         int connectiveCheckLength = (startIndex + 5 > this.inputDataLength) ? (startIndex + 5 - this.inputDataLength) : 5;
         String nextStr = this.inputData.substring(startIndex, startIndex +  connectiveCheckLength);
@@ -154,7 +148,6 @@ public class BasicSentenceSplitter implements SentenceSplitter {
         int endIndex = 0;
         int resultIndex = 0;
         Sentence[] result = new Sentence[splitPoint.size() + 1];
-
 
         for(int point : splitPoint) {
             endIndex = point;

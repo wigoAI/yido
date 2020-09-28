@@ -11,6 +11,11 @@ public class ExceptionRole implements RoleManager{
     }
 
     @Override
+    public void initRole() {
+
+    }
+
+    @Override
     public HashSet<String> getRole() {
         return null;
     }

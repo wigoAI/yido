@@ -9,14 +9,12 @@ import java.util.List;
 public class FileManagerImpl implements FileManager {
 
     List<String> file = new ArrayList<>();
-    private BufferedReader br = null;
-
-
 
 
     @Override
     public void readFile(String fileName) throws IOException {
-        this.br = new BufferedReader(new InputStreamReader(FileManagerImpl.class.getResourceAsStream(fileName), "UTF-8"));
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(FileManagerImpl.class.getResourceAsStream(fileName), "UTF-8"));
         while(true) {
             String line = br.readLine();
             this.file.add(line);

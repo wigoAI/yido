@@ -5,7 +5,9 @@ import static org.junit.Assert.*;
 
 import org.moara.yido.area.Area;
 import org.moara.yido.area.processor.ExceptionAreaProcessor;
+import org.moara.yido.role.RoleManager;
 import org.moara.yido.role.RoleManagerTemp;
+import org.moara.yido.role.TerminatorRole;
 
 public class RoleTest {
 
@@ -36,7 +38,14 @@ public class RoleTest {
                 assertEquals(i, afterAnswer[answerIndex]);
                 answerIndex++;
             }
+        }
+    }
 
+    @Test
+    public void terminatorRoleTest() {
+        RoleManager terminatorRole = TerminatorRole.getInstance();
+        for(String str : terminatorRole.getRole()) {
+            System.out.println(str);
         }
 
     }
