@@ -8,5 +8,5 @@ public interface RoleManager {
 
 
     HashSet<String> getRole();
-    RoleManager getInstance();
+
 }

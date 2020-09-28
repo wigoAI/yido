@@ -1,4 +1,4 @@
-package org.moara.yido.area.handler;
+package org.moara.yido.area.processor;
 
 import org.moara.yido.area.Area;
 

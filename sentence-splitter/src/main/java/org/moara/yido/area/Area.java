@@ -4,13 +4,10 @@ public class Area {
 
     private int start;
     private int end;
-    private int length;
-
 
     public Area(int startIndex, int endIndex) {
         this.start = startIndex;
         this.end = endIndex;
-        this.length = endIndex - startIndex;
     }
 
     // compareArea -> exceptionArea
@@ -27,12 +24,15 @@ public class Area {
     }
 
     public void moveStart(int newStartIndex) {
+        int length = this.end - this.start;
         this.start = newStartIndex;
-        this.end = this.start + this.length;
+        this.end = this.start + length;
     }
     public void moveEnd(int newEndIndex) {
+        int length = this.end - this.start;
+
         this.end = newEndIndex;
-        this.start = this.end - this.length;
+        this.start = this.end - length;
     }
 
     public int getStart() { return this.start; }

@@ -8,54 +8,41 @@ import org.moara.yido.fileIO.FileReader;
 import org.moara.yido.fileIO.FileWriter;
 import org.moara.yido.db.DataBase;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileTest {
 
     @Test
-    public void getFileTest() {
-        FileReader fileReader = new FileReader("/data/newRevData.txt");
-        List<String> revData = new ArrayList<>();
+    public void getFileTest() throws UnsupportedEncodingException {
 
-        for(String str : fileReader.getSplitFileByLine()) {
-            System.out.println(str);
-            revData.add(str);
+        FileManagerImpl fileManager = new FileManagerImpl();
+
+        try {
+            fileManager.readFile("/data/newRevData.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        assertEquals(revData.get(0), "아 더빙.. 진짜 짜증나네요 목소리");
-
+        assertEquals(fileManager.getFile().get(1), "흠...포스터보고 초딩영화줄....오버연기조차 가볍지 않구나");
     }
 
     @Test
     public void writeFileTest() throws InterruptedException {
+        FileManagerImpl fileManager = new FileManagerImpl();
+        List<String> data  = new ArrayList<>();
 
-        FileWriter fileWriter = new FileWriter("/data/test.txt");
-        List<String> data = new ArrayList<>();
+        data.add("test1");
+        data.add("test2");
+        data.add("test3");
 
-        data.add("hello!");
-        data.add("hello!");
-        data.add("hello!2");
+        fileManager.writeFile("/data/test.role", data);
 
-        fileWriter.writeFileByList(data, true);
     }
 
-    @Test
-    public void createTestData() {
-        FileReader fileReader = new FileReader("/data/data5Answer.txt");
-        FileWriter fileWriter = new FileWriter("/data/data5.txt");
 
-        List<String> data = fileReader.getSplitFileByLine();
-        String dataStr = "";
-
-        for(String str : data) {
-            dataStr += (str + " ");
-
-        }
-        ArrayList<String> dataList = new ArrayList<>();
-        dataList.add(dataStr);
-        fileWriter.writeFileByList(dataList, false);
-    }
 
 
 }

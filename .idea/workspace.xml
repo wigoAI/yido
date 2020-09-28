@@ -1,7 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="804ac204-9c44-4e0d-8374-4a7d377061c1" name="Default Changelist" comment="" />
+    <list default="true" id="804ac204-9c44-4e0d-8374-4a7d377061c1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/BasicSentenceSplitter.java" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/BasicSentenceSplitter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/SentenceSplitterManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/SentenceSplitterManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/area/handler/AreaHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/area/processor/AreaProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/area/handler/Avoider.java" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/area/processor/Avoider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/area/handler/ConnectiveAreaHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/area/processor/ConnectiveAreaProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/area/handler/ExceptionareaHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/area/processor/ExceptionAreaProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/area/handler/Finder.java" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/area/processor/Finder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/area/handler/TerminatorAreaHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/area/processor/TerminatorAreaProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/area/handler/exception/BracketHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/area/handler/exception/ExceptionAreaHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/area/handler/exception/UrlHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/file/FileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/file/FileManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/file/FileManagerImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/file/FileManagerImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/file/FileReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/file/FileReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/file/FileWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/file/FileWriter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/role/ConnectiveRole.java" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/role/ConnectiveRole.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/role/ExceptionRole.java" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/role/ExceptionRole.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/role/RoleManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/role/RoleManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/role/TerminatorRole.java" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/src/main/java/org/moara/yido/role/TerminatorRole.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/src/test/java/org/moara/yido/file/FileTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/src/test/java/org/moara/yido/file/FileTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/src/test/java/org/moara/yido/splitter/SentenceSplitterManagerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/src/test/java/org/moara/yido/splitter/SplitTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/src/test/java/org/moara/yido/splitter/SplitTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/SentenceSplitterManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/SentenceSplitterManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/area/handler/AreaHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/area/handler/Avoider.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/area/handler/ConnectiveAreaHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/area/handler/ExceptionareaHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/area/handler/Finder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/area/handler/TerminatorAreaHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/area/handler/exception/BracketHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/area/handler/exception/ExceptionAreaHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/area/handler/exception/UrlHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/file/FileManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/file/FileManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/file/FileManagerImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/file/FileManagerImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/file/FileReader.class" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/file/FileReader.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/fileIO/FileWriter.class" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/fileIO/FileWriter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/role/ConnectiveRole.class" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/role/ConnectiveRole.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/role/ExceptionRole.class" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/role/ExceptionRole.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/role/RoleManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/role/RoleManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/role/TerminatorRole.class" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/target/classes/org/moara/yido/role/TerminatorRole.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/target/test-classes/org/moara/yido/file/FileTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/target/test-classes/org/moara/yido/file/FileTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sentence-splitter/target/test-classes/org/moara/yido/splitter/SplitTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/sentence-splitter/target/test-classes/org/moara/yido/splitter/SplitTest.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,6 +82,7 @@
       <updated>1600340930705</updated>
       <workItem from="1600340931775" duration="39000" />
       <workItem from="1601139382615" duration="15000" />
+      <workItem from="1601260011158" duration="221000" />
     </task>
     <servers />
   </component>
@@ -46,9 +90,10 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1601139395904">
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1601260232351">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="740" y="275" key="FileChooserDialogImpl/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1601260232351" />
     <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1601139395904" />
   </component>
 </project>

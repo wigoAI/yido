@@ -1,5 +1,7 @@
 package org.moara.yido.file;
 
+import java.io.IOException;
+
 public interface FileReader {
-    void readFile();
+    void readFile(String fileName) throws IOException;
 }

@@ -1,6 +1,10 @@
 package org.moara.yido;
 
 import org.moara.yido.area.Area;
+import org.moara.yido.area.processor.AreaProcessor;
+import org.moara.yido.area.processor.ConnectiveAreaProcessor;
+import org.moara.yido.area.processor.ExceptionAreaProcessor;
+import org.moara.yido.area.processor.TerminatorAreaProcessor;
 import org.moara.yido.role.RoleManagerTemp;
 
 import java.util.ArrayList;
@@ -20,9 +24,11 @@ import java.util.regex.Pattern;
  *
  */
 public class BasicSentenceSplitter implements SentenceSplitter {
-    private final String URL_PATTERN = "^((https?:\\/\\/)|(www\\.))([^:\\/\\s]+)(:([^\\/]*))?((\\/[^\\s/\\/]+)*)?\\/?([^#\\s\\?]*)(\\?([^#\\s]*))?(#(\\w*))?$";
-    private final String BRACKET_PATTERN = "[\\(\\{\\[][^\\)\\]\\}]*[^\\(\\[\\{]*[\\)\\]\\}]";
-    private List<String> result = new ArrayList<>();
+
+    AreaProcessor terminatorAreaProcessor;
+    AreaProcessor connectiveAreaProcessor;
+    AreaProcessor exceptionAreaProcessor;
+
     private int minimumSentenceLength;
 
     private HashSet<String> connectiveHash;
@@ -30,58 +36,47 @@ public class BasicSentenceSplitter implements SentenceSplitter {
     private String inputData;
     private int inputDataLength;
 
-    BasicSentenceSplitter(int minimumSentenceLength, String inputData) {
+    /**
+     * Default constructor
+     * only can use this SentenceSplitterManager
+     *
+     * @param minimumSentenceLength
+     */
+    BasicSentenceSplitter(int minimumSentenceLength) {
+        initAreaProcessor();
+
         RoleManagerTemp roleManagerTemp = RoleManagerTemp.getRoleManager();
 
         this.connectiveHash = roleManagerTemp.getConnective();
         this.terminatorHash = roleManagerTemp.getTerminator();
-        this.inputData = inputData;
-        this.inputDataLength = inputData.length();
+
         this.minimumSentenceLength = minimumSentenceLength;
 
     }
 
-    public List<String> split() {
-        List<Area> exceptionAreaList = findExceptionArea();
-        TreeSet<Integer> splitPoint = findSplitPoint(exceptionAreaList);
-        this.result = doSplit(splitPoint);
+    private void initAreaProcessor() {
+        this.terminatorAreaProcessor = new TerminatorAreaProcessor();
+        this.connectiveAreaProcessor = new ConnectiveAreaProcessor();
+        this.exceptionAreaProcessor = new ExceptionAreaProcessor();
 
-        return this.result;
     }
+
     @Override
-    public Sentence[] split(String text) {
-        return new Sentence[0];
+    public Sentence[] split(String inputData) {
+
+        this.inputData = inputData;
+        this.inputDataLength = inputData.length();
+
+        exceptionAreaProcessor.find(inputData);
+
+        TreeSet<Integer> splitPoint = findSplitPoint();
+
+        return doSplit(splitPoint);
     }
 
 
-    private List<Area> findExceptionArea() {
-        List<Area> exceptionAreaList = new ArrayList<>();
 
-        exceptionAreaList = findBracketPattern(exceptionAreaList);
-        exceptionAreaList = findUrlPattern(exceptionAreaList);
-
-        return exceptionAreaList;
-    }
-
-    private List<Area> findBracketPattern(List<Area> exceptionAreaList) {
-        Pattern bracketPattern = Pattern.compile(this.BRACKET_PATTERN);
-        Matcher bracketMatcher = bracketPattern.matcher(this.inputData);
-
-        while(bracketMatcher.find()) { exceptionAreaList.add(new Area(bracketMatcher.start(), bracketMatcher.end())); }
-
-        return exceptionAreaList;
-    }
-
-    private List<Area> findUrlPattern(List<Area> exceptionAreaList) {
-        Pattern urlPatter = Pattern.compile(this.URL_PATTERN);
-        Matcher urlMatcher = urlPatter.matcher(this.inputData);
-
-        while(urlMatcher.find()) { exceptionAreaList.add(new Area(urlMatcher.start(), urlMatcher.end())); }
-
-        return exceptionAreaList;
-    }
-
-    private TreeSet<Integer> findSplitPoint(List<Area> exceptionAreaList) {
+    private TreeSet<Integer> findSplitPoint() {
         TreeSet<Integer> splitPoint = new TreeSet<>();
 
 //        for(int targetLength = 3 ; targetLength >= 2 ; targetLength--) {
@@ -89,7 +84,7 @@ public class BasicSentenceSplitter implements SentenceSplitter {
         for(int dataIndex = 0 ; dataIndex < this.inputDataLength - minimumSentenceLength ; dataIndex++) {
             for(int targetLength = 3 ; targetLength >= 2 ; targetLength--) {
 
-                Area targetArea = avoidExceptionArea(exceptionAreaList, new Area(dataIndex, dataIndex + targetLength));
+                Area targetArea = exceptionAreaProcessor.avoid(new Area(dataIndex, dataIndex + targetLength));
 
                 String targetString = this.inputData.substring(targetArea.getStart(),
                         targetArea.getEnd());
@@ -119,23 +114,7 @@ public class BasicSentenceSplitter implements SentenceSplitter {
         return splitPoint;
     }
 
-    private Area avoidExceptionArea(List<Area> exceptionAreaList, Area targetArea) {
 
-        for(int i = 0 ; i < exceptionAreaList.size() ; i++) {
-
-            Area exceptionArea = exceptionAreaList.get(i);
-
-
-            if(targetArea.isOverlap(exceptionArea)) {
-                targetArea.moveStart(exceptionArea.getEnd());
-
-                // 이동시킨 위치가 예외 영역에 포함되지 않는지 다시 체크
-                i = -1;
-            }
-        }
-
-        return targetArea;
-    }
     private boolean isConnective(int startIndex) {
         int connectiveCheckLength = (startIndex + 5 > this.inputDataLength) ? (startIndex + 5 - this.inputDataLength) : 5;
         String nextStr = this.inputData.substring(startIndex, startIndex +  connectiveCheckLength);
@@ -171,27 +150,27 @@ public class BasicSentenceSplitter implements SentenceSplitter {
         return additionalSignLength;
     }
 
-    private List<String> doSplit(TreeSet<Integer> splitPoint) {
+    private Sentence[] doSplit(TreeSet<Integer> splitPoint) {
         int startIndex = 0;
+        int endIndex = 0;
+        int resultIndex = 0;
+        Sentence[] result = new Sentence[splitPoint.size() + 1];
 
-        List<String> result = new ArrayList<>();
 
         for(int point : splitPoint) {
-            int endIndex = point;
-            String sentence = this.inputData.substring(startIndex, endIndex).trim();
+            endIndex = point;
+            Sentence sentence = new Sentence(startIndex, endIndex, this.inputData.substring(startIndex, endIndex).trim());
 
-            result.add(sentence);
+            result[resultIndex++] = sentence;
             startIndex = endIndex;
 
         }
 
-        result.add(this.inputData.substring(startIndex, this.inputDataLength));
+        result[resultIndex++] =  new Sentence(startIndex, this.inputDataLength, this.inputData.substring(startIndex, this.inputDataLength).trim());
 
         return result;
     }
 
-
-    public List<String> getResult() { return this.result; }
 
 
 
