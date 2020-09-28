@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.2">
-    <persistence-unit name="hello">
+    <persistence-unit name="yido">
         <properties>
 
             <!-- 필수 속성-->
@@ -10,11 +10,12 @@
             <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@localhost:1521:lcoalwigolig"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
 
-<!--            &lt;!&ndash; 옵션 &ndash;&gt;-->
-<!--            <property name="hibernate.show_sql" value="true"/>-->
-<!--            <property name="hibernate.format_sql" value="true"/>-->
-<!--            <property name="hibernate.use_sql_comments" value="true"/>-->
-<!--            <property name="hibernate.id.new_generator_mappings" value="true"/>-->
+            <!-- 옵션 -->
+            <property name="hibernate.show_sql" value="true" /> <!--하이버네이트가 실행한 SQL을 출력-->
+            <property name="hibernate.format_sql" value="true" /> <!--하이버네이트가 실행한 SQL을 출력할 때 정렬-->
+            <property name="hibernate.use_sql_comments" value="true" /> <!--쿼리를 출력할 때 주석도 함께-->
+            <property name="hibernate.id.new_generator_mappings" value="true" /> <!--JPA표준에 맞춘 새로운 키 생성 전략 사용-->
+
 
         </properties>
     </persistence-unit>

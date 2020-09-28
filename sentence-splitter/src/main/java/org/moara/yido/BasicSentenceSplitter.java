@@ -113,8 +113,7 @@ public class BasicSentenceSplitter implements SentenceSplitter {
 
         return splitPoint;
     }
-
-
+    
     private boolean isConnective(int startIndex) {
         int connectiveCheckLength = (startIndex + 5 > this.inputDataLength) ? (startIndex + 5 - this.inputDataLength) : 5;
         String nextStr = this.inputData.substring(startIndex, startIndex +  connectiveCheckLength);

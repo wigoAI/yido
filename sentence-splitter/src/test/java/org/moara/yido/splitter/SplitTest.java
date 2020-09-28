@@ -29,9 +29,7 @@ public class SplitTest {
     @Test
     public void initSplitterTest() {
         SentenceSplitterManager ssm = SentenceSplitterManager.getInstance();
-
         BasicSentenceSplitter basicSentenceSplitter = (BasicSentenceSplitter) ssm.getSentenceSplitter();
-
     }
 
     @Test
@@ -39,7 +37,6 @@ public class SplitTest {
         for(Sentence sentence : SentenceSplitterManager.getInstance().split(data[0])) {
             System.out.println(sentence.getText());
         }
-
     }
 
 
@@ -47,11 +44,7 @@ public class SplitTest {
     public void sentenceSplitTest() {
         for (int USED_CASE = 1 ; USED_CASE <= 5 ; USED_CASE++) {
             SentenceSplitterManager ssm = SentenceSplitterManager.getInstance();
-
             BasicSentenceSplitter basicSentenceSplitter = (BasicSentenceSplitter) ssm.getSentenceSplitter();
-
-
-
             AnswerChecker answerChecker = AnswerChecker.setAnswerCheckerByAnswerFile("/data/data" + USED_CASE +"Answer.txt");
 
 //            double timeAverage = 0;
@@ -74,15 +67,12 @@ public class SplitTest {
 //                }
 //
 //            }
-
             Sentence[] result = basicSentenceSplitter.split(data[USED_CASE - 1]);
-
 
             for(int i = 0 ; i < result.length ; i++) {
                 Sentence sentence = result[i];
                 System.out.println(i + " : " + sentence.getStart()+", "+ sentence.getEnd() + " " + sentence.getText());
             }
-
 //            for(Sentence sentence : basicSentenceSplitter.split(data[USED_CASE - 1]))
 //                System.out.println(sentence.getStart()+", "+ sentence.getEnd() + " " + sentence.getText());
 
@@ -92,11 +82,6 @@ public class SplitTest {
 //            System.out.println("Accuracy : " + accuracy + "%");
 //            assertTrue( "Splitter accuracy is under than 50%", accuracy > 50);
         }
-
-
-
     }
-
-
 
 }
