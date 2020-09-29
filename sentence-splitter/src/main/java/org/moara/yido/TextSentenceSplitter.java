@@ -32,6 +32,7 @@ public class TextSentenceSplitter implements SentenceSplitter{
     }
 
     private List<Sentence> doSplit(List<Area> exceptionArea, List<Area> terminatorArea) {
+        int startIndex = 0;
         for(Area targetArea : terminatorArea) {
             System.out.println(targetArea.getStart());
         }
