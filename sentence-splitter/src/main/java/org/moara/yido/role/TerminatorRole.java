@@ -11,10 +11,7 @@ public class TerminatorRole implements RoleManager{
     private HashSet<String> role = new HashSet<>();
     private static TerminatorRole terminatorRole = new TerminatorRole();
 
-
-    private TerminatorRole() {
-        initRole();
-    }
+    private TerminatorRole() { initRole(); }
 
     @Override
     public void initRole() {
@@ -28,12 +25,6 @@ public class TerminatorRole implements RoleManager{
     }
 
     @Override
-    public HashSet<String> getRole() {
-        return role;
-    }
-
-    public static RoleManager getInstance() {
-
-        return TerminatorRole.terminatorRole;
-    }
+    public HashSet<String> getRole() { return role; }
+    public static RoleManager getInstance() { return TerminatorRole.terminatorRole; }
 }

@@ -1,6 +1,7 @@
 package org.moara.yido.db;
 
 import org.junit.Test;
+import static org.junit.Assert.*;
 import org.moara.yido.db.entity.TbAraSenGroupString;
 
 import javax.persistence.EntityManager;
@@ -42,12 +43,13 @@ public class DataBaseTest {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("yido");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         EntityTransaction entityTransaction = entityManager.getTransaction();
-
+        String data = "";
         try {
             entityTransaction.begin();  // 4. 트랜잭션 시작
-            // 5. 비지니스 로직 수행
 
-            System.out.println(entityManager.find(TbAraSenGroupString.class, "싶다").getValString());
+            // 5. 비지니스 로직 수행
+            data = entityManager.find(TbAraSenGroupString.class, "싶다").getCdGroup();
+            System.out.println(data);
 
 
 
@@ -58,5 +60,7 @@ public class DataBaseTest {
             entityManager.close();      // 7. 엔티티 매니저 종료
         }
         entityManagerFactory.close();
+
+        assertEquals(data, "S2");
     }
 }

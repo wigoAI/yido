@@ -2,16 +2,12 @@ package org.moara.yido;
 
 import org.moara.yido.area.Area;
 import org.moara.yido.area.processor.AreaProcessor;
-import org.moara.yido.area.processor.ConnectiveAreaProcessor;
 import org.moara.yido.area.processor.ExceptionAreaProcessor;
 import org.moara.yido.area.processor.TerminatorAreaProcessor;
 import org.moara.yido.role.RoleManagerTemp;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.TreeSet;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
@@ -26,7 +22,6 @@ import java.util.regex.Pattern;
 public class BasicSentenceSplitter implements SentenceSplitter {
 
     AreaProcessor terminatorAreaProcessor;
-    AreaProcessor connectiveAreaProcessor;
     AreaProcessor exceptionAreaProcessor;
 
     private int minimumSentenceLength;
@@ -56,7 +51,6 @@ public class BasicSentenceSplitter implements SentenceSplitter {
 
     private void initAreaProcessor() {
         this.terminatorAreaProcessor = new TerminatorAreaProcessor();
-        this.connectiveAreaProcessor = new ConnectiveAreaProcessor();
         this.exceptionAreaProcessor = new ExceptionAreaProcessor();
     }
 
@@ -75,16 +69,12 @@ public class BasicSentenceSplitter implements SentenceSplitter {
     private TreeSet<Integer> findSplitPoint() {
         TreeSet<Integer> splitPoint = new TreeSet<>();
 
-//        for(int targetLength = 3 ; targetLength >= 2 ; targetLength--) {
-//            for(int dataIndex = 0 ; dataIndex < this.inputDataLength - minimumSentenceLength ; dataIndex++) {
         for(int dataIndex = 0 ; dataIndex < this.inputDataLength - minimumSentenceLength ; dataIndex++) {
             for(int targetLength = 3 ; targetLength >= 2 ; targetLength--) {
 
                 Area targetArea = exceptionAreaProcessor.avoid(new Area(dataIndex, dataIndex + targetLength));
                 String targetString = this.inputData.substring(targetArea.getStart(), targetArea.getEnd());
 //                System.out.println("[" + targetString + "] " + targetArea.getStartIndex() + " , " + targetArea.getEndIndex());
-
-
 
                 if(this.terminatorHash.contains(targetString) && !isConnective(targetArea.getEnd())) {
                     int additionalSignLength = getAdditionalSignLength(targetArea.getEnd());

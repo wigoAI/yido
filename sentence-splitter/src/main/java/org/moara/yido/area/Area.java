@@ -5,6 +5,7 @@ public class Area {
     private int start;
     private int end;
 
+
     public Area(int startIndex, int endIndex) {
         this.start = startIndex;
         this.end = endIndex;
@@ -37,7 +38,6 @@ public class Area {
 
     public int getStart() { return this.start; }
     public int getEnd() { return this.end; }
-
 
 
 }

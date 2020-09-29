@@ -1,13 +1,11 @@
 package org.moara.yido;
 
 import org.moara.yido.area.processor.AreaProcessor;
-import org.moara.yido.area.processor.ConnectiveAreaProcessor;
 import org.moara.yido.area.processor.ExceptionAreaProcessor;
 import org.moara.yido.area.processor.TerminatorAreaProcessor;
 
 public class JsonSentenceSplitter implements SentenceSplitter {
     AreaProcessor terminatorAreaProcessor;
-    AreaProcessor connectiveAreaProcessor;
     AreaProcessor exceptionAreaProcessor;
 
     JsonSentenceSplitter() {
@@ -16,7 +14,6 @@ public class JsonSentenceSplitter implements SentenceSplitter {
 
     private void initAreaProcessor() {
         this.terminatorAreaProcessor = new TerminatorAreaProcessor();
-        this.connectiveAreaProcessor = new ConnectiveAreaProcessor();
         this.exceptionAreaProcessor = new ExceptionAreaProcessor();
 
     }
