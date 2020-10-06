@@ -4,12 +4,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 
-import org.moara.yido.fileIO.FileReader;
-import org.moara.yido.fileIO.FileWriter;
-import org.moara.yido.db.DataBase;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,5 +1,9 @@
 package org.moara.yido.splitter.role;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -8,6 +12,8 @@ import org.moara.yido.area.processor.ExceptionAreaProcessor;
 import org.moara.yido.role.BasicRoleManager;
 
 import javax.management.relation.Role;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
 public class RoleTest {
 
@@ -40,6 +46,8 @@ public class RoleTest {
             }
         }
     }
+
+
 
 
 
