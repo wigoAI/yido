@@ -7,7 +7,7 @@ import java.util.HashMap;
  */
 public class SentenceSplitterFactory {
     private static final int BASIC_SENTENCE_SPLITTER_ID = 1;
-    private static final int TEXT_SENTENCE_SPLITTER_ID = 2;
+    private static final int NEWS_SENTENCE_SPLITTER_ID = 2;
     private static final String JSON_DATA_TYPE = "json";
     private static final String TEXT_DATA_TYPE = "text";
     private static final String SNS_DOC_TYPE = "SNS";
@@ -36,6 +36,7 @@ public class SentenceSplitterFactory {
         if(isKeyEmpty(BASIC_SENTENCE_SPLITTER_ID)) { createSentenceSplitter(BASIC_SENTENCE_SPLITTER_ID); }
         return sentenceSplitterHashMap.get(BASIC_SENTENCE_SPLITTER_ID);
     }
+
     public SentenceSplitter getSentenceSplitter(String docType, String dataType) { return null; }
     public SentenceSplitter getSentenceSplitter(int id) {
         if(isKeyEmpty(id)) {
@@ -47,10 +48,10 @@ public class SentenceSplitterFactory {
     private void createSentenceSplitter(int id) {
         if(id == BASIC_SENTENCE_SPLITTER_ID) {
             sentenceSplitterHashMap.put(BASIC_SENTENCE_SPLITTER_ID,
-                    new BasicSentenceSplitter(5));
-        } else if(id == TEXT_SENTENCE_SPLITTER_ID) {
-            sentenceSplitterHashMap.put(TEXT_SENTENCE_SPLITTER_ID,
-                    new TextSentenceSplitter());
+                    new BasicSentenceSplitter());
+        } else if(id == NEWS_SENTENCE_SPLITTER_ID) {
+            sentenceSplitterHashMap.put(NEWS_SENTENCE_SPLITTER_ID,
+                    new NewsSentenceSplitter());
         }
     }
 

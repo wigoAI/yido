@@ -1,20 +1,20 @@
 package org.moara.yido;
 
-import org.moara.yido.area.processor.AreaProcessor;
 import org.moara.yido.area.processor.ExceptionAreaProcessor;
 import org.moara.yido.area.processor.TerminatorAreaProcessor;
+import org.moara.yido.role.BasicRoleManager;
 
 public class JsonSentenceSplitter implements SentenceSplitter {
-    AreaProcessor terminatorAreaProcessor;
-    AreaProcessor exceptionAreaProcessor;
+    TerminatorAreaProcessor terminatorAreaProcessor;
+    ExceptionAreaProcessor exceptionAreaProcessor;
 
     JsonSentenceSplitter() {
         initAreaProcessor();
     }
 
     private void initAreaProcessor() {
-        this.terminatorAreaProcessor = new TerminatorAreaProcessor();
-        this.exceptionAreaProcessor = new ExceptionAreaProcessor();
+        this.terminatorAreaProcessor = new TerminatorAreaProcessor(BasicRoleManager.getRoleManager());
+        this.exceptionAreaProcessor = new ExceptionAreaProcessor(BasicRoleManager.getRoleManager());
 
     }
 

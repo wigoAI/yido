@@ -1,9 +1,9 @@
 package org.moara.yido;
 
 public class Sentence {
-    private int start;
-    private int end;
-    private String text;
+    private final int start;
+    private final int end;
+    private final String text;
 
     public Sentence(int start, int end, String text) {
         this.start = start;

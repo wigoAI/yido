@@ -1,50 +1,52 @@
 package org.moara.yido.area.processor;
 
 import org.moara.yido.area.Area;
-import org.moara.yido.role.ConnectiveRole;
-import org.moara.yido.role.TerminatorRole;
+import org.moara.yido.role.RoleManager;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.regex.Pattern;
 
-public class TerminatorAreaProcessor implements AreaProcessor {
-    private HashSet<String> terminatorRole;
-    private HashSet<String> connectiveRole;
-    private List<Area> terminatorAreaList = new ArrayList<>();
+public class TerminatorAreaProcessor {
+    private final HashSet<String> terminatorRole;
+    private final HashSet<String> connectiveRole;
 
-    public TerminatorAreaProcessor() {
-        this.terminatorRole = TerminatorRole.getInstance().getRole();
-        this.connectiveRole = ConnectiveRole.getInstance().getRole();
+    public TerminatorAreaProcessor(RoleManager roleManager) {
+        this.terminatorRole = roleManager.getTerminator();
+        this.connectiveRole = roleManager.getConnective();
     }
 
-    @Override
-    public Area avoid(Area area) {
-        return null;
-    }
 
-    @Override
-    public List<Area> find(String text) {
-        this.terminatorAreaList.clear();
-
-        for(int i = 0 ; i < text.length() ; i++) {
+    public TreeSet<Integer> find(String text, ExceptionAreaProcessor exceptionAreaProcessor) {
+        TreeSet<Integer> terminatorList = new TreeSet<>();
+        for(int i = 0 ; i < text.length() - 5 ; i++) {
             for(int targetLength = 3 ; targetLength >= 2 ; targetLength--) {
-                Area targetArea = new Area(i, i + targetLength);
+
+                Area targetArea = exceptionAreaProcessor.avoid(new Area(i, i + targetLength));
                 String targetString = text.substring(targetArea.getStart(), targetArea.getEnd());
 
-                if(this.terminatorRole.contains(targetString) && !isConnective(targetArea.getStart(), text)) {
-                    int additionalSignLength = getAdditionalSignLength(targetArea.getEnd(), text);
-                    int targetSplitPoint = targetArea.getEnd() + additionalSignLength;
 
-                    this.terminatorAreaList.add(new Area(targetArea.getStart(), targetSplitPoint));
+                if(this.terminatorRole.contains(targetString)) {
 
-                    i = targetSplitPoint - 1;
-                    break;
+                    if(!isConnective(targetArea.getEnd(), text)) {
+
+                        int additionalSignLength = getAdditionalSignLength(targetArea.getEnd(), text);
+                        terminatorList.add(targetArea.getEnd() + additionalSignLength);
+
+
+                        i = targetArea.getStart() + additionalSignLength;
+
+                        break;
+                    }
                 }
+
+
+                i = targetArea.getStart();
             }
         }
-        return this.terminatorAreaList;
+        return terminatorList;
     }
 
     private boolean isConnective(int startIndex, String text) {
@@ -81,5 +83,4 @@ public class TerminatorAreaProcessor implements AreaProcessor {
         return additionalSignLength;
     }
 
-    public List<Area> getTerminatorAreaList() { return terminatorAreaList; }
 }

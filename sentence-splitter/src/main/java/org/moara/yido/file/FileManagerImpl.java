@@ -12,15 +12,22 @@ public class FileManagerImpl implements FileManager {
 
 
     @Override
-    public void readFile(String fileName) throws IOException {
-
-        BufferedReader br = new BufferedReader(new InputStreamReader(FileManagerImpl.class.getResourceAsStream(fileName), "UTF-8"));
-        while(true) {
-            String line = br.readLine();
-            this.file.add(line);
-            if(line == null)
-                break;
+    public void readFile(String fileName){
+        this.file.clear();
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(
+                    new InputStreamReader(FileManagerImpl.class.getResourceAsStream(fileName), "UTF-8"));
+            while(true) {
+                String line = br.readLine();
+                this.file.add(line);
+                if(line == null)
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
 
     }
 

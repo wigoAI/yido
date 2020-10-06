@@ -16,15 +16,12 @@ import java.util.List;
 public class FileTest {
 
     @Test
-    public void getFileTest() throws UnsupportedEncodingException {
+    public void getFileTest(){
 
         FileManagerImpl fileManager = new FileManagerImpl();
 
-        try {
-            fileManager.readFile("/data/newRevData.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        fileManager.readFile("/data/newRevData.txt");
+
 
         assertEquals(fileManager.getFile().get(1), "흠...포스터보고 초딩영화줄....오버연기조차 가볍지 않구나");
     }
