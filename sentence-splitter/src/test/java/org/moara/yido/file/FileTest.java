@@ -4,7 +4,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 
-
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class FileTest {
         data.add("test2");
         data.add("test3");
 
-        fileManager.writeFile("/data/test.role", data);
+        fileManager.writeFile(fileManager.pathSeparator + "data" + fileManager.pathSeparator + "test.role", data);
 
     }
 

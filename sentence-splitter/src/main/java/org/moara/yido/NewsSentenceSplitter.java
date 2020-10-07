@@ -10,12 +10,12 @@ public class NewsSentenceSplitter implements SentenceSplitter{
     TerminatorAreaProcessor terminatorAreaProcessor;
     ExceptionAreaProcessor exceptionAreaProcessor;
 
-    NewsSentenceSplitter() {
-        initAreaProcessor();
+    NewsSentenceSplitter(Config config) {
+        initAreaProcessor(config);
     }
 
-    private void initAreaProcessor() {
-        this.terminatorAreaProcessor = new TerminatorAreaProcessor(NewsRoleManager.getRoleManager());
+    private void initAreaProcessor(Config config) {
+        this.terminatorAreaProcessor = new TerminatorAreaProcessor(NewsRoleManager.getRoleManager(), config);
         this.exceptionAreaProcessor = new ExceptionAreaProcessor(NewsRoleManager.getRoleManager());
     }
 

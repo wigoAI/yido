@@ -49,12 +49,15 @@ public class JSONTest {
                     try {
                         String data = targetString.substring(targetString.lastIndexOf(" "), targetString.length() - 1);
 //                        System.out.println(targetString.substring(targetString.lastIndexOf(" "), targetString.length() - 1));
-                        if(newRole.containsKey(data)) {
-                            int oldData = newRole.get(data);
-                            newRole.replace(data, oldData + 1);
-                        } else {
-                            newRole.put(data, 1);
+                        if(k != (sentenceList.size() - 1)) {
+                            if(newRole.containsKey(data)) {
+                                int oldData = newRole.get(data);
+                                newRole.replace(data, oldData + 1);
+                            } else {
+                                newRole.put(data, 1);
+                            }
                         }
+
 
                     }catch (Exception e) {
 
@@ -70,7 +73,8 @@ public class JSONTest {
         }
 
         for(String str :  newRole.keySet()) {
-            System.out.println(str + " : " + newRole.get(str));
+            if(!str.endsWith("."))
+                System.out.println(str + " : " + newRole.get(str));
         }
 
 

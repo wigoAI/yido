@@ -1,5 +1,6 @@
 package org.moara.yido.area.processor;
 
+import org.moara.yido.Config;
 import org.moara.yido.area.Area;
 import org.moara.yido.area.processor.regularExpression.BracketProcessor;
 import org.moara.yido.area.processor.regularExpression.UrlProcessor;
@@ -25,7 +26,6 @@ public class ExceptionAreaProcessor {
      * TODO 1. have to check overflow
      *
      */
-
     public Area avoid(Area targetArea) {
 
         for(int i = 0 ; i < exceptionAreaList.size() ; i++) {

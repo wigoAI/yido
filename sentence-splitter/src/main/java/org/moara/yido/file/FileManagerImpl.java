@@ -33,7 +33,7 @@ public class FileManagerImpl implements FileManager {
 
     @Override
     public void writeFile(String fileName, List<String> data) {
-
+        System.out.println(ABSTRACT_PATH + fileName);
         try (  BufferedWriter bw = new BufferedWriter(new FileWriter(ABSTRACT_PATH + fileName))){
             for(String str : data)
                 bw.write(str + "\n");

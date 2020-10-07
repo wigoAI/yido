@@ -1,28 +1,31 @@
 package org.moara.yido.area.processor;
 
+import org.moara.yido.Config;
 import org.moara.yido.area.Area;
 import org.moara.yido.role.RoleManager;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 public class TerminatorAreaProcessor {
     private final HashSet<String> terminatorRole;
     private final HashSet<String> connectiveRole;
+    private final Config TERMINATOR_CONFIG;
 
-    public TerminatorAreaProcessor(RoleManager roleManager) {
+    public TerminatorAreaProcessor(RoleManager roleManager, Config config) {
         this.terminatorRole = roleManager.getTerminator();
         this.connectiveRole = roleManager.getConnective();
+        this.TERMINATOR_CONFIG = config;
+
+
     }
 
 
     public TreeSet<Integer> find(String text, ExceptionAreaProcessor exceptionAreaProcessor) {
         TreeSet<Integer> terminatorList = new TreeSet<>();
-        for(int i = 0 ; i < text.length() - 5 ; i++) {
-            for(int targetLength = 3 ; targetLength >= 2 ; targetLength--) {
+        for(int i = 0; i < text.length() - TERMINATOR_CONFIG.MIN_SENTENCE_LENGTH; i++) {
+            for(int targetLength = TERMINATOR_CONFIG.PROCESSING_LENGTH_MAX; targetLength >= TERMINATOR_CONFIG.PROCESSING_LENGTH_MIN; targetLength--) {
 
                 Area targetArea = exceptionAreaProcessor.avoid(new Area(i, i + targetLength));
                 String targetString = text.substring(targetArea.getStart(), targetArea.getEnd());
@@ -34,7 +37,6 @@ public class TerminatorAreaProcessor {
 
                         int additionalSignLength = getAdditionalSignLength(targetArea.getEnd(), text);
                         terminatorList.add(targetArea.getEnd() + additionalSignLength);
-
 
                         i = targetArea.getStart() + additionalSignLength;
 
@@ -51,7 +53,7 @@ public class TerminatorAreaProcessor {
 
     private boolean isConnective(int startIndex, String text) {
 
-        int connectiveCheckLength = (startIndex + 5 > text.length()) ? (startIndex + 5 - text.length()) : 5;
+        int connectiveCheckLength = (startIndex + TERMINATOR_CONFIG.MIN_SENTENCE_LENGTH > text.length()) ? (startIndex + 5 - text.length()) : 5;
         String nextStr = text.substring(startIndex, startIndex +  connectiveCheckLength);
 
         for(int i = 0 ; i < nextStr.length() ; i++) {

@@ -18,19 +18,24 @@ public class BasicSentenceSplitter implements SentenceSplitter {
      * Default constructor
      * only SentenceSplitterManager can use this
      */
-    BasicSentenceSplitter() {
-        initAreaProcessor();
+    BasicSentenceSplitter(Config config) {
+        initAreaProcessor(config);
     }
 
-    private void initAreaProcessor() {
+    private void initAreaProcessor(Config config) {
         BasicRoleManager basicRoleManager = BasicRoleManager.getRoleManager();
 
-        this.terminatorAreaProcessor = new TerminatorAreaProcessor(basicRoleManager);
+        this.terminatorAreaProcessor = new TerminatorAreaProcessor(basicRoleManager, config);
         this.exceptionAreaProcessor = new ExceptionAreaProcessor(basicRoleManager);
     }
 
     @Override
     public Sentence[] split(String inputData) {
+        if(inputData == null || inputData.isEmpty()) {
+            System.out.println("No Data");
+            return new Sentence[0];
+        }
+
         this.exceptionAreaProcessor.find(inputData);
         TreeSet<Integer> splitPoint = findSplitPoint(inputData);
 
