@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UrlProcessor implements RegularExpressionProcessor {
+    String URL_PATTERN = "((https?:\\/\\/)|(www\\.))([^:\\/\\s]+)(:([^\\/]*))?((\\/[^\\s/\\/]+)*)?\\/?([^#\\s\\?]*)(\\?([^#\\s]*))?(#(\\w*))?";
 
     Pattern urlPattern = Pattern.compile(URL_PATTERN);
 

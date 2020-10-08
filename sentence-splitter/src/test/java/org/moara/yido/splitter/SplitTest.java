@@ -24,6 +24,10 @@ public class SplitTest {
         assertEquals(ssm1, ssm2);
     }
 
+    /**
+     * TODO 1. need to Test
+     *          - exception pattern create error
+     */
     @Test
     public void initSplitterTest() {
         SentenceSplitterFactory ssm = SentenceSplitterFactory.getInstance();
