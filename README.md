@@ -10,4 +10,4 @@ jdk 1.8
 
 
 # Usage
-- Splitt korean sentence 
+- Split korean sentence 
