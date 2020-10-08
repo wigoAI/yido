@@ -1,17 +1,22 @@
 package org.moara.yido.file;
 
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileTest {
 
     @Test
-    public void getFileTest(){
+    public void getFileTest() {
 
         FileManagerImpl fileManager = new FileManagerImpl();
 
@@ -24,7 +29,7 @@ public class FileTest {
     @Test
     public void writeFileTest() throws InterruptedException {
         FileManagerImpl fileManager = new FileManagerImpl();
-        List<String> data  = new ArrayList<>();
+        List<String> data = new ArrayList<>();
 
         data.add("test1");
         data.add("test2");
@@ -34,7 +39,46 @@ public class FileTest {
 
     }
 
+    @Test
+    public void readExcelTest() {
 
 
+        ExcelUtil excelUtil = new ExcelUtil();
+        FileManager fileManager = new FileManagerImpl();
+        String dirPath = "D:\\moara\\data\\allData\\excel\\";
+        List<File> fileList = excelUtil.getExcelFileList(dirPath);
+
+        for (File file : fileList) {
+            String fileName = file.getName();
+            List<String> newsData = new ArrayList<>();
+
+            XSSFSheet sheet = getExcelSheet(file, excelUtil);
+
+            for (int i = 1; i < excelUtil.getRowCount(sheet); i++) {
+                String data = excelUtil.getCellValue(sheet.getRow(i), 9);
+                if (data == null) {
+                    continue;
+                }
+                newsData.add(data);
+
+
+            }
+
+            fileManager.writeFile("/newsData/" + fileName + ".txt", newsData);
+        }
+    }
+
+    private XSSFSheet getExcelSheet(File file, ExcelUtil excelUtil) {
+        XSSFWorkbook work = null;
+        try {
+            work = new XSSFWorkbook(new FileInputStream(file));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        excelUtil.setXSSFWorkbook(work);
+
+        return work.getSheetAt(0);
+    }
 
 }
