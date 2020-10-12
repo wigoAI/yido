@@ -17,6 +17,7 @@ public class BracketProcessor implements RegularExpressionProcessor {
 
     public BracketProcessor(RoleManager roleManager) {
         HashSet<String> patternDic = roleManager.getException();
+        System.out.println("BracketProcessor roleManager : "  );
         this.bracketPattern = createPattern(patternDic);
     }
 
@@ -41,6 +42,7 @@ public class BracketProcessor implements RegularExpressionProcessor {
         StringBuilder right = new StringBuilder("[]+");
 
        for(String data : patternData) {
+
             if(data == null)
                 continue;
 

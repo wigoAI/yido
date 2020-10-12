@@ -27,6 +27,7 @@ public class SentenceSplitterFactory {
 
     public SentenceSplitter getSentenceSplitter() {
         if(isKeyEmpty(BASIC_SENTENCE_SPLITTER_ID)) { createSentenceSplitter(BASIC_SENTENCE_SPLITTER_ID); }
+        System.out.println(sentenceSplitterHashMap.get(BASIC_SENTENCE_SPLITTER_ID));
         return sentenceSplitterHashMap.get(BASIC_SENTENCE_SPLITTER_ID);
     }
 
@@ -40,8 +41,7 @@ public class SentenceSplitterFactory {
 
     private void createSentenceSplitter(int id) {
         if(id == BASIC_SENTENCE_SPLITTER_ID) {
-            sentenceSplitterHashMap.put(BASIC_SENTENCE_SPLITTER_ID,
-                    new BasicSentenceSplitter(new Config()));
+            sentenceSplitterHashMap.put(BASIC_SENTENCE_SPLITTER_ID, new BasicSentenceSplitter(new Config()));
         } else if(id == NEWS_SENTENCE_SPLITTER_ID) {
             sentenceSplitterHashMap.put(NEWS_SENTENCE_SPLITTER_ID,
                     new NewsSentenceSplitter(new Config(5, 3, 2, TEXT_DATA_TYPE, NEWS_DOC_TYPE)));

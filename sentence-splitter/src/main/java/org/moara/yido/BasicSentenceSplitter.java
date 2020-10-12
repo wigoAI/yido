@@ -24,7 +24,7 @@ public class BasicSentenceSplitter implements SentenceSplitter {
 
     private void initAreaProcessor(Config config) {
         BasicRoleManager basicRoleManager = BasicRoleManager.getRoleManager();
-
+        System.out.println("initAreaProcessor : " + basicRoleManager);
         this.terminatorAreaProcessor = new TerminatorAreaProcessor(basicRoleManager, config);
         this.exceptionAreaProcessor = new ExceptionAreaProcessor(basicRoleManager);
     }

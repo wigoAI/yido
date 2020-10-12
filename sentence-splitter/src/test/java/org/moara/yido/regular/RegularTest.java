@@ -18,7 +18,7 @@ public class RegularTest {
 
     @Test
     public void bracketProcessorTest() {
-        /**
+        /*
          *      834 841
          *      1045 1085
          *      1190 1221

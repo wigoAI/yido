@@ -20,7 +20,7 @@ public class ExceptionAreaProcessor {
 
     public ExceptionAreaProcessor(RoleManager roleManager) {
         this.exceptionRole = roleManager.getException();
-        bracketProcessor = new BracketProcessor(roleManager);
+        this.bracketProcessor = new BracketProcessor(roleManager);
     }
 
     /**

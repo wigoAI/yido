@@ -30,8 +30,9 @@ public class SplitTest {
      */
     @Test
     public void initSplitterTest() {
-        SentenceSplitterFactory ssm = SentenceSplitterFactory.getInstance();
-        SentenceSplitter basicSentenceSplitter =  ssm.getSentenceSplitter();
+        SentenceSplitterFactory ssf = SentenceSplitterFactory.getInstance();
+        System.out.println("ssf : " + ssf);
+        SentenceSplitter basicSentenceSplitter =  ssf.getSentenceSplitter();
 
         assertEquals("강남역 맛집으로 소문난 강남 토끼정에 다녀왔습니다.",
                 basicSentenceSplitter.split(data[0])[0].getText());
