@@ -14,12 +14,13 @@ public class ExceptionAreaProcessor {
 
 
     private final UrlProcessor urlProcessor = new UrlProcessor();
-    private final BracketProcessor bracketProcessor = new BracketProcessor();
     private final List<Area> exceptionAreaList = new ArrayList<>();
+    private final BracketProcessor bracketProcessor;
     private HashSet<String> exceptionRole;
 
     public ExceptionAreaProcessor(RoleManager roleManager) {
         this.exceptionRole = roleManager.getException();
+        this.bracketProcessor = new BracketProcessor(roleManager);
     }
 
     /**
