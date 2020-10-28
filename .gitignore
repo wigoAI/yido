@@ -1,1 +1,5 @@
 /.idea/
+/sentence-splitter/target/
+/sentence-splitter/sentence-splitter.iml
+/sentence-splitter/.idea/
+/sentence-splitter/src/main/resources/META-INF/
