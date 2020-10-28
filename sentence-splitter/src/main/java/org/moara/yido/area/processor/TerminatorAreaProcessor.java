@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2020 Wigo Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.moara.yido.area.processor;
 
 import org.moara.yido.Config;
@@ -8,40 +23,50 @@ import java.util.HashSet;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
+/**
+ * 구분 영역 처리기
+ * @author 조승현
+ */
 public class TerminatorAreaProcessor {
     private final HashSet<String> terminatorRole;
     private final HashSet<String> connectiveRole;
     private final Config TERMINATOR_CONFIG;
 
+    /**
+     * Constructor
+     * @param roleManager RoleManager
+     * @param config Config
+     */
     public TerminatorAreaProcessor(RoleManager roleManager, Config config) {
         this.terminatorRole = roleManager.getTerminator();
         this.connectiveRole = roleManager.getConnective();
         this.TERMINATOR_CONFIG = config;
-
-
     }
 
-
+    /**
+     * 구분점 반환
+     *
+     * @param text String
+     * @param exceptionAreaProcessor ExceptionAreaProcessor
+     * @return TreeSet
+     */
     public TreeSet<Integer> find(String text, ExceptionAreaProcessor exceptionAreaProcessor) {
         TreeSet<Integer> terminatorList = new TreeSet<>();
         for(int i = 0; i < text.length() - TERMINATOR_CONFIG.MIN_SENTENCE_LENGTH; i++) {
-            for(int targetLength = TERMINATOR_CONFIG.PROCESSING_LENGTH_MAX; targetLength >= TERMINATOR_CONFIG.PROCESSING_LENGTH_MIN; targetLength--) {
+            for(int processingLength = TERMINATOR_CONFIG.PROCESSING_LENGTH_MAX; processingLength >= TERMINATOR_CONFIG.PROCESSING_LENGTH_MIN; processingLength--) {
 
-                Area targetArea = exceptionAreaProcessor.avoid(new Area(i, i + targetLength));
+                Area targetArea = exceptionAreaProcessor.avoid(new Area(i, i + processingLength));
                 String targetString = text.substring(targetArea.getStart(), targetArea.getEnd());
 
+                if(this.terminatorRole.contains(targetString) && !isConnective(targetArea.getEnd(), text)) {
 
-                if(this.terminatorRole.contains(targetString)) {
+                    int additionalSignLength = getAdditionalSignLength(targetArea.getEnd(), text);
+                    terminatorList.add(targetArea.getEnd() + additionalSignLength);
 
-                    if(!isConnective(targetArea.getEnd(), text)) {
+                    i = targetArea.getStart() + additionalSignLength;
 
-                        int additionalSignLength = getAdditionalSignLength(targetArea.getEnd(), text);
-                        terminatorList.add(targetArea.getEnd() + additionalSignLength);
+                    break;
 
-                        i = targetArea.getStart() + additionalSignLength;
-
-                        break;
-                    }
                 }
 
 

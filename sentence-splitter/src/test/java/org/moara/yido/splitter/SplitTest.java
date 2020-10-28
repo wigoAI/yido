@@ -53,42 +53,14 @@ public class SplitTest {
         for (int USED_CASE = 1 ; USED_CASE <= 5 ; USED_CASE++) {
             SentenceSplitterFactory ssm = SentenceSplitterFactory.getInstance();
             BasicSentenceSplitter basicSentenceSplitter = (BasicSentenceSplitter) ssm.getSentenceSplitter();
-//            AnswerChecker answerChecker = AnswerChecker.setAnswerCheckerByAnswerFile("/data/data" + USED_CASE +"Answer.txt");
 
-//            double timeAverage = 0;
-//            int i;
-//            for( i = 0 ; i < 1 ; i++) {
-//                long start = System.nanoTime();
-//                result = basicSentenceSplitter.split(data[USED_CASE - 1]);
-//                long end = System.nanoTime();
-//                double time = ( end - start ) / 1000000.0;
-//                if( i > 4 )
-//                    timeAverage += time;
-//
-//                System.out.print("start : " + start + " end : " + end);
-//                System.out.println( " -> 실행 시간 : " + time + "ms");
-//
-//                try {
-//                    Thread.sleep(1000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
             Sentence[] result = basicSentenceSplitter.split(data[USED_CASE - 1]);
 
             for(int i = 0 ; i < result.length ; i++) {
                 Sentence sentence = result[i];
                 System.out.println(i + " : " + sentence.getStart()+", "+ sentence.getEnd() + " " + sentence.getText());
             }
-//            for(Sentence sentence : basicSentenceSplitter.split(data[USED_CASE - 1]))
-//                System.out.println(sentence.getStart()+", "+ sentence.getEnd() + " " + sentence.getText());
 
-//            System.out.println();
-//            float accuracy = (answerChecker.checkAnswer(result) * 100);
-//            System.out.println("time average : " + timeAverage / (i - 5) + "ms");
-//            System.out.println("Accuracy : " + accuracy + "%");
-//            assertTrue( "Splitter accuracy is under than 50%", accuracy > 50);
         }
     }
 
