@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.yido.area.processor;
+package org.moara.yido.processor;
 
-import org.moara.yido.area.Area;
-import org.moara.yido.area.processor.regularExpression.BracketProcessor;
-import org.moara.yido.area.processor.regularExpression.UrlProcessor;
+import com.github.wjrmffldrhrl.Area;
+import org.moara.yido.processor.regularExpression.BracketProcessor;
+import org.moara.yido.processor.regularExpression.UrlProcessor;
 import org.moara.yido.role.RoleManager;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +73,8 @@ public class ExceptionAreaProcessor {
             Area exceptionArea = exceptionAreaList.get(i);
 
             if(targetArea.isOverlap(exceptionArea)) {
-                targetArea.moveStart(exceptionArea.getEnd());
+
+                targetArea = new Area(exceptionArea.getEnd(), exceptionArea.getEnd() + targetArea.getLength());
 
                 // 이동시킨 위치가 예외 영역에 포함되지 않는지 다시 체크
                 i = -1;

@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.yido.area.processor;
+package org.moara.yido.processor;
 
+import com.github.wjrmffldrhrl.Area;
 import org.moara.yido.Config;
-import org.moara.yido.area.Area;
 import org.moara.yido.role.RoleManager;
 
 import java.util.HashSet;
@@ -51,6 +51,7 @@ public class TerminatorAreaProcessor {
      * @return TreeSet
      */
     public TreeSet<Integer> find(String text, ExceptionAreaProcessor exceptionAreaProcessor) {
+        text = text.trim();
         TreeSet<Integer> terminatorList = new TreeSet<>();
         for(int i = 0; i < text.length() - TERMINATOR_CONFIG.MIN_SENTENCE_LENGTH; i++) {
             for(int processingLength = TERMINATOR_CONFIG.PROCESSING_LENGTH_MAX; processingLength >= TERMINATOR_CONFIG.PROCESSING_LENGTH_MIN; processingLength--) {
@@ -59,20 +60,18 @@ public class TerminatorAreaProcessor {
                 String targetString = text.substring(targetArea.getStart(), targetArea.getEnd());
 
                 if(this.terminatorRole.contains(targetString) && !isConnective(targetArea.getEnd(), text)) {
-
                     int additionalSignLength = getAdditionalSignLength(targetArea.getEnd(), text);
                     terminatorList.add(targetArea.getEnd() + additionalSignLength);
 
                     i = targetArea.getStart() + additionalSignLength;
 
                     break;
-
                 }
-
 
                 i = targetArea.getStart();
             }
         }
+
         return terminatorList;
     }
 

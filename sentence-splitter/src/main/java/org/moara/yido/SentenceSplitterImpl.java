@@ -15,9 +15,10 @@
  */
 package org.moara.yido;
 
-import org.moara.yido.area.processor.ExceptionAreaProcessor;
-import org.moara.yido.area.processor.TerminatorAreaProcessor;
+import org.moara.yido.processor.ExceptionAreaProcessor;
+import org.moara.yido.processor.TerminatorAreaProcessor;
 import org.moara.yido.role.BasicRoleManager;
+import org.moara.yido.role.RoleManager;
 
 import java.util.TreeSet;
 
@@ -25,7 +26,7 @@ import java.util.TreeSet;
  * 문장 분리기
  * @author 조승현
  */
-public class BasicSentenceSplitter implements SentenceSplitter {
+public class SentenceSplitterImpl implements SentenceSplitter {
 
     TerminatorAreaProcessor terminatorAreaProcessor;
     ExceptionAreaProcessor exceptionAreaProcessor;
@@ -35,12 +36,11 @@ public class BasicSentenceSplitter implements SentenceSplitter {
      * SentenceSplitterFactory 만 접근 가능하다.
      * @param config Config
      */
-    BasicSentenceSplitter(Config config) { initAreaProcessor(config); }
+    SentenceSplitterImpl(RoleManager roleManager, Config config) { initAreaProcessor(roleManager, config); }
 
-    private void initAreaProcessor(Config config) {
-
-        this.terminatorAreaProcessor = new TerminatorAreaProcessor(BasicRoleManager.getRoleManager(), config);
-        this.exceptionAreaProcessor = new ExceptionAreaProcessor(BasicRoleManager.getRoleManager());
+    private void initAreaProcessor(RoleManager roleManager, Config config) {
+        this.terminatorAreaProcessor = new TerminatorAreaProcessor(roleManager, config);
+        this.exceptionAreaProcessor = new ExceptionAreaProcessor(roleManager);
     }
 
     @Override
@@ -62,16 +62,15 @@ public class BasicSentenceSplitter implements SentenceSplitter {
 
     private Sentence[] doSplit(TreeSet<Integer> splitPoint, String inputData) {
         int startIndex = 0;
-        int endIndex = 0;
+
         int resultIndex = 0;
         Sentence[] result = new Sentence[splitPoint.size() + 1];
 
         for(int point : splitPoint) {
-            endIndex = point;
-            Sentence sentence = new Sentence(startIndex, endIndex, inputData.substring(startIndex, endIndex).trim());
+            Sentence sentence = new Sentence(startIndex, point, inputData.substring(startIndex, point).trim());
 
             result[resultIndex++] = sentence;
-            startIndex = endIndex;
+            startIndex = point;
 
         }
 

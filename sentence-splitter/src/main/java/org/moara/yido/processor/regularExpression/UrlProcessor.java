@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.yido.area.processor.regularExpression;
+package org.moara.yido.processor.regularExpression;
 
-import org.moara.yido.area.Area;
+import com.github.wjrmffldrhrl.Area;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +28,7 @@ import java.util.regex.Pattern;
  */
 public class UrlProcessor implements RegularExpressionProcessor {
     String URL_PATTERN = "((https?:\\/\\/)|(www\\.))([^:\\/\\s]+)(:([^\\/]*))?((\\/[^\\s/\\/]+)*)?\\/?([^#\\s\\?]*)(\\?([^#\\s]*))?(#(\\w*))?";
-
     Pattern urlPattern = Pattern.compile(URL_PATTERN);
-
 
     @Override
     public List<Area> find(String data) {
@@ -39,10 +37,10 @@ public class UrlProcessor implements RegularExpressionProcessor {
         List<Area> urlArea = new ArrayList<>();
 
         while(urlMatcher.find()) {
-            System.out.println("find!");
             urlArea.add(new Area(urlMatcher.start(), urlMatcher.end()));
         }
 
         return urlArea;
+
     }
 }

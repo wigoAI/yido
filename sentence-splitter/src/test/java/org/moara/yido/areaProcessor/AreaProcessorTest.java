@@ -1,31 +1,17 @@
-package org.moara.yido.splitter.role;
+package org.moara.yido.areaProcessor;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.github.wjrmffldrhrl.Area;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import org.moara.yido.Config;
 
-import org.moara.yido.area.Area;
-import org.moara.yido.area.processor.ExceptionAreaProcessor;
+import org.moara.yido.processor.ExceptionAreaProcessor;
+import org.moara.yido.processor.TerminatorAreaProcessor;
 import org.moara.yido.role.BasicRoleManager;
+import org.moara.yido.role.RoleManager;
 
-import javax.management.relation.Role;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import static org.junit.Assert.assertEquals;
 
-public class RoleTest {
-
-
-    @Test
-    public void roleManagerTest() {
-
-        BasicRoleManager basicRoleManager = BasicRoleManager.getRoleManager();
-
-        for(String str : basicRoleManager.getConnective())
-            System.out.println(str);
-    }
+public class AreaProcessorTest {
 
     @Test
     public void exceptionAreaProcessorTest() {
@@ -47,8 +33,28 @@ public class RoleTest {
         }
     }
 
+    @Test
+    public void TerminatorAreaProcessorTest() {
+        RoleManager roleManager = BasicRoleManager.getRoleManager();
+        ExceptionAreaProcessor exceptionAreaProcessor = new ExceptionAreaProcessor(roleManager);
+        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(roleManager, new Config());
+        String inputData = "강남역 맛집으로 소문난 강남 토끼정에 다녀왔습니다. 회사 동료 분들과 다녀왔는데 분위기도 좋고 음식도 맛있었어요 다만, 강남 토끼정이 강남 쉑쉑버거 골목길로 쭉 올라가야 하는데 다들 쉑쉑버거의 유혹에 넘어갈 뻔 했답니다 ";
+        int[] answer = {28, 62, 93, 73};
 
+        int index = 0;
+        for (Integer i : terminatorAreaProcessor.find(inputData, exceptionAreaProcessor)) {
+            assertEquals(i.intValue(), answer[index++]);
+        }
 
+        inputData = "대회 결과, 대상은 신평고 3학년 최지민 학생이 차지했으며, 조리부문 금상과 제빵부문 금상은 신평고 3학년 김기중 학생이, 송탄고 3학년 황유진 학생이 각각 수상했다. 수상자에게는 상장과 메달, 상금 및 장학증서가 수여됐으며 대상은 상금 30만 원과 장학증서 15만 원, 금상은 상금 20만 원과 장학증서 100만 원 등이 전달됐다.";
+        for (Integer i : terminatorAreaProcessor.find(inputData, exceptionAreaProcessor)) {
+            assertEquals(i.intValue(), answer[index++]);
+        }
 
+        inputData = "계획은 구성원들에게 함께 나아가야할 방향을 제시함과 동시에 목적지에 도달하기 위한 수단과 방법을 제공하는 안내서이자 설계도와 같다. 좋은 안내서가 목적한 곳에 무사히 도달할 수 있는데 중요한 역할을 하는 것처럼, 국민과 도민의 삶을 변화시키는 것에는 중앙정부와 지방정부에서 세우는 계획들이 무척 중요하다고 할 것이다.            ";
+        for (Integer i : terminatorAreaProcessor.find(inputData, exceptionAreaProcessor)) {
+            assertEquals(i.intValue(), answer[index++]);
+        }
 
+    }
 }

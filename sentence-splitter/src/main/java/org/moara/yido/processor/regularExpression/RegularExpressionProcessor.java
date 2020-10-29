@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.yido.area.processor.regularExpression;
+package org.moara.yido.processor.regularExpression;
 
-import org.moara.yido.area.Area;
+
+import com.github.wjrmffldrhrl.Area;
 
 import java.util.List;
 

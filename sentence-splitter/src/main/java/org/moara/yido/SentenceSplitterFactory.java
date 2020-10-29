@@ -71,13 +71,14 @@ public class SentenceSplitterFactory {
             BasicRoleManager basicRoleManager = BasicRoleManager.getRoleManager();
             basicRoleManager.getException();
             sentenceSplitterHashMap.put(BASIC_SENTENCE_SPLITTER_ID,
-                    new BasicSentenceSplitter(new Config()));
+                    new SentenceSplitterImpl(basicRoleManager, new Config()));
         } else if(id == NEWS_SENTENCE_SPLITTER_ID) {
             NewsRoleManager newsRoleManager = NewsRoleManager.getRoleManager();
             newsRoleManager.getException();
 
             sentenceSplitterHashMap.put(NEWS_SENTENCE_SPLITTER_ID,
-                    new NewsSentenceSplitter(new Config(5, 3, 2, TEXT_DATA_TYPE, NEWS_DOC_TYPE)));
+                    new SentenceSplitterImpl(newsRoleManager,
+                            new Config(5, 3, 2, TEXT_DATA_TYPE, NEWS_DOC_TYPE)));
         }
     }
 

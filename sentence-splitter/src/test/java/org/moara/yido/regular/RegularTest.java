@@ -1,23 +1,18 @@
 package org.moara.yido.regular;
 
+import com.github.wjrmffldrhrl.Area;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
-
-import org.moara.yido.area.Area;
-import org.moara.yido.area.processor.regularExpression.BracketProcessor;
-import org.moara.yido.area.processor.regularExpression.UrlProcessor;
+import org.moara.yido.processor.regularExpression.BracketProcessor;
+import org.moara.yido.processor.regularExpression.UrlProcessor;
 import org.moara.yido.role.BasicRoleManager;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class RegularTest {
 
     @Test
-    public void bracketProcessorTest() {
+    public void bracketProcessorFindTest() {
         /*
          *      834 841
          *      1045 1085

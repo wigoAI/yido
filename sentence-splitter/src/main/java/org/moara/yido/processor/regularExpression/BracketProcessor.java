@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.yido.area.processor.regularExpression;
+package org.moara.yido.processor.regularExpression;
 
-import org.moara.yido.area.Area;
+import com.github.wjrmffldrhrl.Area;
 import org.moara.yido.role.RoleManager;
 
 import java.util.ArrayList;
@@ -26,7 +26,8 @@ import java.util.regex.Pattern;
 
 /**
  * 괄호영역 처리기
- * @author 조승현
+ *
+ * TODO 1. 괄호의 수가 짝수가 아닐 때 처리리 * @author 조승현
  */
 public class BracketProcessor implements RegularExpressionProcessor {
     Pattern bracketPattern;
@@ -65,7 +66,7 @@ public class BracketProcessor implements RegularExpressionProcessor {
             if(data == null)
                 continue;
 
-            System.out.println(data);
+//            System.out.println(data);
            left.insert(1, "\\" + data.charAt(0));
            centerRight.insert(2, "\\" + data.charAt(0));
 
@@ -76,7 +77,7 @@ public class BracketProcessor implements RegularExpressionProcessor {
 
        String pattern = left.append(centerLeft).append(centerRight).append(right).toString();
 
-       System.out.println(pattern);
+//       System.out.println(pattern);
 
         return  Pattern.compile(pattern);
     }

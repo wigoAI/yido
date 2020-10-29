@@ -15,7 +15,7 @@
  */
 package org.moara.yido.file;
 
-import org.moara.yido.BasicSentenceSplitter;
+import org.moara.yido.SentenceSplitterImpl;
 
 import java.io.File;
 import java.util.List;
@@ -26,7 +26,7 @@ import java.util.List;
  */
 public interface FileWriter {
     String pathSeparator = File.separator;
-    String ABSTRACT_PATH = BasicSentenceSplitter.class.getResource("")
+    String ABSTRACT_PATH = SentenceSplitterImpl.class.getResource("")
             .getPath().split( "target")[0]
             + "src" + pathSeparator + "main" + pathSeparator + "resources";
 

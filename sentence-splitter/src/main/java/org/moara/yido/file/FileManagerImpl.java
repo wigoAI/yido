@@ -32,24 +32,23 @@ public class FileManagerImpl implements FileManager {
     @Override
     public void readFile(String fileName){
         this.file.clear();
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(
-                    new InputStreamReader(FileManagerImpl.class.getResourceAsStream(fileName), StandardCharsets.UTF_8));
+
+        try(BufferedReader br = new BufferedReader(
+                new InputStreamReader(FileManagerImpl.class.getResourceAsStream(fileName), StandardCharsets.UTF_8))) {
+
             while(true) {
                 String line = br.readLine();
                 this.file.add(line);
-                if(line == null)
-                    break;
+                if(line == null) { break; }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        } catch (IOException e) { e.printStackTrace(); }
     }
 
     @Override
     public void writeFile(String fileName, List<String> data) {
-        System.out.println(ABSTRACT_PATH + fileName);
+        String path = changePathSeparator(ABSTRACT_PATH + fileName);
+        System.out.println(path);
         try (  BufferedWriter bw = new BufferedWriter(new FileWriter(ABSTRACT_PATH + fileName))){
             for(String str : data)
                 bw.write(str + "\n");
@@ -99,6 +98,10 @@ public class FileManagerImpl implements FileManager {
                 addFiles(fileList, f);
             }
         }
+    }
+
+    private String changePathSeparator(String path) {
+        return path.replace("/", File.separator).replace("\\", File.separator);
     }
 
 
