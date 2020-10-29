@@ -13,36 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.yido.role;
+package org.moara.yido.processor.regularExpression;
 
-import java.util.HashSet;
+
+import com.github.wjrmffldrhrl.Area;
+
+import java.util.List;
 
 /**
- * 메타 데이터 관리자 추상체
- *
- * TODO 1. Role 추가기능 만들기
+ * 정규식 처리기
  * @author 조승현
  */
-public interface RoleManager {
-
-    String dicPath = "/dic/";
+public interface RegularExpressionProcessor {
 
     /**
-     * 구분자 메타 데이터 반환
-     * @return {@code HashSet<String>}
+     * 각 정규식에 해당하는 위치를 찾아 Area로 반환한다.
+     * @param data String
+     * @return {@code List<Area>}
      */
-    HashSet<String> getTerminator();
-
-    /**
-     * 예외영역 메타 데이터 반환
-     * @return {@code HashSet<String>}
-     */
-    HashSet<String> getException();
-
-    /**
-     * 연결어 메타 데이터 반환
-     * @return {@code HashSet<String>}
-     */
-    HashSet<String> getConnective();
+    List<Area> find(String data);
 
 }
