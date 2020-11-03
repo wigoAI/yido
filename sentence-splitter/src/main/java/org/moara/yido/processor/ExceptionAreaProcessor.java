@@ -28,62 +28,34 @@ import java.util.List;
  * @author 조승현
  */
 public class ExceptionAreaProcessor {
-
-
-    private final List<Area> exceptionAreaList = new ArrayList<>();
     private final UrlProcessor urlProcessor = new UrlProcessor();
     private final BracketProcessor bracketProcessor;
-//    private HashSet<String> exceptionRole;
+
 
     /**
      * Constructor
-     *
      * TODO 1. 현재 괄호 영역에 대한 처리만 이루어지고 있음
      *          - 괄호 영역에 사용되는 dictionary 가 예외영역 dictionary 와 같음
      *          - 예외 영역 처리기의 exceptionRole 을 제거 할 수 있으면 하기
+     *
      * @param roleManager RoleManager
+     *
      */
     public ExceptionAreaProcessor(RoleManager roleManager) {
-//        this.exceptionRole = roleManager.getException();
-        this.bracketProcessor = new BracketProcessor(roleManager);
+        bracketProcessor = new BracketProcessor(roleManager);
     }
 
     /**
      * Role 에 해당하는 예외 영역을 찾아 List 로 반환
      * @param data String
-     * @return {@code List<Area>}
+     * @return 예외 영역들이 Area 형태로 담긴 리스트 반환
      */
     public List<Area> find(String data) {
-        exceptionAreaList.clear();
-        this.exceptionAreaList.addAll(this.urlProcessor.find(data));
-        this.exceptionAreaList.addAll(this.bracketProcessor.find(data));
+        List<Area> exceptionAreaList = new ArrayList<>();
+        exceptionAreaList.addAll(urlProcessor.find(data));
+        exceptionAreaList.addAll(bracketProcessor.find(data));
 
-        return this.exceptionAreaList;
+        return exceptionAreaList;
     }
-
-    /**
-     * 예외영역 회피 메서드
-     * TODO 1. have to check overflow
-     * @param targetArea Area
-     */
-    public Area avoid(Area targetArea) {
-
-        for(int i = 0 ; i < exceptionAreaList.size() ; i++) {
-
-            Area exceptionArea = exceptionAreaList.get(i);
-
-            if(targetArea.isOverlap(exceptionArea)) {
-
-                targetArea = new Area(exceptionArea.getEnd(), exceptionArea.getEnd() + targetArea.getLength());
-
-                // 이동시킨 위치가 예외 영역에 포함되지 않는지 다시 체크
-                i = -1;
-            }
-        }
-
-        return targetArea;
-
-    }
-
 
 }

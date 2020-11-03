@@ -44,11 +44,13 @@ public class BasicRoleManager implements RoleManager {
     @Override
     public HashSet<String> getTerminator() {
         initBasicTerminator();
+
         return basicTerminator;
     }
 
     @Override
     public HashSet<String> getException() {
+
         initBasicException();
         return basicException;
 
@@ -69,14 +71,14 @@ public class BasicRoleManager implements RoleManager {
         }
     }
     private void initBasicTerminator() {
-        if(basicConnective.size() == 0) {
+        if(basicTerminator.size() == 0) {
             fileManager.readFile(dicPath + "terminator.dic");
             basicTerminator.addAll(fileManager.getFile());
         }
     }
 
     private void initBasicException() {
-        if(basicConnective.size() == 0) {
+        if(basicException.size() == 0) {
             fileManager.readFile(dicPath + "exception.dic");
             basicException.addAll(fileManager.getFile());
         }

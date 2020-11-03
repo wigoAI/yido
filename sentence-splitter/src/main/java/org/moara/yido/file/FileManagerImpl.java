@@ -62,7 +62,7 @@ public class FileManagerImpl implements FileManager {
     public List<String> getFile() { return this.file; }
 
     /**
-     * 특정 확장자 파일 추가
+     * 특정 확장자 파일 획득
      * @param path String
      * @param fileExtension String
      * @return {@code List<File>}

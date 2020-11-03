@@ -15,11 +15,14 @@
  */
 package org.moara.yido;
 
+import com.github.wjrmffldrhrl.Area;
 import org.moara.yido.processor.ExceptionAreaProcessor;
 import org.moara.yido.processor.TerminatorAreaProcessor;
-import org.moara.yido.role.BasicRoleManager;
+
 import org.moara.yido.role.RoleManager;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 
 /**
@@ -32,15 +35,18 @@ public class SentenceSplitterImpl implements SentenceSplitter {
     ExceptionAreaProcessor exceptionAreaProcessor;
 
     /**
+     *
      * Default constructor
      * SentenceSplitterFactory 만 접근 가능하다.
-     * @param config Config
+     *
+     * @param roleManager news or basic role manager
+     * @param config 문장 구분기 설정값
      */
     SentenceSplitterImpl(RoleManager roleManager, Config config) { initAreaProcessor(roleManager, config); }
 
     private void initAreaProcessor(RoleManager roleManager, Config config) {
-        this.terminatorAreaProcessor = new TerminatorAreaProcessor(roleManager, config);
-        this.exceptionAreaProcessor = new ExceptionAreaProcessor(roleManager);
+        terminatorAreaProcessor = new TerminatorAreaProcessor(roleManager, config);
+        exceptionAreaProcessor = new ExceptionAreaProcessor(roleManager);
     }
 
     @Override
@@ -50,21 +56,36 @@ public class SentenceSplitterImpl implements SentenceSplitter {
             return new Sentence[0];
         }
 
-        this.exceptionAreaProcessor.find(inputData);
-        TreeSet<Integer> splitPoint = findSplitPoint(inputData);
-
+        TreeSet<Integer> splitPoint = getSplitPoint(inputData);
         return doSplit(splitPoint, inputData);
     }
 
-    private TreeSet<Integer> findSplitPoint(String inputData) {
-        return this.terminatorAreaProcessor.find(inputData, this.exceptionAreaProcessor);
+    private TreeSet<Integer> getSplitPoint(String inputData) {
+        List<Area> exceptionAreas = exceptionAreaProcessor.find(inputData);
+        TreeSet<Integer> splitPoints = terminatorAreaProcessor.find(inputData);
+        List<Integer> removeItems = new ArrayList<>();
+
+        for (Area exceptionArea : exceptionAreas) {
+            for(int splitPoint : splitPoints) {
+                if(splitPoint >= exceptionArea.getStart() && splitPoint <= exceptionArea.getEnd()) {
+                    removeItems.add(splitPoint);
+                }
+            }
+        }
+
+        for (int removeItem : removeItems) {
+            splitPoints.remove(removeItem);
+        }
+
+
+        return splitPoints;
     }
 
-    private Sentence[] doSplit(TreeSet<Integer> splitPoint, String inputData) {
-        int startIndex = 0;
 
-        int resultIndex = 0;
+    private Sentence[] doSplit(TreeSet<Integer> splitPoint, String inputData) {
         Sentence[] result = new Sentence[splitPoint.size() + 1];
+        int startIndex = 0;
+        int resultIndex = 0;
 
         for(int point : splitPoint) {
             Sentence sentence = new Sentence(startIndex, point, inputData.substring(startIndex, point).trim());
