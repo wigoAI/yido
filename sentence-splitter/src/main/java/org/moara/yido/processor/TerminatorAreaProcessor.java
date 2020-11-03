@@ -45,21 +45,21 @@ public class TerminatorAreaProcessor {
 
     /**
      * 구분점 반환
-     *
-     * @param text String
-     * @param exceptionAreaProcessor ExceptionAreaProcessor
+     * TODO 1. ExceptionAreaProcessor 와 연관성 제거
+     * @param text 구분 대상 문자
      * @return TreeSet
      */
-    public TreeSet<Integer> find(String text, ExceptionAreaProcessor exceptionAreaProcessor) {
-        text = text.trim();
+    public TreeSet<Integer> find(String text) {
         TreeSet<Integer> terminatorList = new TreeSet<>();
+        text = text.trim();
+
         for(int i = 0; i < text.length() - TERMINATOR_CONFIG.MIN_SENTENCE_LENGTH; i++) {
             for(int processingLength = TERMINATOR_CONFIG.PROCESSING_LENGTH_MAX; processingLength >= TERMINATOR_CONFIG.PROCESSING_LENGTH_MIN; processingLength--) {
 
-                Area targetArea = exceptionAreaProcessor.avoid(new Area(i, i + processingLength));
+                Area targetArea = new Area(i, i + processingLength);
                 String targetString = text.substring(targetArea.getStart(), targetArea.getEnd());
 
-                if(this.terminatorRole.contains(targetString) && !isConnective(targetArea.getEnd(), text)) {
+                if(terminatorRole.contains(targetString) && !isConnective(targetArea.getEnd(), text)) {
                     int additionalSignLength = getAdditionalSignLength(targetArea.getEnd(), text);
                     terminatorList.add(targetArea.getEnd() + additionalSignLength);
 

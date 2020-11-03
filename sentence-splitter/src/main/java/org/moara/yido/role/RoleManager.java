@@ -21,6 +21,8 @@ import java.util.HashSet;
  * 메타 데이터 관리자 추상체
  *
  * TODO 1. Role 추가기능 만들기
+ *          - 업데이트
+ *          - 삭제
  * @author 조승현
  */
 public interface RoleManager {

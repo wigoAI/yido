@@ -43,15 +43,40 @@ public class SentenceSplitterFactory {
     private static final HashMap<Integer, SentenceSplitter> sentenceSplitterHashMap = new HashMap<>();
     private static final SentenceSplitterFactory sentenceSplitterFactory = new SentenceSplitterFactory();
 
+    /**
+     *
+     * @return
+     */
+    public static SentenceSplitterFactory getInstance() { return SentenceSplitterFactory.sentenceSplitterFactory; }
     private SentenceSplitterFactory() { }
 
+    /**
+     * <p>문장 구분기 인스턴스 획득</p>
+     * 설정값이 없으면 기본값을로 설정된 BasicSentenceSplitter를 반환한다.
+     *
+     * @return BasicSentenceSplitter
+     */
     public SentenceSplitter getSentenceSplitter() {
         if(isKeyEmpty(BASIC_SENTENCE_SPLITTER_ID)) { createSentenceSplitter(BASIC_SENTENCE_SPLITTER_ID); }
         System.out.println(sentenceSplitterHashMap.get(BASIC_SENTENCE_SPLITTER_ID));
         return sentenceSplitterHashMap.get(BASIC_SENTENCE_SPLITTER_ID);
+        
     }
 
+    /**
+     * 임의 설정값이 적용된 문장 구분기 인스턴스 반환
+     *
+     * @param config 설정값
+     * @return SentenceSplitter
+     */
     public SentenceSplitter getSentenceSplitter(Config config) { return null; }
+
+    /**
+     * 특정 id로 분류한 문장 구분기 인스턴스 반환
+     *
+     * @param id SentenceSplitter ID
+     * @return SentenceSplitter
+     */
     public SentenceSplitter getSentenceSplitter(int id) {
         if(isKeyEmpty(id)) {
             createSentenceSplitter(id);
@@ -59,13 +84,7 @@ public class SentenceSplitterFactory {
         return sentenceSplitterHashMap.get(id);
     }
 
-    /**
-     * TODO 1. Check why need init BasicRoleManager
-     *          - if didn't call BasicRoleManager before run BasicSentenceSplitter
-     *            can't read exception roles
-     *          - but NewsSentenceSplitter don't need it
-     ** @param id
-     */
+
     private void createSentenceSplitter(int id) {
         if(id == BASIC_SENTENCE_SPLITTER_ID) {
             BasicRoleManager basicRoleManager = BasicRoleManager.getRoleManager();
@@ -75,7 +94,6 @@ public class SentenceSplitterFactory {
         } else if(id == NEWS_SENTENCE_SPLITTER_ID) {
             NewsRoleManager newsRoleManager = NewsRoleManager.getRoleManager();
             newsRoleManager.getException();
-
             sentenceSplitterHashMap.put(NEWS_SENTENCE_SPLITTER_ID,
                     new SentenceSplitterImpl(newsRoleManager,
                             new Config(5, 3, 2, TEXT_DATA_TYPE, NEWS_DOC_TYPE)));
@@ -83,7 +101,6 @@ public class SentenceSplitterFactory {
     }
 
     private boolean isKeyEmpty(int key) { return !sentenceSplitterHashMap.containsKey(key); }
-    public static SentenceSplitterFactory getInstance() { return SentenceSplitterFactory.sentenceSplitterFactory; }
 
 
 }

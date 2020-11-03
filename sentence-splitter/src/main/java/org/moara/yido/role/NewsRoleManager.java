@@ -21,7 +21,8 @@ import org.moara.yido.file.FileManagerImpl;
 import java.util.HashSet;
 
 /**
- * 뉴스 메타데이터 관리자 구현체
+ * 뉴스 메타데이터 관리자 구현체'
+ *
  * @author 조승현
  */
 public class NewsRoleManager implements RoleManager {
