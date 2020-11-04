@@ -8,7 +8,7 @@ import java.util.List;
 public class FileManagerTest {
 
     @Test
-    public void readFileTest() {
+    public void testReadFile() {
 
         FileManagerImpl fileManager = new FileManagerImpl();
 
@@ -18,7 +18,7 @@ public class FileManagerTest {
     }
 
     @Test
-    public void writeFileTest() {
+    public void testWriteFile() {
         FileManagerImpl fileManager = new FileManagerImpl();
         List<String> data = new ArrayList<>();
 

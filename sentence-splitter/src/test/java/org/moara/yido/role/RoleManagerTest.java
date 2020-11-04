@@ -6,7 +6,7 @@ import org.junit.Test;
 public class RoleManagerTest {
 
     @Test
-    public void getBasicRoleManagerInstanceTest() {
+    public void testGetBasicRoleManagerInstance() {
         RoleManager roleManager = BasicRoleManager.getRoleManager();
 
         for(String str : roleManager.getConnective()) {
@@ -23,7 +23,7 @@ public class RoleManagerTest {
     }
 
     @Test
-    public void getNewsRoleManagerInstanceTest() {
+    public void testGetNewsRoleManagerInstance() {
         RoleManager roleManager = NewsRoleManager.getRoleManager();
 
         for(String str : roleManager.getConnective()) {

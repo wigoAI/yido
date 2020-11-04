@@ -22,14 +22,14 @@ public class SplitTest {
     
     
     @Test
-    public void getFactoryInstanceTest() {
+    public void testGetFactoryInstance() {
         SentenceSplitterFactory ssm1 = SentenceSplitterFactory.getInstance();
         SentenceSplitterFactory ssm2 = SentenceSplitterFactory.getInstance();
         assertEquals(ssm1, ssm2);
     }
 
     @Test
-    public void initSplitterTest() {
+    public void testInitSplitter() {
         SentenceSplitterFactory ssf = SentenceSplitterFactory.getInstance();
         System.out.println("ssf : " + ssf);
         SentenceSplitter basicSentenceSplitter =  ssf.getSentenceSplitter();
@@ -41,7 +41,7 @@ public class SplitTest {
 
 
     @Test
-    public void sentenceSplitTest() {
+    public void testSentenceSplit() {
         for (int USED_CASE = 1 ; USED_CASE <= 5 ; USED_CASE++) {
             SentenceSplitterFactory ssm = SentenceSplitterFactory.getInstance();
             SentenceSplitterImpl sentenceSplitterImpl = (SentenceSplitterImpl) ssm.getSentenceSplitter();
@@ -56,7 +56,7 @@ public class SplitTest {
     }
 
     @Test
-    public void basicSentenceSplitterTest() {
+    public void testBasicSentenceSplitter() {
         SentenceSplitterFactory ssm = SentenceSplitterFactory.getInstance();
         SentenceSplitter basicSentenceSplitter =  ssm.getSentenceSplitter(2);
 
@@ -64,7 +64,7 @@ public class SplitTest {
     }
 
     @Test
-    public void newsSentenceSplitTest() {
+    public void testNewsSentenceSplit() {
         SentenceSplitter newsSentenceSplitter = SentenceSplitterFactory.getInstance().getSentenceSplitter(2);
 
         for(Sentence sentence : newsSentenceSplitter.split(newsData)) {

@@ -61,8 +61,8 @@ public class SentenceSplitterImpl implements SentenceSplitter {
     }
 
     private TreeSet<Integer> getSplitPoint(String inputData) {
-        List<Area> exceptionAreas = exceptionAreaProcessor.find(inputData);
         TreeSet<Integer> splitPoints = terminatorAreaProcessor.find(inputData);
+        List<Area> exceptionAreas = exceptionAreaProcessor.find(inputData);
         List<Integer> removeItems = new ArrayList<>();
 
         for (Area exceptionArea : exceptionAreas) {

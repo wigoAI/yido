@@ -60,7 +60,6 @@ public class RegularExpressionProcessorImpl implements RegularExpressionProcesso
         List<Pattern> dicPattern = new ArrayList<>();
 
         for (String data : patternData) {
-
             dicPattern.add(Pattern.compile(data));
         }
 

@@ -8,15 +8,13 @@ import org.moara.yido.processor.regularExpression.RegularExpressionProcessor;
 import org.moara.yido.processor.regularExpression.RegularExpressionProcessorImpl;
 import org.moara.yido.processor.regularExpression.UrlProcessor;
 import org.moara.yido.role.BasicRoleManager;
-import org.moara.yido.role.RoleManager;
 
-import javax.persistence.Basic;
 import java.util.List;
 
 public class RegularTest {
 
     @Test
-    public void bracketProcessorFindTest() {
+    public void testBracketProcessorFind() {
         /*
          *      834 841
          *      1045 1085
@@ -36,7 +34,7 @@ public class RegularTest {
     }
 
     @Test
-    public void urlProcessorTest() {
+    public void testUrlProcessor() {
         String inputData = "강남역 맛집블로그에 소개도 됐어요! https://www.naver.com/ 소문난 강남 토끼정에 다녀왔습니다.";
         UrlProcessor urlProcessor = new UrlProcessor();
         List<Area> urlArea = urlProcessor.find(inputData);

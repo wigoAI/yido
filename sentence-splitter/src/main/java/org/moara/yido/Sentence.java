@@ -15,29 +15,32 @@
  */
 package org.moara.yido;
 
+
+import com.github.wjrmffldrhrl.Area;
+
 /**
  * 문장 단위 데이터
+ *
+ * TODO 1. Area 상속받기
+ *
+ *
  * @author 조승현
  */
-public class Sentence {
-    private final int start;
-    private final int end;
-    private final String text;
+public class Sentence extends Area {
+    private String text;
 
     /**
      * Constructor
+     *
      * @param start int
      * @param end int
      * @param text String
      */
     public Sentence(int start, int end, String text) {
-        this.start = start;
-        this.end = end;
+        super(start, end);
         this.text = text;
     }
 
-    public int getStart() { return this.start; }
-    public int getEnd() { return  this.end; }
     public String getText() { return this.text; }
 
 }

@@ -64,7 +64,7 @@
     <dependency>
       <groupId>com.github.wjrmffldrhrl</groupId>
       <artifactId>Area</artifactId>
-      <version>0.0.7</version>
+      <version>0.0.9</version>
     </dependency>
 
   </dependencies>
