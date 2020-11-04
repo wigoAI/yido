@@ -44,8 +44,9 @@ public class SentenceSplitterFactory {
     private static final SentenceSplitterFactory sentenceSplitterFactory = new SentenceSplitterFactory();
 
     /**
+     * 싱글톤으로 구성된 SentenceSplitterFactory 인스턴스 획득
      *
-     * @return
+     * @return SentenceSplitterFactory 인스턴스 반환
      */
     public static SentenceSplitterFactory getInstance() { return SentenceSplitterFactory.sentenceSplitterFactory; }
     private SentenceSplitterFactory() { }

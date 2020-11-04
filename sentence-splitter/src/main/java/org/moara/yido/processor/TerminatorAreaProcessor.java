@@ -45,7 +45,7 @@ public class TerminatorAreaProcessor {
 
     /**
      * 구분점 반환
-     * TODO 1. ExceptionAreaProcessor 와 연관성 제거
+     *
      * @param text 구분 대상 문자
      * @return TreeSet
      */

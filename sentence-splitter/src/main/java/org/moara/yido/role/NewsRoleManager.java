@@ -27,9 +27,10 @@ import java.util.HashSet;
  */
 public class NewsRoleManager implements RoleManager {
     private static final NewsRoleManager NEWS_ROLE_MANAGER = new NewsRoleManager();
-    private final HashSet<String> newsConnective = new HashSet<>();
-    private final HashSet<String> newsTerminator = new HashSet<>();
-    private final HashSet<String> newsException = new HashSet<>();
+    private final HashSet<String> connective = new HashSet<>();
+    private final HashSet<String> terminator = new HashSet<>();
+    private final HashSet<String> exception = new HashSet<>();
+    private final HashSet<String> regx = new HashSet<>();
     private final FileManager fileManager = new FileManagerImpl();
 
     private NewsRoleManager() { }
@@ -42,40 +43,49 @@ public class NewsRoleManager implements RoleManager {
 
     @Override
     public HashSet<String> getTerminator() {
-        initTerminator();
-        return newsTerminator;
+        if(terminator.size() == 0) { initTerminator(); }
+        return terminator;
     }
 
     @Override
     public HashSet<String> getException() {
-        initException();
-        return newsException;
+        if(exception.size() == 0) { initException(); }
+        return exception;
     }
 
     @Override
     public HashSet<String> getConnective() {
-        initConnective();
-        return newsConnective;
+        if (connective.size() == 0){ initConnective(); }
+        return connective;
+    }
+
+    @Override
+    public HashSet<String> getRegx() {
+        if(regx.size() == 0) { initRegx(); }
+        return regx;
     }
 
     private void initConnective() {
-        if(newsConnective.size() == 0) {
-            fileManager.readFile(dicPath + "news/" + "connective.dic");
-            newsConnective.addAll(fileManager.getFile());
-        }
+        fileManager.readFile(dicPath + "news/" +"connective.dic");
+        connective.addAll(fileManager.getFile());
+        connective.remove(null);
     }
-
     private void initTerminator() {
-        if(newsTerminator.size() == 0) {
-            fileManager.readFile(dicPath + "news/" + "terminator.dic");
-            newsTerminator.addAll(fileManager.getFile());
-        }
+        fileManager.readFile(dicPath + "news/" +"terminator.dic");
+        terminator.addAll(fileManager.getFile());
+        terminator.remove(null);
     }
 
     private void initException() {
-        if(newsException.size() == 0) {
-            fileManager.readFile(dicPath + "news/" + "exception.dic");
-            newsException.addAll(fileManager.getFile());
-        }
+        fileManager.readFile(dicPath + "news/" +"exception.dic");
+        exception.addAll(fileManager.getFile());
+        exception.remove(null);
     }
+
+    private void initRegx() {
+        fileManager.readFile(dicPath + "news/" +"regx.dic");
+        regx.addAll(fileManager.getFile());
+        regx.remove(null);
+    }
+
 }

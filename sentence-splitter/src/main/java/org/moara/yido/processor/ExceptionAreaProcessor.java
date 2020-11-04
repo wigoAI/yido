@@ -31,12 +31,8 @@ public class ExceptionAreaProcessor {
     private final UrlProcessor urlProcessor = new UrlProcessor();
     private final BracketProcessor bracketProcessor;
 
-
     /**
      * Constructor
-     * TODO 1. 현재 괄호 영역에 대한 처리만 이루어지고 있음
-     *          - 괄호 영역에 사용되는 dictionary 가 예외영역 dictionary 와 같음
-     *          - 예외 영역 처리기의 exceptionRole 을 제거 할 수 있으면 하기
      *
      * @param roleManager RoleManager
      *

@@ -4,9 +4,13 @@ import com.github.wjrmffldrhrl.Area;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import org.moara.yido.processor.regularExpression.BracketProcessor;
+import org.moara.yido.processor.regularExpression.RegularExpressionProcessor;
+import org.moara.yido.processor.regularExpression.RegularExpressionProcessorImpl;
 import org.moara.yido.processor.regularExpression.UrlProcessor;
 import org.moara.yido.role.BasicRoleManager;
+import org.moara.yido.role.RoleManager;
 
+import javax.persistence.Basic;
 import java.util.List;
 
 public class RegularTest {
@@ -39,6 +43,16 @@ public class RegularTest {
 
         assertEquals(20, urlArea.get(0).getStart());
         assertEquals(42, urlArea.get(0).getEnd());
+
+    }
+
+    @Test
+    public void testRegxByData() {
+        String inputData = "회사소유의 부동산을 회사대표자인 개인이 계약당사자로서 매도하고 다시 회사대표자 자격으로써 한 소유권이전등기는 원인없는 등기이다.";
+        RegularExpressionProcessor regularExpressionProcessor = new RegularExpressionProcessorImpl(BasicRoleManager.getRoleManager());
+        List<Area> splitAreas = regularExpressionProcessor.find(inputData);
+
+        assertEquals(splitAreas.get(0).getEnd(), 35);
 
     }
 

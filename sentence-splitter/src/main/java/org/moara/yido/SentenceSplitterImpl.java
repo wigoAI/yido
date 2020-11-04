@@ -67,16 +67,13 @@ public class SentenceSplitterImpl implements SentenceSplitter {
 
         for (Area exceptionArea : exceptionAreas) {
             for(int splitPoint : splitPoints) {
-                if(splitPoint >= exceptionArea.getStart() && splitPoint <= exceptionArea.getEnd()) {
-                    removeItems.add(splitPoint);
-                }
+                if(exceptionArea.contains(splitPoint)) { removeItems.add(splitPoint); }
             }
         }
 
         for (int removeItem : removeItems) {
             splitPoints.remove(removeItem);
         }
-
 
         return splitPoints;
     }

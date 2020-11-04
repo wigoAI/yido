@@ -27,21 +27,19 @@ import java.util.regex.Pattern;
 /**
  * 괄호영역 처리기
  *
- * TODO 1. 괄호의 수가 짝수가 아닐 때 처리
  *
  * @author 조승현
  */
 public class BracketProcessor implements RegularExpressionProcessor {
-    private Pattern bracketPattern;
+    private final Pattern bracketPattern;
 
     /**
      * Constructor
-     * TODO 1. diction load 안되는 문제 해결
+     *
      * @param roleManager RoleManager
      */
     public BracketProcessor(RoleManager roleManager) {
         HashSet<String> patternDic = roleManager.getException();
-        System.out.println("PatternDic " + patternDic.toString());
         bracketPattern = createPattern(patternDic);
     }
 
@@ -52,13 +50,14 @@ public class BracketProcessor implements RegularExpressionProcessor {
         List<Area> bracketArea = new ArrayList<>();
 
         while(bracketMatcher.find()) {
-            bracketArea.add(new Area(bracketMatcher.start(), bracketMatcher.end()));
+            bracketArea.add(new Area(bracketMatcher));
         }
 
         return bracketArea;
     }
 
-    private Pattern createPattern(HashSet<String> patternData) {
+
+    protected Pattern createPattern(HashSet<String> patternData) {
 
         StringBuilder left = new StringBuilder("[]+");
         StringBuilder centerLeft = new StringBuilder("[^]*");
@@ -67,10 +66,6 @@ public class BracketProcessor implements RegularExpressionProcessor {
 
        for(String data : patternData) {
 
-            if(data == null)
-                continue;
-
-            System.out.println(data);
            left.insert(1, "\\" + data.charAt(0));
            centerRight.insert(2, "\\" + data.charAt(0));
 
@@ -80,8 +75,6 @@ public class BracketProcessor implements RegularExpressionProcessor {
        }
 
        String pattern = left.append(centerLeft).append(centerRight).append(right).toString();
-
-       System.out.println(pattern);
 
         return  Pattern.compile(pattern);
     }

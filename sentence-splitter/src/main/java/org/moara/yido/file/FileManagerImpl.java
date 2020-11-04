@@ -31,14 +31,14 @@ public class FileManagerImpl implements FileManager {
 
     @Override
     public void readFile(String fileName){
-        this.file.clear();
+        file.clear();
 
         try(BufferedReader br = new BufferedReader(
                 new InputStreamReader(FileManagerImpl.class.getResourceAsStream(fileName), StandardCharsets.UTF_8))) {
 
             while(true) {
                 String line = br.readLine();
-                this.file.add(line);
+                file.add(line);
                 if(line == null) { break; }
             }
 
@@ -49,7 +49,7 @@ public class FileManagerImpl implements FileManager {
     public void writeFile(String fileName, List<String> data) {
         String path = changePathSeparator(ABSTRACT_PATH + fileName);
         System.out.println(path);
-        try (  BufferedWriter bw = new BufferedWriter(new FileWriter(ABSTRACT_PATH + fileName))){
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(ABSTRACT_PATH + fileName))){
             for(String str : data)
                 bw.write(str + "\n");
 
@@ -93,6 +93,7 @@ public class FileManagerImpl implements FileManager {
         fileList.add(file);
         if(file.isDirectory()){
             File [] files = file.listFiles();
+
             //noinspection ConstantConditions
             for(File f : files){
                 addFiles(fileList, f);

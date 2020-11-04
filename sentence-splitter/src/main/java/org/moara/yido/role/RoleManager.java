@@ -47,4 +47,10 @@ public interface RoleManager {
      */
     HashSet<String> getConnective();
 
+    /**
+     * 정규식 반환
+     * @return {@code HashSet<String>}
+     */
+    HashSet<String> getRegx();
+
 }

@@ -23,14 +23,19 @@ import java.util.HashSet;
 /**
  *
  * 기본 메타데이터 관리자 추상체
+ *
+ * TODO 1. 싱글톤 형태의 중복 코드 제거방법
+ *          - 상속이 안된다.
+ *
  * @author 조승현
  *
  */
 public class BasicRoleManager implements RoleManager {
     private static final BasicRoleManager BASIC_ROLE_MANAGER = new BasicRoleManager();
-    private final HashSet<String> basicConnective = new HashSet<>();
-    private final HashSet<String> basicTerminator = new HashSet<>();
-    private final HashSet<String> basicException = new HashSet<>();
+    private final HashSet<String> connective = new HashSet<>();
+    private final HashSet<String> terminator = new HashSet<>();
+    private final HashSet<String> exception = new HashSet<>();
+    private final HashSet<String> regx = new HashSet<>();
     private final FileManager fileManager = new FileManagerImpl();
 
     private BasicRoleManager() { }
@@ -43,45 +48,53 @@ public class BasicRoleManager implements RoleManager {
 
     @Override
     public HashSet<String> getTerminator() {
-        initBasicTerminator();
-
-        return basicTerminator;
+        if(terminator.size() == 0) { initTerminator(); }
+        return terminator;
     }
 
     @Override
     public HashSet<String> getException() {
-
-        initBasicException();
-        return basicException;
-
+        if(exception.size() == 0) { initException(); }
+        return exception;
     }
 
     @Override
     public HashSet<String> getConnective() {
+        if (connective.size() == 0){ initConnective(); }
+        return connective;
+    }
 
-        initBasicConnective();
-        return basicConnective;
+    @Override
+    public HashSet<String> getRegx() {
+        if(regx.size() == 0) { initRegx(); }
+
+        return regx;
+    }
+
+    private void initConnective() {
+        fileManager.readFile(dicPath + "connective.dic");
+        connective.addAll(fileManager.getFile());
+        connective.remove(null);
+
+    }
+    private void initTerminator() {
+        fileManager.readFile(dicPath + "terminator.dic");
+        terminator.addAll(fileManager.getFile());
+        terminator.remove(null);
+    }
+
+    private void initException() {
+        fileManager.readFile(dicPath + "exception.dic");
+        exception.addAll(fileManager.getFile());
+        exception.remove(null);
 
     }
 
-    private void initBasicConnective() {
-        if(basicConnective.size() == 0) {
-            fileManager.readFile(dicPath + "connective.dic");
-            basicConnective.addAll(fileManager.getFile());
-        }
-    }
-    private void initBasicTerminator() {
-        if(basicTerminator.size() == 0) {
-            fileManager.readFile(dicPath + "terminator.dic");
-            basicTerminator.addAll(fileManager.getFile());
-        }
-    }
+    private void initRegx() {
+        fileManager.readFile(dicPath + "regx.dic");
+        regx.addAll(fileManager.getFile());
+        regx.remove(null);
 
-    private void initBasicException() {
-        if(basicException.size() == 0) {
-            fileManager.readFile(dicPath + "exception.dic");
-            basicException.addAll(fileManager.getFile());
-        }
     }
 
 
