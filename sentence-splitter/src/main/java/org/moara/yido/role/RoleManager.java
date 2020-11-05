@@ -38,6 +38,7 @@ import java.util.List;
  *          - dic 폴더 생성
  *      3. 팩토리 패턴으로 생성해야하는가?
  *      4. 룰 종류별로 나눠야 하는가?
+ *          - String 매개변수로 동작하게 변경하자
  *
  *
  *
@@ -46,75 +47,102 @@ import java.util.List;
 public class RoleManager {
 
     String dicPath;
-    protected HashSet<String> connective = new HashSet<>();
     protected HashSet<String> terminator = new HashSet<>();
+    protected HashSet<String> connective = new HashSet<>();
     protected HashSet<String> exception = new HashSet<>();
     protected HashSet<String> regx = new HashSet<>();
     FileManager fileManager = new FileManagerImpl();
 
     protected RoleManager(String roleName) {
         this.dicPath = "/dic/" + roleName + "/";
+        initRole("terminator");
+        initRole("connective");
+        initRole("exception");
+        initRole("regx");
     }
 
     /**
-     * 구분자 메타 데이터 반환
+     * 룰 데이터 반환
      * @return {@code HashSet<String>}
      */
-    public HashSet<String> getTerminator() {
-        if(terminator.size() == 0) { initTerminator(); }
-        return terminator;
+    public HashSet<String> getRole(String roleName) {
+
+        switch (roleName) {
+            case "terminator":
+                return terminator;
+            case "connective":
+                return connective;
+            case "exception":
+                return exception;
+            case "regx":
+                return regx;
+            default:
+                throw new RuntimeException("Invalid role name : " + roleName);
+        }
+
+    }
+
+
+    /**
+     * 로컬 사전 파일에 룰을 추가한다.
+     * @param dicName 존재하는 사전 이름 : connective, exception, regx, terminator
+     * @param roles 추가할 룰 내용
+     */
+    public void addRolesToLocal(String dicName, List<String> roles ) {
+        fileManager.addLine(dicPath + dicName + ".dic", roles);
     }
 
     /**
-     * 예외영역 메타 데이터 반환
-     * @return {@code HashSet<String>}
+     * 임시로 사용할 룰을 추가한다. 메모리에 저장되며 프로그램 종료 시 사라진다.
+     * @param dicName 존재하는 사전 이름 : connective, exception, regx, terminator
+     * @param roles 추가할 룰 내용
      */
-    public HashSet<String> getException() {
-        if(exception.size() == 0) { initException(); }
-        return exception;
+    public void addRolesToMemory(String dicName, List<String> roles ) {
+        switch (dicName) {
+            case "terminator":
+                terminator.addAll(roles);
+                break;
+            case "connective":
+                connective.addAll(roles);
+                break;
+            case "exception":
+                exception.addAll(roles);
+                break;
+            case "regx":
+                regx.addAll(roles);
+                break;
+            default:
+                throw new RuntimeException("Invalid diction name : " + dicName);
+
+        }
     }
 
     /**
-     * 연결어 메타 데이터 반환
-     * @return {@code HashSet<String>}
+     * 초기화 과정에 문제가 있다.
+     * @param roleName
      */
-    public HashSet<String> getConnective() {
-        if (connective.size() == 0){ initConnective(); }
-        return connective;
-    }
+    protected void initRole(String roleName) {
+        fileManager.readFile(dicPath + roleName + ".dic");
+        HashSet<String> role;
+        switch (roleName) {
+            case "terminator":
+                role = terminator;
+                break;
+            case "connective":
+                role = connective;
+                break;
+            case "exception":
+                role = exception;
+                break;
+            case "regx":
+                role = regx;
+                break;
+            default:
+                throw new RuntimeException("Invalid role name : " + roleName);
 
-    /**
-     * 정규식 반환
-     * @return {@code HashSet<String>}
-     */
-    public HashSet<String> getRegx() {
-        if(regx.size() == 0) { initRegx(); }
-
-        return regx;
-    }
-
-    protected void initConnective() {
-        fileManager.readFile(dicPath + "connective.dic");
-        connective.addAll(fileManager.getFile());
-        connective.remove(null);
-    }
-
-    protected void initTerminator() {
-        fileManager.readFile(dicPath + "terminator.dic");
-        terminator.addAll(fileManager.getFile());
-        terminator.remove(null);
-    }
-
-    protected void initException() {
-        fileManager.readFile(dicPath + "exception.dic");
-        exception.addAll(fileManager.getFile());
-        exception.remove(null);
-    }
-
-    protected void initRegx() {
-        fileManager.readFile(dicPath + "regx.dic");
-        regx.addAll(fileManager.getFile());
-        regx.remove(null);
+        }
+        role.addAll(fileManager.getFile());
+        role.remove(null);
 
     }
 

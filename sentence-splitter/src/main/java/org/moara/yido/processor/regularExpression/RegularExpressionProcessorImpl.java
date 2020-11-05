@@ -37,7 +37,7 @@ public class RegularExpressionProcessorImpl implements RegularExpressionProcesso
      * @param roleManager RoleManager
      */
     public RegularExpressionProcessorImpl(RoleManager roleManager) {
-        HashSet<String> patternDic = roleManager.getRegx();
+        HashSet<String> patternDic = roleManager.getRole("regx");
         patterns.addAll(createPatterns(patternDic));
     }
 

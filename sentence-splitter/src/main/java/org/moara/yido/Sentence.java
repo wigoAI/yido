@@ -15,13 +15,10 @@
  */
 package org.moara.yido;
 
-
 import com.github.wjrmffldrhrl.Area;
 
 /**
  * 문장 단위 데이터
- *
- * TODO 1. Area 상속받기
  *
  *
  * @author 조승현

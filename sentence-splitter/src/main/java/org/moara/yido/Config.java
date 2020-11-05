@@ -56,4 +56,5 @@ public class Config {
         this.DOC_TYPE = "basic";
 
     }
+
 }

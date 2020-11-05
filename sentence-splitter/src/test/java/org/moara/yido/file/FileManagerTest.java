@@ -2,6 +2,9 @@ package org.moara.yido.file;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +30,13 @@ public class FileManagerTest {
         data.add("test3");
 
         fileManager.writeFile("/data/test.role", data);
+
+
+
+        fileManager.readFile("/data/test.role");
+        System.out.println(fileManager.getFile());
+
+        fileManager.addLine("/data/test.role", data);
 
     }
 

@@ -17,17 +17,20 @@ package org.moara.yido;
 
 import org.moara.yido.role.BasicRoleManager;
 import org.moara.yido.role.NewsRoleManager;
+import org.moara.yido.role.RoleManager;
 
 import java.util.HashMap;
 
 /**
  * 사용자가 원하는 문장 구분기를 제공해주는 클래스
  *
+ *  TODO 1. 커스텀 룰 메니저를 삽입할 수 있게 만들기
  * @author 조승현
  */
 public class SentenceSplitterFactory {
     private static final int BASIC_SENTENCE_SPLITTER_ID = 1;
     private static final int NEWS_SENTENCE_SPLITTER_ID = 2;
+    private static final int CUSTOM_SENTENCE_SPLITTER_ID = 9;
     private static final String JSON_DATA_TYPE = "json";
     private static final String TEXT_DATA_TYPE = "text";
     private static final String BASIC_DOC_TYPE = "basic";
@@ -52,7 +55,7 @@ public class SentenceSplitterFactory {
     private SentenceSplitterFactory() { }
 
     /**
-     * <p>문장 구분기 인스턴스 획득</p>
+     * 문장 구분기 인스턴스 획득
      * 설정값이 없으면 기본값을로 설정된 BasicSentenceSplitter를 반환한다.
      *
      * @return BasicSentenceSplitter
@@ -61,8 +64,9 @@ public class SentenceSplitterFactory {
         if(isKeyEmpty(BASIC_SENTENCE_SPLITTER_ID)) { createSentenceSplitter(BASIC_SENTENCE_SPLITTER_ID); }
         System.out.println(sentenceSplitterHashMap.get(BASIC_SENTENCE_SPLITTER_ID));
         return sentenceSplitterHashMap.get(BASIC_SENTENCE_SPLITTER_ID);
-        
     }
+
+
 
     /**
      * 임의 설정값이 적용된 문장 구분기 인스턴스 반환
@@ -70,7 +74,12 @@ public class SentenceSplitterFactory {
      * @param config 설정값
      * @return SentenceSplitter
      */
-    public SentenceSplitter getSentenceSplitter(Config config) { return null; }
+    public SentenceSplitter getSentenceSplitter(Config config) {
+        RoleManager basicRoleManager = BasicRoleManager.getRoleManager();
+        sentenceSplitterHashMap.put(CUSTOM_SENTENCE_SPLITTER_ID,
+                new SentenceSplitterImpl(basicRoleManager, config));
+        return sentenceSplitterHashMap.get(CUSTOM_SENTENCE_SPLITTER_ID);
+    }
 
     /**
      * 특정 id로 분류한 문장 구분기 인스턴스 반환
@@ -88,13 +97,11 @@ public class SentenceSplitterFactory {
 
     private void createSentenceSplitter(int id) {
         if(id == BASIC_SENTENCE_SPLITTER_ID) {
-            BasicRoleManager basicRoleManager = BasicRoleManager.getRoleManager();
-            basicRoleManager.getException();
+            RoleManager basicRoleManager = BasicRoleManager.getRoleManager();
             sentenceSplitterHashMap.put(BASIC_SENTENCE_SPLITTER_ID,
                     new SentenceSplitterImpl(basicRoleManager, new Config()));
         } else if(id == NEWS_SENTENCE_SPLITTER_ID) {
             NewsRoleManager newsRoleManager = NewsRoleManager.getRoleManager();
-            newsRoleManager.getException();
             sentenceSplitterHashMap.put(NEWS_SENTENCE_SPLITTER_ID,
                     new SentenceSplitterImpl(newsRoleManager,
                             new Config(5, 3, 2, TEXT_DATA_TYPE, NEWS_DOC_TYPE)));

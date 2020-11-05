@@ -23,7 +23,7 @@ public interface FileReader {
 
     /**
      * 경로를 포함한 파일 명으로 파일을 읽어온다.
-     * TODO 1. 파일 작성 후 바로 읽지 못하는 문제 해결하기
+     *
      * @param fileName String
      */
     void readFile(String fileName);

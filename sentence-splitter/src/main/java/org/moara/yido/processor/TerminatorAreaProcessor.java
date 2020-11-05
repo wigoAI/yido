@@ -41,8 +41,8 @@ public class TerminatorAreaProcessor {
      * @param config Config
      */
     public TerminatorAreaProcessor(RoleManager roleManager, Config config) {
-        this.terminatorRole = roleManager.getTerminator();
-        this.connectiveRole = roleManager.getConnective();
+        this.terminatorRole = roleManager.getRole("terminator");
+        this.connectiveRole = roleManager.getRole("connective");
         this.TERMINATOR_CONFIG = config;
     }
 
