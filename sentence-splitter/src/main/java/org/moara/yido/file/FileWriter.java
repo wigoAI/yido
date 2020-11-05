@@ -36,4 +36,11 @@ public interface FileWriter {
      * @param data {@code List<String>}
      */
     void writeFile(String fileName, List<String> data);
+
+    /**
+     *
+     * @param fileName
+     * @param data
+     */
+    void addLine(String fileName, List<String> data);
 }
