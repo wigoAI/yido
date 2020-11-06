@@ -7,6 +7,7 @@ import org.moara.yido.file.FileManager;
 import org.moara.yido.file.FileManagerImpl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class RoleManagerTest {
@@ -45,10 +46,10 @@ public class RoleManagerTest {
             System.out.println(str);
         }
 
-        for (String str : roleManager.getRole("terminator")) {
+        for (String str : roleManager.getRole("regx")) {
             System.out.println(str);
         }
-        for (String str : roleManager.getRole("regx")) {
+        for (String str : roleManager.getRole("terminator")) {
             System.out.println(str);
         }
     }
@@ -91,8 +92,8 @@ public class RoleManagerTest {
 
             Assert.assertEquals((originalSize + 1), roleManager.getRole(roleName).size());
 
-            fileManager.readFile("/role/news/terminator.role");
-            List<String> localRole = fileManager.getFile();
+
+            Collection<String> localRole = fileManager.readFile("/role/news/terminator.role");
             Assert.assertEquals(localRole.size() , originalSize + 1);
         } catch (AssertionError e) {
             resetRole(roleName);
@@ -130,8 +131,8 @@ public class RoleManagerTest {
 
             Assert.assertEquals(originalSize - 1, roleManager.getRole(roleName).size());
 
-            fileManager.readFile("/role/news/terminator.role");
-            List<String> localRole = fileManager.getFile();
+
+            Collection<String> localRole = fileManager.readFile("/role/news/terminator.role");
             Assert.assertEquals(localRole.size() , originalSize - 1);
 
         } catch (AssertionError e) {

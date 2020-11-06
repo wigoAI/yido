@@ -27,12 +27,12 @@ import java.util.List;
  * @author 조승현
  *
  */
-public class FileManagerImpl implements FileManager {
-    List<String> file = new ArrayList<>();
+public class FileManagerImpl implements FileManager{
+
 
     @Override
-    public boolean readFile(String fileName){
-        file.clear();
+    public Collection<String> readFile(String fileName){
+        Collection<String> file = new ArrayList<>();
 
         try(BufferedReader br = new BufferedReader(
                 new InputStreamReader(new FileInputStream(ABSTRACT_PATH + fileName), StandardCharsets.UTF_8))) {
@@ -46,11 +46,11 @@ public class FileManagerImpl implements FileManager {
 
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
+
         }
 
 
-        return true;
+        return file;
     }
 
     @Override
@@ -76,8 +76,6 @@ public class FileManagerImpl implements FileManager {
         return true;
     }
 
-    @Override
-    public List<String> getFile() { return this.file; }
 
     /**
      * 특정 확장자 파일 획득

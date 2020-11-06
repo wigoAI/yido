@@ -63,6 +63,7 @@ public class TerminatorAreaProcessor {
                 String targetString = text.substring(targetArea.getStart(), targetArea.getEnd());
 
                 if(terminatorRole.contains(targetString) && !isConnective(targetArea.getEnd(), text)) {
+
                     int additionalSignLength = getAdditionalSignLength(targetArea.getEnd(), text);
                     terminatorList.add(targetArea.getEnd() + additionalSignLength);
 

@@ -17,9 +17,9 @@ public class FileManagerTest {
 
         FileManagerImpl fileManager = new FileManagerImpl();
 
-        fileManager.readFile("/data/newRevData.txt");
 
-        assertEquals(fileManager.getFile().get(1), "흠...포스터보고 초딩영화줄....오버연기조차 가볍지 않구나");
+
+        assertEquals(fileManager.readFile("/data/newRevData.txt").toArray()[1], "흠...포스터보고 초딩영화줄....오버연기조차 가볍지 않구나");
     }
 
     @Test
@@ -37,11 +37,11 @@ public class FileManagerTest {
         hashData.add("test3");
 
         assertTrue(fileManager.writeFile("/data/test.role", data));
-        assertTrue(fileManager.readFile("/data/test.role"));
+        assertFalse(fileManager.readFile("/data/test.role").isEmpty());
         assertTrue(fileManager.addLine("/data/test.role", data));
         assertTrue(fileManager.addLine("/data/test.role", hashData));
 
-        assertTrue(fileManager.readFile("/data/test.role"));
+        assertFalse(fileManager.readFile("/data/test.role").isEmpty());
 
     }
 

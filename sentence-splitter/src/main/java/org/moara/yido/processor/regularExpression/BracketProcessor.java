@@ -40,9 +40,6 @@ public class BracketProcessor implements RegularExpressionProcessor {
      */
     public BracketProcessor(RoleManager roleManager) {
         HashSet<String> patternDic = roleManager.getRole("exception");
-        for (String pattern : patternDic) {
-            System.out.println(pattern);
-        }
         bracketPattern = createPattern(patternDic);
     }
 

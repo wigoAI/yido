@@ -18,27 +18,12 @@ package org.moara.yido.role;
 import org.moara.yido.file.FileManager;
 import org.moara.yido.file.FileManagerImpl;
 
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * 메타 데이터 관리자
  *
- * TODO 1. Role 추가기능 만들기
- *          - 업데이트
- *              - 서버에서 업데이트
- *          - 삭제
- *              - 원하는 룰 삭제
- *              - 전체 삭제
- *          - 룰 추가
- *              - 임시 추가
- *              - 파일에 추가
- *      2. 존재하지 않는 룰 관리자를 생성할 때 초기화 과정
- *          - dic 파일 생성
- *          - dic 폴더 생성
- *      3. 팩토리 패턴으로 생성해야하는가?
- *
- *
+ * TODO 1. 실행시에 메모리에 업로드 하도록
  *
  * @author 조승현
  */
@@ -46,19 +31,22 @@ public class RoleManager {
 
     private final String publicRolePath = "/role/";
     private final String rolePath;
-    private final HashSet<String> terminator = new HashSet<>();
-    private final HashSet<String> connective = new HashSet<>();
-    private final HashSet<String> exception = new HashSet<>();
-    private final HashSet<String> regx = new HashSet<>();
+    private final HashMap<String,HashSet<String>> roleMap = new HashMap<>();
+    private final HashMap<String, Boolean> isInitialized = new HashMap<>();
+    private final List<String> roleNames = new ArrayList<>();
 
     protected FileManager fileManager = new FileManagerImpl();
 
     protected RoleManager(String roleManagerName) {
         this.rolePath = publicRolePath + roleManagerName + "/";
-        initRole("terminator");
-        initRole("connective");
-        initRole("exception");
-        initRole("regx");
+        String[] roleNames  = {"terminator", "connective", "exception", "regx"};
+
+        for (String roleName : roleNames) {
+            roleMap.put(roleName, new HashSet<>());
+            isInitialized.put(roleName, false);
+        }
+
+        this.roleNames.addAll(Arrays.asList(roleNames));
     }
 
     /**
@@ -97,6 +85,7 @@ public class RoleManager {
      * @param roles 제거할 룰 내용
      */
     public void removeRolesInLocal(String roleName, List<String> roles ) {
+
         HashSet<String> role = getRole(roleName);
         role.removeAll(roles);
 
@@ -109,14 +98,17 @@ public class RoleManager {
      * @param roleName 존재하는 룰 이름 : connective, exception, regx, terminator
      */
     public void initRole(String roleName) {
-        fileManager.readFile(rolePath + roleName + ".role");
-        HashSet<String> role = getRole(roleName);
+        if (!roleNames.contains(roleName)) { throw new RuntimeException("Invalid role name : " + roleName); }
+
+        HashSet<String> role = roleMap.get(roleName);
 
         role.clear();
-        role.addAll(fileManager.getFile());
+        role.addAll(fileManager.readFile(rolePath + roleName + ".role"));
         role.remove(null);
+        isInitialized.put(roleName, true);
 
     }
+
 
     /**
      * 원하는 룰 획득
@@ -126,26 +118,10 @@ public class RoleManager {
      * @return 선택한 룰의 참조변수 HashSet
      */
     public HashSet<String> getRole(String roleName) {
-        HashSet<String> role;
-        switch (roleName) {
-            case "terminator":
-                role = terminator;
-                break;
-            case "connective":
-                role = connective;
-                break;
-            case "exception":
-                role = exception;
-                break;
-            case "regx":
-                role = regx;
-                break;
-            default:
-                throw new RuntimeException("Invalid role name : " + roleName);
+        if (!roleNames.contains(roleName)) { throw new RuntimeException("Invalid role name : " + roleName); }
+        if(!isInitialized.get(roleName)) { initRole(roleName); }
 
-        }
-
-        return role;
+        return roleMap.get(roleName);
     }
 
 
