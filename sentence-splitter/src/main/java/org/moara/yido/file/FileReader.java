@@ -25,6 +25,8 @@ public interface FileReader {
      * 경로를 포함한 파일 명으로 파일을 읽어온다.
      *
      * @param fileName String
+     *
+     * @return Result read file Success
      */
-    void readFile(String fileName);
+    boolean readFile(String fileName);
 }

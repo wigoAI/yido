@@ -3,12 +3,11 @@ package org.moara.yido.areaProcessor;
 import com.github.wjrmffldrhrl.Area;
 import org.junit.Assert;
 import org.junit.Test;
-import org.moara.yido.Config;
+import org.moara.yido.utils.Config;
 
 import org.moara.yido.processor.ExceptionAreaProcessor;
 import org.moara.yido.processor.TerminatorAreaProcessor;
 import org.moara.yido.role.BasicRoleManager;
-import org.moara.yido.role.NewsRoleManager;
 import org.moara.yido.role.RoleManager;
 
 import static org.junit.Assert.assertEquals;

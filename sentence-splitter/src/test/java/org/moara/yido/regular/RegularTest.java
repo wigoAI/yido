@@ -10,6 +10,7 @@ import org.moara.yido.processor.regularExpression.UrlProcessor;
 import org.moara.yido.role.BasicRoleManager;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class RegularTest {
 
@@ -53,6 +54,5 @@ public class RegularTest {
         assertEquals(splitAreas.get(0).getEnd(), 35);
 
     }
-
 
 }

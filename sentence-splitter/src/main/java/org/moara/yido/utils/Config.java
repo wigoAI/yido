@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.yido;
+package org.moara.yido.utils;
 
 /**
  * 문자 구분기 설정 값
@@ -25,6 +25,7 @@ public class Config {
     public final int PROCESSING_LENGTH_MIN;
     public final String DOC_TYPE;
     public final String DATA_TYPE;
+    public final boolean USE_PUBLIC_ROLE;
 
     /**
      * Constructor
@@ -34,12 +35,13 @@ public class Config {
      * @param DATA_TYPE String
      * @param DOC_TYPE String
      */
-    public Config(int MIN_SENTENCE_LENGTH, int PROCESSING_LENGTH_MAX, int PROCESSING_LENGTH_MIN, String DATA_TYPE, String DOC_TYPE ) {
+    public Config(int MIN_SENTENCE_LENGTH, int PROCESSING_LENGTH_MAX, int PROCESSING_LENGTH_MIN, String DATA_TYPE, String DOC_TYPE , boolean USE_PUBLIC_ROLE) {
         this.MIN_SENTENCE_LENGTH = MIN_SENTENCE_LENGTH;
         this.PROCESSING_LENGTH_MAX = PROCESSING_LENGTH_MAX;
         this.PROCESSING_LENGTH_MIN = PROCESSING_LENGTH_MIN;
         this.DATA_TYPE = DATA_TYPE;
         this.DOC_TYPE = DOC_TYPE;
+        this.USE_PUBLIC_ROLE = USE_PUBLIC_ROLE;
 
     }
 
@@ -54,6 +56,7 @@ public class Config {
         this.PROCESSING_LENGTH_MIN = 2;
         this.DATA_TYPE = "text";
         this.DOC_TYPE = "basic";
+        this.USE_PUBLIC_ROLE = true;
 
     }
 

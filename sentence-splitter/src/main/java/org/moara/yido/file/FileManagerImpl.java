@@ -19,6 +19,7 @@ import java.io.*;
 import java.io.FileWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -30,7 +31,7 @@ public class FileManagerImpl implements FileManager {
     List<String> file = new ArrayList<>();
 
     @Override
-    public void readFile(String fileName){
+    public boolean readFile(String fileName){
         file.clear();
 
         try(BufferedReader br = new BufferedReader(
@@ -42,27 +43,37 @@ public class FileManagerImpl implements FileManager {
                 file.add(line);
             }
 
-        } catch (IOException e) { e.printStackTrace(); }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+
+        return true;
     }
 
     @Override
-    public void writeFile(String fileName, List<String> data) {
-        writeFile(fileName, data, false);
+    public boolean writeFile(String fileName, Collection<String> data) {
+        return writeFile(fileName, data, false);
     }
 
     @Override
-    public void addLine(String fileName, List<String> data) {
-        writeFile(fileName, data, true);
+    public boolean addLine(String fileName, Collection<String> data) {
+        return writeFile(fileName, data, true);
     }
 
-    private void writeFile(String fileName, List<String> data, boolean append) {
+    private boolean writeFile(String fileName, Collection<String> data, boolean append) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(changePathSeparator(ABSTRACT_PATH + fileName), append))){
             for(String str : data)
                 bw.write(str + "\n");
 
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
+
+        return true;
     }
 
     @Override

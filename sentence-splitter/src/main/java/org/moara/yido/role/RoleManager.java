@@ -37,8 +37,6 @@ import java.util.List;
  *          - dic 파일 생성
  *          - dic 폴더 생성
  *      3. 팩토리 패턴으로 생성해야하는가?
- *      4. 룰 종류별로 나눠야 하는가?
- *          - String 매개변수로 동작하게 변경하자
  *
  *
  *
@@ -46,15 +44,17 @@ import java.util.List;
  */
 public class RoleManager {
 
-    String dicPath;
-    protected HashSet<String> terminator = new HashSet<>();
-    protected HashSet<String> connective = new HashSet<>();
-    protected HashSet<String> exception = new HashSet<>();
-    protected HashSet<String> regx = new HashSet<>();
-    FileManager fileManager = new FileManagerImpl();
+    private final String publicRolePath = "/role/";
+    private final String rolePath;
+    private final HashSet<String> terminator = new HashSet<>();
+    private final HashSet<String> connective = new HashSet<>();
+    private final HashSet<String> exception = new HashSet<>();
+    private final HashSet<String> regx = new HashSet<>();
 
-    protected RoleManager(String roleName) {
-        this.dicPath = "/dic/" + roleName + "/";
+    protected FileManager fileManager = new FileManagerImpl();
+
+    protected RoleManager(String roleManagerName) {
+        this.rolePath = publicRolePath + roleManagerName + "/";
         initRole("terminator");
         initRole("connective");
         initRole("exception");
@@ -62,67 +62,70 @@ public class RoleManager {
     }
 
     /**
-     * 룰 데이터 반환
-     * @return {@code HashSet<String>}
+     * 임시로 사용할 룰을 추가한다. 메모리에 저장되며 프로그램 종료 시 사라진다.
+     * @param roleName 존재하는 룰 이름 : connective, exception, regx, terminator
+     * @param roles 추가할 룰 내용
+     */
+    public void addRolesToMemory(String roleName, List<String> roles ) {
+        getRole(roleName).addAll(roles);
+
+    }
+
+    /**
+     * 로컬 룰 파일에 룰을 추가한다.
+     * @param roleName 존재하는 룰 이름 : connective, exception, regx, terminator
+     * @param roles 추가할 룰 내용
+     */
+    public void addRolesToLocal(String roleName, List<String> roles ) {
+        fileManager.addLine(rolePath + roleName + ".role", roles);
+
+    }
+
+    /**
+     * 메모리에 업로드 된 룰에서 원하는 룰을 임시로 제거한다. 프로그램 종료 시 초기화된다.
+     * @param roleName 존재하는 룰 이름 : connective, exception, regx, terminator
+     * @param roles 제거할 룰 내용
+     */
+    public void removeRolesInMemory(String roleName, List<String> roles ) {
+        getRole(roleName).removeAll(roles);
+
+    }
+
+    /**
+     * 로컬 룰 파일에서 룰을 제거한다.
+     * @param roleName 존재하는 룰 이름 : connective, exception, regx, terminator
+     * @param roles 제거할 룰 내용
+     */
+    public void removeRolesInLocal(String roleName, List<String> roles ) {
+        HashSet<String> role = getRole(roleName);
+        role.removeAll(roles);
+
+        fileManager.writeFile(rolePath + roleName + ".role", role);
+
+    }
+
+    /**
+     * 로컬 룰 파일로 룰 초기화
+     * @param roleName 존재하는 룰 이름 : connective, exception, regx, terminator
+     */
+    public void initRole(String roleName) {
+        fileManager.readFile(rolePath + roleName + ".role");
+        HashSet<String> role = getRole(roleName);
+
+        role.clear();
+        role.addAll(fileManager.getFile());
+        role.remove(null);
+
+    }
+
+    /**
+     * 원하는 룰 획득
+     * 해당 룰은 싱글톤으로 생성되어 참조변수 자체를 반환하기 때문에 반환받은 룰의 내용을 변경하면
+     * 동일한 룰 관리자를 사용하는 문장 분리기는 모두 영향을 받는다.
+     * @param roleName 존재하는 룰 이름 : connective, exception, regx, terminator
+     * @return 선택한 룰의 참조변수 HashSet
      */
     public HashSet<String> getRole(String roleName) {
-
-        switch (roleName) {
-            case "terminator":
-                return terminator;
-            case "connective":
-                return connective;
-            case "exception":
-                return exception;
-            case "regx":
-                return regx;
-            default:
-                throw new RuntimeException("Invalid role name : " + roleName);
-        }
-
-    }
-
-
-    /**
-     * 로컬 사전 파일에 룰을 추가한다.
-     * @param dicName 존재하는 사전 이름 : connective, exception, regx, terminator
-     * @param roles 추가할 룰 내용
-     */
-    public void addRolesToLocal(String dicName, List<String> roles ) {
-        fileManager.addLine(dicPath + dicName + ".dic", roles);
-    }
-
-    /**
-     * 임시로 사용할 룰을 추가한다. 메모리에 저장되며 프로그램 종료 시 사라진다.
-     * @param dicName 존재하는 사전 이름 : connective, exception, regx, terminator
-     * @param roles 추가할 룰 내용
-     */
-    public void addRolesToMemory(String dicName, List<String> roles ) {
-        switch (dicName) {
-            case "terminator":
-                terminator.addAll(roles);
-                break;
-            case "connective":
-                connective.addAll(roles);
-                break;
-            case "exception":
-                exception.addAll(roles);
-                break;
-            case "regx":
-                regx.addAll(roles);
-                break;
-            default:
-                throw new RuntimeException("Invalid diction name : " + dicName);
-
-        }
-    }
-
-    /**
-     * 초기화 과정에 문제가 있다.
-     * @param roleName
-     */
-    protected void initRole(String roleName) {
-        fileManager.readFile(dicPath + roleName + ".dic");
         HashSet<String> role;
         switch (roleName) {
             case "terminator":
@@ -141,13 +144,9 @@ public class RoleManager {
                 throw new RuntimeException("Invalid role name : " + roleName);
 
         }
-        role.addAll(fileManager.getFile());
-        role.remove(null);
 
+        return role;
     }
-
-
-
 
 
 }

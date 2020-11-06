@@ -21,6 +21,8 @@ import org.moara.yido.processor.TerminatorAreaProcessor;
 
 import org.moara.yido.processor.regularExpression.RegularExpressionProcessorImpl;
 import org.moara.yido.role.RoleManager;
+import org.moara.yido.utils.Config;
+import org.moara.yido.utils.Sentence;
 
 import java.util.ArrayList;
 import java.util.List;

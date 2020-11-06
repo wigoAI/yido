@@ -3,7 +3,7 @@ package org.moara.yido.splitter;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.moara.yido.SentenceSplitterImpl;
-import org.moara.yido.Sentence;
+import org.moara.yido.utils.Sentence;
 import org.moara.yido.SentenceSplitter;
 import org.moara.yido.SentenceSplitterFactory;
 

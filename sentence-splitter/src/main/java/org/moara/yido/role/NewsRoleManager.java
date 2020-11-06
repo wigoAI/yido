@@ -23,7 +23,7 @@ package org.moara.yido.role;
 public class NewsRoleManager extends RoleManager {
     private static final NewsRoleManager NEWS_ROLE_MANAGER = new NewsRoleManager("news");
 
-    private NewsRoleManager(String dicPath) { super(dicPath); }
+    private NewsRoleManager(String roleManagerName) { super(roleManagerName); }
 
     /**
      * 뉴스 메타데이터 관리자 인스턴스 반환

@@ -18,6 +18,7 @@ package org.moara.yido;
 import org.moara.yido.role.BasicRoleManager;
 import org.moara.yido.role.NewsRoleManager;
 import org.moara.yido.role.RoleManager;
+import org.moara.yido.utils.Config;
 
 import java.util.HashMap;
 
@@ -101,10 +102,10 @@ public class SentenceSplitterFactory {
             sentenceSplitterHashMap.put(BASIC_SENTENCE_SPLITTER_ID,
                     new SentenceSplitterImpl(basicRoleManager, new Config()));
         } else if(id == NEWS_SENTENCE_SPLITTER_ID) {
-            NewsRoleManager newsRoleManager = NewsRoleManager.getRoleManager();
+            RoleManager newsRoleManager = NewsRoleManager.getRoleManager();
             sentenceSplitterHashMap.put(NEWS_SENTENCE_SPLITTER_ID,
                     new SentenceSplitterImpl(newsRoleManager,
-                            new Config(5, 3, 2, TEXT_DATA_TYPE, NEWS_DOC_TYPE)));
+                            new Config(5, 3, 2, TEXT_DATA_TYPE, NEWS_DOC_TYPE, true)));
         }
     }
 

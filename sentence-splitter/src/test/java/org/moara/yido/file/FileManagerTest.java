@@ -2,10 +2,12 @@ package org.moara.yido.file;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class FileManagerTest {
@@ -24,19 +26,22 @@ public class FileManagerTest {
     public void testWriteFile() {
         FileManagerImpl fileManager = new FileManagerImpl();
         List<String> data = new ArrayList<>();
+        HashSet<String> hashData = new HashSet<>();
 
         data.add("test1");
         data.add("test2");
         data.add("test3");
 
-        fileManager.writeFile("/data/test.role", data);
+        hashData.add("test1");
+        hashData.add("test2");
+        hashData.add("test3");
 
+        assertTrue(fileManager.writeFile("/data/test.role", data));
+        assertTrue(fileManager.readFile("/data/test.role"));
+        assertTrue(fileManager.addLine("/data/test.role", data));
+        assertTrue(fileManager.addLine("/data/test.role", hashData));
 
-
-        fileManager.readFile("/data/test.role");
-        System.out.println(fileManager.getFile());
-
-        fileManager.addLine("/data/test.role", data);
+        assertTrue(fileManager.readFile("/data/test.role"));
 
     }
 

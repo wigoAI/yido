@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.yido;
+package org.moara.yido.utils;
 
 import com.github.wjrmffldrhrl.Area;
 

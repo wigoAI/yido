@@ -16,7 +16,7 @@
 package org.moara.yido.processor;
 
 import com.github.wjrmffldrhrl.Area;
-import org.moara.yido.Config;
+import org.moara.yido.utils.Config;
 import org.moara.yido.role.RoleManager;
 
 import java.util.HashSet;

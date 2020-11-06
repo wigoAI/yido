@@ -18,6 +18,7 @@ package org.moara.yido.file;
 import org.moara.yido.SentenceSplitterImpl;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -34,13 +35,17 @@ public interface FileWriter {
      * 파일 생성
      * @param fileName String
      * @param data {@code List<String>}
+     *
+     * @return Write file result
      */
-    void writeFile(String fileName, List<String> data);
+    boolean writeFile(String fileName, Collection<String> data);
 
     /**
      *
      * @param fileName
      * @param data
+     *
+     * @return Result add line success
      */
-    void addLine(String fileName, List<String> data);
+    boolean addLine(String fileName, Collection<String> data);
 }

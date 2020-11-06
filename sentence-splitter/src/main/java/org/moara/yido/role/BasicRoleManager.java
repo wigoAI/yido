@@ -29,8 +29,8 @@ public class BasicRoleManager extends RoleManager {
     private static final BasicRoleManager BASIC_ROLE_MANAGER = new BasicRoleManager("basic");
 
 
-    private BasicRoleManager(String dicPath) {
-        super(dicPath);
+    private BasicRoleManager(String roleManagerName) {
+        super(roleManagerName);
     }
 
     /**
