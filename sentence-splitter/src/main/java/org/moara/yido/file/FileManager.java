@@ -15,6 +15,10 @@
  */
 package org.moara.yido.file;
 
+import org.moara.yido.SentenceSplitterImpl;
+
+import java.io.File;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -23,11 +27,37 @@ import java.util.List;
  * 파일 관리 기능을 상속받는다.
  * @author 조승현
  */
-public interface FileManager extends FileWriter, FileReader{
+public interface FileManager {
+    String pathSeparator = File.separator;
+    String ABSTRACT_PATH = SentenceSplitterImpl.class.getResource("")
+            .getPath().split( "target")[0]
+            + "src" + pathSeparator + "main" + pathSeparator + "resources";
 
     /**
-     * 파일 메모리 업로드
-     * @return {@code List<String>}
+     * 경로를 포함한 파일 명으로 파일을 읽어온다.
+     *
+     * @param fileName String
+     *
+     * @return Result read file Success
      */
-    List<String> getFile();
+    Collection<String> readFile(String fileName);
+
+    /**
+     * 파일 생성
+     * @param fileName String
+     * @param data {@code List<String>}
+     *
+     * @return Write file result
+     */
+    boolean writeFile(String fileName, Collection<String> data);
+
+    /**
+     *
+     * @param fileName
+     * @param data
+     *
+     * @return Result add line success
+     */
+    boolean addLine(String fileName, Collection<String> data);
+
 }

@@ -18,6 +18,7 @@ package org.moara.yido.processor;
 import com.github.wjrmffldrhrl.Area;
 import org.moara.yido.processor.regularExpression.BracketProcessor;
 import org.moara.yido.processor.regularExpression.UrlProcessor;
+import org.moara.yido.role.PublicRoleManager;
 import org.moara.yido.role.RoleManager;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,18 +32,18 @@ public class ExceptionAreaProcessor {
     private final UrlProcessor urlProcessor = new UrlProcessor();
     private final BracketProcessor bracketProcessor;
 
-
     /**
      * Constructor
-     * TODO 1. 현재 괄호 영역에 대한 처리만 이루어지고 있음
-     *          - 괄호 영역에 사용되는 dictionary 가 예외영역 dictionary 와 같음
-     *          - 예외 영역 처리기의 exceptionRole 을 제거 할 수 있으면 하기
      *
      * @param roleManager RoleManager
      *
      */
     public ExceptionAreaProcessor(RoleManager roleManager) {
         bracketProcessor = new BracketProcessor(roleManager);
+    }
+
+    public ExceptionAreaProcessor(PublicRoleManager publicRoleManager, RoleManager roleManager) {
+        bracketProcessor = new BracketProcessor(publicRoleManager, roleManager);
     }
 
     /**

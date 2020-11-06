@@ -17,6 +17,8 @@ package org.moara.yido;
 
 import org.moara.yido.role.BasicRoleManager;
 import org.moara.yido.role.NewsRoleManager;
+import org.moara.yido.role.RoleManager;
+import org.moara.yido.utils.Config;
 
 import java.util.HashMap;
 
@@ -28,13 +30,8 @@ import java.util.HashMap;
 public class SentenceSplitterFactory {
     private static final int BASIC_SENTENCE_SPLITTER_ID = 1;
     private static final int NEWS_SENTENCE_SPLITTER_ID = 2;
-    private static final String JSON_DATA_TYPE = "json";
-    private static final String TEXT_DATA_TYPE = "text";
-    private static final String BASIC_DOC_TYPE = "basic";
-    private static final String NEWS_DOC_TYPE = "news";
-    private static final String SNS_DOC_TYPE = "SNS";
-    private static final String STT_DOC_TYPE = "stt";
-    private static final String QA_DOC_TYPE = "qa";
+    private static final int CUSTOM_SENTENCE_SPLITTER_ID = 9;
+
 
     /**
      *  id  1. 기본 문장 구분기
@@ -44,32 +41,70 @@ public class SentenceSplitterFactory {
     private static final SentenceSplitterFactory sentenceSplitterFactory = new SentenceSplitterFactory();
 
     /**
+     * 싱글톤으로 구성된 SentenceSplitterFactory 인스턴스 획득
      *
-     * @return
+     * @return SentenceSplitterFactory 인스턴스 반환
      */
     public static SentenceSplitterFactory getInstance() { return SentenceSplitterFactory.sentenceSplitterFactory; }
     private SentenceSplitterFactory() { }
 
     /**
-     * <p>문장 구분기 인스턴스 획득</p>
+     * 문장 구분기 인스턴스 획득
      * 설정값이 없으면 기본값을로 설정된 BasicSentenceSplitter를 반환한다.
      *
      * @return BasicSentenceSplitter
      */
     public SentenceSplitter getSentenceSplitter() {
         if(isKeyEmpty(BASIC_SENTENCE_SPLITTER_ID)) { createSentenceSplitter(BASIC_SENTENCE_SPLITTER_ID); }
-        System.out.println(sentenceSplitterHashMap.get(BASIC_SENTENCE_SPLITTER_ID));
+
         return sentenceSplitterHashMap.get(BASIC_SENTENCE_SPLITTER_ID);
-        
     }
+
+
 
     /**
      * 임의 설정값이 적용된 문장 구분기 인스턴스 반환
-     *
+     * 이후 CustomSentenceSplitter의 key value인 9로 인스턴스를 얻을 수 있다.
+     * {@code getSentenceSplitter(9)}
      * @param config 설정값
      * @return SentenceSplitter
      */
-    public SentenceSplitter getSentenceSplitter(Config config) { return null; }
+    public SentenceSplitter getSentenceSplitter(Config config) {
+        RoleManager basicRoleManager = BasicRoleManager.getRoleManager();
+        sentenceSplitterHashMap.put(CUSTOM_SENTENCE_SPLITTER_ID,
+                new SentenceSplitterImpl(basicRoleManager, config));
+        return sentenceSplitterHashMap.get(CUSTOM_SENTENCE_SPLITTER_ID);
+    }
+
+    /**
+     * 커스텀 룰 관리자가 적용된 문장 분리기 반환
+     *
+     * 이후 CustomSentenceSplitter의 key value인 9로 인스턴스를 얻을 수 있다.
+     *  {@code getSentenceSplitter(9)}
+     * @param roleManager CustomRoleManager
+     * @return SentenceSplitter
+     */
+    public SentenceSplitter getSentenceSplitter(RoleManager roleManager) {
+        sentenceSplitterHashMap.put(CUSTOM_SENTENCE_SPLITTER_ID,
+                new SentenceSplitterImpl(roleManager, new Config()));
+        return sentenceSplitterHashMap.get(CUSTOM_SENTENCE_SPLITTER_ID);
+    }
+
+    /**
+     * 커스텀 룰 관리자와 사용자 지정 설정이 적용된 문장 분리기 반환
+     *
+     * 이후 CustomSentenceSplitter의 key value인 9로 인스턴스를 얻을 수 있다.
+     * {@code getSentenceSplitter(9)}
+     * @param roleManager CustomRoleManager
+     * @param config CustomConfig
+     * @return SentenceSplitter
+     */
+    public SentenceSplitter getSentenceSplitter(RoleManager roleManager, Config config) {
+        sentenceSplitterHashMap.put(CUSTOM_SENTENCE_SPLITTER_ID,
+                new SentenceSplitterImpl(roleManager, config));
+        return sentenceSplitterHashMap.get(CUSTOM_SENTENCE_SPLITTER_ID);
+    }
+
 
     /**
      * 특정 id로 분류한 문장 구분기 인스턴스 반환
@@ -78,25 +113,21 @@ public class SentenceSplitterFactory {
      * @return SentenceSplitter
      */
     public SentenceSplitter getSentenceSplitter(int id) {
-        if(isKeyEmpty(id)) {
-            createSentenceSplitter(id);
-        }
+        if(isKeyEmpty(id)) { createSentenceSplitter(id); }
         return sentenceSplitterHashMap.get(id);
     }
 
 
     private void createSentenceSplitter(int id) {
         if(id == BASIC_SENTENCE_SPLITTER_ID) {
-            BasicRoleManager basicRoleManager = BasicRoleManager.getRoleManager();
-            basicRoleManager.getException();
+            RoleManager basicRoleManager = BasicRoleManager.getRoleManager();
             sentenceSplitterHashMap.put(BASIC_SENTENCE_SPLITTER_ID,
                     new SentenceSplitterImpl(basicRoleManager, new Config()));
         } else if(id == NEWS_SENTENCE_SPLITTER_ID) {
-            NewsRoleManager newsRoleManager = NewsRoleManager.getRoleManager();
-            newsRoleManager.getException();
+            RoleManager newsRoleManager = NewsRoleManager.getRoleManager();
             sentenceSplitterHashMap.put(NEWS_SENTENCE_SPLITTER_ID,
                     new SentenceSplitterImpl(newsRoleManager,
-                            new Config(5, 3, 2, TEXT_DATA_TYPE, NEWS_DOC_TYPE)));
+                            new Config(5, 3, 2, true)));
         }
     }
 

@@ -15,36 +15,120 @@
  */
 package org.moara.yido.role;
 
-import java.util.HashSet;
+import org.moara.yido.file.FileManager;
+import org.moara.yido.file.FileManagerImpl;
+
+import java.util.*;
 
 /**
- * 메타 데이터 관리자 추상체
+ * 메타 데이터 관리자
  *
- * TODO 1. Role 추가기능 만들기
- *          - 업데이트
- *          - 삭제
  * @author 조승현
  */
-public interface RoleManager {
+public class RoleManager {
 
-    String dicPath = "/dic/";
+    private final String rolePath;
+    private final HashMap<String,HashSet<String>> roleMap = new HashMap<>();
+    private final HashMap<String, Boolean> isInitialized = new HashMap<>();
+    private final List<String> roleNames = new ArrayList<>();
+
+
+    protected FileManager fileManager = new FileManagerImpl();
+
+    protected RoleManager(String roleManagerName) {
+        this.rolePath = "/role/" + roleManagerName + "/";
+
+        String[] roleNames  = {"terminator", "connective", "exception", "regx"};
+
+        for (String roleName : roleNames) {
+            roleMap.put(roleName, new HashSet<>());
+            isInitialized.put(roleName, false);
+        }
+
+        this.roleNames.addAll(Arrays.asList(roleNames));
+    }
 
     /**
-     * 구분자 메타 데이터 반환
-     * @return {@code HashSet<String>}
+     * 임시로 사용할 룰을 추가한다. 메모리에 저장되며 프로그램 종료 시 사라진다.
+     * @param roleName 존재하는 룰 이름 : connective, exception, regx, terminator
+     * @param roles 추가할 룰 내용
      */
-    HashSet<String> getTerminator();
+    public void addRolesToMemory(String roleName, List<String> roles ) {
+        getRole(roleName).addAll(roles);
+    }
 
     /**
-     * 예외영역 메타 데이터 반환
-     * @return {@code HashSet<String>}
+     * 로컬 룰 파일에 룰을 추가한다.
+     * @param roleName 존재하는 룰 이름 : connective, exception, regx, terminator
+     * @param roles 추가할 룰 내용
      */
-    HashSet<String> getException();
+    public void addRolesToLocal(String roleName, List<String> roles ) {
+        fileManager.addLine(rolePath + roleName + ".role", roles);
+    }
 
     /**
-     * 연결어 메타 데이터 반환
-     * @return {@code HashSet<String>}
+     * 메모리에 업로드 된 룰에서 원하는 룰을 임시로 제거한다. 프로그램 종료 시 초기화된다.
+     * @param roleName 존재하는 룰 이름 : connective, exception, regx, terminator
+     * @param roles 제거할 룰 내용
      */
-    HashSet<String> getConnective();
+    public void removeRolesInMemory(String roleName, List<String> roles ) {
+        getRole(roleName).removeAll(roles);
+
+    }
+
+    /**
+     * 로컬 룰 파일에서 룰을 제거한다.
+     * @param roleName 존재하는 룰 이름 : connective, exception, regx, terminator
+     * @param roles 제거할 룰 내용
+     */
+    public void removeRolesInLocal(String roleName, List<String> roles ) {
+
+        HashSet<String> role = getRole(roleName);
+        role.removeAll(roles);
+
+        fileManager.writeFile(rolePath + roleName + ".role", role);
+
+    }
+
+    /**
+     * 로컬 룰 파일로 룰 초기화
+     * @param roleName 존재하는 룰 이름 : connective, exception, regx, terminator
+     */
+    public void initRole(String roleName) {
+        if (!roleNames.contains(roleName)) { throw new RuntimeException("Invalid role name : " + roleName); }
+
+        HashSet<String> role = roleMap.get(roleName);
+
+        role.clear();
+        role.addAll(fileManager.readFile(rolePath + roleName + ".role"));
+        role.remove(null);
+        isInitialized.put(roleName, true);
+
+    }
+
+    /**
+     * 모든 룰 초기화
+     */
+    public void initAllRoles() {
+        for (String roleName : roleNames) {
+            initRole(roleName);
+        }
+    }
+
+
+    /**
+     * 원하는 룰 획득
+     * 해당 룰은 싱글톤으로 생성되어 참조변수 자체를 반환하기 때문에 반환받은 룰의 내용을 변경하면
+     * 동일한 룰 관리자를 사용하는 문장 분리기는 모두 영향을 받는다.
+     * @param roleName 존재하는 룰 이름 : connective, exception, regx, terminator
+     * @return 선택한 룰의 참조변수 HashSet
+     */
+    public HashSet<String> getRole(String roleName) {
+        if (!roleNames.contains(roleName)) { throw new RuntimeException("Invalid role name : " + roleName); }
+        if(!isInitialized.get(roleName)) { initRole(roleName); }
+
+        return roleMap.get(roleName);
+    }
+
 
 }

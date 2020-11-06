@@ -19,7 +19,11 @@ import com.github.wjrmffldrhrl.Area;
 import org.moara.yido.processor.ExceptionAreaProcessor;
 import org.moara.yido.processor.TerminatorAreaProcessor;
 
+import org.moara.yido.processor.regularExpression.RegularExpressionProcessorImpl;
+import org.moara.yido.role.PublicRoleManager;
 import org.moara.yido.role.RoleManager;
+import org.moara.yido.utils.Config;
+import org.moara.yido.utils.Sentence;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +31,18 @@ import java.util.TreeSet;
 
 /**
  * 문장 분리기
+ *
+ * TODO 1. 클래스 전체에서 사용되는 변수는 클래스 필드로 변경하는게 맞는가?
+ *          - inputData
+ *
  * @author 조승현
  */
 public class SentenceSplitterImpl implements SentenceSplitter {
 
-    TerminatorAreaProcessor terminatorAreaProcessor;
-    ExceptionAreaProcessor exceptionAreaProcessor;
+    protected TerminatorAreaProcessor terminatorAreaProcessor;
+    protected ExceptionAreaProcessor exceptionAreaProcessor;
+    protected RegularExpressionProcessorImpl regularExpressionProcessor;
+    protected PublicRoleManager publicRoleManager = (PublicRoleManager) PublicRoleManager.getRoleManager();
 
     /**
      *
@@ -45,8 +55,18 @@ public class SentenceSplitterImpl implements SentenceSplitter {
     SentenceSplitterImpl(RoleManager roleManager, Config config) { initAreaProcessor(roleManager, config); }
 
     private void initAreaProcessor(RoleManager roleManager, Config config) {
-        terminatorAreaProcessor = new TerminatorAreaProcessor(roleManager, config);
-        exceptionAreaProcessor = new ExceptionAreaProcessor(roleManager);
+
+
+        if (config.USE_PUBLIC_ROLE) {
+            terminatorAreaProcessor = new TerminatorAreaProcessor(publicRoleManager, roleManager, config);
+            exceptionAreaProcessor = new ExceptionAreaProcessor(publicRoleManager, roleManager);
+            regularExpressionProcessor = new RegularExpressionProcessorImpl(publicRoleManager, roleManager);
+        } else {
+            terminatorAreaProcessor = new TerminatorAreaProcessor(roleManager, config);
+            exceptionAreaProcessor = new ExceptionAreaProcessor(roleManager);
+            regularExpressionProcessor = new RegularExpressionProcessorImpl(roleManager);
+        }
+
     }
 
     @Override
@@ -61,22 +81,24 @@ public class SentenceSplitterImpl implements SentenceSplitter {
     }
 
     private TreeSet<Integer> getSplitPoint(String inputData) {
-        List<Area> exceptionAreas = exceptionAreaProcessor.find(inputData);
         TreeSet<Integer> splitPoints = terminatorAreaProcessor.find(inputData);
+        List<Area> regxAreas = regularExpressionProcessor.find(inputData);
+        List<Area> exceptionAreas = exceptionAreaProcessor.find(inputData);
         List<Integer> removeItems = new ArrayList<>();
+
+        for (Area regxArea : regxAreas) {
+            splitPoints.add(regxArea.getEnd());
+        }
 
         for (Area exceptionArea : exceptionAreas) {
             for(int splitPoint : splitPoints) {
-                if(splitPoint >= exceptionArea.getStart() && splitPoint <= exceptionArea.getEnd()) {
-                    removeItems.add(splitPoint);
-                }
+                if(exceptionArea.contains(splitPoint)) { removeItems.add(splitPoint); }
             }
         }
 
         for (int removeItem : removeItems) {
             splitPoints.remove(removeItem);
         }
-
 
         return splitPoints;
     }

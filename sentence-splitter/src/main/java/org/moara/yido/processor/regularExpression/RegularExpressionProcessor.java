@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * 정규식 처리기
  *
- * TODO 1. 파일로 원하는 정규식 찾아내는 문장 구분기 생성
+ *
  * * @author 조승현
  */
 public interface RegularExpressionProcessor {

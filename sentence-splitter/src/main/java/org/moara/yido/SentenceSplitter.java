@@ -15,6 +15,8 @@
  */
 package org.moara.yido;
 
+import org.moara.yido.utils.Sentence;
+
 /**
  * 문장 구분기 추상체
  * @author 조승현

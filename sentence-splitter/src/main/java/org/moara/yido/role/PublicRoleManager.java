@@ -13,31 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.yido;
+package org.moara.yido.role;
 
 /**
- * 문장 단위 데이터
+ * 모든 룰 메니저에서 사용 가능한 공용 룰 관리자
+ *
  * @author 조승현
  */
-public class Sentence {
-    private final int start;
-    private final int end;
-    private final String text;
+public class PublicRoleManager extends RoleManager {
 
-    /**
-     * Constructor
-     * @param start int
-     * @param end int
-     * @param text String
-     */
-    public Sentence(int start, int end, String text) {
-        this.start = start;
-        this.end = end;
-        this.text = text;
+    private static final PublicRoleManager PUBLIC_ROLE_MANAGER = new PublicRoleManager("public");
+
+    private PublicRoleManager(String roleManagerName) {
+        super(roleManagerName);
     }
 
-    public int getStart() { return this.start; }
-    public int getEnd() { return  this.end; }
-    public String getText() { return this.text; }
-
+    /**
+     * 룰 관리자 인스턴스 반환
+     * @return RoleManager instance
+     */
+    public static RoleManager getRoleManager() {
+        return PUBLIC_ROLE_MANAGER;
+    }
 }

@@ -13,18 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.yido.file;
+package org.moara.yido.utils;
+
+import com.github.wjrmffldrhrl.Area;
 
 /**
- * 파일 리더
+ * 문장 단위 데이터
+ *
+ *
  * @author 조승현
  */
-public interface FileReader {
+public class Sentence extends Area {
+    private String text;
 
     /**
-     * 경로를 포함한 파일 명으로 파일을 읽어온다.
-     * TODO 1. 파일 작성 후 바로 읽지 못하는 문제 해결하기
-     * @param fileName String
+     * Constructor
+     *
+     * @param start int
+     * @param end int
+     * @param text String
      */
-    void readFile(String fileName);
+    public Sentence(int start, int end, String text) {
+        super(start, end);
+        this.text = text;
+    }
+
+    public String getText() { return this.text; }
+
 }

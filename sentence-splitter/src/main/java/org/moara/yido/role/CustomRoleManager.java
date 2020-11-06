@@ -13,27 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.yido.file;
-
-import org.moara.yido.SentenceSplitterImpl;
-
-import java.io.File;
-import java.util.List;
+package org.moara.yido.role;
 
 /**
- * 파일 생성자
+ * 룰 데이터가 비어있는 커스텀 전용 룰 관리자
+ *
  * @author 조승현
  */
-public interface FileWriter {
-    String pathSeparator = File.separator;
-    String ABSTRACT_PATH = SentenceSplitterImpl.class.getResource("")
-            .getPath().split( "target")[0]
-            + "src" + pathSeparator + "main" + pathSeparator + "resources";
+public class CustomRoleManager extends RoleManager {
+    private static final CustomRoleManager CUSTOM_ROLE_MANAGER = new CustomRoleManager("custom");
+
+    private CustomRoleManager(String roleManagerName) {
+        super(roleManagerName);
+    }
+
 
     /**
-     * 파일 생성
-     * @param fileName String
-     * @param data {@code List<String>}
+     * 기본 메타데이터 관리자 인스턴스 반환
+     * @return RoleManager instance
      */
-    void writeFile(String fileName, List<String> data);
+    public static RoleManager getRoleManager() { return CUSTOM_ROLE_MANAGER; }
+
 }

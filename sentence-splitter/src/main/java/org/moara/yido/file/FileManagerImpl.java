@@ -19,6 +19,7 @@ import java.io.*;
 import java.io.FileWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -26,40 +27,55 @@ import java.util.List;
  * @author 조승현
  *
  */
-public class FileManagerImpl implements FileManager {
-    List<String> file = new ArrayList<>();
+public class FileManagerImpl implements FileManager{
+
 
     @Override
-    public void readFile(String fileName){
-        this.file.clear();
+    public Collection<String> readFile(String fileName){
+        Collection<String> file = new ArrayList<>();
 
         try(BufferedReader br = new BufferedReader(
-                new InputStreamReader(FileManagerImpl.class.getResourceAsStream(fileName), StandardCharsets.UTF_8))) {
+                new InputStreamReader(new FileInputStream(ABSTRACT_PATH + fileName), StandardCharsets.UTF_8))) {
 
             while(true) {
                 String line = br.readLine();
-                this.file.add(line);
                 if(line == null) { break; }
+                file.add(line);
             }
 
-        } catch (IOException e) { e.printStackTrace(); }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+
+
+        return file;
     }
 
     @Override
-    public void writeFile(String fileName, List<String> data) {
-        String path = changePathSeparator(ABSTRACT_PATH + fileName);
-        System.out.println(path);
-        try (  BufferedWriter bw = new BufferedWriter(new FileWriter(ABSTRACT_PATH + fileName))){
+    public boolean writeFile(String fileName, Collection<String> data) {
+        return writeFile(fileName, data, false);
+    }
+
+    @Override
+    public boolean addLine(String fileName, Collection<String> data) {
+        return writeFile(fileName, data, true);
+    }
+
+    private boolean writeFile(String fileName, Collection<String> data, boolean append) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(changePathSeparator(ABSTRACT_PATH + fileName), append))){
             for(String str : data)
                 bw.write(str + "\n");
 
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
+
+        return true;
     }
 
-    @Override
-    public List<String> getFile() { return this.file; }
 
     /**
      * 특정 확장자 파일 획득
@@ -93,12 +109,14 @@ public class FileManagerImpl implements FileManager {
         fileList.add(file);
         if(file.isDirectory()){
             File [] files = file.listFiles();
+
             //noinspection ConstantConditions
             for(File f : files){
                 addFiles(fileList, f);
             }
         }
     }
+
 
     private String changePathSeparator(String path) {
         return path.replace("/", File.separator).replace("\\", File.separator);

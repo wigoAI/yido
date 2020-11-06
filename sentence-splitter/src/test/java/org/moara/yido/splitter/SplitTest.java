@@ -3,9 +3,14 @@ package org.moara.yido.splitter;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.moara.yido.SentenceSplitterImpl;
-import org.moara.yido.Sentence;
+import org.moara.yido.role.NewsRoleManager;
+import org.moara.yido.role.RoleManager;
+import org.moara.yido.utils.Sentence;
 import org.moara.yido.SentenceSplitter;
 import org.moara.yido.SentenceSplitterFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SplitTest {
     String[] data = {"강남역 맛집으로 소문난 강남 토끼정에 다녀왔습니다. 회사 동료 분들과 다녀왔는데 분위기도 좋고 음식도 맛있었어요 다만, 강남 토끼정이 강남 쉑쉑버거 골목길로 쭉 올라가야 하는데 다들 쉑쉑버거의 유혹에 넘어갈 뻔 했답니다 강남역 맛집 토끼정의 외부 모습. 강남 토끼정은 4층 건물 독채로 이루어져 있습니다. 역시 토끼정 본 점 답죠?ㅎㅅㅎ 건물은 크지만 간판이 없기 때문에 지나칠 수 있으니 조심하세요 강남 토끼정의 내부 인테리어. 평일 저녁이었지만 강남역 맛집 답게 사람들이 많았어요. 전체적으로 편안하고 아늑한 공간으로 꾸며져 있었습니다ㅎㅎ 한 가지 아쉬웠던 건 조명이 너무 어두워 눈이 침침했던... 저희는 3층에 자리를 잡고 음식을 주문했습니다. 총 5명이서 먹고 싶은 음식 하나씩 골라 다양하게 주문했어요 첫 번째 준비된 메뉴는 토끼정 고로케와 깻잎 불고기 사라다를 듬뿍 올려 먹는 맛있는 밥입니다. 여러가지 메뉴를 한 번에 시키면 준비되는 메뉴부터 가져다 주더라구요. 토끼정 고로케 금방 튀겨져 나와 겉은 바삭하고 속은 촉촉해 맛있었어요! 깻잎 불고기 사라다는 불고기, 양배추, 버섯을 볶아 깻잎을 듬뿍 올리고 우엉 튀김을 곁들여 밥이랑 함께 먹는 메뉴입니다. 사실 전 고기를 안 먹어서 무슨 맛인지 모르겠지만.. 다들 엄청 잘 드셨습니다ㅋㅋ 이건 제가 시킨 촉촉한 고로케와 크림스튜우동. 강남 토끼정에서 먹은 음식 중에 이게 제일 맛있었어요!!! 크림소스를 원래 좋아하기도 하지만, 느끼하지 않게 부드럽고 달달한 스튜와 쫄깃한 우동면이 너무 잘 어울려 계속 손이 가더라구요. 사진을 보니 또 먹고 싶습니다 간사이 풍 연어 지라시입니다. 일본 간사이 지방에서 많이 먹는 떠먹는 초밥(지라시스시)이라고 하네요. 밑에 와사비 마요밥 위에 연어들이 담겨져 있어 코끝이 찡할 수 있다고 적혀 있는데, 난 와사비 맛 1도 모르겠던데...? 와사비를 안 좋아하는 저는 불행인지 다행인지 연어 지라시를 매우 맛있게 먹었습니다ㅋㅋㅋ 다음 메뉴는 달짝지근한 숯불 갈비 덮밥입니다! 간장 양념에 구운 숯불 갈비에 양파, 깻잎, 달걀 반숙을 터트려 비벼 먹으면 그 맛이 크.. (물론 전 안 먹었지만...다른 분들이 그렇다고 하더라구요ㅋㅋㅋㅋㅋㅋㅋ) 마지막 메인 메뉴 양송이 크림수프와 숯불떡갈비 밥입니다. 크림리조또를 베이스로 위에 그루통과 숯불로 구운 떡갈비가 올라가 있어요! 크림스튜 우동 만큼이나 대박 맛있습니다...ㅠㅠㅠㅠㅠㅠ (크림 소스면 다 좋아하는 거 절대 아닙니다ㅋㅋㅋㅋㅋㅋ) 강남 토끼정 요리는 다 맛있지만 크림소스 요리를 참 잘하는 거 같네요 요건 물만 마시기 아쉬워 시킨 뉴자몽과 밀키소다 딸기통통! 유자와 자몽의 맛을 함께 느낄 수 있는 뉴자몽은 상큼함 그 자체였어요. 하치만 저는 딸기통통 밀키소다가 더 맛있었습니다ㅎㅎ 밀키소다는 토끼정에서만 만나볼 수 있는 메뉴라고 하니 한 번 드셔보시길 추천할게요!! 강남 토끼정은 강남역 맛집답게 모든 음식들이 대체적으로 맛있었어요! 건물 위치도 강남 대로변에서 조금 떨어져 있어 내부 인테리어처럼 아늑한 느낌도 있었구요ㅎㅎ 기회가 되면 다들 꼭 들러보세요~",
@@ -18,18 +23,18 @@ public class SplitTest {
             "안준철 기자 매경닷컴 MK스포츠(대전) 안준철 기자  SK와이번스가 최종전에서 소중한 승리를 챙겼다. 반경기 차 단독 1위 자리를 탈환했고, 하루 뒤 두산 베어스의 경기를 지켜봐야 한다.  SK는 30일 대전 한화생명이글스파크에서 열린 한화 이글스와의 2019 KBO리그 정규시즌 최종전에서 선발 김광현의 호투와 김강민의 투런홈런 등을 앞세워 6-2로 승리했다. 이날 승리로 SK는 한화와의 대전 2연전을 모두 승리하며 시즌 최종 전적을 88승 1무 55패로 마치게 됐다. 이날 경기가 없던 두산을 0.5경기 차로 앞선 1위가 됐고, 이제 10월1일 잠실에서 있을 두산과 NC다이노스 경기를 지켜봐야 한다.  1위 싸움은 시즌 최종일인 10월1일까지 가게 됐다. SK의 승리로, 두산이 정규시즌 우승을 확정지으려면 NC전을 이겨야 한다. 두산이 SK와의 상대전적에서 9승7패로 앞서기에 두산과 SK가 동률이 되면 두산이 1위가 된다.   SK가 정규시즌 우승의 희망을 끝까지 살렸다. 사진=MK스포츠 DB 어쨌든 이날 승리로 SK가 유리한 고지에 오른 건 사실이다. 무조건 이겨야 한다는 압박감이 있었지만, SK는 초반부터 이날 경기를 잘 풀었다. 2회초 만만치 않은 한화 선발 채드벨을 상대로 4점을 뽑아 주도권을 잡았다. 선두타자 이재원의 안타에 이어 후속타자 김강민의 좌월 투런포가 터지면서 2-0을 리드를 잡았다.  이어 흔들리는 채드벨을 상대로 정현이 볼넷을 골랐고, 김성현의 희생번트로 1사 2루를 만든 뒤 노수광의 2루타로 1사 2,3루를 만들었다. 여기서 배영섭의 2타점 적시타로 4-0으로 점수를 벌렸다.  이후 김광현의 호투로 지키기 모드에 들어갔다. 다만 김광현도 3회 1사 후 장진혁과 정은원에 연속안타를 맞은 뒤 오선진의 희생플라이로 1실점으로 추격을 허용하고 말았다. 물론 계속된 위기 흐름을 범타로 끊는데 성공했다.  하지만 김광현은 7회말 선두타자 최진행에 좌월 솔로홈런을 내주면서 2점 차로 쫓기게 됐다. 이후 1사 후 최재훈에게도 안타를 내준 김광현은 장진혁을 중견수 뜬공으로 잡았지만, 2사 2루 위기를 맞았다. 여기서 정은원이 삼진으로 물러나면서 SK는 한 숨 돌렸다.  SK는 잠그기 모드에 들어갔다. 8회 서진용이 한화 타선을 막았고, 9회초 SK타선은 2점을 더 추가하며 승부에 쐐기를 박았다. 9회는 하재훈이 책임졌다. jcan1231@maekyung.com",
             "도내 산불 6년간 475건 발생 원인제공자 검거 186건 그쳐 입산자 실화 혐의입증 어려워 소송 처분까지 장시간 소요   지난해 연말 삼척 미로면 산불부터 새해 첫날 산림 20ha를 잿더미로 만든 양양 산불 등 실화로 추정되는 산불이 잇따르고 있지만 산불 실화자 검거율은 절반에도 미치지 못하고 있다.2일 산림청에 따르면 지난 6년간(2013~2018년) 도내에서 발생한 산불은 모두 475건으로,이 중 186건의 산불원인제공자를 검거했다.산불원인제공자 검거율은 약 39％ 정도로 절반에 미치지 못하는 실정이다.  지난 2017년 5월 6일 산림 765㏊와 주택 4채를 태운 삼척 도계 산불의 경우 실화로 추정됐지만 원인제공자를 특정하지 못해 원인미상으로 남겨진 상태다.같은 날 산림 252㏊와 주택 42채를 태우고 이재민 80여명이 발생했던 강릉 성산면 산불도 입산자의 의한 실화로 추정되지만 검거되지 못한 상태다.지난해 2월 삼척 도계에서 발생한 산불 역시입산자 실화로 추정되지만 1년 가까이 용의자를 특정하지 못하고 있다.  산림청은 입산자 실화는 증거 입수와 혐의 입증이 어려워 검거율이 낮을 수 밖에 없다는 입장이다.산림청 관계자는 “건물 화재나 논·밭 소각으로 인한 화재,성묘객 화재의 경우 증거 입수와 용의자 특정이 쉽지만 입산자 실화는 산중턱에서 발생하는 경우가 많아 용의자를 특정하기 어려운 실정”이라며 “산불 발화 지점은 찾을 수 있지만 진화작업으로 현장이 훼손되는 경우가 많아 결정적인 물증 찾기가 쉽지 않다”고 말했다.  실화자를 검거하더라도 이에대한 고의성을 입증하기가 어렵고 각종 소송으로 인해 처분에도 시간이 오래 걸리는 것도 문제다.2018년 5월 6일~9일 무려 161㏊의 산림 면적이 훼손된 삼척 노곡 산불의 경우 용의자를 특정,검찰에 송치됐지만 무혐의 종결됐으며 같은해 3월 28일 산림 358㏊를 태운 고성 산불의 경우 민사 소송이 화재가 발생한지 1년 가까이 되고 있지만 송사가 진행 중이다.  산림청 관계자는 “손해배상 청구소송의 경우 명확한 가해자와 완벽한 물증이 있어야 하지만 산불 실화의 특성상 입증이 쉽지 않고 시일이 오래 걸린다”고 말했다. 윤왕근"};
     
-    String newsData = "우귀화 기자 wookiza@idomin.com  노동계는 고 염호석 씨 사건 등 삼성 노조 와해 사건의 '몸통'을 수사할 것을 촉구했다. 민주노총 경남지역본부는 '구속 수사하라! 빠르게 재판하라! 몸통을 수사하라!'는 논평을 냈다.  검찰은 염호석 금속노조 삼성전자서비스지회 양산분회장 시신 탈취 사건과 관련해 경찰관 2명을 불구속 기소했다. 이에 대해 민주노총 경남본부는 \"우리는 1년 이상의 하한형을 둔 부정처사후수뢰죄가 있음에도 이언학 서울중앙지법 영장전담 부장판사가 (경찰관 2명에 대해) '피의자가 검찰 수사에 적극적으로 응하고 있으며 범행 당시 피의자의 지위와 역할 등을 고려했을 때 구속 필요성을 인정하기 어렵다'고 기각한 것은 어처구니없다\"고 비판했다.  이어 \"직권남용 등의 과정에서 윗선이 있었는지를 가려내고 경찰관의 불법 개입에 대한 모든 진실을 밝히기 위해서라도 검찰은 구속영장을 재청구하고 서울중앙지법은 구속할 것을 촉구한다\"고 밝혔다.  또, \"검찰이 전사적 역량이 동원된 삼성의 조직적인 범죄에 대해 지난 9월 이상훈(63) 삼성전자 이사회 의장 등 32명을 한꺼번에 재판에 넘겼다. 하지만 검찰이 반헌법적인 노조 와해 공작의 '윗선'을 이상훈 의장이라고 결론 낸 것에 대해서는 알아듣기 어렵다. 우리는 검찰이 다시 몸통을 수사하고, 법원은 빠르게 재판할 것을 촉구한다\"며 삼성 이재용 부회장과 미래전략실 임원을 수사해야 한다고 주장했다. ";
-    
+//    String newsData = "우귀화 기자 wookiza@idomin.com  노동계는 고 염호석 씨 사건 등 삼성 노조 와해 사건의 '몸통'을 수사할 것을 촉구했다. 민주노총 경남지역본부는 '구속 수사하라! 빠르게 재판하라! 몸통을 수사하라!'는 논평을 냈다.  검찰은 염호석 금속노조 삼성전자서비스지회 양산분회장 시신 탈취 사건과 관련해 경찰관 2명을 불구속 기소했다. 이에 대해 민주노총 경남본부는 \"우리는 1년 이상의 하한형을 둔 부정처사후수뢰죄가 있음에도 이언학 서울중앙지법 영장전담 부장판사가 (경찰관 2명에 대해) '피의자가 검찰 수사에 적극적으로 응하고 있으며 범행 당시 피의자의 지위와 역할 등을 고려했을 때 구속 필요성을 인정하기 어렵다'고 기각한 것은 어처구니없다\"고 비판했다.  이어 \"직권남용 등의 과정에서 윗선이 있었는지를 가려내고 경찰관의 불법 개입에 대한 모든 진실을 밝히기 위해서라도 검찰은 구속영장을 재청구하고 서울중앙지법은 구속할 것을 촉구한다\"고 밝혔다.  또, \"검찰이 전사적 역량이 동원된 삼성의 조직적인 범죄에 대해 지난 9월 이상훈(63) 삼성전자 이사회 의장 등 32명을 한꺼번에 재판에 넘겼다. 하지만 검찰이 반헌법적인 노조 와해 공작의 '윗선'을 이상훈 의장이라고 결론 낸 것에 대해서는 알아듣기 어렵다. 우리는 검찰이 다시 몸통을 수사하고, 법원은 빠르게 재판할 것을 촉구한다\"며 삼성 이재용 부회장과 미래전략실 임원을 수사해야 한다고 주장했다. ";
+    String newsData = "거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다. 그의 고향은 천안이지만 가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다. 15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다.";
     
     @Test
-    public void getFactoryInstanceTest() {
+    public void testGetFactoryInstance() {
         SentenceSplitterFactory ssm1 = SentenceSplitterFactory.getInstance();
         SentenceSplitterFactory ssm2 = SentenceSplitterFactory.getInstance();
         assertEquals(ssm1, ssm2);
     }
 
     @Test
-    public void initSplitterTest() {
+    public void testInitSplitter() {
         SentenceSplitterFactory ssf = SentenceSplitterFactory.getInstance();
         System.out.println("ssf : " + ssf);
         SentenceSplitter basicSentenceSplitter =  ssf.getSentenceSplitter();
@@ -41,7 +46,7 @@ public class SplitTest {
 
 
     @Test
-    public void sentenceSplitTest() {
+    public void testSentenceSplit() {
         for (int USED_CASE = 1 ; USED_CASE <= 5 ; USED_CASE++) {
             SentenceSplitterFactory ssm = SentenceSplitterFactory.getInstance();
             SentenceSplitterImpl sentenceSplitterImpl = (SentenceSplitterImpl) ssm.getSentenceSplitter();
@@ -56,7 +61,7 @@ public class SplitTest {
     }
 
     @Test
-    public void basicSentenceSplitterTest() {
+    public void testBasicSentenceSplitter() {
         SentenceSplitterFactory ssm = SentenceSplitterFactory.getInstance();
         SentenceSplitter basicSentenceSplitter =  ssm.getSentenceSplitter(2);
 
@@ -64,12 +69,42 @@ public class SplitTest {
     }
 
     @Test
-    public void newsSentenceSplitTest() {
+    public void testNewsSentenceSplit() {
         SentenceSplitter newsSentenceSplitter = SentenceSplitterFactory.getInstance().getSentenceSplitter(2);
+        String[] answer1 = {"거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다.",
+                "그의 고향은 천안이지만",
+                "가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다.",
+                "15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다."};
 
+        System.out.println(newsSentenceSplitter.split(newsData).length);
+
+        int index = 0;
         for(Sentence sentence : newsSentenceSplitter.split(newsData)) {
-            System.out.println(sentence.getText());
+            assertEquals(answer1[index++], sentence.getText());
         }
+
+    }
+
+    @Test
+    public void testSplitWithAddRolesInMemory() {
+        SentenceSplitter newsSentenceSplitter = SentenceSplitterFactory.getInstance().getSentenceSplitter(2);
+        RoleManager roleManager = NewsRoleManager.getRoleManager();
+        List<String> roles = new ArrayList<>();
+        roles.add("살다가");
+        roleManager.addRolesToMemory("terminator", roles);
+
+        String[] answer2 = {"거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다.",
+                "그의 고향은 천안이지만",
+                "가족과 서울에서 오랫동안 살다가",
+                "\"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다.",
+                "15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다."};
+
+        int index = 0;
+        for(Sentence sentence : newsSentenceSplitter.split(newsData)) {
+
+            assertEquals(answer2[index++], sentence.getText());
+        }
+        roleManager.initRole("terminator");
     }
 
 

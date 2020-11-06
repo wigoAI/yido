@@ -4,15 +4,18 @@ import com.github.wjrmffldrhrl.Area;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import org.moara.yido.processor.regularExpression.BracketProcessor;
+import org.moara.yido.processor.regularExpression.RegularExpressionProcessor;
+import org.moara.yido.processor.regularExpression.RegularExpressionProcessorImpl;
 import org.moara.yido.processor.regularExpression.UrlProcessor;
 import org.moara.yido.role.BasicRoleManager;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class RegularTest {
 
     @Test
-    public void bracketProcessorFindTest() {
+    public void testBracketProcessorFind() {
         /*
          *      834 841
          *      1045 1085
@@ -32,7 +35,7 @@ public class RegularTest {
     }
 
     @Test
-    public void urlProcessorTest() {
+    public void testUrlProcessor() {
         String inputData = "강남역 맛집블로그에 소개도 됐어요! https://www.naver.com/ 소문난 강남 토끼정에 다녀왔습니다.";
         UrlProcessor urlProcessor = new UrlProcessor();
         List<Area> urlArea = urlProcessor.find(inputData);
@@ -42,5 +45,14 @@ public class RegularTest {
 
     }
 
+    @Test
+    public void testRegxByData() {
+        String inputData = "회사소유의 부동산을 회사대표자인 개인이 계약당사자로서 매도하고 다시 회사대표자 자격으로써 한 소유권이전등기는 원인없는 등기이다.";
+        RegularExpressionProcessor regularExpressionProcessor = new RegularExpressionProcessorImpl(BasicRoleManager.getRoleManager());
+        List<Area> splitAreas = regularExpressionProcessor.find(inputData);
+
+        assertEquals(splitAreas.get(0).getEnd(), 35);
+
+    }
 
 }
