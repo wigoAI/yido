@@ -35,7 +35,7 @@ public class BasicRoleManager extends RoleManager {
 
     /**
      * 기본 메타데이터 관리자 인스턴스 반환
-     * @return BasicRoleManager
+     * @return RoleManager instance
      */
     public static RoleManager getRoleManager() {
 

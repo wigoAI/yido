@@ -18,6 +18,7 @@ package org.moara.yido.processor;
 import com.github.wjrmffldrhrl.Area;
 import org.moara.yido.processor.regularExpression.BracketProcessor;
 import org.moara.yido.processor.regularExpression.UrlProcessor;
+import org.moara.yido.role.PublicRoleManager;
 import org.moara.yido.role.RoleManager;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,10 @@ public class ExceptionAreaProcessor {
      */
     public ExceptionAreaProcessor(RoleManager roleManager) {
         bracketProcessor = new BracketProcessor(roleManager);
+    }
+
+    public ExceptionAreaProcessor(PublicRoleManager publicRoleManager, RoleManager roleManager) {
+        bracketProcessor = new BracketProcessor(publicRoleManager, roleManager);
     }
 
     /**

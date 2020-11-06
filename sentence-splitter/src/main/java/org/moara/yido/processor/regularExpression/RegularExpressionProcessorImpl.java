@@ -16,6 +16,7 @@
 package org.moara.yido.processor.regularExpression;
 
 import com.github.wjrmffldrhrl.Area;
+import org.moara.yido.role.PublicRoleManager;
 import org.moara.yido.role.RoleManager;
 
 import java.util.ArrayList;
@@ -38,6 +39,13 @@ public class RegularExpressionProcessorImpl implements RegularExpressionProcesso
      */
     public RegularExpressionProcessorImpl(RoleManager roleManager) {
         HashSet<String> patternDic = roleManager.getRole("regx");
+        patterns.addAll(createPatterns(patternDic));
+    }
+
+
+    public RegularExpressionProcessorImpl(PublicRoleManager publicRoleManager, RoleManager roleManager) {
+        HashSet<String> patternDic = roleManager.getRole("regx");
+        patternDic.addAll(publicRoleManager.getRole("regx"));
         patterns.addAll(createPatterns(patternDic));
     }
 

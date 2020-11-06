@@ -1,6 +1,25 @@
+/*
+ * Copyright (C) 2020 Wigo Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.moara.yido.role;
 
-
+/**
+ * 룰 데이터가 비어있는 커스텀 전용 룰 관리자
+ *
+ * @author 조승현
+ */
 public class CustomRoleManager extends RoleManager {
     private static final CustomRoleManager CUSTOM_ROLE_MANAGER = new CustomRoleManager("custom");
 
@@ -11,7 +30,7 @@ public class CustomRoleManager extends RoleManager {
 
     /**
      * 기본 메타데이터 관리자 인스턴스 반환
-     * @return BasicRoleManager
+     * @return RoleManager instance
      */
     public static RoleManager getRoleManager() { return CUSTOM_ROLE_MANAGER; }
 

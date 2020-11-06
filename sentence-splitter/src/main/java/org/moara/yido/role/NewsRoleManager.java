@@ -27,9 +27,9 @@ public class NewsRoleManager extends RoleManager {
 
     /**
      * 뉴스 메타데이터 관리자 인스턴스 반환
-     * @return BasicRoleManager
+     * @return RoleManager instance
      */
-    public static NewsRoleManager getRoleManager() { return NEWS_ROLE_MANAGER; }
+    public static RoleManager getRoleManager() { return NEWS_ROLE_MANAGER; }
 
 
 

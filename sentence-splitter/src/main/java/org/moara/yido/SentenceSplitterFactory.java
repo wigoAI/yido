@@ -25,20 +25,13 @@ import java.util.HashMap;
 /**
  * 사용자가 원하는 문장 구분기를 제공해주는 클래스
  *
- *  TODO 1. 커스텀 룰 메니저를 삽입할 수 있게 만들기
  * @author 조승현
  */
 public class SentenceSplitterFactory {
     private static final int BASIC_SENTENCE_SPLITTER_ID = 1;
     private static final int NEWS_SENTENCE_SPLITTER_ID = 2;
     private static final int CUSTOM_SENTENCE_SPLITTER_ID = 9;
-    private static final String JSON_DATA_TYPE = "json";
-    private static final String TEXT_DATA_TYPE = "text";
-    private static final String BASIC_DOC_TYPE = "basic";
-    private static final String NEWS_DOC_TYPE = "news";
-    private static final String SNS_DOC_TYPE = "SNS";
-    private static final String STT_DOC_TYPE = "stt";
-    private static final String QA_DOC_TYPE = "qa";
+
 
     /**
      *  id  1. 기본 문장 구분기
@@ -63,7 +56,7 @@ public class SentenceSplitterFactory {
      */
     public SentenceSplitter getSentenceSplitter() {
         if(isKeyEmpty(BASIC_SENTENCE_SPLITTER_ID)) { createSentenceSplitter(BASIC_SENTENCE_SPLITTER_ID); }
-        System.out.println(sentenceSplitterHashMap.get(BASIC_SENTENCE_SPLITTER_ID));
+
         return sentenceSplitterHashMap.get(BASIC_SENTENCE_SPLITTER_ID);
     }
 
@@ -71,7 +64,8 @@ public class SentenceSplitterFactory {
 
     /**
      * 임의 설정값이 적용된 문장 구분기 인스턴스 반환
-     *
+     * 이후 CustomSentenceSplitter의 key value인 9로 인스턴스를 얻을 수 있다.
+     * {@code getSentenceSplitter(9)}
      * @param config 설정값
      * @return SentenceSplitter
      */
@@ -83,15 +77,43 @@ public class SentenceSplitterFactory {
     }
 
     /**
+     * 커스텀 룰 관리자가 적용된 문장 분리기 반환
+     *
+     * 이후 CustomSentenceSplitter의 key value인 9로 인스턴스를 얻을 수 있다.
+     *  {@code getSentenceSplitter(9)}
+     * @param roleManager CustomRoleManager
+     * @return SentenceSplitter
+     */
+    public SentenceSplitter getSentenceSplitter(RoleManager roleManager) {
+        sentenceSplitterHashMap.put(CUSTOM_SENTENCE_SPLITTER_ID,
+                new SentenceSplitterImpl(roleManager, new Config()));
+        return sentenceSplitterHashMap.get(CUSTOM_SENTENCE_SPLITTER_ID);
+    }
+
+    /**
+     * 커스텀 룰 관리자와 사용자 지정 설정이 적용된 문장 분리기 반환
+     *
+     * 이후 CustomSentenceSplitter의 key value인 9로 인스턴스를 얻을 수 있다.
+     * {@code getSentenceSplitter(9)}
+     * @param roleManager CustomRoleManager
+     * @param config CustomConfig
+     * @return SentenceSplitter
+     */
+    public SentenceSplitter getSentenceSplitter(RoleManager roleManager, Config config) {
+        sentenceSplitterHashMap.put(CUSTOM_SENTENCE_SPLITTER_ID,
+                new SentenceSplitterImpl(roleManager, config));
+        return sentenceSplitterHashMap.get(CUSTOM_SENTENCE_SPLITTER_ID);
+    }
+
+
+    /**
      * 특정 id로 분류한 문장 구분기 인스턴스 반환
      *
      * @param id SentenceSplitter ID
      * @return SentenceSplitter
      */
     public SentenceSplitter getSentenceSplitter(int id) {
-        if(isKeyEmpty(id)) {
-            createSentenceSplitter(id);
-        }
+        if(isKeyEmpty(id)) { createSentenceSplitter(id); }
         return sentenceSplitterHashMap.get(id);
     }
 
@@ -105,7 +127,7 @@ public class SentenceSplitterFactory {
             RoleManager newsRoleManager = NewsRoleManager.getRoleManager();
             sentenceSplitterHashMap.put(NEWS_SENTENCE_SPLITTER_ID,
                     new SentenceSplitterImpl(newsRoleManager,
-                            new Config(5, 3, 2, TEXT_DATA_TYPE, NEWS_DOC_TYPE, true)));
+                            new Config(5, 3, 2, true)));
         }
     }
 

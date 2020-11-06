@@ -20,6 +20,7 @@ import org.moara.yido.processor.ExceptionAreaProcessor;
 import org.moara.yido.processor.TerminatorAreaProcessor;
 
 import org.moara.yido.processor.regularExpression.RegularExpressionProcessorImpl;
+import org.moara.yido.role.PublicRoleManager;
 import org.moara.yido.role.RoleManager;
 import org.moara.yido.utils.Config;
 import org.moara.yido.utils.Sentence;
@@ -41,6 +42,7 @@ public class SentenceSplitterImpl implements SentenceSplitter {
     protected TerminatorAreaProcessor terminatorAreaProcessor;
     protected ExceptionAreaProcessor exceptionAreaProcessor;
     protected RegularExpressionProcessorImpl regularExpressionProcessor;
+    protected PublicRoleManager publicRoleManager = (PublicRoleManager) PublicRoleManager.getRoleManager();
 
     /**
      *
@@ -53,9 +55,17 @@ public class SentenceSplitterImpl implements SentenceSplitter {
     SentenceSplitterImpl(RoleManager roleManager, Config config) { initAreaProcessor(roleManager, config); }
 
     private void initAreaProcessor(RoleManager roleManager, Config config) {
-        terminatorAreaProcessor = new TerminatorAreaProcessor(roleManager, config);
-        exceptionAreaProcessor = new ExceptionAreaProcessor(roleManager);
-        regularExpressionProcessor = new RegularExpressionProcessorImpl(roleManager);
+
+
+        if (config.USE_PUBLIC_ROLE) {
+            terminatorAreaProcessor = new TerminatorAreaProcessor(publicRoleManager, roleManager, config);
+            exceptionAreaProcessor = new ExceptionAreaProcessor(publicRoleManager, roleManager);
+            regularExpressionProcessor = new RegularExpressionProcessorImpl(publicRoleManager, roleManager);
+        } else {
+            terminatorAreaProcessor = new TerminatorAreaProcessor(roleManager, config);
+            exceptionAreaProcessor = new ExceptionAreaProcessor(roleManager);
+            regularExpressionProcessor = new RegularExpressionProcessorImpl(roleManager);
+        }
 
     }
 

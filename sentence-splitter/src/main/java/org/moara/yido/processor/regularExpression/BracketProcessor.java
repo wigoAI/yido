@@ -16,6 +16,7 @@
 package org.moara.yido.processor.regularExpression;
 
 import com.github.wjrmffldrhrl.Area;
+import org.moara.yido.role.PublicRoleManager;
 import org.moara.yido.role.RoleManager;
 
 import java.util.ArrayList;
@@ -43,6 +44,13 @@ public class BracketProcessor implements RegularExpressionProcessor {
         bracketPattern = createPattern(patternDic);
     }
 
+    public BracketProcessor(PublicRoleManager publicRoleManager, RoleManager roleManager) {
+        HashSet<String> patternDic = roleManager.getRole("exception");
+        patternDic.addAll(publicRoleManager.getRole("exception"));
+        bracketPattern = createPattern(patternDic);
+
+    }
+
     @Override
     public List<Area> find(String data) {
 
@@ -58,6 +66,10 @@ public class BracketProcessor implements RegularExpressionProcessor {
 
 
     protected Pattern createPattern(HashSet<String> patternData) {
+
+        if (patternData.isEmpty()) {
+            return Pattern.compile("");
+        }
 
         StringBuilder left = new StringBuilder("[]+");
         StringBuilder centerLeft = new StringBuilder("[^]*");

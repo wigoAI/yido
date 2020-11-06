@@ -23,22 +23,21 @@ import java.util.*;
 /**
  * 메타 데이터 관리자
  *
- * TODO 1. 실행시에 메모리에 업로드 하도록
- *
  * @author 조승현
  */
 public class RoleManager {
 
-    private final String publicRolePath = "/role/";
     private final String rolePath;
     private final HashMap<String,HashSet<String>> roleMap = new HashMap<>();
     private final HashMap<String, Boolean> isInitialized = new HashMap<>();
     private final List<String> roleNames = new ArrayList<>();
 
+
     protected FileManager fileManager = new FileManagerImpl();
 
     protected RoleManager(String roleManagerName) {
-        this.rolePath = publicRolePath + roleManagerName + "/";
+        this.rolePath = "/role/" + roleManagerName + "/";
+
         String[] roleNames  = {"terminator", "connective", "exception", "regx"};
 
         for (String roleName : roleNames) {
@@ -56,7 +55,6 @@ public class RoleManager {
      */
     public void addRolesToMemory(String roleName, List<String> roles ) {
         getRole(roleName).addAll(roles);
-
     }
 
     /**
@@ -66,7 +64,6 @@ public class RoleManager {
      */
     public void addRolesToLocal(String roleName, List<String> roles ) {
         fileManager.addLine(rolePath + roleName + ".role", roles);
-
     }
 
     /**
@@ -107,6 +104,15 @@ public class RoleManager {
         role.remove(null);
         isInitialized.put(roleName, true);
 
+    }
+
+    /**
+     * 모든 룰 초기화
+     */
+    public void initAllRoles() {
+        for (String roleName : roleNames) {
+            initRole(roleName);
+        }
     }
 
 
