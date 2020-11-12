@@ -7,15 +7,50 @@
   <groupId>org.moara.yido</groupId>
   <artifactId>splitter</artifactId>
   <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
 
   <name>splitter</name>
-  <url>http://www.example.com</url>
+  <description>splitter</description>
+  <url>https://github.com/wigoAI/yido</url>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>https://opensource.org/licenses/Apache-2.0</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <developers>
+    <developer>
+      <name>조승현</name>
+      <email>cleanjjsh@wigoai.com</email>
+    </developer>
+  </developers>
+
+  <scm>
+    <url>https://github.com/wigoAI/yido</url>
+  </scm>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+
+  </distributionManagement>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
+
 
   <dependencies>
     <dependency>
@@ -24,7 +59,6 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
-
 
     <!-- IOUtils -->
     <dependency>
@@ -69,12 +103,6 @@
 
   </dependencies>
 
-  <repositories>
-    <repository>
-      <id>maven</id>
-      <url>https://jitpack.io</url>
-    </repository>
-  </repositories>
 
   <build>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->

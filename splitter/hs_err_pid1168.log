@@ -1,0 +1,202 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 268435456 bytes for Failed to commit area from 0x0000000701a00000 to 0x0000000711a00000 of length 268435456.
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   The process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (./src/hotspot/os/windows/os_windows.cpp:3310), pid=1168, tid=21852
+#
+# JRE version:  (13.0.4+8) (build )
+# Java VM: OpenJDK 64-Bit Server VM (13.0.4+8-MTS, mixed mode, sharing, tiered, compressed oops, g1 gc, windows-amd64)
+# No core dump will be written. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: -ea -Didea.test.cyclic.buffer.size=1048576 -javaagent:C:\Program Files\JetBrains\IntelliJ IDEA 2020.2.1\lib\idea_rt.jar=54035:C:\Program Files\JetBrains\IntelliJ IDEA 2020.2.1\bin -Dfile.encoding=UTF-8 com.intellij.rt.junit.JUnitStarter -ideVersion5 -junit4 org.moara.yido.role.RoleManagerTest,testGetBasicRoleManagerInstance
+
+Host: Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz, 8 cores, 15G,  Windows 10 , 64 bit Build 18362 (10.0.18362.1110)
+Time: Thu Nov 12 14:50:36 2020 ¢¥eCN©öI¡¾©ö C¡ÍA¨ª¨öA elapsed time: 0 seconds (0d 0h 0m 0s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x000001fb75f72800):  JavaThread "Unknown thread" [_thread_in_vm, id=21852, stack(0x0000004f36800000,0x0000004f36900000)]
+
+Stack: [0x0000004f36800000,0x0000004f36900000]
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x6327ca]
+V  [jvm.dll+0x7dc83a]
+V  [jvm.dll+0x7ddfef]
+V  [jvm.dll+0x7de633]
+V  [jvm.dll+0x250648]
+V  [jvm.dll+0x62faaa]
+V  [jvm.dll+0x6247a5]
+V  [jvm.dll+0x30fbbc]
+V  [jvm.dll+0x30f9f2]
+V  [jvm.dll+0x315166]
+V  [jvm.dll+0x35bc56]
+V  [jvm.dll+0x35b430]
+V  [jvm.dll+0x2ea44a]
+V  [jvm.dll+0x2eb6e2]
+V  [jvm.dll+0x7b9408]
+V  [jvm.dll+0x3695c9]
+V  [jvm.dll+0x79c205]
+V  [jvm.dll+0x3d3a2f]
+V  [jvm.dll+0x3d5ff1]
+C  [jli.dll+0x520f]
+C  [ucrtbase.dll+0x210b2]
+C  [KERNEL32.DLL+0x17c24]
+C  [ntdll.dll+0x6d4d1]
+
+
+---------------  P R O C E S S  ---------------
+
+Threads class SMR info:
+_java_thread_list=0x00007ffa771476b8, length=0, elements={
+}
+
+Java Threads: ( => current thread )
+
+Other Threads:
+  0x000001fb75fde800 GCTaskThread "GC Thread#0" [stack: 0x0000004f36900000,0x0000004f36a00000] [id=20820]
+  0x000001fb76000800 ConcurrentGCThread "G1 Main Marker" [stack: 0x0000004f36a00000,0x0000004f36b00000] [id=18680]
+  0x000001fb76002000 ConcurrentGCThread "G1 Conc#0" [stack: 0x0000004f36b00000,0x0000004f36c00000] [id=23012]
+
+[error occurred during error reporting (printing all threads), id 0xc0000005, EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007ffa768fa347]
+
+VM state:not at safepoint (not fully initialized)
+
+VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
+[0x000001fb75f6d700] Heap_lock - owner thread: 0x000001fb75f72800
+
+Heap address: 0x0000000701a00000, size: 4070 MB, Compressed Oops mode: Non-zero based: 0x0000000701a00000
+Narrow klass base: 0x0000000000000000, Narrow klass shift: 0
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (0 events):
+No events
+
+Classes unloaded (0 events):
+No events
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+Events (1 events):
+Event: 0.012 Loaded shared library C:\Users\SAMSUNG\.jdks\azul-13.0.4\bin\zip.dll
+
+
+Dynamic libraries:
+0x00007ff66a940000 - 0x00007ff66a94d000 	C:\Users\SAMSUNG\.jdks\azul-13.0.4\bin\java.exe
+0x00007ffad17e0000 - 0x00007ffad19d0000 	C:\Windows\SYSTEM32\ntdll.dll
+0x00007ffad0fa0000 - 0x00007ffad1052000 	C:\Windows\System32\KERNEL32.DLL
+0x00007ffaceae0000 - 0x00007ffaced85000 	C:\Windows\System32\KERNELBASE.dll
+0x00007fface9e0000 - 0x00007ffaceada000 	C:\Windows\System32\ucrtbase.dll
+0x00007ffac7eb0000 - 0x00007ffac7ec7000 	C:\Users\SAMSUNG\.jdks\azul-13.0.4\bin\jli.dll
+0x00007ffac4aa0000 - 0x00007ffac4ab5000 	C:\Users\SAMSUNG\.jdks\azul-13.0.4\bin\VCRUNTIME140.dll
+0x00007ffad1430000 - 0x00007ffad15c4000 	C:\Windows\System32\USER32.dll
+0x00007fface760000 - 0x00007fface781000 	C:\Windows\System32\win32u.dll
+0x00007ffad16f0000 - 0x00007ffad1716000 	C:\Windows\System32\GDI32.dll
+0x00007ffaceee0000 - 0x00007ffacf076000 	C:\Windows\System32\gdi32full.dll
+0x00007ffac1eb0000 - 0x00007ffac2134000 	C:\Windows\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.18362.1198_none_9e820b57e45ad92f\COMCTL32.dll
+0x00007ffacee40000 - 0x00007ffaceede000 	C:\Windows\System32\msvcp_win.dll
+0x00007ffad11c0000 - 0x00007ffad125e000 	C:\Windows\System32\msvcrt.dll
+0x00007ffacff80000 - 0x00007ffad02b5000 	C:\Windows\System32\combase.dll
+0x00007ffad15d0000 - 0x00007ffad16f0000 	C:\Windows\System32\RPCRT4.dll
+0x00007ffaced90000 - 0x00007ffacee10000 	C:\Windows\System32\bcryptPrimitives.dll
+0x00007ffad0860000 - 0x00007ffad088e000 	C:\Windows\System32\IMM32.DLL
+0x00007ffa99ca0000 - 0x00007ffa99d3b000 	C:\Users\SAMSUNG\.jdks\azul-13.0.4\bin\msvcp140.dll
+0x00007ffa76600000 - 0x00007ffa771ef000 	C:\Users\SAMSUNG\.jdks\azul-13.0.4\bin\server\jvm.dll
+0x00007ffad0900000 - 0x00007ffad09a3000 	C:\Windows\System32\ADVAPI32.dll
+0x00007ffad0e30000 - 0x00007ffad0ec7000 	C:\Windows\System32\sechost.dll
+0x00007ffad0670000 - 0x00007ffad0678000 	C:\Windows\System32\PSAPI.DLL
+0x00007ffac2cf0000 - 0x00007ffac2d14000 	C:\Windows\SYSTEM32\WINMM.dll
+0x00007ffac91b0000 - 0x00007ffac91ba000 	C:\Windows\SYSTEM32\VERSION.dll
+0x00007ffabd5c0000 - 0x00007ffabd5c9000 	C:\Windows\SYSTEM32\WSOCK32.dll
+0x00007ffad0890000 - 0x00007ffad08ff000 	C:\Windows\System32\WS2_32.dll
+0x00007ffabf110000 - 0x00007ffabf13d000 	C:\Windows\SYSTEM32\winmmbase.dll
+0x00007fface790000 - 0x00007fface7da000 	C:\Windows\System32\cfgmgr32.dll
+0x00007fface6f0000 - 0x00007fface701000 	C:\Windows\System32\kernel.appcore.dll
+0x00007ffac9810000 - 0x00007ffac9820000 	C:\Users\SAMSUNG\.jdks\azul-13.0.4\bin\verify.dll
+0x00007ffaccf90000 - 0x00007ffacd184000 	C:\Windows\SYSTEM32\DBGHELP.DLL
+0x00007ffac70f0000 - 0x00007ffac711a000 	C:\Windows\SYSTEM32\dbgcore.DLL
+0x00007ffac49b0000 - 0x00007ffac49d6000 	C:\Users\SAMSUNG\.jdks\azul-13.0.4\bin\java.dll
+0x00007ffac6800000 - 0x00007ffac680a000 	C:\Users\SAMSUNG\.jdks\azul-13.0.4\bin\jimage.dll
+0x00007ffac6710000 - 0x00007ffac671e000 	C:\Users\SAMSUNG\.jdks\azul-13.0.4\bin\instrument.dll
+0x00007ffac4350000 - 0x00007ffac4367000 	C:\Users\SAMSUNG\.jdks\azul-13.0.4\bin\zip.dll
+
+dbghelp: loaded successfully - version: 4.0.5 - missing functions: none
+symbol engine: initialized successfully - sym options: 0x614 - pdb path: .;C:\Users\SAMSUNG\.jdks\azul-13.0.4\bin;C:\Windows\SYSTEM32;C:\Windows\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.18362.1198_none_9e820b57e45ad92f;C:\Users\SAMSUNG\.jdks\azul-13.0.4\bin\server
+
+VM Arguments:
+jvm_args: -ea -Didea.test.cyclic.buffer.size=1048576 -javaagent:C:\Program Files\JetBrains\IntelliJ IDEA 2020.2.1\lib\idea_rt.jar=54035:C:\Program Files\JetBrains\IntelliJ IDEA 2020.2.1\bin -Dfile.encoding=UTF-8 
+java_command: com.intellij.rt.junit.JUnitStarter -ideVersion5 -junit4 org.moara.yido.role.RoleManagerTest,testGetBasicRoleManagerInstance
+java_class_path (initial): C:\Program Files\JetBrains\IntelliJ IDEA 2020.2.1\lib\idea_rt.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2020.2.1\plugins\junit\lib\junit5-rt.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2020.2.1\plugins\junit\lib\junit-rt.jar;C:\git\yido\splitter\target\test-classes;C:\git\yido\splitter\target\classes;C:\Users\SAMSUNG\.m2\repository\junit\junit\4.11\junit-4.11.jar;C:\Users\SAMSUNG\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\SAMSUNG\.m2\repository\commons-io\commons-io\2.5\commons-io-2.5.jar;C:\Users\SAMSUNG\.m2\repository\com\google\code\gson\gson\2.8.6\gson-2.8.6.jar;C:\Users\SAMSUNG\.m2\repository\org\hibernate\hibernate-core\5.4.21.Final\hibernate-core-5.4.21.Final.jar;C:\Users\SAMSUNG\.m2\repository\org\jboss\logging\jboss-logging\3.3.2.Final\jboss-logging-3.3.2.Final.jar;C:\Users\SAMSUNG\.m2\repository\javax\persistence\javax.persistence-api\2.2\javax.persistence-api-2.2.jar;C:\Users\SAMSUNG\.m2\repository\org\javassist\javassist\3.24.0-GA\javassist-3.24.0-GA.jar;C:\Users\SAMSUNG\.m2\repository\net\bytebuddy\byte-buddy\1.10.10\byte-buddy-1.10.10.jar;C:\Users\SAMSUNG\.m2\repository\antlr\antlr\2.7.7\antlr-2.7.7.jar;C:\Users\SAMSUNG\.m2\repository\org\jboss\spec\javax\transaction\jboss-transaction-api_1.2_spec\1.1.1.Final\jboss-transaction-api_1.2_spec-1.1.1.Final.jar;C:\Users\SAMSUNG\.m2\repository\org\jboss\jandex\2.1.3.Final\jandex-2.1.3.Final.jar;C:\Users\SAMSUNG\.m2\repository\com\fasterxml\classmate\1.5.1\classmate-1.5.1.jar;C:\Users\SAMSUNG\.m2\repository\javax\activation\javax.activation-api\1.2.0\javax.activation-api-1.2.0.jar;C:\Users\SAMSUNG\.m2\repository\org\dom4j\dom4j\2.1.3\dom4j-2.1.3.jar;C:\Users\SAMSUNG\.m2\repository\org\hibernate\common\hibernate-commons-annotations\5.1.0.Final\hibernate-commons-annotations-5.1.0.Final.jar;C:\Users\SAMSUNG\.m2\repository\javax\xml\bind\jaxb-api\2.3.1\jaxb-api-2.3.1.jar;C:\Users\SAMSUNG\.m2\repository\org\glassfish\jaxb\jaxb-runtime\2.3.1\jaxb-run
+Launcher Type: SUN_STANDARD
+
+[Global flags]
+     intx CICompilerCount                          = 4                                         {product} {ergonomic}
+     uint ConcGCThreads                            = 2                                         {product} {ergonomic}
+     uint G1ConcRefinementThreads                  = 8                                         {product} {ergonomic}
+   size_t G1HeapRegionSize                         = 1048576                                   {product} {ergonomic}
+    uintx GCDrainStackTargetSize                   = 64                                        {product} {ergonomic}
+   size_t InitialHeapSize                          = 268435456                                 {product} {ergonomic}
+   size_t MarkStackSize                            = 4194304                                   {product} {ergonomic}
+   size_t MaxHeapSize                              = 4267704320                                {product} {ergonomic}
+   size_t MinHeapDeltaBytes                        = 1048576                                   {product} {ergonomic}
+   size_t MinHeapSize                              = 8388608                                   {product} {ergonomic}
+    uintx NonNMethodCodeHeapSize                   = 5839372                                {pd product} {ergonomic}
+    uintx NonProfiledCodeHeapSize                  = 122909434                              {pd product} {ergonomic}
+    uintx ProfiledCodeHeapSize                     = 122909434                              {pd product} {ergonomic}
+    uintx ReservedCodeCacheSize                    = 251658240                              {pd product} {ergonomic}
+     bool SegmentedCodeCache                       = true                                      {product} {ergonomic}
+   size_t SoftMaxHeapSize                          = 4267704320                             {manageable} {ergonomic}
+     bool UseCompressedClassPointers               = true                                 {lp64_product} {ergonomic}
+     bool UseCompressedOops                        = true                                 {lp64_product} {ergonomic}
+     bool UseG1GC                                  = true                                      {product} {ergonomic}
+     bool UseLargePagesIndividualAllocation        = false                                  {pd product} {ergonomic}
+
+Logging:
+Log output configuration:
+ #0: stdout all=warning uptime,level,tags
+ #1: stderr all=off uptime,level,tags
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Java\jdk1.8.0_261
+PATH=C:\ProgramData\Anaconda3;C:\ProgramData\Anaconda3\Library\mingw-w64\bin;C:\ProgramData\Anaconda3\Library\usr\bin;C:\ProgramData\Anaconda3\Library\bin;C:\ProgramData\Anaconda3\Scripts;C:\Users\SAMSUNG\Downloads\WINDOWS.X64_193000_db_home\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Git\cmd;JAVA_HOME%\bin;C:\Program Files (x86)\Gpg4win\..\GnuPG\bin;C:\Program Files\PuTTY\;C:\mecab;C:\Program Files\apache-maven-3.6.3\bin;C:\Users\SAMSUNG\AppData\Local\Microsoft\WindowsApps;;C:\Program Files\JetBrains\IntelliJ IDEA 2020.2.1\bin;;C:\Users\SAMSUNG\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\JetBrains\PyCharm Community Edition 2020.2.1\bin;;C:\Program Files\Bandizip\
+USERNAME=SAMSUNG
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 142 Stepping 12, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 10 , 64 bit Build 18362 (10.0.18362.1110)
+OS uptime: 0 days 4:05 hours
+
+CPU:total 8 (initial active 8) (4 cores per cpu, 2 threads per core) family 6 model 142 stepping 12, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, erms, 3dnowpref, lzcnt, ht, tsc, tscinvbit, bmi1, bmi2, adx, fma
+
+Memory: 4k page, system-wide physical 16275M (4452M free)
+TotalPageFile size 46719M (AvailPageFile size 257M)
+current process WorkingSet (physical memory assigned to process): 11M, peak: 11M
+current process commit charge ("private bytes"): 61M, peak: 317M
+
+vm_info: OpenJDK 64-Bit Server VM (13.0.4+8-MTS) for windows-amd64 JRE (13.0.4+8-MTS) (Zulu13.33+25-CA), built on Jul 10 2020 09:54:20 by "zulu_re" with MS VC++ 15.9 (VS2017)
+
+END.
