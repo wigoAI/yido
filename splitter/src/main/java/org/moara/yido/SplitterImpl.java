@@ -37,7 +37,7 @@ import java.util.TreeSet;
  *
  * @author 조승현
  */
-public class SentenceSplitterImpl implements SentenceSplitter {
+public class SplitterImpl implements Splitter {
 
     protected TerminatorAreaProcessor terminatorAreaProcessor;
     protected ExceptionAreaProcessor exceptionAreaProcessor;
@@ -47,12 +47,12 @@ public class SentenceSplitterImpl implements SentenceSplitter {
     /**
      *
      * Default constructor
-     * SentenceSplitterFactory 만 접근 가능하다.
+     * SplitterFactory 만 접근 가능하다.
      *
      * @param roleManager news or basic role manager
      * @param config 문장 구분기 설정값
      */
-    SentenceSplitterImpl(RoleManager roleManager, Config config) { initAreaProcessor(roleManager, config); }
+    SplitterImpl(RoleManager roleManager, Config config) { initAreaProcessor(roleManager, config); }
 
     private void initAreaProcessor(RoleManager roleManager, Config config) {
 

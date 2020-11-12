@@ -15,11 +15,10 @@
  */
 package org.moara.yido.file;
 
-import org.moara.yido.SentenceSplitterImpl;
+import org.moara.yido.SplitterImpl;
 
 import java.io.File;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * 파일 관리자
@@ -29,7 +28,7 @@ import java.util.List;
  */
 public interface FileManager {
     String pathSeparator = File.separator;
-    String ABSTRACT_PATH = SentenceSplitterImpl.class.getResource("")
+    String ABSTRACT_PATH = SplitterImpl.class.getResource("")
             .getPath().split( "target")[0]
             + "src" + pathSeparator + "main" + pathSeparator + "resources";
 

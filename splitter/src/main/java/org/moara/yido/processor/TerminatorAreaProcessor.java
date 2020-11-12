@@ -63,7 +63,7 @@ public class TerminatorAreaProcessor {
         TreeSet<Integer> terminatorList = new TreeSet<>();
         text = text.trim();
 
-        for(int i = 0; i < text.length() - terminatorConfig.MIN_SENTENCE_LENGTH; i++) {
+        for(int i = 0; i < text.length() - terminatorConfig.MIN_RESULT_LENGTH; i++) {
             for(int processingLength = terminatorConfig.PROCESSING_LENGTH_MAX; processingLength >= terminatorConfig.PROCESSING_LENGTH_MIN; processingLength--) {
 
                 Area targetArea = new Area(i, i + processingLength);
@@ -88,7 +88,7 @@ public class TerminatorAreaProcessor {
 
     private boolean isConnective(int startIndex, String text) {
 
-        int connectiveCheckLength = (startIndex + terminatorConfig.MIN_SENTENCE_LENGTH > text.length()) ? (startIndex + 5 - text.length()) : 5;
+        int connectiveCheckLength = (startIndex + terminatorConfig.MIN_RESULT_LENGTH > text.length()) ? (startIndex + 5 - text.length()) : 5;
         String nextStr = text.substring(startIndex, startIndex +  connectiveCheckLength);
 
         for(int i = 0 ; i < nextStr.length() ; i++) {

@@ -21,7 +21,7 @@ import org.moara.yido.utils.Sentence;
  * 문장 구분기 추상체
  * @author 조승현
  */
-public interface SentenceSplitter {
+public interface Splitter {
 
     /**
      * 입력된 문자를 문장 단위로 나누어 반환

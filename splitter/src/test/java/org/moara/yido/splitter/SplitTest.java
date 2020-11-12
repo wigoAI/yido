@@ -2,12 +2,13 @@ package org.moara.yido.splitter;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.moara.yido.SentenceSplitterImpl;
+
+import org.moara.yido.SplitterFactory;
+import org.moara.yido.SplitterImpl;
+import org.moara.yido.Splitter;
 import org.moara.yido.role.NewsRoleManager;
 import org.moara.yido.role.RoleManager;
 import org.moara.yido.utils.Sentence;
-import org.moara.yido.SentenceSplitter;
-import org.moara.yido.SentenceSplitterFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,30 +29,30 @@ public class SplitTest {
     
     @Test
     public void testGetFactoryInstance() {
-        SentenceSplitterFactory ssm1 = SentenceSplitterFactory.getInstance();
-        SentenceSplitterFactory ssm2 = SentenceSplitterFactory.getInstance();
+        SplitterFactory ssm1 = SplitterFactory.getInstance();
+        SplitterFactory ssm2 = SplitterFactory.getInstance();
         assertEquals(ssm1, ssm2);
     }
 
     @Test
     public void testInitSplitter() {
-        SentenceSplitterFactory ssf = SentenceSplitterFactory.getInstance();
+        SplitterFactory ssf = SplitterFactory.getInstance();
         System.out.println("ssf : " + ssf);
-        SentenceSplitter basicSentenceSplitter =  ssf.getSentenceSplitter();
+        Splitter basicSplitter =  ssf.getSplitter();
 
         assertEquals("강남역 맛집으로 소문난 강남 토끼정에 다녀왔습니다.",
-                basicSentenceSplitter.split(data[0])[0].getText());
+                basicSplitter.split(data[0])[0].getText());
 
     }
 
 
     @Test
-    public void testSentenceSplit() {
+    public void testSplit() {
         for (int USED_CASE = 1 ; USED_CASE <= 5 ; USED_CASE++) {
-            SentenceSplitterFactory ssm = SentenceSplitterFactory.getInstance();
-            SentenceSplitterImpl sentenceSplitterImpl = (SentenceSplitterImpl) ssm.getSentenceSplitter();
+            SplitterFactory ssm = SplitterFactory.getInstance();
+            SplitterImpl splitterImpl = (SplitterImpl) ssm.getSplitter();
 
-            Sentence[] result = sentenceSplitterImpl.split(data[USED_CASE - 1]);
+            Sentence[] result = splitterImpl.split(data[USED_CASE - 1]);
 
             for(int i = 0 ; i < result.length ; i++) {
                 Sentence sentence = result[i];
@@ -61,25 +62,25 @@ public class SplitTest {
     }
 
     @Test
-    public void testBasicSentenceSplitter() {
-        SentenceSplitterFactory ssm = SentenceSplitterFactory.getInstance();
-        SentenceSplitter basicSentenceSplitter =  ssm.getSentenceSplitter(2);
+    public void testBasicSplitter() {
+        SplitterFactory ssm = SplitterFactory.getInstance();
+        Splitter basicSplitter =  ssm.getSplitter(2);
 
-        basicSentenceSplitter.split(data[0]);
+        basicSplitter.split(data[0]);
     }
 
     @Test
-    public void testNewsSentenceSplit() {
-        SentenceSplitter newsSentenceSplitter = SentenceSplitterFactory.getInstance().getSentenceSplitter(2);
+    public void testNewsSplit() {
+        Splitter newsSplitter = SplitterFactory.getInstance().getSplitter(2);
         String[] answer1 = {"거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다.",
                 "그의 고향은 천안이지만",
                 "가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다.",
                 "15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다."};
 
-        System.out.println(newsSentenceSplitter.split(newsData).length);
+        System.out.println(newsSplitter.split(newsData).length);
 
         int index = 0;
-        for(Sentence sentence : newsSentenceSplitter.split(newsData)) {
+        for(Sentence sentence : newsSplitter.split(newsData)) {
             assertEquals(answer1[index++], sentence.getText());
         }
 
@@ -87,7 +88,7 @@ public class SplitTest {
 
     @Test
     public void testSplitWithAddRolesInMemory() {
-        SentenceSplitter newsSentenceSplitter = SentenceSplitterFactory.getInstance().getSentenceSplitter(2);
+        Splitter newsSplitter = SplitterFactory.getInstance().getSplitter(2);
         RoleManager roleManager = NewsRoleManager.getRoleManager();
         List<String> roles = new ArrayList<>();
         roles.add("살다가");
@@ -100,7 +101,7 @@ public class SplitTest {
                 "15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다."};
 
         int index = 0;
-        for(Sentence sentence : newsSentenceSplitter.split(newsData)) {
+        for(Sentence sentence : newsSplitter.split(newsData)) {
 
             assertEquals(answer2[index++], sentence.getText());
         }
