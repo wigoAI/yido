@@ -24,7 +24,7 @@ import java.util.Collection;
  * 파일 관리자
  *
  * 파일 관리 기능을 상속받는다.
- * @author 조승현
+ * @author wjrmffldrhrl
  */
 public interface FileManager {
     String pathSeparator = File.separator;

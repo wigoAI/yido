@@ -17,7 +17,7 @@ package org.moara.yido.utils;
 
 /**
  * 문자 구분기 설정 값
- * @author 조승현
+ * @author wjrmffldrhrl
  */
 public class Config {
     public final int MIN_RESULT_LENGTH;

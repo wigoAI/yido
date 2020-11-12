@@ -18,7 +18,7 @@ package org.moara.yido.role;
 /**
  * 뉴스 메타데이터 관리자 구현체'
  *
- * @author 조승현
+ * @author wjrmffldrhrl
  */
 public class NewsRoleManager extends RoleManager {
     private static final NewsRoleManager NEWS_ROLE_MANAGER = new NewsRoleManager("news");

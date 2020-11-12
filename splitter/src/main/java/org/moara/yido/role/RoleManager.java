@@ -23,7 +23,7 @@ import java.util.*;
 /**
  * 메타 데이터 관리자
  *
- * @author 조승현
+ * @author wjrmffldrhrl
  */
 public class RoleManager {
 

@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * 예외영역 처리기
  *
- * @author 조승현
+ * @author wjrmffldrhrl
  */
 public class ExceptionAreaProcessor {
     private final UrlProcessor urlProcessor = new UrlProcessor();

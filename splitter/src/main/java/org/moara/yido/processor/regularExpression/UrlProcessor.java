@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 
 /**
  * Url 정규식 처리기
- * @author 조승현
+ * @author wjrmffldrhrl
  */
 public class UrlProcessor implements RegularExpressionProcessor {
     String URL_PATTERN = "((https?:\\/\\/)|(www\\.))([^:\\/\\s]+)(:([^\\/]*))?((\\/[^\\s/\\/]+)*)?\\/?([^#\\s\\?]*)(\\?([^#\\s]*))?(#(\\w*))?";

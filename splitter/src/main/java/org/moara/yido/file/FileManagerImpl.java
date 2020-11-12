@@ -24,7 +24,7 @@ import java.util.List;
 
 /**
  * 파일 관리자 구현체
- * @author 조승현
+ * @author wjrmffldrhrl
  *
  */
 public class FileManagerImpl implements FileManager{

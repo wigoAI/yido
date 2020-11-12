@@ -25,7 +25,7 @@ import java.util.HashMap;
 /**
  * 사용자가 원하는 문장 구분기를 제공해주는 클래스
  *
- * @author 조승현
+ * @author wjrmffldrhrl
  */
 public class SplitterFactory {
     private static final int BASIC_SPLITTER_ID = 1;

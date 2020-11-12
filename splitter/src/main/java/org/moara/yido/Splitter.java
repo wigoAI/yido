@@ -19,7 +19,7 @@ import org.moara.yido.utils.Sentence;
 
 /**
  * 문장 구분기 추상체
- * @author 조승현
+ * @author wjrmffldrhrl
  */
 public interface Splitter {
 

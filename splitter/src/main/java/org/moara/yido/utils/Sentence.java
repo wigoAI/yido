@@ -21,7 +21,7 @@ import com.github.wjrmffldrhrl.Area;
  * 문장 단위 데이터
  *
  *
- * @author 조승현
+ * @author wjrmffldrhrl
  */
 public class Sentence extends Area {
     private String text;

@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
  * 괄호영역 처리기
  *
  *
- * @author 조승현
+ * @author wjrmffldrhrl
  */
 public class BracketProcessor implements RegularExpressionProcessor {
     private final Pattern bracketPattern;

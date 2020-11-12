@@ -18,7 +18,7 @@ package org.moara.yido.role;
 /**
  * 룰 데이터가 비어있는 커스텀 전용 룰 관리자
  *
- * @author 조승현
+ * @author wjrmffldrhrl
  */
 public class CustomRoleManager extends RoleManager {
     private static final CustomRoleManager CUSTOM_ROLE_MANAGER = new CustomRoleManager("custom");

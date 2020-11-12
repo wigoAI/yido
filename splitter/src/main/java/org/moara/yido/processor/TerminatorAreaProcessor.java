@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
  *
  * TODO 1. 종결어미다 다르게 적용 될 유효성 체크
  *
- * @author 조승현
+ * @author wjrmffldrhrl
  */
 public class TerminatorAreaProcessor {
     private final HashSet<String> terminatorRole;

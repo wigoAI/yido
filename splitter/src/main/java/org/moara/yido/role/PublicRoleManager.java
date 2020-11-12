@@ -18,7 +18,7 @@ package org.moara.yido.role;
 /**
  * 모든 룰 메니저에서 사용 가능한 공용 룰 관리자
  *
- * @author 조승현
+ * @author wjrmffldrhrl
  */
 public class PublicRoleManager extends RoleManager {
 

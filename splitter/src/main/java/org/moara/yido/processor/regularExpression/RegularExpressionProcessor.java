@@ -24,7 +24,7 @@ import java.util.List;
  * 정규식 처리기
  *
  *
- * * @author 조승현
+ * @author wjrmffldrhrl
  */
 public interface RegularExpressionProcessor {
 

@@ -21,7 +21,7 @@ package org.moara.yido.role;
  *
  *
  *
- * @author 조승현
+ * @author wjrmffldrhrl
  *
  */
 public class BasicRoleManager extends RoleManager {
