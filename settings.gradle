@@ -1,0 +1,2 @@
+rootProject.name = 'yido'
+include 'splitter'
