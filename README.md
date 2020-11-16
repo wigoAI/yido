@@ -1,13 +1,25 @@
-# yido (Korean Sentence Splitter)
+# yido 
+- yido -> 세종대왕 본명
+- 한국어 자연어 처리 프로젝트
 
 
-# Installation
+# modules
+## splitter (문단 문장 구분기)
+- 구분기 (문장, 문장)
+
+## tokenizer
+- 토큰구분
+- 신조어
+- 오탈자교정
+
+## 전처리기
+- 전반각
+- 개인정보 처리 (삭제, 블라인드)
+- 특수문자 변환
+### STT 한글형 기호
+- 날짜 ( 7일전 1시간 등, 한글형 날짜)
+- 한글형 금액
+- 한글형 자동차번호
 
 ## java  
 jdk 1.8
-
-## maven  
-
-
-# Usage
-- Split korean sentence 
