@@ -3,12 +3,9 @@ package org.moara.yido.splitter;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import org.moara.yido.SplitterFactory;
-import org.moara.yido.SplitterImpl;
-import org.moara.yido.Splitter;
-import org.moara.yido.role.NewsRoleManager;
-import org.moara.yido.role.RoleManager;
-import org.moara.yido.utils.Sentence;
+import org.moara.yido.splitter.role.NewsRoleManager;
+import org.moara.yido.splitter.role.RoleManager;
+import org.moara.yido.splitter.utils.Sentence;
 
 import java.util.ArrayList;
 import java.util.List;
