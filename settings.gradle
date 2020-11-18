@@ -1,5 +1,3 @@
 rootProject.name = 'yido'
 include 'splitter'
 include 'tokenizer'
-include 'newword'
-

@@ -1,0 +1,14 @@
+plugins {
+    id 'java'
+}
+
+description =  "Korean natural language processing"
+
+allprojects {
+    group 'org.moara.yido'
+    repositories
+            {
+                mavenCentral()
+            }
+}
+
