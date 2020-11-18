@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.yido.splitter;
+package org.moara.splitter;
 
-import org.moara.yido.splitter.utils.Sentence;
+import org.moara.splitter.utils.Sentence;
 
 /**
  * 문장 구분기 추상체

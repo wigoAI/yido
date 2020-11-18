@@ -13,24 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.yido.splitter.role;
+package org.moara.splitter.role;
 
 /**
- * 뉴스 메타데이터 관리자 구현체'
+ * 모든 룰 메니저에서 사용 가능한 공용 룰 관리자
  *
  * @author wjrmffldrhrl
  */
-public class NewsRoleManager extends RoleManager {
-    private static final NewsRoleManager NEWS_ROLE_MANAGER = new NewsRoleManager("news");
+public class PublicRoleManager extends RoleManager {
 
-    private NewsRoleManager(String roleManagerName) { super(roleManagerName); }
+    private static final PublicRoleManager PUBLIC_ROLE_MANAGER = new PublicRoleManager("public");
+
+    private PublicRoleManager(String roleManagerName) {
+        super(roleManagerName);
+    }
 
     /**
-     * 뉴스 메타데이터 관리자 인스턴스 반환
+     * 룰 관리자 인스턴스 반환
      * @return RoleManager instance
      */
-    public static RoleManager getRoleManager() { return NEWS_ROLE_MANAGER; }
-
-
-
+    public static RoleManager getRoleManager() {
+        return PUBLIC_ROLE_MANAGER;
+    }
 }

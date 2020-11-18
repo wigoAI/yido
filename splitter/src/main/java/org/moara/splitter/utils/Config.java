@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.yido.splitter.utils;
+package org.moara.splitter.utils;
 
 /**
  * 문자 구분기 설정 값

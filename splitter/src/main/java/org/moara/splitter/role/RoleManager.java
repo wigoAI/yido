@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.yido.splitter.role;
+package org.moara.splitter.role;
 
-import org.moara.yido.splitter.file.FileManager;
-import org.moara.yido.splitter.file.FileManagerImpl;
+import org.moara.splitter.file.FileManager;
+import org.moara.splitter.file.FileManagerImpl;
 
 import java.util.*;
 

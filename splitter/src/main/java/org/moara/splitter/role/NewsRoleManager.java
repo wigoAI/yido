@@ -13,35 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.yido.splitter.role;
+package org.moara.splitter.role;
 
 /**
- *
- * 기본 메타데이터 관리자 추상체
- *
- *
+ * 뉴스 메타데이터 관리자 구현체'
  *
  * @author wjrmffldrhrl
- *
  */
-public class BasicRoleManager extends RoleManager {
+public class NewsRoleManager extends RoleManager {
+    private static final NewsRoleManager NEWS_ROLE_MANAGER = new NewsRoleManager("news");
 
-    private static final BasicRoleManager BASIC_ROLE_MANAGER = new BasicRoleManager("basic");
-
-
-    private BasicRoleManager(String roleManagerName) {
-        super(roleManagerName);
-    }
+    private NewsRoleManager(String roleManagerName) { super(roleManagerName); }
 
     /**
-     * 기본 메타데이터 관리자 인스턴스 반환
+     * 뉴스 메타데이터 관리자 인스턴스 반환
      * @return RoleManager instance
      */
-    public static RoleManager getRoleManager() {
-
-        return BASIC_ROLE_MANAGER;
-    }
-
+    public static RoleManager getRoleManager() { return NEWS_ROLE_MANAGER; }
 
 
 

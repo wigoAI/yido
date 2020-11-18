@@ -1,4 +1,4 @@
-package org.moara.yido.splitter.file;
+package org.moara.splitter.file;
 
 import org.junit.Test;
 import static org.junit.Assert.*;

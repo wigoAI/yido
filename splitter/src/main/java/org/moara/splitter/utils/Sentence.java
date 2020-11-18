@@ -13,26 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.yido.splitter.role;
+package org.moara.splitter.utils;
+
+import com.github.wjrmffldrhrl.Area;
 
 /**
- * 모든 룰 메니저에서 사용 가능한 공용 룰 관리자
+ * 문장 단위 데이터
+ *
  *
  * @author wjrmffldrhrl
  */
-public class PublicRoleManager extends RoleManager {
-
-    private static final PublicRoleManager PUBLIC_ROLE_MANAGER = new PublicRoleManager("public");
-
-    private PublicRoleManager(String roleManagerName) {
-        super(roleManagerName);
-    }
+public class Sentence extends Area {
+    private String text;
 
     /**
-     * 룰 관리자 인스턴스 반환
-     * @return RoleManager instance
+     * Constructor
+     *
+     * @param start int
+     * @param end int
+     * @param text String
      */
-    public static RoleManager getRoleManager() {
-        return PUBLIC_ROLE_MANAGER;
+    public Sentence(int start, int end, String text) {
+        super(start, end);
+        this.text = text;
     }
+
+    public String getText() { return this.text; }
+
 }
