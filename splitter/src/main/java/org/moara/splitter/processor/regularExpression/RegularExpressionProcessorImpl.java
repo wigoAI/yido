@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.yido.splitter.processor.regularExpression;
+package org.moara.splitter.processor.regularExpression;
 
 import com.github.wjrmffldrhrl.Area;
-import org.moara.yido.splitter.role.PublicRoleManager;
-import org.moara.yido.splitter.role.RoleManager;
+import org.moara.splitter.role.PublicRoleManager;
+import org.moara.splitter.role.RoleManager;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -1,10 +1,10 @@
-package org.moara.yido.splitter.role;
+package org.moara.splitter.role;
 
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moara.yido.splitter.file.FileManager;
-import org.moara.yido.splitter.file.FileManagerImpl;
+import org.moara.splitter.file.FileManager;
+import org.moara.splitter.file.FileManagerImpl;
 
 import java.util.ArrayList;
 import java.util.Collection;

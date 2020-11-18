@@ -13,25 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.yido.splitter.role;
+package org.moara.splitter.processor.regularExpression;
+
+
+import com.github.wjrmffldrhrl.Area;
+
+import java.util.List;
 
 /**
- * 룰 데이터가 비어있는 커스텀 전용 룰 관리자
+ * 정규식 처리기
+ *
  *
  * @author wjrmffldrhrl
  */
-public class CustomRoleManager extends RoleManager {
-    private static final CustomRoleManager CUSTOM_ROLE_MANAGER = new CustomRoleManager("custom");
-
-    private CustomRoleManager(String roleManagerName) {
-        super(roleManagerName);
-    }
-
+public interface RegularExpressionProcessor {
 
     /**
-     * 기본 메타데이터 관리자 인스턴스 반환
-     * @return RoleManager instance
+     * 각 정규식에 해당하는 위치를 찾아 Area로 반환한다.
+     * @param data String
+     * @return {@code List<Area>}
      */
-    public static RoleManager getRoleManager() { return CUSTOM_ROLE_MANAGER; }
+    List<Area> find(String data);
 
 }

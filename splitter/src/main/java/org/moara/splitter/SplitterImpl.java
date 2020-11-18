@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.yido.splitter;
+package org.moara.splitter;
 
 import com.github.wjrmffldrhrl.Area;
-import org.moara.yido.splitter.processor.ExceptionAreaProcessor;
-import org.moara.yido.splitter.processor.TerminatorAreaProcessor;
+import org.moara.splitter.processor.ExceptionAreaProcessor;
+import org.moara.splitter.processor.TerminatorAreaProcessor;
 
-import org.moara.yido.splitter.processor.regularExpression.RegularExpressionProcessorImpl;
-import org.moara.yido.splitter.role.PublicRoleManager;
-import org.moara.yido.splitter.role.RoleManager;
-import org.moara.yido.splitter.utils.Config;
-import org.moara.yido.splitter.utils.Sentence;
+import org.moara.splitter.processor.regularExpression.RegularExpressionProcessorImpl;
+import org.moara.splitter.role.PublicRoleManager;
+import org.moara.splitter.role.RoleManager;
+import org.moara.splitter.utils.Config;
+import org.moara.splitter.utils.Sentence;
 
 import java.util.ArrayList;
 import java.util.List;

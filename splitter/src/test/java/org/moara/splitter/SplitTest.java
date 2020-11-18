@@ -1,11 +1,11 @@
-package org.moara.yido.splitter;
+package org.moara.splitter;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import org.moara.yido.splitter.role.NewsRoleManager;
-import org.moara.yido.splitter.role.RoleManager;
-import org.moara.yido.splitter.utils.Sentence;
+import org.moara.splitter.role.NewsRoleManager;
+import org.moara.splitter.role.RoleManager;
+import org.moara.splitter.utils.Sentence;
 
 import java.util.ArrayList;
 import java.util.List;

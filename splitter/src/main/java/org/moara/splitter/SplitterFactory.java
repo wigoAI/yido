@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.yido.splitter;
+package org.moara.splitter;
 
-import org.moara.yido.splitter.role.BasicRoleManager;
-import org.moara.yido.splitter.role.NewsRoleManager;
-import org.moara.yido.splitter.role.RoleManager;
-import org.moara.yido.splitter.utils.Config;
+import org.moara.splitter.role.BasicRoleManager;
+import org.moara.splitter.role.NewsRoleManager;
+import org.moara.splitter.role.RoleManager;
+import org.moara.splitter.utils.Config;
 
 import java.util.HashMap;
 

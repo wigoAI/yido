@@ -3,11 +3,11 @@ package org.moara.yido.regular;
 import com.github.wjrmffldrhrl.Area;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
-import org.moara.yido.splitter.processor.regularExpression.BracketProcessor;
-import org.moara.yido.splitter.processor.regularExpression.RegularExpressionProcessor;
-import org.moara.yido.splitter.processor.regularExpression.RegularExpressionProcessorImpl;
-import org.moara.yido.splitter.processor.regularExpression.UrlProcessor;
-import org.moara.yido.splitter.role.BasicRoleManager;
+import org.moara.splitter.processor.regularExpression.BracketProcessor;
+import org.moara.splitter.processor.regularExpression.RegularExpressionProcessor;
+import org.moara.splitter.processor.regularExpression.RegularExpressionProcessorImpl;
+import org.moara.splitter.processor.regularExpression.UrlProcessor;
+import org.moara.splitter.role.BasicRoleManager;
 
 import java.util.List;
 
