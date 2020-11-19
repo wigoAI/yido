@@ -17,12 +17,7 @@ public class FileManagerTest {
 
         FileManagerImpl fileManager = new FileManagerImpl();
 
-        assertEquals(fileManager.readFile("/data/newRevData.txt").toArray()[1], "흠...포스터보고 초딩영화줄....오버연기조차 가볍지 않구나");
-    }
-
-    @Test
-    public void testReadRootDirectoryFile() {
-        System.out.println(SplitterImpl.class.getResource("").getPath());
+        assertEquals(fileManager.readFile("/newRevData.txt").toArray()[1], "흠...포스터보고 초딩영화줄....오버연기조차 가볍지 않구나");
     }
 
     @Test
@@ -39,12 +34,12 @@ public class FileManagerTest {
         hashData.add("test2");
         hashData.add("test3");
 
-        assertTrue(fileManager.writeFile("/data/test.role", data));
-        assertFalse(fileManager.readFile("/data/test.role").isEmpty());
-        assertTrue(fileManager.addLine("/data/test.role", data));
-        assertTrue(fileManager.addLine("/data/test.role", hashData));
+        assertTrue(fileManager.writeFile("/test.role", data));
+        assertFalse(fileManager.readFile("/test.role").isEmpty());
+        assertTrue(fileManager.addLine("/test.role", data));
+        assertTrue(fileManager.addLine("/test.role", hashData));
 
-        assertFalse(fileManager.readFile("/data/test.role").isEmpty());
+        assertFalse(fileManager.readFile("/test.role").isEmpty());
 
     }
 

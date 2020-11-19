@@ -23,6 +23,11 @@ import java.util.*;
 /**
  * 메타 데이터 관리자
  *
+ * TODO 1. DB 설계에 맞게 구조 개선
+ *          - 모든 정보는 한 개의 디렉터리에서 관리하며 그룹으로 존재한다.
+ *          - Processor 에서 설정값에 맞는 문자 정보를 가져와서 처리하는 방식
+ *          - 구분기는 특정 구분 조건들을 사용하고 해당 구분 조건들은 특정한 유효성을 가지고 있다.
+ *
  * @author wjrmffldrhrl
  */
 public class RoleManager {

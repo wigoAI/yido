@@ -32,9 +32,6 @@ import java.util.TreeSet;
 /**
  * 문장 분리기
  *
- * TODO 1. 클래스 전체에서 사용되는 변수는 클래스 필드로 변경하는게 맞는가?
- *          - inputData
- *
  * @author wjrmffldrhrl
  */
 public class SplitterImpl implements Splitter {

@@ -20,6 +20,7 @@ import org.moara.splitter.role.PublicRoleManager;
 import org.moara.splitter.utils.Config;
 import org.moara.splitter.role.RoleManager;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
