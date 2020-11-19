@@ -29,7 +29,7 @@ public interface FileManager {
     String pathSeparator = File.separator;
     String ABSTRACT_PATH = SplitterImpl.class.getResource("")
             .getPath().split( "build")[0]
-            + "doc" + pathSeparator;
+            + "data" + pathSeparator;
 
     /**
      * 경로를 포함한 파일 명으로 파일을 읽어온다.
