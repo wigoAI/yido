@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.splitter.file;
+package org.moara.splitter.utils.file;
 
 import org.moara.splitter.SplitterImpl;
 
@@ -21,16 +21,15 @@ import java.io.File;
 import java.util.Collection;
 
 /**
- * 파일 관리자
+ * 파일 관리자 추상체
  *
- * 파일 관리 기능을 상속받는다.
  * @author wjrmffldrhrl
  */
 public interface FileManager {
     String pathSeparator = File.separator;
     String ABSTRACT_PATH = SplitterImpl.class.getResource("")
-            .getPath().split( "target")[0]
-            + "src" + pathSeparator + "main" + pathSeparator + "resources";
+            .getPath().split( "build")[0]
+            + "doc" + pathSeparator;
 
     /**
      * 경로를 포함한 파일 명으로 파일을 읽어온다.

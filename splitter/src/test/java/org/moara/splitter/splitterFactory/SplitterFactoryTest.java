@@ -1,4 +1,4 @@
-package org.moara.yido.splitterFactory;
+package org.moara.splitter.splitterFactory;
 
 import org.junit.Assert;
 import org.junit.Test;

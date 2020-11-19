@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.splitter.file;
+package org.moara.splitter.utils.file;
 
 import java.io.*;
 import java.io.FileWriter;

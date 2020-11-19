@@ -15,8 +15,8 @@
  */
 package org.moara.splitter.role;
 
-import org.moara.splitter.file.FileManager;
-import org.moara.splitter.file.FileManagerImpl;
+import org.moara.splitter.utils.file.FileManager;
+import org.moara.splitter.utils.file.FileManagerImpl;
 
 import java.util.*;
 

@@ -1,6 +1,8 @@
-package org.moara.splitter.file;
+package org.moara.splitter.utils.file;
 
 import org.junit.Test;
+import org.moara.splitter.SplitterImpl;
+
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
 
@@ -15,9 +17,12 @@ public class FileManagerTest {
 
         FileManagerImpl fileManager = new FileManagerImpl();
 
-
-
         assertEquals(fileManager.readFile("/data/newRevData.txt").toArray()[1], "흠...포스터보고 초딩영화줄....오버연기조차 가볍지 않구나");
+    }
+
+    @Test
+    public void testReadRootDirectoryFile() {
+        System.out.println(SplitterImpl.class.getResource("").getPath());
     }
 
     @Test
@@ -42,6 +47,8 @@ public class FileManagerTest {
         assertFalse(fileManager.readFile("/data/test.role").isEmpty());
 
     }
+
+
 
 
 }
