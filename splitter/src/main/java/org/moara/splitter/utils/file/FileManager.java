@@ -17,20 +17,28 @@ package org.moara.splitter.utils.file;
 
 import org.moara.splitter.SplitterImpl;
 
-import java.io.File;
+import java.io.*;
+import java.io.FileWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
- * 파일 관리자 추상체
+ * 파일 관리자 구현체
+ *
+ * TODO 1. Change to singleTone
  *
  * @author wjrmffldrhrl
+ *
  */
-public interface FileManager {
-    String pathSeparator = File.separator;
-    String ABSTRACT_PATH = SplitterImpl.class.getResource("")
+public class FileManager {
+    public static final String pathSeparator = File.separator;
+    public static final String ABSTRACT_PATH = SplitterImpl.class.getResource("")
             .getPath().split( "build")[0]
             + "data" + pathSeparator;
 
+    private FileManager() { }
     /**
      * 경로를 포함한 파일 명으로 파일을 읽어온다.
      *
@@ -38,7 +46,27 @@ public interface FileManager {
      *
      * @return Result read file Success
      */
-    Collection<String> readFile(String fileName);
+    public static Collection<String> readFile(String fileName){
+        Collection<String> file = new ArrayList<>();
+
+        try(BufferedReader br = new BufferedReader(
+                new InputStreamReader(new FileInputStream(ABSTRACT_PATH + fileName), StandardCharsets.UTF_8))) {
+
+            while(true) {
+                String line = br.readLine();
+                if(line == null) { break; }
+                file.add(line);
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+
+
+        return file;
+    }
 
     /**
      * 파일 생성
@@ -47,7 +75,9 @@ public interface FileManager {
      *
      * @return Write file result
      */
-    boolean writeFile(String fileName, Collection<String> data);
+    public static boolean writeFile(String fileName, Collection<String> data) {
+        return writeFile(fileName, data, false);
+    }
 
     /**
      *
@@ -56,6 +86,62 @@ public interface FileManager {
      *
      * @return Result add line success
      */
-    boolean addLine(String fileName, Collection<String> data);
+    public static boolean addLine(String fileName, Collection<String> data) {
+        return writeFile(fileName, data, true);
+    }
+
+
+    private static boolean writeFile(String fileName, Collection<String> data, boolean append) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(changePathSeparator(ABSTRACT_PATH + fileName), append))){
+            for(String str : data)
+                bw.write(str + "\n");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    private static List<File> getFileList(String path, String fileExtension){
+        List<File> fileList = new ArrayList<>();
+        File file = new File(path);
+
+        addFiles(fileList, file);
+
+        List<File> resultFileList = new ArrayList<>();
+        for(File f : fileList){
+            if(f.isDirectory()){
+                continue;
+            }
+
+            if(f.getName().endsWith(fileExtension)){
+                resultFileList.add(f);
+            }
+        }
+        fileList.clear();
+        fileList = null;
+
+        return resultFileList;
+    }
+
+    private static void addFiles(List<File> fileList, File file){
+        fileList.add(file);
+        if(file.isDirectory()){
+            File [] files = file.listFiles();
+
+            //noinspection ConstantConditions
+            for(File f : files){
+                addFiles(fileList, f);
+            }
+        }
+    }
+
+
+    private static String changePathSeparator(String path) {
+        return path.replace("/", File.separator).replace("\\", File.separator);
+    }
+
 
 }

@@ -47,7 +47,7 @@ public class ExceptionAreaProcessor {
     }
 
     /**
-     * Role 에 해당하는 예외 영역을 찾아 List 로 반환
+     * SplitCondition 에 해당하는 예외 영역을 찾아 List 로 반환
      * @param data String
      * @return 예외 영역들이 Area 형태로 담긴 리스트 반환
      */

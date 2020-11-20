@@ -12,15 +12,7 @@ public class Validation {
         this.comparePosition = comparePosition;
     }
 
-    public String getValue() {
-        return value;
-    }
-
-    public char getMatchFlag() {
-        return matchFlag;
-    }
-
-    public char getComparePosition() {
-        return comparePosition;
-    }
+    public String getValue() { return value; }
+    public char getMatchFlag() { return matchFlag; }
+    public char getComparePosition() { return comparePosition; }
 }

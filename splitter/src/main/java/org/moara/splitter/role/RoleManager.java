@@ -16,7 +16,6 @@
 package org.moara.splitter.role;
 
 import org.moara.splitter.utils.file.FileManager;
-import org.moara.splitter.utils.file.FileManagerImpl;
 
 import java.util.*;
 
@@ -36,9 +35,6 @@ public class RoleManager {
     private final HashMap<String,HashSet<String>> roleMap = new HashMap<>();
     private final HashMap<String, Boolean> isInitialized = new HashMap<>();
     private final List<String> roleNames = new ArrayList<>();
-
-
-    protected FileManager fileManager = new FileManagerImpl();
 
     protected RoleManager(String roleManagerName) {
         this.rolePath = "/role/" + roleManagerName + "/";
@@ -68,7 +64,7 @@ public class RoleManager {
      * @param roles 추가할 룰 내용
      */
     public void addRolesToLocal(String roleName, List<String> roles ) {
-        fileManager.addLine(rolePath + roleName + ".role", roles);
+        FileManager.addLine(rolePath + roleName + ".role", roles);
     }
 
     /**
@@ -91,7 +87,7 @@ public class RoleManager {
         HashSet<String> role = getRole(roleName);
         role.removeAll(roles);
 
-        fileManager.writeFile(rolePath + roleName + ".role", role);
+        FileManager.writeFile(rolePath + roleName + ".role", role);
 
     }
 
@@ -105,7 +101,7 @@ public class RoleManager {
         HashSet<String> role = roleMap.get(roleName);
 
         role.clear();
-        role.addAll(fileManager.readFile(rolePath + roleName + ".role"));
+        role.addAll(FileManager.readFile(rolePath + roleName + ".role"));
         role.remove(null);
         isInitialized.put(roleName, true);
 

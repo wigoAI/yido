@@ -4,13 +4,12 @@ package org.moara.splitter.role;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moara.splitter.utils.file.FileManager;
-import org.moara.splitter.utils.file.FileManagerImpl;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class RoleManagerTest {
+public class SplitConditionManagerTest {
 
     @Test
     public void testGetBasicRoleManagerInstance() {
@@ -80,8 +79,6 @@ public class RoleManagerTest {
         String roleName = "terminator";
         try {
             RoleManager roleManager = NewsRoleManager.getRoleManager();
-
-            FileManager fileManager = new FileManagerImpl();
             int originalSize = roleManager.getRole(roleName).size();
 
             List<String> roles = new ArrayList<>();
@@ -93,7 +90,7 @@ public class RoleManagerTest {
             Assert.assertEquals((originalSize + 1), roleManager.getRole(roleName).size());
 
 
-            Collection<String> localRole = fileManager.readFile("/role/news/terminator.role");
+            Collection<String> localRole = FileManager.readFile("/role/news/terminator.role");
             Assert.assertEquals(localRole.size() , originalSize + 1);
         } catch (AssertionError e) {
             resetRole(roleName);
@@ -123,7 +120,6 @@ public class RoleManagerTest {
         String roleName = "terminator";
         RoleManager roleManager = NewsRoleManager.getRoleManager();
         try{
-            FileManager fileManager = new FileManagerImpl();
             int originalSize = roleManager.getRole(roleName).size();
             List<String> roles = new ArrayList<>();
             roles.add("한다");
@@ -132,7 +128,7 @@ public class RoleManagerTest {
             Assert.assertEquals(originalSize - 1, roleManager.getRole(roleName).size());
 
 
-            Collection<String> localRole = fileManager.readFile("/role/news/terminator.role");
+            Collection<String> localRole = FileManager.readFile("/role/news/terminator.role");
             Assert.assertEquals(localRole.size() , originalSize - 1);
 
         } catch (AssertionError e) {
@@ -149,7 +145,7 @@ public class RoleManagerTest {
         ArrayList<String> roles = new ArrayList<>();
         roles.add("다.");
         roles.add("한다");
-        new FileManagerImpl().writeFile("/role/news/" + roleName + ".role", roles);
+        FileManager.writeFile("/role/news/" + roleName + ".role", roles);
     }
 
 }
