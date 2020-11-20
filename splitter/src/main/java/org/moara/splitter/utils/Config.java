@@ -17,6 +17,10 @@ package org.moara.splitter.utils;
 
 /**
  * 문자 구분기 설정 값
+ *
+ *
+ * TODO 1. 교체된 DB 구조에 맞춰서 설정값 변경경
+*
  * @author wjrmffldrhrl
  */
 public class Config {

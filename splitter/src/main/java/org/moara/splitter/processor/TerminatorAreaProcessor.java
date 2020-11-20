@@ -28,8 +28,7 @@ import java.util.regex.Pattern;
 /**
  * 구분 영역 처리기
  *
- * TODO 1. 종결어미다 다르게 적용 될 유효성 체크
- *
+ *  TODO 1. 기존의 AreaProcessor 모두 교체
  * @author wjrmffldrhrl
  */
 public class TerminatorAreaProcessor {

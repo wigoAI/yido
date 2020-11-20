@@ -3,7 +3,7 @@ package org.moara.splitter.role;
 import java.util.List;
 
 /**
- * TODO 1. invalid parameter
+ * TODO 1. invalid parameter 처리
  */
 public class SplitCondition {
 

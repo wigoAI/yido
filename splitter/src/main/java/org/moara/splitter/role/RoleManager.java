@@ -26,7 +26,8 @@ import java.util.*;
  *          - 모든 정보는 한 개의 디렉터리에서 관리하며 그룹으로 존재한다.
  *          - Processor 에서 설정값에 맞는 문자 정보를 가져와서 처리하는 방식
  *          - 구분기는 특정 구분 조건들을 사용하고 해당 구분 조건들은 특정한 유효성을 가지고 있다.
- *
+ *      2. 기존의 RoleManager 모두 제거
+ *          - 새로운 Role로 교체
  * @author wjrmffldrhrl
  */
 public class RoleManager {

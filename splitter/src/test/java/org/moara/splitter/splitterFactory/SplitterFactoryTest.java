@@ -12,9 +12,7 @@ import org.moara.splitter.utils.Sentence;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * TODO 1. 문장 분리기 생성자 관련 테스트 계속 진행할 것
- */
+
 public class SplitterFactoryTest {
     String text = "반갑습니다. 조승현입니다.";
 

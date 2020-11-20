@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
 
 /**
  * 괄호영역 처리기
+ * TODO 1. 메타 데이터를 사용하도록 처리
  *
  *
  * @author wjrmffldrhrl

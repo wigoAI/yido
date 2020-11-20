@@ -27,8 +27,6 @@ import java.util.List;
 /**
  * 파일 관리자 구현체
  *
- * TODO 1. Change to singleTone
- *
  * @author wjrmffldrhrl
  *
  */
