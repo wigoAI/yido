@@ -15,6 +15,9 @@
  */
 package org.moara.splitter.utils.file;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.moara.splitter.SplitterImpl;
 
 import java.io.*;
@@ -142,4 +145,15 @@ public class FileManager {
     }
 
 
+    public static JsonObject getJsonObjectByFile(String fileName) {
+        JsonElement element = null;
+        File file = new File(ABSTRACT_PATH + fileName);
+        try {
+            element = JsonParser.parseReader(new FileReader(file.getPath()));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return element.getAsJsonObject();
+    }
 }
