@@ -2,7 +2,9 @@
 - yido -> 세종대왕 본명
 - 한국어 자연어 처리 프로젝트
 - jdk 1.8
-
+- 상세 문서 페이지
+    - https://wigoai.atlassian.net/wiki/spaces/WP/pages/291635219/yido
+    
 # modules
 ## splitter (문단 문장 구분기)
 - 문단구분과 문장구분등에 사용 됨
