@@ -3,8 +3,13 @@ package org.moara.splitter;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import org.moara.splitter.processor.OtherExceptionAreaProcessor;
+import org.moara.splitter.processor.OtherTerminatorAreaProcessor;
 import org.moara.splitter.role.NewsRoleManager;
 import org.moara.splitter.role.RoleManager;
+import org.moara.splitter.role.SplitCondition;
+import org.moara.splitter.role.SplitConditionManager;
+import org.moara.splitter.utils.Config;
 import org.moara.splitter.utils.Sentence;
 
 import java.util.ArrayList;
@@ -107,9 +112,21 @@ public class SplitTest {
 
     @Test
     public void testOtherSplitter() {
-        Splitter splitter = new OtherSplitter();
+        String[] validationList = {"V_N_B_TEST"};
+        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions("SP_N_B_TEST", validationList);
 
+        OtherTerminatorAreaProcessor terminatorAreaProcessor = new OtherTerminatorAreaProcessor(splitConditions, new Config());
+        OtherExceptionAreaProcessor otherExceptionAreaProcessor = new OtherExceptionAreaProcessor();
+        Splitter splitter = new OtherSplitter(terminatorAreaProcessor, otherExceptionAreaProcessor);
+        String[] answer = {"거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다.",
+                "그의 고향은 천안이지만 가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다.",
+                "15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다."};
 
+        int index = 0;
+        for(Sentence sentence : splitter.split(newsData)) {
+
+            assertEquals(answer[index++], sentence.getText());
+        }
     }
 
 }

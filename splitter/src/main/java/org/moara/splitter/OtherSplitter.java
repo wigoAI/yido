@@ -1,12 +1,24 @@
 package org.moara.splitter;
 
+import com.github.wjrmffldrhrl.Area;
+import org.moara.splitter.processor.OtherExceptionAreaProcessor;
 import org.moara.splitter.processor.OtherTerminatorAreaProcessor;
+import org.moara.splitter.role.SplitConditionManager;
 import org.moara.splitter.utils.Sentence;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 
 public class OtherSplitter implements Splitter {
     protected OtherTerminatorAreaProcessor otherTerminatorAreaProcessor;
+    protected OtherExceptionAreaProcessor otherExceptionAreaProcessor;
+
+    public OtherSplitter(OtherTerminatorAreaProcessor otherTerminatorAreaProcessor,
+                         OtherExceptionAreaProcessor otherExceptionAreaProcessor) {
+        this.otherTerminatorAreaProcessor = otherTerminatorAreaProcessor;
+        this.otherExceptionAreaProcessor = otherExceptionAreaProcessor;
+    }
 
     @Override
     public Sentence[] split(String text) {
@@ -22,6 +34,18 @@ public class OtherSplitter implements Splitter {
 
     private TreeSet<Integer> getSplitPoint(String text) {
         TreeSet<Integer> splitPoints = otherTerminatorAreaProcessor.find(text);
+        List<Area> exceptionAreas = otherExceptionAreaProcessor.find(text);
+        List<Integer> removeItems = new ArrayList<>();
+
+        for (Area exceptionArea : exceptionAreas) {
+            for(int splitPoint : splitPoints) {
+                if(exceptionArea.contains(splitPoint)) { removeItems.add(splitPoint); }
+            }
+        }
+
+        for (int removeItem : removeItems) {
+            splitPoints.remove(removeItem);
+        }
 
         return splitPoints;
     }
