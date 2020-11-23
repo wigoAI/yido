@@ -21,13 +21,15 @@ public class SplitConditionManager {
             throw new RuntimeException("Invalid role name");
         }
 
-        List<SplitCondition> splitConditions = new ArrayList<>();
         Collection<String> roleDataList = FileManager.readFile(rolePath + roleName + ".role");
+        List<SplitCondition> splitConditions = new ArrayList<>();
         List<Validation> validations = new ArrayList<>();
 
         for (String validationRoleName : validationList) {
             validations.addAll(ValidationManager.getValidations(validationRoleName));
         }
+
+        if (usePublicValidation == 'Y') { validations.addAll(PublicValidationManager.getAllPublicValidations()); }
 
         for (String roleData : roleDataList) {
             splitConditions.add(new SplitCondition(roleData, validations, usePublicValidation, splitPosition));

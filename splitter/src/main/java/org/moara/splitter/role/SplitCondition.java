@@ -3,9 +3,12 @@ package org.moara.splitter.role;
 import java.util.List;
 
 /**
+ * 구분 조건
  * TODO 1. invalid parameter 처리
+ *
+ * @author wjrmffldrhrl
  */
-public class SplitCondition {
+public class  SplitCondition {
 
     private final String value;
     private final List<Validation> validations;

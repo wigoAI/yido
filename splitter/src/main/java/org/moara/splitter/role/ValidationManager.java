@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class ValidationManager {
-    protected static final String rolePath = "/string_group/validation/";
+    protected static String rolePath = "/string_group/validation/";
 
     public static List<Validation> getValidations(String roleName)  {
         String[] roleInfoArray = roleName.split("_");

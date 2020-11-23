@@ -43,8 +43,8 @@ public class AreaProcessorTest {
     public void testTerminatorAreaProcessor() {
         RoleManager roleManager = BasicRoleManager.getRoleManager();
         TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(roleManager, new Config());
-        String inputData = "강남역 맛집으로 소문난 강남 토끼정에 다녀왔습니다. 회사 동료 분들과 다녀왔는데 분위기도 좋고 음식도 맛있었어요 다만, 강남 토끼정이 강남 쉑쉑버거 골목길로 쭉 올라가야 하는데 다들 쉑쉑버거의 유혹에 넘어갈 뻔 했답니다 ";
-        int[] answer = {28, 62, 93, 73};
+        String inputData = "강남역 맛집으로 소문난 강남 토끼정에 다녀왔습니다. 회사 동료 분들과 다녀왔는데 분위기도 좋고 음식도 맛있었어요ㅋㅋㅋ 다만, 강남 토끼정이 강남 쉑쉑버거 골목길로 쭉 올라가야 하는데 다들 쉑쉑버거의 유혹에 넘어갈 뻔 했답니다 ";
+        int[] answer = {28, 65, 93, 73};
 
         int index = 0;
         for (int i : terminatorAreaProcessor.find(inputData)) {
@@ -76,7 +76,7 @@ public class AreaProcessorTest {
 
         OtherTerminatorAreaProcessor terminatorAreaProcessor = new OtherTerminatorAreaProcessor(splitConditions, new Config());
         String inputData = "강남역 맛집으로 소문난 강남 토끼정에 다녀왔습니다. 회사 동료 분들과 다녀왔는데 분위기도 좋고 음식도 맛있었어요 다만, 강남 토끼정이 강남 쉑쉑버거 골목길로 쭉 올라가야 하는데 다들 쉑쉑버거의 유혹에 넘어갈 뻔 했답니다. ";
-        int[] answer = {28, 62, 93, 73};
+        int[] answer = {28, 62, 93, 73, 12, 25, 43};
 
         int index = 0;
         for (int i : terminatorAreaProcessor.find(inputData)) {
@@ -99,26 +99,14 @@ public class AreaProcessorTest {
         }
         assertNotEquals(0, terminatorAreaProcessor.find(inputData).size());
 
-    }
 
-    @Test
-    public void testTerminatorValidation() {
-        RoleManager roleManager = CustomRoleManager.getRoleManager();
-        List<String> terminatorRole = new ArrayList<>();
-        terminatorRole.add("다.");
-        roleManager.addRolesToMemory("terminator", terminatorRole);
-
-        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(roleManager, new Config());
-
-        String inputData = "계획은 구성원들에게 함께 나아가야할 방향을 제시함과 동시에 목적지에 도달하기 위한 수단과 방법을 제공하는 안내서이자 설계도와 같다. 좋은 안내서가 목적한 곳에 무사히 도달할 수 있는데 중요한 역할을 하는 것처럼, 국민과 도민의 삶을 변화시키는 것에는 중앙정부와 지방정부에서 세우는 계획들이 무척 중요하다고 할 것이다.            ";
+        inputData = "안녕하세요 반갑습니다. 저는 조승현입니다!!! 여러분들을 만나서 너무 반가워요 제가 공부를 더 했다면 좋았을텐데...";
 
         for (int i : terminatorAreaProcessor.find(inputData)) {
 
-            System.out.println("terminator point : " + i);
-            assertEquals(i, 73);
+            assertEquals(i, answer[index++]);
         }
         assertNotEquals(0, terminatorAreaProcessor.find(inputData).size());
-
     }
 
 

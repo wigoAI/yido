@@ -68,5 +68,9 @@ public class ValidationTest {
         Assert.assertTrue(comparePositionException);
     }
 
+    @Test
+    public void testGetPublicValidations() {
+        PublicValidationManager.getAllPublicValidations();
+    }
 
 }
