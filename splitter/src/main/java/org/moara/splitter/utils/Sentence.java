@@ -24,7 +24,7 @@ import com.github.wjrmffldrhrl.Area;
  * @author wjrmffldrhrl
  */
 public class Sentence extends Area {
-    private String text;
+    private final String text;
 
     /**
      * Constructor

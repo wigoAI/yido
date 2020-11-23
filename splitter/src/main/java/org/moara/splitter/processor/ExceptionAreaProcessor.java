@@ -16,47 +16,37 @@
 package org.moara.splitter.processor;
 
 import com.github.wjrmffldrhrl.Area;
-import org.moara.splitter.processor.regularExpression.BracketProcessor;
-import org.moara.splitter.processor.regularExpression.UrlProcessor;
-import org.moara.splitter.role.PublicRoleManager;
-import org.moara.splitter.role.RoleManager;
+import org.moara.splitter.role.MetaManager;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 
 /**
- * 예외영역 처리기
- *
+ * 예외 영역 처리기
+ * TODO 1. 코드 정리하기
+ *          - 중복 코드 제거
+ *      2. url 처리방식 정하기
+ *          - url을 예외 영역으로 지정할 필요가 없을 것 같음
  * @author wjrmffldrhrl
  */
 public class ExceptionAreaProcessor {
-    private final UrlProcessor urlProcessor = new UrlProcessor();
-    private final BracketProcessor bracketProcessor;
 
-    /**
-     * Constructor
-     *
-     * @param roleManager RoleManager
-     *
-     */
-    public ExceptionAreaProcessor(RoleManager roleManager) {
-        bracketProcessor = new BracketProcessor(roleManager);
-    }
 
-    public ExceptionAreaProcessor(PublicRoleManager publicRoleManager, RoleManager roleManager) {
-        bracketProcessor = new BracketProcessor(publicRoleManager, roleManager);
-    }
-
-    /**
-     * SplitCondition 에 해당하는 예외 영역을 찾아 List 로 반환
-     * @param data String
-     * @return 예외 영역들이 Area 형태로 담긴 리스트 반환
-     */
-    public List<Area> find(String data) {
+    public List<Area> find(String text) {
         List<Area> exceptionAreaList = new ArrayList<>();
-        exceptionAreaList.addAll(urlProcessor.find(data));
-        exceptionAreaList.addAll(bracketProcessor.find(data));
+
+        Matcher matcher =  MetaManager.getDifferentSideBracketPattern().matcher(text);
+
+        while (matcher.find()) {
+            exceptionAreaList.add(new Area(matcher));
+        }
+
+        matcher = MetaManager.getSameSideBracketPattern().matcher(text);
+        while (matcher.find()) {
+            exceptionAreaList.add(new Area(matcher));
+        }
 
         return exceptionAreaList;
     }
-
 }

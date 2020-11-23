@@ -19,6 +19,8 @@ import org.moara.splitter.utils.Sentence;
 
 /**
  * 문장 구분기 추상체
+ *
+ * TODO 1. public method 주석 추가하기
  * @author wjrmffldrhrl
  */
 public interface Splitter {

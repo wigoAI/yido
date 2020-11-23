@@ -18,11 +18,6 @@ package org.moara.splitter;
 import com.github.wjrmffldrhrl.Area;
 import org.moara.splitter.processor.ExceptionAreaProcessor;
 import org.moara.splitter.processor.TerminatorAreaProcessor;
-
-import org.moara.splitter.processor.regularExpression.RegularExpressionProcessorImpl;
-import org.moara.splitter.role.PublicRoleManager;
-import org.moara.splitter.role.RoleManager;
-import org.moara.splitter.utils.Config;
 import org.moara.splitter.utils.Sentence;
 
 import java.util.ArrayList;
@@ -30,62 +25,36 @@ import java.util.List;
 import java.util.TreeSet;
 
 /**
- * 문장 분리기
+ * 구분기 구현체
  *
  * @author wjrmffldrhrl
  */
 public class SplitterImpl implements Splitter {
+    protected final TerminatorAreaProcessor terminatorAreaProcessor;
+    protected final ExceptionAreaProcessor exceptionAreaProcessor;
 
-    protected TerminatorAreaProcessor terminatorAreaProcessor;
-    protected ExceptionAreaProcessor exceptionAreaProcessor;
-    protected RegularExpressionProcessorImpl regularExpressionProcessor;
-    protected PublicRoleManager publicRoleManager = (PublicRoleManager) PublicRoleManager.getRoleManager();
-
-    /**
-     *
-     * Default constructor
-     * SplitterFactory 만 접근 가능하다.
-     *
-     * @param roleManager news or basic role manager
-     * @param config 문장 구분기 설정값
-     */
-    SplitterImpl(RoleManager roleManager, Config config) { initAreaProcessor(roleManager, config); }
-
-    private void initAreaProcessor(RoleManager roleManager, Config config) {
-
-
-        if (config.USE_PUBLIC_ROLE) {
-            terminatorAreaProcessor = new TerminatorAreaProcessor(publicRoleManager, roleManager, config);
-            exceptionAreaProcessor = new ExceptionAreaProcessor(publicRoleManager, roleManager);
-            regularExpressionProcessor = new RegularExpressionProcessorImpl(publicRoleManager, roleManager);
-        } else {
-            terminatorAreaProcessor = new TerminatorAreaProcessor(roleManager, config);
-            exceptionAreaProcessor = new ExceptionAreaProcessor(roleManager);
-            regularExpressionProcessor = new RegularExpressionProcessorImpl(roleManager);
-        }
-
+    SplitterImpl(TerminatorAreaProcessor terminatorAreaProcessor,
+                 ExceptionAreaProcessor exceptionAreaProcessor) {
+        this.terminatorAreaProcessor = terminatorAreaProcessor;
+        this.exceptionAreaProcessor = exceptionAreaProcessor;
     }
 
     @Override
-    public Sentence[] split(String inputData) {
-        if(inputData == null || inputData.isEmpty()) {
-            System.out.println("No Data");
+    public Sentence[] split(String text) {
+        if (text.isEmpty()) {
             return new Sentence[0];
         }
 
-        TreeSet<Integer> splitPoint = getSplitPoint(inputData);
-        return doSplit(splitPoint, inputData);
+        TreeSet<Integer> splitPoint = getSplitPoint(text);
+
+        return doSplit(splitPoint, text);
+
     }
 
-    private TreeSet<Integer> getSplitPoint(String inputData) {
-        TreeSet<Integer> splitPoints = terminatorAreaProcessor.find(inputData);
-        List<Area> regxAreas = regularExpressionProcessor.find(inputData);
-        List<Area> exceptionAreas = exceptionAreaProcessor.find(inputData);
+    private TreeSet<Integer> getSplitPoint(String text) {
+        TreeSet<Integer> splitPoints = terminatorAreaProcessor.find(text);
+        List<Area> exceptionAreas = exceptionAreaProcessor.find(text);
         List<Integer> removeItems = new ArrayList<>();
-
-        for (Area regxArea : regxAreas) {
-            splitPoints.add(regxArea.getEnd());
-        }
 
         for (Area exceptionArea : exceptionAreas) {
             for(int splitPoint : splitPoints) {
@@ -119,4 +88,3 @@ public class SplitterImpl implements Splitter {
         return result;
     }
 }
-

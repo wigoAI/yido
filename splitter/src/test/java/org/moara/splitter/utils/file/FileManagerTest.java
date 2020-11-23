@@ -44,10 +44,6 @@ public class FileManagerTest {
     @Test
     public void testReadJsonFile() {
         JsonObject jsonObject = FileManager.getJsonObjectByFile("/string_group/meta/M_bracket.json");
-
-
-
-
     }
 
 

@@ -3,16 +3,13 @@ package org.moara.splitter;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import org.moara.splitter.processor.OtherExceptionAreaProcessor;
-import org.moara.splitter.processor.OtherTerminatorAreaProcessor;
-import org.moara.splitter.role.NewsRoleManager;
-import org.moara.splitter.role.RoleManager;
+import org.moara.splitter.processor.ExceptionAreaProcessor;
+import org.moara.splitter.processor.TerminatorAreaProcessor;
 import org.moara.splitter.role.SplitCondition;
 import org.moara.splitter.role.SplitConditionManager;
 import org.moara.splitter.utils.Config;
 import org.moara.splitter.utils.Sentence;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SplitTest {
@@ -28,19 +25,12 @@ public class SplitTest {
     
 //    String newsData = "우귀화 기자 wookiza@idomin.com  노동계는 고 염호석 씨 사건 등 삼성 노조 와해 사건의 '몸통'을 수사할 것을 촉구했다. 민주노총 경남지역본부는 '구속 수사하라! 빠르게 재판하라! 몸통을 수사하라!'는 논평을 냈다.  검찰은 염호석 금속노조 삼성전자서비스지회 양산분회장 시신 탈취 사건과 관련해 경찰관 2명을 불구속 기소했다. 이에 대해 민주노총 경남본부는 \"우리는 1년 이상의 하한형을 둔 부정처사후수뢰죄가 있음에도 이언학 서울중앙지법 영장전담 부장판사가 (경찰관 2명에 대해) '피의자가 검찰 수사에 적극적으로 응하고 있으며 범행 당시 피의자의 지위와 역할 등을 고려했을 때 구속 필요성을 인정하기 어렵다'고 기각한 것은 어처구니없다\"고 비판했다.  이어 \"직권남용 등의 과정에서 윗선이 있었는지를 가려내고 경찰관의 불법 개입에 대한 모든 진실을 밝히기 위해서라도 검찰은 구속영장을 재청구하고 서울중앙지법은 구속할 것을 촉구한다\"고 밝혔다.  또, \"검찰이 전사적 역량이 동원된 삼성의 조직적인 범죄에 대해 지난 9월 이상훈(63) 삼성전자 이사회 의장 등 32명을 한꺼번에 재판에 넘겼다. 하지만 검찰이 반헌법적인 노조 와해 공작의 '윗선'을 이상훈 의장이라고 결론 낸 것에 대해서는 알아듣기 어렵다. 우리는 검찰이 다시 몸통을 수사하고, 법원은 빠르게 재판할 것을 촉구한다\"며 삼성 이재용 부회장과 미래전략실 임원을 수사해야 한다고 주장했다. ";
     String newsData = "거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다. 그의 고향은 천안이지만 가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다. 15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다.";
-    
-    @Test
-    public void testGetFactoryInstance() {
-        SplitterFactory ssm1 = SplitterFactory.getInstance();
-        SplitterFactory ssm2 = SplitterFactory.getInstance();
-        assertEquals(ssm1, ssm2);
-    }
+
 
     @Test
     public void testInitSplitter() {
-        SplitterFactory ssf = SplitterFactory.getInstance();
-        System.out.println("ssf : " + ssf);
-        Splitter basicSplitter =  ssf.getSplitter();
+
+        Splitter basicSplitter =  SplitterFactory.getSplitter();
 
         assertEquals("강남역 맛집으로 소문난 강남 토끼정에 다녀왔습니다.",
                 basicSplitter.split(data[0])[0].getText());
@@ -51,8 +41,8 @@ public class SplitTest {
     @Test
     public void testSplit() {
         for (int USED_CASE = 1 ; USED_CASE <= 5 ; USED_CASE++) {
-            SplitterFactory ssm = SplitterFactory.getInstance();
-            SplitterImpl splitterImpl = (SplitterImpl) ssm.getSplitter();
+
+            Splitter splitterImpl = SplitterFactory.getSplitter();
 
             Sentence[] result = splitterImpl.split(data[USED_CASE - 1]);
 
@@ -65,15 +55,14 @@ public class SplitTest {
 
     @Test
     public void testBasicSplitter() {
-        SplitterFactory ssm = SplitterFactory.getInstance();
-        Splitter basicSplitter =  ssm.getSplitter(2);
+        Splitter basicSplitter =  SplitterFactory.getSplitter(1);
 
         basicSplitter.split(data[0]);
     }
 
     @Test
     public void testNewsSplit() {
-        Splitter newsSplitter = SplitterFactory.getInstance().getSplitter(2);
+        Splitter newsSplitter = SplitterFactory.getSplitter(2);
         String[] answer1 = {"거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다.",
                 "그의 고향은 천안이지만",
                 "가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다.",
@@ -90,24 +79,7 @@ public class SplitTest {
 
     @Test
     public void testSplitWithAddRolesInMemory() {
-        Splitter newsSplitter = SplitterFactory.getInstance().getSplitter(2);
-        RoleManager roleManager = NewsRoleManager.getRoleManager();
-        List<String> roles = new ArrayList<>();
-        roles.add("살다가");
-        roleManager.addRolesToMemory("terminator", roles);
 
-        String[] answer2 = {"거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다.",
-                "그의 고향은 천안이지만",
-                "가족과 서울에서 오랫동안 살다가",
-                "\"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다.",
-                "15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다."};
-
-        int index = 0;
-        for(Sentence sentence : newsSplitter.split(newsData)) {
-
-            assertEquals(answer2[index++], sentence.getText());
-        }
-        roleManager.initRole("terminator");
     }
 
     @Test
@@ -115,9 +87,9 @@ public class SplitTest {
         String[] validationList = {"V_N_B_TEST"};
         List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions("SP_N_B_TEST", validationList);
 
-        OtherTerminatorAreaProcessor terminatorAreaProcessor = new OtherTerminatorAreaProcessor(splitConditions, new Config());
-        OtherExceptionAreaProcessor otherExceptionAreaProcessor = new OtherExceptionAreaProcessor();
-        Splitter splitter = new OtherSplitter(terminatorAreaProcessor, otherExceptionAreaProcessor);
+        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, new Config());
+        ExceptionAreaProcessor exceptionAreaProcessor = new ExceptionAreaProcessor();
+        Splitter splitter = new SplitterImpl(terminatorAreaProcessor, exceptionAreaProcessor);
         String[] answer = {"거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다.",
                 "그의 고향은 천안이지만 가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다.",
                 "15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다."};

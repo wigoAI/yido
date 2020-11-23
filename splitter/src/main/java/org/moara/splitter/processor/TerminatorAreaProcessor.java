@@ -15,91 +15,66 @@
  */
 package org.moara.splitter.processor;
 
-import com.github.wjrmffldrhrl.Area;
-import org.moara.splitter.role.PublicRoleManager;
+import org.moara.splitter.role.SplitCondition;
+import org.moara.splitter.role.Validation;
 import org.moara.splitter.utils.Config;
-import org.moara.splitter.role.RoleManager;
 
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 /**
- * 구분 영역 처리기
+ * 구분점 처리기
  *
- *  TODO 1. 기존의 AreaProcessor 모두 교체
+ *
  * @author wjrmffldrhrl
  */
 public class TerminatorAreaProcessor {
-    private final HashSet<String> terminatorRole;
-    private final HashSet<String> connectiveRole;
-    private final Config terminatorConfig;
 
-    /**
-     * Constructor
-     * @param roleManager RoleManager
-     * @param config Config
-     */
-    public TerminatorAreaProcessor(RoleManager roleManager, Config config) {
-        this.terminatorRole = roleManager.getRole("terminator");
-        this.connectiveRole = roleManager.getRole("connective");
-        this.terminatorConfig = config;
-    }
+    private final List<SplitCondition> splitConditions;
+    private final Config config;
 
-    public TerminatorAreaProcessor(PublicRoleManager publicRoleManager, RoleManager roleManager, Config config) {
-        this(roleManager, config);
-        this.terminatorRole.addAll(publicRoleManager.getRole("terminator"));
-        this.connectiveRole.addAll(publicRoleManager.getRole("connective"));
+    public TerminatorAreaProcessor(List<SplitCondition> splitConditions, Config config) {
+        this.splitConditions = splitConditions;
+        this.config = config;
+
     }
 
     /**
-     * 구분점 반환
-     *
-     * @param text 구분 대상 문자
-     * @return TreeSet
+     * 구분점 찾기
+     * @param text 구분점을 찾을 데이터
+     * @return 구분점 TreeSet
      */
     public TreeSet<Integer> find(String text) {
-        TreeSet<Integer> terminatorList = new TreeSet<>();
+        TreeSet<Integer> splitPointSet = new TreeSet<>();
         text = text.trim();
 
-        for(int i = 0; i < text.length() - terminatorConfig.MIN_RESULT_LENGTH; i++) {
-            for(int processingLength = terminatorConfig.PROCESSING_LENGTH_MAX; processingLength >= terminatorConfig.PROCESSING_LENGTH_MIN; processingLength--) {
+        for (SplitCondition splitCondition : splitConditions) {
 
-                Area targetArea = new Area(i, i + processingLength);
-                String targetString = text.substring(targetArea.getStart(), targetArea.getEnd());
+            int splitPoint = -1;
+            while (true) {
+                splitPoint = text.indexOf(splitCondition.getValue(), splitPoint);
+                if (splitPoint == -1) { break; } // 구분 조건 x
 
-                if(terminatorRole.contains(targetString) && !isConnective(targetArea.getEnd(), text)) {
-
-                    int additionalSignLength = getAdditionalSignLength(targetArea.getEnd(), text);
-                    terminatorList.add(targetArea.getEnd() + additionalSignLength);
-
-                    i = targetArea.getStart() + additionalSignLength;
-
-                    break;
+                if (!isValid(text, splitCondition, splitPoint)) {
+                    splitPoint += splitCondition.getValue().length();
+                    continue;
                 }
 
-                i = targetArea.getStart();
+                if (splitCondition.getSplitPosition() == 'B') { // 문장 구분점 뒤
+                    splitPoint += splitCondition.getValue().length();
+                    splitPoint += getAdditionalSignLength(splitPoint, text);
+                    splitPointSet.add(splitPoint);
+                } else { // 앞
+                    splitPointSet.add(splitPoint);
+                    splitPoint += splitCondition.getValue().length();
+                }
             }
         }
 
-        return terminatorList;
-    }
-
-    private boolean isConnective(int startIndex, String text) {
-
-        int connectiveCheckLength = (startIndex + terminatorConfig.MIN_RESULT_LENGTH > text.length()) ? (startIndex + 5 - text.length()) : 5;
-        String nextStr = text.substring(startIndex, startIndex +  connectiveCheckLength);
-
-        for(int i = 0 ; i < nextStr.length() ; i++) {
-            String targetString = nextStr.substring(0, nextStr.length() - i);
-
-            if(connectiveRole.contains(targetString)) {
-                return true;
-            }
-        }
-
-        return false;
+        removeInvalidItem(splitPointSet, text.length());
+        return splitPointSet;
     }
 
     private int getAdditionalSignLength(int startIndex, String text) {
@@ -107,10 +82,10 @@ public class TerminatorAreaProcessor {
         String regular = "[ㄱ-ㅎㅏ-ㅣ\\.\\?\\!\\~\\;\\^]";
         Pattern pattern = Pattern.compile(regular);
 
-        for(int i = 0 ; i + startIndex < text.length() ; i++ ) {
+        for (int i = 0; i + startIndex < text.length(); i++) {
             String targetStr = text.substring(startIndex + i, startIndex + i + 1);
 
-            if(!pattern.matcher(targetStr).matches()) {
+            if (!pattern.matcher(targetStr).matches()) {
                 break;
             } else {
                 additionalSignLength++;
@@ -120,4 +95,44 @@ public class TerminatorAreaProcessor {
         return additionalSignLength;
     }
 
+    private boolean isValid(String text, SplitCondition splitCondition, int splitPoint) {
+        boolean isValid = true;
+
+        if (splitPoint < config.MIN_RESULT_LENGTH || splitPoint > text.length() - config.MIN_RESULT_LENGTH) {
+            return false;
+        }
+
+        for (Validation validation : splitCondition.getValidations()) {
+            int compareIndexStart = splitPoint;
+            if (validation.getComparePosition() == 'B') { compareIndexStart += splitCondition.getValue().length();
+            } else { compareIndexStart -= validation.getValue().length(); }
+
+            String compareText = text.substring(compareIndexStart, compareIndexStart + validation.getValue().length());
+            boolean isEquals = compareText.equals(validation.getValue());
+            if ((validation.getMatchFlag() == 'N' && isEquals) ||
+                    (validation.getMatchFlag() == 'Y' && !isEquals)) {
+                isValid = false;
+                break;
+            }
+
+        }
+
+        return isValid;
+    }
+
+    private void removeInvalidItem(TreeSet<Integer> splitPoints, int textLength) {
+        splitPoints.removeIf(item -> item < config.MIN_RESULT_LENGTH ||
+                item > textLength - config.MIN_RESULT_LENGTH);
+
+        List<Integer> removeItems = new ArrayList<>();
+        int previousItem = 0;
+        for (int item : splitPoints) {
+            if (item - previousItem < config.MIN_RESULT_LENGTH) {
+                removeItems.add(previousItem);
+            }
+
+            previousItem = item;
+        }
+        splitPoints.removeAll(removeItems);
+    }
 }
