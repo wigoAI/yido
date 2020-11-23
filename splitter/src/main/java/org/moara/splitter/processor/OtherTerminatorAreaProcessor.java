@@ -40,8 +40,7 @@ public class OtherTerminatorAreaProcessor {
             int splitPoint = -1;
             while (true) {
                 splitPoint = text.indexOf(splitCondition.getValue(), splitPoint);
-                if (splitPoint < config.MIN_RESULT_LENGTH || splitPoint > text.length() - config.MIN_RESULT_LENGTH ||
-                        splitPoint == -1) { break; } // 구분 조건 x
+                if (splitPoint == -1) { break; } // 구분 조건 x
 
                 if (!isValid(text, splitCondition, splitPoint)) {
                     splitPoint += splitCondition.getValue().length();
@@ -81,16 +80,17 @@ public class OtherTerminatorAreaProcessor {
         return additionalSignLength;
     }
 
-        private boolean isValid(String text, SplitCondition splitCondition, int splitPoint) {
+    private boolean isValid(String text, SplitCondition splitCondition, int splitPoint) {
         boolean isValid = true;
+
+        if (splitPoint < config.MIN_RESULT_LENGTH || splitPoint > text.length() - config.MIN_RESULT_LENGTH) {
+            return false;
+        }
 
         for (Validation validation : splitCondition.getValidations()) {
             int compareIndexStart = splitPoint;
-            if (validation.getComparePosition() == 'B') {
-                compareIndexStart += splitCondition.getValue().length();
-            } else {
-                compareIndexStart -= validation.getValue().length();
-            }
+            if (validation.getComparePosition() == 'B') { compareIndexStart += splitCondition.getValue().length();
+            } else { compareIndexStart -= validation.getValue().length(); }
 
             String compareText = text.substring(compareIndexStart, compareIndexStart + validation.getValue().length());
             boolean isEquals = compareText.equals(validation.getValue());
@@ -101,6 +101,7 @@ public class OtherTerminatorAreaProcessor {
             }
 
         }
+
         return isValid;
     }
 

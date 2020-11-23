@@ -105,6 +105,11 @@ public class SplitTest {
         roleManager.initRole("terminator");
     }
 
+    @Test
+    public void testOtherSplitter() {
+        Splitter splitter = new OtherSplitter();
 
+
+    }
 
 }
