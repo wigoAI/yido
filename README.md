@@ -17,7 +17,7 @@
  - 속도 + 분석정확도
  - multi thread 를 지원하지 않는것 같고 inmemory 방식으로 운영할때 사전의 변경정보가 반영이 쉬운지 는 테스트하지 못함
  - multi thread 를 지원하지 않아도 다른 토크나이져보다 성능이 빠름 (10배이상 차이)
- - 이전버전인 moara 토크나이저는 경량화하면 mecab보다 2배정도의 차이가 나고 multi thread 를 지원 함
+ - 이전버전인 moara 토크나이저는 경량화하면 mecab보다 2배정도 차이가 나고(mecab 이 2배 빠름, 더빠르게 제작 가능함) multi thread 를 지원 함
  - 단 품질을 관리하기 어려워 우선은 mecab을 활용하는 방향으로 함
  - 공통된 형태로 제작하여 초기에는 mecab을 활용하고 더 좋은게 나오면 변경
  - mecab을 사용하다 발견된 문제들은 이전에 단어 추출기를 만들었던 노하우를 바탕으로 성능 좋은 한국어 토크나이저를 개발하여 상황에 맞는 것을 사용하게 지원
@@ -50,7 +50,7 @@
  - wigoailab.slack.com
 
 
-# dev
+# main developer
  - macle
     -  [github.com/macle86](https://github.com/macle86)
     
