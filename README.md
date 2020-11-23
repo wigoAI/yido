@@ -50,7 +50,7 @@
  - wigoailab.slack.com
 
 
-# dev
+# main developer
  - macle
     -  [github.com/macle86](https://github.com/macle86)
     
