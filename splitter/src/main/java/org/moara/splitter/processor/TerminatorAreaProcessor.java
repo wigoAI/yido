@@ -55,49 +55,59 @@ public class TerminatorAreaProcessor {
         TreeSet<Integer> splitPointSet = new TreeSet<>();
         text = text.trim();
 
-        for (SplitCondition splitCondition : splitConditions) {
-            if (splitCondition.isPattern()) {
-                Pattern pattern = Pattern.compile(splitCondition.getValue());
-                Matcher matcher = pattern.matcher(text);
-
-                while (matcher.find()) {
-                    if (splitCondition.getSplitPosition() == 'B') { // 문장 구분점 뒤
-                        int splitPoint = matcher.end();
-                        splitPoint += splitCondition.getValue().length();
-                        splitPoint += getAdditionalSignLength(splitPoint, text);
-                        splitPointSet.add(splitPoint);
-                    } else { // 앞
-                        int splitPoint = matcher.start();
-                        splitPointSet.add(splitPoint);
-                    }
-                }
-
-            } else {
-                int splitPoint = -1;
-                while (true) {
-                    splitPoint = text.indexOf(splitCondition.getValue(), splitPoint);
-                    if (splitPoint == -1) { break; } // 구분 조건 x
-
-                    if (!isValid(text, splitCondition, splitPoint)) {
-                        splitPoint += splitCondition.getValue().length();
-                        continue;
-                    }
-
-                    if (splitCondition.getSplitPosition() == 'B') { // 문장 구분점 뒤
-                        splitPoint += splitCondition.getValue().length();
-                        splitPoint += getAdditionalSignLength(splitPoint, text);
-                        splitPointSet.add(splitPoint);
-                    } else { // 앞
-                        splitPointSet.add(splitPoint);
-                        splitPoint += splitCondition.getValue().length();
-                    }
-                }
-            }
-
-        }
+        findSplitPoint(text, splitPointSet);
 
         removeInvalidItem(splitPointSet, text.length());
         return splitPointSet;
+    }
+
+    private void findSplitPoint(String text, TreeSet<Integer> splitPointSet) {
+        for (SplitCondition splitCondition : splitConditions) {
+            if (splitCondition.isPattern()) {
+                findSplitPointWithPattern(splitPointSet, text, splitCondition);
+            } else {
+                findSplitPointWithValue(splitPointSet, text, splitCondition);
+            }
+        }
+    }
+
+    private void findSplitPointWithValue(TreeSet<Integer> splitPointSet, String text, SplitCondition splitCondition) {
+        int splitPoint = -1;
+        while (true) {
+            splitPoint = text.indexOf(splitCondition.getValue(), splitPoint);
+            if (splitPoint == -1) { break; } // 구분 조건 x
+
+            if (!isValid(text, splitCondition, splitPoint)) {
+                splitPoint += splitCondition.getValue().length();
+                continue;
+            }
+
+            if (splitCondition.getSplitPosition() == 'B') { // 문장 구분점 뒤
+                splitPoint += splitCondition.getValue().length();
+                splitPoint += getAdditionalSignLength(splitPoint, text);
+                splitPointSet.add(splitPoint);
+            } else { // 앞
+                splitPointSet.add(splitPoint);
+                splitPoint += splitCondition.getValue().length();
+            }
+        }
+    }
+
+    private void findSplitPointWithPattern(TreeSet<Integer> splitPointSet, String text,  SplitCondition splitCondition) {
+        Pattern pattern = Pattern.compile(splitCondition.getValue());
+        Matcher matcher = pattern.matcher(text);
+
+        while (matcher.find()) {
+            if (splitCondition.getSplitPosition() == 'B') { // 문장 구분점 뒤
+                int splitPoint = matcher.end();
+                splitPoint += splitCondition.getValue().length();
+                splitPoint += getAdditionalSignLength(splitPoint, text);
+                splitPointSet.add(splitPoint);
+            } else { // 앞
+                int splitPoint = matcher.start();
+                splitPointSet.add(splitPoint);
+            }
+        }
     }
 
     private int getAdditionalSignLength(int startIndex, String text) {

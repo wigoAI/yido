@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'maven-publish'
     id 'jacoco'
+    id 'maven'
 }
 
 version = '1.0-SNAPSHOT'

@@ -26,21 +26,14 @@ package org.moara.splitter.utils;
  */
 public class Config {
     public final int MIN_RESULT_LENGTH;
-    public final int PROCESSING_LENGTH_MAX;
-    public final int PROCESSING_LENGTH_MIN;
-    public final boolean USE_PUBLIC_ROLE;
 
     /**
      * Constructor
      * @param MIN_RESULT_LENGTH 최소 문장 처리 길이 값, 해당 값보다 작으면 문장으로 인정되지 않는다.
-     * @param PROCESSING_LENGTH_MAX 문장 구분점 체크 시 처리하는 최대 길이
-     * @param PROCESSING_LENGTH_MIN 문장 구분점 체크 시 처리하는 최소 길이
+     *
      */
-    public Config(int MIN_RESULT_LENGTH, int PROCESSING_LENGTH_MAX, int PROCESSING_LENGTH_MIN, boolean USE_PUBLIC_ROLE) {
+    public Config(int MIN_RESULT_LENGTH) {
         this.MIN_RESULT_LENGTH = MIN_RESULT_LENGTH;
-        this.PROCESSING_LENGTH_MAX = PROCESSING_LENGTH_MAX;
-        this.PROCESSING_LENGTH_MIN = PROCESSING_LENGTH_MIN;
-        this.USE_PUBLIC_ROLE = USE_PUBLIC_ROLE;
 
     }
 
@@ -51,9 +44,6 @@ public class Config {
      */
     public Config() {
         this.MIN_RESULT_LENGTH = 5;
-        this.PROCESSING_LENGTH_MAX = 3;
-        this.PROCESSING_LENGTH_MIN = 2;
-        this.USE_PUBLIC_ROLE = true;
 
     }
 
