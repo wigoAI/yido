@@ -16,6 +16,7 @@
 package org.moara.splitter;
 
 
+import org.moara.splitter.processor.BracketAreaProcessor;
 import org.moara.splitter.processor.ExceptionAreaProcessor;
 import org.moara.splitter.processor.TerminatorAreaProcessor;
 import org.moara.splitter.role.SplitCondition;
@@ -62,13 +63,25 @@ public class SplitterFactory {
         return splitterHashMap.get(id);
     }
 
+    public static void createSplitter(List<SplitCondition> splitConditions, int key) {
+        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, new Config());
+        ExceptionAreaProcessor exceptionAreaProcessor = new BracketAreaProcessor();
+        createSplitter(terminatorAreaProcessor, exceptionAreaProcessor, key);
+    }
+
+    public static void createSplitter(TerminatorAreaProcessor terminatorAreaProcessor,
+                                      ExceptionAreaProcessor exceptionAreaProcessor, int key) {
+
+        splitterHashMap.put(key, new SplitterImpl(terminatorAreaProcessor, exceptionAreaProcessor));
+    }
+
 
     private static void createSplitter(int id) {
         if (id == BASIC_SPLITTER_ID) {
             String[] validationList = {"V_N_B_001"};
             List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions("SP_N_B_001", validationList);
             TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, new Config());
-            ExceptionAreaProcessor exceptionAreaProcessor = new ExceptionAreaProcessor();
+            ExceptionAreaProcessor exceptionAreaProcessor = new BracketAreaProcessor();
 
             splitterHashMap.put(BASIC_SPLITTER_ID,
                     new SplitterImpl(terminatorAreaProcessor, exceptionAreaProcessor));
@@ -77,16 +90,13 @@ public class SplitterFactory {
             List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions("SP_N_B_002", validationList);
             TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, new Config());
 
-            ExceptionAreaProcessor exceptionAreaProcessor = new ExceptionAreaProcessor();
+            ExceptionAreaProcessor exceptionAreaProcessor = new BracketAreaProcessor();
         } else {
-
-            // throw new InvalidArgumentException();
-
+            throw new IllegalArgumentException("Key [" + id + "] doesn't exist");
         }
     }
 
     private static boolean isKeyEmpty(int key) { return !splitterHashMap.containsKey(key); }
-
 
 }
 

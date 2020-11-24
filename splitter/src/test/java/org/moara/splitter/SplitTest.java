@@ -3,6 +3,7 @@ package org.moara.splitter;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import org.moara.splitter.processor.BracketAreaProcessor;
 import org.moara.splitter.processor.ExceptionAreaProcessor;
 import org.moara.splitter.processor.TerminatorAreaProcessor;
 import org.moara.splitter.role.SplitCondition;
@@ -81,7 +82,7 @@ public class SplitTest {
         List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions("SP_N_B_TEST", validationList);
 
         TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, new Config());
-        ExceptionAreaProcessor exceptionAreaProcessor = new ExceptionAreaProcessor();
+        ExceptionAreaProcessor exceptionAreaProcessor = new BracketAreaProcessor();
         Splitter splitter = new SplitterImpl(terminatorAreaProcessor, exceptionAreaProcessor);
         String[] answer = {"거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다.",
                 "그의 고향은 천안이지만 가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다.",
