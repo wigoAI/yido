@@ -27,6 +27,11 @@ import java.util.List;
 public class ValidationManager {
     protected static String rolePath = "/string_group/validation/";
 
+    /**
+     * 유효성 반환
+     * @param roleName 유효성 생성에 사용되는 룰 이름
+     * @return 유효성 리스트
+     */
     public static List<Validation> getValidations(String roleName)  {
         String[] roleInfoArray = roleName.split("_");
         String validationType = roleInfoArray[0];

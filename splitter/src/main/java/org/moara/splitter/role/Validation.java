@@ -25,6 +25,12 @@ public class Validation {
     private final char matchFlag;
     private final char comparePosition;
 
+    /**
+     * Constructor
+     * @param value 유효성 값
+     * @param matchFlag 유효성 일치 여부 'Y' or 'N'
+     * @param comparePosition 유효성 비교 위치 'B' or 'F'
+     */
     public Validation(String value, char matchFlag, char comparePosition) {
         this.value = value;
         this.matchFlag = matchFlag;

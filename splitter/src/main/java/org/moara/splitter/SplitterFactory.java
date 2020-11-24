@@ -66,14 +66,21 @@ public class SplitterFactory {
 
     private static void createSplitter(int id) {
         if (id == BASIC_SPLITTER_ID) {
-            String[] validationList = {"V_N_B_TEST"};
-            List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions("SP_N_B_TEST", validationList);
+            String[] validationList = {"V_N_B_001"};
+            List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions("SP_N_B_001", validationList);
             TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, new Config());
             ExceptionAreaProcessor exceptionAreaProcessor = new ExceptionAreaProcessor();
 
             splitterHashMap.put(BASIC_SPLITTER_ID,
                     new SplitterImpl(terminatorAreaProcessor, exceptionAreaProcessor));
+        } else if(id == NEWS_SPLITTER_ID) {
+            String[] validationList = {"V_N_B_002"};
+            List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions("SP_N_B_002", validationList);
+            TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, new Config());
+
+            ExceptionAreaProcessor exceptionAreaProcessor = new ExceptionAreaProcessor();
         } else {
+
             // throw new InvalidArgumentException();
 
         }

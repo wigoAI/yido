@@ -32,8 +32,7 @@ public class SplitTest {
 
         Splitter basicSplitter =  SplitterFactory.getSplitter();
 
-        assertEquals("강남역 맛집으로 소문난 강남 토끼정에 다녀왔습니다.",
-                basicSplitter.split(data[0])[0].getText());
+        assertEquals("강남역 맛집으로 소문난 강남 토끼정에 다녀왔습니다.", basicSplitter.split(data[0])[0].getText());
 
     }
 
@@ -51,13 +50,6 @@ public class SplitTest {
                 System.out.println(i + " : " + sentence.getStart()+", "+ sentence.getEnd() + " " + sentence.getText());
             }
         }
-    }
-
-    @Test
-    public void testBasicSplitter() {
-        Splitter basicSplitter =  SplitterFactory.getSplitter(1);
-
-        basicSplitter.split(data[0]);
     }
 
     @Test

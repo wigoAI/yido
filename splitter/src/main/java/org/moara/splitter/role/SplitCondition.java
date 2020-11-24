@@ -30,6 +30,13 @@ public class  SplitCondition {
     private final char usePublicValidation;
     private final char splitPosition;
 
+    /**
+     * Constructor
+     * @param value 구분 조건 값
+     * @param validations 구분 조건에 해당하는 유효성
+     * @param usePublicValidation 공통 유효성 사용 여부 'Y' or 'N'
+     * @param splitPosition 구분 위치 'B' or 'F'
+     */
     public SplitCondition(String value, List<Validation> validations, char usePublicValidation, char splitPosition) {
         this.value = value;
         this.validations = validations;

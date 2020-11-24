@@ -19,14 +19,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 공용 유효성 룰 관리자
- * TODO 1. 공용 유효성가 필요한지 확인하기
+ * 공통 유효성 룰 관리자
+ * TODO 1. 공용 유효성이 필요한지 확인하기
+ *
+ * @author wjrmffldrhrl
  */
 public class PublicValidationManager extends ValidationManager {
 
     private static final String[] roles = {"PV_N_B", "PV_N_F", "PV_Y_B", "PV_Y_F"};
     private static final List<Validation> publicValidations = initAllPublicValidations();
 
+    /**
+     * 생성해둔 공용 유효성 반환
+     * @return public validations
+     */
     public static List<Validation> getAllPublicValidations() {
         return publicValidations;
     }

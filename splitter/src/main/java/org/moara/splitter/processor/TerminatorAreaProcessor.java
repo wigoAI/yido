@@ -107,6 +107,9 @@ public class TerminatorAreaProcessor {
             if (validation.getComparePosition() == 'B') { compareIndexStart += splitCondition.getValue().length();
             } else { compareIndexStart -= validation.getValue().length(); }
 
+            if (compareIndexStart + validation.getValue().length() > text.length()) {
+                continue;
+            }
             String compareText = text.substring(compareIndexStart, compareIndexStart + validation.getValue().length());
             boolean isEquals = compareText.equals(validation.getValue());
             if ((validation.getMatchFlag() == 'N' && isEquals) ||
