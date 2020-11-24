@@ -22,6 +22,7 @@ import org.moara.splitter.utils.Config;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -35,10 +36,14 @@ public class TerminatorAreaProcessor {
     private final List<SplitCondition> splitConditions;
     private final Config config;
 
+    /**
+     * Constructor
+     * @param splitConditions 구분 조건
+     * @param config 설정값
+     */
     public TerminatorAreaProcessor(List<SplitCondition> splitConditions, Config config) {
         this.splitConditions = splitConditions;
         this.config = config;
-
     }
 
     /**
@@ -51,26 +56,44 @@ public class TerminatorAreaProcessor {
         text = text.trim();
 
         for (SplitCondition splitCondition : splitConditions) {
+            if (splitCondition.isPattern()) {
+                Pattern pattern = Pattern.compile(splitCondition.getValue());
+                Matcher matcher = pattern.matcher(text);
 
-            int splitPoint = -1;
-            while (true) {
-                splitPoint = text.indexOf(splitCondition.getValue(), splitPoint);
-                if (splitPoint == -1) { break; } // 구분 조건 x
-
-                if (!isValid(text, splitCondition, splitPoint)) {
-                    splitPoint += splitCondition.getValue().length();
-                    continue;
+                while (matcher.find()) {
+                    if (splitCondition.getSplitPosition() == 'B') { // 문장 구분점 뒤
+                        int splitPoint = matcher.end();
+                        splitPoint += splitCondition.getValue().length();
+                        splitPoint += getAdditionalSignLength(splitPoint, text);
+                        splitPointSet.add(splitPoint);
+                    } else { // 앞
+                        int splitPoint = matcher.start();
+                        splitPointSet.add(splitPoint);
+                    }
                 }
 
-                if (splitCondition.getSplitPosition() == 'B') { // 문장 구분점 뒤
-                    splitPoint += splitCondition.getValue().length();
-                    splitPoint += getAdditionalSignLength(splitPoint, text);
-                    splitPointSet.add(splitPoint);
-                } else { // 앞
-                    splitPointSet.add(splitPoint);
-                    splitPoint += splitCondition.getValue().length();
+            } else {
+                int splitPoint = -1;
+                while (true) {
+                    splitPoint = text.indexOf(splitCondition.getValue(), splitPoint);
+                    if (splitPoint == -1) { break; } // 구분 조건 x
+
+                    if (!isValid(text, splitCondition, splitPoint)) {
+                        splitPoint += splitCondition.getValue().length();
+                        continue;
+                    }
+
+                    if (splitCondition.getSplitPosition() == 'B') { // 문장 구분점 뒤
+                        splitPoint += splitCondition.getValue().length();
+                        splitPoint += getAdditionalSignLength(splitPoint, text);
+                        splitPointSet.add(splitPoint);
+                    } else { // 앞
+                        splitPointSet.add(splitPoint);
+                        splitPoint += splitCondition.getValue().length();
+                    }
                 }
             }
+
         }
 
         removeInvalidItem(splitPointSet, text.length());

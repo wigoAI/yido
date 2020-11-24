@@ -59,7 +59,7 @@ public class SplitConditionManager {
     public static List<SplitCondition> getSplitConditions(String[] splitConditionRoleNames, String[] validationRoleNames) {
 
         String[] roleInfoArray = splitConditionRoleNames[0].split("_");
-
+        String SplitConditionType = roleInfoArray[0];
         char usePublicValidation = roleInfoArray[1].charAt(0);
         char splitPosition = roleInfoArray[2].charAt(0);
 
@@ -92,7 +92,13 @@ public class SplitConditionManager {
 
         List<SplitCondition> splitConditions = new ArrayList<>();
         for (String roleData : roleDataList) {
-            splitConditions.add(new SplitCondition(roleData, validations, usePublicValidation, splitPosition));
+            SplitCondition splitCondition;
+            if (SplitConditionType.startsWith("R")) {
+                splitCondition = new SplitCondition(roleData, validations, usePublicValidation, splitPosition, true);
+            } else {
+                splitCondition = new SplitCondition(roleData, validations, usePublicValidation, splitPosition);
+            }
+            splitConditions.add(splitCondition);
         }
 
 
@@ -100,9 +106,10 @@ public class SplitConditionManager {
     }
 
     private static void checkRoleName(String splitConditionType, char usePublicValidation, char splitPosition) {
-        if (!(splitConditionType.equals("SP") || splitConditionType.equals("PSP")) ||
+        if (!(splitConditionType.equals("SP") || splitConditionType.equals("RSP")) ||
                 !(usePublicValidation == 'N' || usePublicValidation == 'Y') ||
                 !(splitPosition == 'B' || splitPosition == 'F')) {
+
             throw new RuntimeException("Invalid role name");
         }
     }

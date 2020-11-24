@@ -29,6 +29,16 @@ public class SplitConditionTest {
     }
 
     @Test
+    public void testCheckPatternSplitCondition() {
+        SplitCondition splitCondition1 = new SplitCondition("\\d+\\.", new ArrayList<>(), 'N', 'F', true);
+        Assert.assertTrue(splitCondition1.isPattern());
+
+        SplitCondition splitCondition2 = new SplitCondition("\\d+\\.", new ArrayList<>(), 'N', 'F', false);
+        Assert.assertFalse(splitCondition2.isPattern());
+
+    }
+
+    @Test
     public void testSplitConditionManager() {
         String[] validationList = {"V_N_B_001"};
         List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions("SP_N_B_001", validationList);
@@ -59,4 +69,51 @@ public class SplitConditionTest {
         }
 
     }
+
+    @Test
+    public void testSplitConditionArray() {
+        String[] splitConditions = {"SP_Y_B_001", "SP_Y_B_002"};
+        String[] validations = {"V_N_B_001", "V_N_B_002"};
+        List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
+        List<SplitCondition> splitConditionList2 = SplitConditionManager.getSplitConditions(splitConditions[0], validations);
+        List<SplitCondition> splitConditionList3 = SplitConditionManager.getSplitConditions(splitConditions, validations[0]);
+        List<SplitCondition> splitConditionList4 = SplitConditionManager.getSplitConditions(splitConditions[0], validations[0]);
+    }
+
+
+    @Test(expected = RuntimeException.class)
+    public void testDifferentUsePublicValidationOptions() {
+        String[] splitConditions = {"SP_Y_B_001", "SP_N_B_002"};
+        String[] validations = {"V_N_B_001", "V_N_B_002"};
+        List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testDifferentSplitPositionTest() {
+        String[] splitConditions = {"SP_N_F_001", "SP_N_B_002"};
+        String[] validations = {"V_N_B_001", "V_N_B_002"};
+        List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testInvalidRoleName() {
+        String[] splitConditions = {"POW_N_F_001"};
+        String[] validations = {"V_N_B_001", "V_N_B_002"};
+        List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testInvalidUsePublicOptions() {
+        String[] splitConditions = {"SP_K_F_001"};
+        String[] validations = {"V_N_B_001", "V_N_B_002"};
+        List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
+    }
+    @Test(expected = RuntimeException.class)
+    public void testInvalidSplitPositionOptions() {
+        String[] splitConditions = {"SP_N_K_002"};
+        String[] validations = {"V_N_B_001", "V_N_B_002"};
+        List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
+    }
+
+
 }

@@ -51,17 +51,19 @@ public class FileManager {
     public static Collection<String> readFile(String fileName){
         Collection<String> file = new ArrayList<>();
 
-        try(BufferedReader br = new BufferedReader(
+        try (BufferedReader br = new BufferedReader(
                 new InputStreamReader(new FileInputStream(ABSTRACT_PATH + fileName), StandardCharsets.UTF_8))) {
 
-            while(true) {
+            while (true) {
                 String line = br.readLine();
-                if(line == null) { break; }
+                if (line == null) {
+                    break;
+                }
                 file.add(line);
             }
 
 
-        } catch (IOException e) {
+        }catch (IOException e) {
             e.printStackTrace();
 
         }
@@ -82,9 +84,9 @@ public class FileManager {
     }
 
     /**
-     *
-     * @param fileName
-     * @param data
+     * 파일 내용 추가
+     * @param fileName 내용을 추가할 파일
+     * @param data 파일에 추가할 내용
      *
      * @return Result add line success
      */
@@ -106,41 +108,6 @@ public class FileManager {
         return true;
     }
 
-    private static List<File> getFileList(String path, String fileExtension){
-        List<File> fileList = new ArrayList<>();
-        File file = new File(path);
-
-        addFiles(fileList, file);
-
-        List<File> resultFileList = new ArrayList<>();
-        for(File f : fileList){
-            if(f.isDirectory()){
-                continue;
-            }
-
-            if(f.getName().endsWith(fileExtension)){
-                resultFileList.add(f);
-            }
-        }
-        fileList.clear();
-        fileList = null;
-
-        return resultFileList;
-    }
-
-    private static void addFiles(List<File> fileList, File file){
-        fileList.add(file);
-        if(file.isDirectory()){
-            File [] files = file.listFiles();
-
-            //noinspection ConstantConditions
-            for(File f : files){
-                addFiles(fileList, f);
-            }
-        }
-    }
-
-
     private static String changePathSeparator(String path) {
         return path.replace("/", File.separator).replace("\\", File.separator);
     }
@@ -152,12 +119,13 @@ public class FileManager {
      * @return JsonObject
      */
     public static JsonObject getJsonObjectByFile(String fileName) {
-        JsonElement element = null;
+        JsonElement element;
         File file = new File(ABSTRACT_PATH + fileName);
         try {
             element = JsonParser.parseReader(new FileReader(file.getPath()));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            element = new JsonObject();
         }
 
         return element.getAsJsonObject();

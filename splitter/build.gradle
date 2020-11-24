@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    id 'jacoco'
 }
 
 version = '1.0-SNAPSHOT'
@@ -16,4 +17,20 @@ dependencies {
     implementation 'com.github.wjrmffldrhrl:Area:0.0.9'
     implementation 'com.google.code.gson:gson:2.8.6'
     testImplementation 'junit:junit:4.11'
+}
+
+test {
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.5"
+    reportsDir = file("$buildDir/customJacocoReportDir")
 }
