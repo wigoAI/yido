@@ -15,6 +15,9 @@
  */
 package org.moara.splitter.utils.file;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.moara.splitter.SplitterImpl;
 
 import java.io.*;
@@ -37,6 +40,7 @@ public class FileManager {
             + "data" + pathSeparator;
 
     private FileManager() { }
+
     /**
      * 경로를 포함한 파일 명으로 파일을 읽어온다.
      *
@@ -142,4 +146,20 @@ public class FileManager {
     }
 
 
+    /**
+     * json파일로부터 json object 생성
+     * @param fileName json file name
+     * @return JsonObject
+     */
+    public static JsonObject getJsonObjectByFile(String fileName) {
+        JsonElement element = null;
+        File file = new File(ABSTRACT_PATH + fileName);
+        try {
+            element = JsonParser.parseReader(new FileReader(file.getPath()));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return element.getAsJsonObject();
+    }
 }

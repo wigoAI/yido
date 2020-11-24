@@ -19,6 +19,7 @@ import org.moara.splitter.utils.Sentence;
 
 /**
  * 문장 구분기 추상체
+ *
  * @author wjrmffldrhrl
  */
 public interface Splitter {

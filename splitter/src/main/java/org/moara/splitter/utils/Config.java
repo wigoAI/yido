@@ -20,6 +20,7 @@ package org.moara.splitter.utils;
  *
  *
  * TODO 1. 교체된 DB 구조에 맞춰서 설정값 변경경
+ *          - MIN_RESULT_LENGTH 이외에 필요한 설정 값이 있는가?
 *
  * @author wjrmffldrhrl
  */
