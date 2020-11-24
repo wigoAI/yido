@@ -10,8 +10,7 @@ import org.moara.splitter.utils.Config;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 
 public class AreaProcessorTest {
 
@@ -73,5 +72,23 @@ public class AreaProcessorTest {
         assertNotEquals(0, terminatorAreaProcessor.find(inputData).size());
     }
 
+    @Test
+    public void testFindSplitPointWithRegx() {
+        String data = "지금부터 우리학교 규칙을 설명하겠습니다. 앞에 게시판을 보면 1. 교실에서는 조용히 하기 2. 복도에서 뛰어다니지 않기 3. 지각하면 벌금내기 입니다.";
+        int[] answers = {34, 50, 67};
+        String[] validationList = {};
+        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions("RSP_N_F_001", validationList);
+
+        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, new Config());
+
+        assertEquals(answers.length, terminatorAreaProcessor.find(data).size());
+
+        int answerIndex = 0;
+        for (int splitPoint : terminatorAreaProcessor.find(data)) {
+            assertEquals(answers[answerIndex++], splitPoint);
+
+        }
+
+    }
 
 }

@@ -12,7 +12,6 @@ import java.util.List;
 
 
 /**
- * TODO 1. SplitterFactory 관련 test 추가하기
  */
 public class SplitterFactoryTest {
     String text = "안녕하세요 반갑습니다. 조승현입니다.";
@@ -27,5 +26,10 @@ public class SplitterFactoryTest {
             Assert.assertEquals(answer[index++], sentence.getText());
         }
 
+    }
+
+    @Test
+    public void testGetNewsSplitter() {
+        Splitter splitter = SplitterFactory.getSplitter(2);
     }
 }

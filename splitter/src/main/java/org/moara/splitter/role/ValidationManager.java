@@ -22,7 +22,7 @@ import java.util.List;
 
 /**
  * 유효성 룰 관리자
- * TODO 1. Check invalid parameter
+ *
  */
 public class ValidationManager {
     protected static String rolePath = "/string_group/validation/";

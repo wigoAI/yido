@@ -41,8 +41,8 @@ public class SplitterImpl implements Splitter {
 
     @Override
     public Sentence[] split(String text) {
-        if (text.isEmpty()) {
-            return new Sentence[0];
+        if (text == null || text.isEmpty()) {
+            throw new IllegalArgumentException("Input text is null or empty");
         }
 
         TreeSet<Integer> splitPoint = getSplitPoint(text);

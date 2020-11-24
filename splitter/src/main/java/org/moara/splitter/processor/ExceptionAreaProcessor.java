@@ -24,10 +24,7 @@ import java.util.regex.Matcher;
 
 /**
  * 예외 영역 처리기
- * TODO 1. 코드 정리하기
- *          - 중복 코드 제거
- *      2. url 처리방식 정하기
- *          - url을 예외 영역으로 지정할 필요가 없을 것 같음
+ *
  * @author wjrmffldrhrl
  */
 public class ExceptionAreaProcessor {
@@ -37,7 +34,6 @@ public class ExceptionAreaProcessor {
         List<Area> exceptionAreaList = new ArrayList<>();
 
         Matcher matcher =  MetaManager.getDifferentSideBracketPattern().matcher(text);
-
         while (matcher.find()) {
             exceptionAreaList.add(new Area(matcher));
         }

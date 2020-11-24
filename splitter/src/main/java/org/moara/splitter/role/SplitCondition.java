@@ -29,6 +29,7 @@ public class  SplitCondition {
     private final List<Validation> validations;
     private final char usePublicValidation;
     private final char splitPosition;
+    private boolean isPattern = false;
 
     /**
      * Constructor
@@ -44,8 +45,15 @@ public class  SplitCondition {
         this.splitPosition = splitPosition;
     }
 
+    public SplitCondition(String value, List<Validation> validations, char usePublicValidation, char splitPosition, boolean isPattern) {
+        this(value, validations, usePublicValidation, splitPosition);
+        this.isPattern = isPattern;
+    }
+
     public String getValue() { return value; }
     public List<Validation> getValidations() { return validations; }
     public char getUsePublicValidation() { return usePublicValidation; }
     public char getSplitPosition() { return splitPosition; }
+    public boolean isPattern() { return isPattern; }
+
 }

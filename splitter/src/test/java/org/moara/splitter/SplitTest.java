@@ -27,6 +27,8 @@ public class SplitTest {
     String newsData = "거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다. 그의 고향은 천안이지만 가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다. 15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다.";
 
 
+
+
     @Test
     public void testInitSplitter() {
 
@@ -52,21 +54,20 @@ public class SplitTest {
         }
     }
 
-    @Test
-    public void testNewsSplit() {
-        Splitter newsSplitter = SplitterFactory.getSplitter(2);
-        String[] answer1 = {"거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다.",
-                "그의 고향은 천안이지만",
-                "가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다.",
-                "15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다."};
 
-        System.out.println(newsSplitter.split(newsData).length);
 
-        int index = 0;
-        for(Sentence sentence : newsSplitter.split(newsData)) {
-            assertEquals(answer1[index++], sentence.getText());
+    @Test(expected = IllegalArgumentException.class)
+    public void testSplitEmptyString() {
+        for (Sentence sentence : SplitterFactory.getSplitter().split("")) {
+            System.out.println(sentence.getText());
         }
+    }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testSplitNullData() {
+        for (Sentence sentence : SplitterFactory.getSplitter().split(null)) {
+            System.out.println(sentence.getText());
+        }
     }
 
     @Test
