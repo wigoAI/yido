@@ -14,17 +14,26 @@
  * limitations under the License.
  */
 
-package org.moara.yido.tokenizer.once;
+package org.moara.yido.tokenizer.word;
 
 /**
- * mecab 사전내용을 활용하여 초기사전을 구축
- * 가장 많이쓰는 mecab 사전데이터가 좋다고 가정 함.
+ * mecab을 활용한 tokenizer
  * @author macle
  */
-public class MecabDictionary {
+public class MecabTokenizer {
 
-    public static void main(String[] args) {
+//    private static final Logger logger = LoggerFa
 
+    static {
+        try {
+            System.loadLibrary("MeCab");
+        } catch (UnsatisfiedLinkError e) {
+            e.printStackTrace();
+            System.err.println("Cannot load the example native code.\nMake sure your LD_LIBRARY_PATH contains \'.\'\n" + e);
+            System.exit(1);
+        }
     }
-    
+
+
+
 }

@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package org.moara.yido.tokenizer.once;
-
-import org.chasen.mecab.Tagger;
+package org.moara.yido.tokenizer.word.ole;
 
 /**
+ * mecab을 활용한 tokenizer
  * @author macle
  */
-public class MecabTest {
+public class MecabTokenizer {
+
+//    private static final Logger logger = LoggerFa
+
     static {
         try {
             System.loadLibrary("MeCab");
@@ -32,19 +34,6 @@ public class MecabTest {
         }
     }
 
-    public static void main(String[] args) {
 
 
-
-        String sentence ="여쭙겠습니다";
-
-
-        Tagger tagger = new Tagger();
-        String result = tagger.parse(sentence);
-        String [] words =  result.split("\n");
-
-        for(String word : words){
-            System.out.println(word);
-        }
-    }
 }
