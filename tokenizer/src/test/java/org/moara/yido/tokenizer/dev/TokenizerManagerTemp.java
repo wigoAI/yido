@@ -14,26 +14,22 @@
  * limitations under the License.
  */
 
-package org.moara.yido.tokenizer.word;
+package org.moara.yido.tokenizer.dev;
+
+import org.moara.yido.tokenizer.Token;
+import org.moara.yido.tokenizer.TokenizerManager;
 
 /**
- * mecab을 활용한 tokenizer
  * @author macle
  */
-public class MecabTokenizer {
+public class TokenizerManagerTemp {
+    public static void main(String[] args) {
 
-//    private static final Logger logger = LoggerFa
 
-    static {
-        try {
-            System.loadLibrary("MeCab");
-        } catch (UnsatisfiedLinkError e) {
-            e.printStackTrace();
-            System.err.println("Cannot load the example native code.\nMake sure your LD_LIBRARY_PATH contains \'.\'\n" + e);
-            System.exit(1);
+        Token[] tokens = TokenizerManager.getInstance().getTokenizer().getTokens("김용수는 위고에 다녀요");
+
+        for(Token token : tokens){
+            System.out.println(token.getText());
         }
     }
-
-
-
 }

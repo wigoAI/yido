@@ -30,9 +30,10 @@ public interface Tokenizer {
     String getId();
 
 
+
     /**
      * 토큰 결과 얻기
-     * @param text
+     * @param text 토큰을 나누기 위한 text
      * @return 토큰 [] (순서대로)
      */
     Token [] getTokens(String text);

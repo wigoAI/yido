@@ -16,6 +16,14 @@
 
 package org.moara.yido.tokenizer;
 
+import com.seomse.commons.config.Config;
+import com.seomse.commons.config.ConfigInfo;
+import com.seomse.commons.config.ConfigObserver;
+import com.seomse.commons.utils.ExceptionUtil;
+import org.moara.yido.tokenizer.word.ole.MecabTokenizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +33,8 @@ import java.util.Map;
  * @author macle
  */
 public class TokenizerManager {
+
+    private static final Logger logger = LoggerFactory.getLogger(TokenizerManager.class);
 
     private static class Singleton {
         private static final TokenizerManager instance = new TokenizerManager();
@@ -40,9 +50,31 @@ public class TokenizerManager {
 
     private final Map<String, Tokenizer> tokenizerMap = new HashMap<>();
 
-    private TokenizerManager(){
+    private Tokenizer defaultTokenizer;
 
-        //tokenizer load
+    private TokenizerManager(){
+        MecabTokenizer mecabTokenizer = new MecabTokenizer();
+        tokenizerMap.put(mecabTokenizer.getId(), mecabTokenizer);
+
+        final String defaultKey = "yido.tokenizer.default.id";
+
+        defaultTokenizer = getTokenizer(Config.getConfig(defaultKey, "mecab"));
+        ConfigObserver configObserver = changeInfos -> {
+            for(ConfigInfo configInfo : changeInfos){
+                if(configInfo.getKey().equals(defaultKey)){
+                    //프로세스 종료없이 설정만으로 기본 토크나이져 변경
+                    try{
+                        defaultTokenizer = getTokenizer(configInfo.getValue());
+                    }catch(Exception e){
+                        logger.error(ExceptionUtil.getStackTrace(e));
+                    }
+                    break;
+                }
+            }
+        };
+
+        //설정변경 감시
+        Config.addObserver(configObserver);
 
     }
 
@@ -53,9 +85,7 @@ public class TokenizerManager {
      * @return default(Popular) tokenizer
      */
     public Tokenizer getTokenizer(){
-
-
-        return null;
+        return defaultTokenizer;
     }
 
     /**
@@ -74,10 +104,6 @@ public class TokenizerManager {
         return tokenizer;
 
     }
-
-
-
-
 
 
 

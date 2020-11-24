@@ -37,7 +37,7 @@ public class MecabTest {
 
 
 
-        String sentence ="여쭙겠습니다";
+        String sentence ="김용수는 위고에 다녀요";
 
 
         Tagger tagger = new Tagger();

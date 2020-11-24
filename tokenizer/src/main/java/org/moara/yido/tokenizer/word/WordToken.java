@@ -27,12 +27,34 @@ public class WordToken implements Token {
     //아이디
     String id;
     //단어
-    String word;
-    //품사
-    PartOfSpeech partOfSpeech;
+    String text;
+    //품사 //품사형태 재정의 VV+EF (다녀요) 에 형태에 떨구어 지는 방식...
+    String partOfSpeech;
 
     int begin;
     int end;
+
+    /**
+     * 생성자
+     * @param id 단어 아이디
+     * @param text 단어 텍스트
+     * @param partOfSpeech 품사
+     * @param begin 시작 위치 (index)
+     * @param end 끝 위치 (index + 1) substring(begin, end)
+     */
+    public WordToken(
+            String id
+            , String text
+            , String partOfSpeech
+            , int begin
+            , int end
+    ){
+        this.id = id;
+        this.text = text;
+        this.partOfSpeech = partOfSpeech;
+        this.begin =begin;
+        this.end = end;
+    }
 
     @Override
     public String getId() {
@@ -41,7 +63,7 @@ public class WordToken implements Token {
 
     @Override
     public String getText() {
-        return word;
+        return text;
     }
 
     @Override
@@ -53,4 +75,5 @@ public class WordToken implements Token {
     public int getEnd() {
         return end;
     }
+
 }

@@ -20,5 +20,6 @@ package org.moara.yido.tokenizer.word;
  * 복합어 토큰
  * @author macle
  */
-public class CompoundToken {
+public class CompoundToken{
+
 }
