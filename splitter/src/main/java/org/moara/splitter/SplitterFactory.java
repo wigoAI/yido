@@ -30,15 +30,13 @@ import java.util.List;
  * 사용자가 원하는 문장 구분기를 제공해주는 클래스
  * TODO 1. splitter 생성 관련 메서드 추가하기
  *          - 뉴스 문장 구분기
- *          - 커스텀 문장 구분기 생성 지원 메서드
+ *
  * @author wjrmffldrhrl
  */
 public class SplitterFactory {
     private static final int BASIC_SPLITTER_ID = 1;
     private static final int NEWS_SPLITTER_ID = 2;
-    private static final int CUSTOM_SPLITTER_ID = 9;
     private static final HashMap<Integer, Splitter> splitterHashMap = new HashMap<>();
-    private static final SplitterFactory SPLITTER_FACTORY = new SplitterFactory();
 
     /**
      * 문장 구분기 인스턴스 획득
@@ -63,6 +61,12 @@ public class SplitterFactory {
         return splitterHashMap.get(id);
     }
 
+    /**
+     * 사용자가 생성한 SplitCondition 기반의 문장 구분기 반환
+     * ExceptionAreaProcessor는 기본값으로 들어간다.
+     * @param splitConditions 사용자 임의 데이터
+     * @param key 해당 문장 구분기를 저장할 key값
+     */
     public static void createSplitter(List<SplitCondition> splitConditions, int key) {
         TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, new Config());
         ExceptionAreaProcessor exceptionAreaProcessor = new BracketAreaProcessor();
@@ -85,12 +89,13 @@ public class SplitterFactory {
 
             splitterHashMap.put(BASIC_SPLITTER_ID,
                     new SplitterImpl(terminatorAreaProcessor, exceptionAreaProcessor));
+
         } else if(id == NEWS_SPLITTER_ID) {
             String[] validationList = {"V_N_B_002"};
             List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions("SP_N_B_002", validationList);
             TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, new Config());
-
             ExceptionAreaProcessor exceptionAreaProcessor = new BracketAreaProcessor();
+
         } else {
             throw new IllegalArgumentException("Key [" + id + "] doesn't exist");
         }

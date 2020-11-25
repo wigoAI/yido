@@ -20,7 +20,6 @@ import java.util.List;
 
 /**
  * 공통 유효성 룰 관리자
- * TODO 1. 공용 유효성이 필요한지 확인하기
  *
  * @author wjrmffldrhrl
  */

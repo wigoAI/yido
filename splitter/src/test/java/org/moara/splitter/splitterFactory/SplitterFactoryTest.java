@@ -17,8 +17,6 @@ import java.util.Collection;
 import java.util.List;
 
 
-/**
- */
 public class SplitterFactoryTest {
     String text = "안녕하세요 반갑습니다. 조승현입니다.";
 

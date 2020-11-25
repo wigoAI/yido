@@ -18,7 +18,7 @@ package org.moara.splitter.utils.file;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.moara.splitter.SplitterImpl;
+import org.moara.splitter.Splitter;
 
 import java.io.*;
 import java.io.FileWriter;
@@ -35,7 +35,7 @@ import java.util.List;
  */
 public class FileManager {
     public static final String pathSeparator = File.separator;
-    public static final String ABSTRACT_PATH = SplitterImpl.class.getResource("")
+    public static final String ABSTRACT_PATH = Splitter.class.getResource("")
             .getPath().split( "build")[0]
             + "data" + pathSeparator;
 

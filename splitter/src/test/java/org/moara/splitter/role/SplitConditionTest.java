@@ -107,7 +107,9 @@ public class SplitConditionTest {
         String[] splitConditions = {"SP_K_F_001"};
         String[] validations = {"V_N_B_001", "V_N_B_002"};
         List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
+
     }
+
     @Test(expected = RuntimeException.class)
     public void testInvalidSplitPositionOptions() {
         String[] splitConditions = {"SP_N_K_002"};
@@ -115,5 +117,10 @@ public class SplitConditionTest {
         List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
     }
 
+    @Test
+    public void testCreateSplitConditionWithoutValidations() {
+        SplitCondition splitCondition1 = new SplitCondition("다.", 'N', 'B');
+        SplitCondition splitCondition2 = new SplitCondition("다.", 'N', 'B', true);
 
+    }
 }

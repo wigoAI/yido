@@ -15,6 +15,7 @@
  */
 package org.moara.splitter.role;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,25 +30,55 @@ public class  SplitCondition {
     private final List<Validation> validations;
     private final char usePublicValidation;
     private final char splitPosition;
-    private boolean isPattern = false;
+    private final boolean isPattern;
 
     /**
-     * Constructor
+     * 패턴 여부를 전달받는 생성자
+     * @param value 구분 조건 값
+     * @param validations 구분 조건에 해당하는 유효성
+     * @param usePublicValidation 공통 유효성 사용 여부 'Y' or 'N'
+     * @param splitPosition 구분 위치 'B' or 'F'
+     * @param isPattern 패턴 여부
+     */
+    public SplitCondition(String value, List<Validation> validations, char usePublicValidation, char splitPosition, boolean isPattern) {
+        this.value = value;
+        this.validations = validations;
+        this.usePublicValidation = usePublicValidation;
+        this.splitPosition = splitPosition;
+        this.isPattern = isPattern;
+    }
+
+    /**
+     * 패턴 여부가 false로 고정된 맴버 변수를 받는 생성자
      * @param value 구분 조건 값
      * @param validations 구분 조건에 해당하는 유효성
      * @param usePublicValidation 공통 유효성 사용 여부 'Y' or 'N'
      * @param splitPosition 구분 위치 'B' or 'F'
      */
     public SplitCondition(String value, List<Validation> validations, char usePublicValidation, char splitPosition) {
-        this.value = value;
-        this.validations = validations;
-        this.usePublicValidation = usePublicValidation;
-        this.splitPosition = splitPosition;
+        this(value, validations, usePublicValidation, splitPosition, false);
+
     }
 
-    public SplitCondition(String value, List<Validation> validations, char usePublicValidation, char splitPosition, boolean isPattern) {
-        this(value, validations, usePublicValidation, splitPosition);
-        this.isPattern = isPattern;
+    /**
+     * 유효성을 제외한 생성자
+     * @param value 구분 조건 값
+     * @param usePublicValidation 공통 유효성 사용 여부 'Y' or 'N'
+     * @param splitPosition 구분 위치 'B' or 'F'
+     */
+    public SplitCondition(String value, char usePublicValidation, char splitPosition) {
+        this(value, new ArrayList<>(), usePublicValidation, splitPosition);
+    }
+
+    /**
+     * 패턴 여부를 받으면서 유효성 조건이 없는 생성자
+     * @param value 구분 조건 값
+     * @param usePublicValidation 공통 유효성 사용 여부 'Y' or 'N'
+     * @param splitPosition 구분 위치 'B' or 'F'
+     * @param isPattern 패턴 여부
+     */
+    public SplitCondition(String value, char usePublicValidation, char splitPosition, boolean isPattern) {
+        this(value, new ArrayList<>(), usePublicValidation, splitPosition, isPattern);
     }
 
     public String getValue() { return value; }

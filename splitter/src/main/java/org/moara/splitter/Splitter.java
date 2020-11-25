@@ -18,7 +18,10 @@ package org.moara.splitter;
 import org.moara.splitter.utils.Sentence;
 
 /**
- * 문장 구분기 추상체
+ * 구분기 추상체
+ *
+ * TODO 1. 구분기에 할당된 구분 조건이나 유효성 데이터를 어떻게 사용자가 수정할 수 있을지 정하기
+ *          - 직접 데이터를 넣는 경우에는 해당 데이터의 주소값을 통해 수정할 수 있지만 기본 구분기를 사용하는 경우 불가능하다.
  *
  * @author wjrmffldrhrl
  */
@@ -30,4 +33,5 @@ public interface Splitter {
      * @return Sentence Array
      */
     Sentence[] split(String text);
+
 }

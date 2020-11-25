@@ -29,7 +29,7 @@ import java.util.TreeSet;
  *
  * @author wjrmffldrhrl
  */
-public class SplitterImpl implements Splitter {
+class SplitterImpl implements Splitter {
     protected final TerminatorAreaProcessor terminatorAreaProcessor;
     protected final ExceptionAreaProcessor exceptionAreaProcessor;
 
