@@ -15,6 +15,8 @@
  */
 package org.moara.splitter.role;
 
+import org.moara.splitter.utils.RoleProperty;
+
 /**
  * 유효성
  * @author wjrmffldrhrl
@@ -35,6 +37,15 @@ public class Validation {
         this.value = value;
         this.matchFlag = matchFlag;
         this.comparePosition = comparePosition;
+    }
+
+    /**
+     * Constructor
+     * @param value 유효성 값
+     * @param roleProperty 룰 속성값
+     */
+    public Validation(String value, RoleProperty roleProperty) {
+        this(value, roleProperty.getFlag(), roleProperty.getPosition());
     }
 
     public String getValue() { return value; }

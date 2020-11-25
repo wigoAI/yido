@@ -15,6 +15,7 @@
  */
 package org.moara.splitter.role;
 
+import org.moara.splitter.utils.RoleProperty;
 import org.moara.splitter.utils.file.FileManager;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,28 +30,30 @@ public class ValidationManager {
 
     /**
      * 유효성 반환
+     *
      * @param roleName 유효성 생성에 사용되는 룰 이름
      * @return 유효성 리스트
      */
     public static List<Validation> getValidations(String roleName)  {
-        String[] roleInfoArray = roleName.split("_");
-        String validationType = roleInfoArray[0];
-        char matchFlag = roleInfoArray[1].charAt(0);
-        char comparePosition = roleInfoArray[2].charAt(0);
+        RoleProperty roleProperty = new RoleProperty(roleName);
 
-        if (!(validationType.equals("V") || validationType.equals("PV")) ||
-                !(matchFlag == 'N' || matchFlag == 'Y') ||
-                !(comparePosition == 'B' || comparePosition == 'F')) {
-            throw new RuntimeException("Invalid role name");
-        }
+        checkRoleName(roleName);
 
         List<Validation> validations = new ArrayList<>();
-        Collection<String> roleDataList = FileManager.readFile(rolePath + roleName + ".role");
-
-        for (String roleData : roleDataList) {
-            validations.add(new Validation(roleData, matchFlag, comparePosition));
+        for (String roleData : FileManager.readFile(rolePath + roleName + ".role")) {
+            validations.add(new Validation(roleData, roleProperty));
         }
         return validations;
 
+    }
+
+    public static void checkRoleName(String roleName) {
+        if (!isValid(roleName)) {
+            throw new RuntimeException("Invalid role name : " + roleName);
+        }
+    }
+
+    private static boolean isValid(String roleName) {
+        return roleName.startsWith("PV_") || roleName.startsWith("V_");
     }
 }

@@ -72,49 +72,112 @@ public class SplitConditionTest {
 
     @Test
     public void testSplitConditionArray() {
-        String[] splitConditions = {"SP_Y_B_001", "SP_Y_B_002"};
-        String[] validations = {"V_N_B_001", "V_N_B_002"};
-        List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
-        List<SplitCondition> splitConditionList2 = SplitConditionManager.getSplitConditions(splitConditions[0], validations);
-        List<SplitCondition> splitConditionList3 = SplitConditionManager.getSplitConditions(splitConditions, validations[0]);
-        List<SplitCondition> splitConditionList4 = SplitConditionManager.getSplitConditions(splitConditions[0], validations[0]);
+        String[] splitConditions = {"SP_Y_B_TEST_1", "SP_Y_B_TEST_2"};
+        String[] validations = {"V_N_B_TEST_1", "V_N_B_TEST_2"};
+
+        createTestFiles("split_condition", splitConditions);
+        createTestFiles("validation", validations);
+
+
+
+
+            List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
+            List<SplitCondition> splitConditionList2 = SplitConditionManager.getSplitConditions(splitConditions[0], validations);
+            List<SplitCondition> splitConditionList3 = SplitConditionManager.getSplitConditions(splitConditions, validations[0]);
+            List<SplitCondition> splitConditionList4 = SplitConditionManager.getSplitConditions(splitConditions[0], validations[0]);
+
+        tearDown("split_condition", splitConditions);
+        tearDown("validation", validations);
+
     }
 
 
     @Test(expected = RuntimeException.class)
     public void testDifferentUsePublicValidationOptions() {
-        String[] splitConditions = {"SP_Y_B_001", "SP_N_B_002"};
-        String[] validations = {"V_N_B_001", "V_N_B_002"};
-        List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
+        String[] splitConditions = {"SP_Y_B_TEST_1", "SP_N_B_TEST_2"};
+        String[] validations = {"V_N_B_TEST_1", "V_N_B_TEST_2"};
+
+        createTestFiles("split_condition", splitConditions);
+        createTestFiles("validation", validations);
+
+        try {
+
+            List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
+        } catch (RuntimeException e) {
+            tearDown("split_condition", splitConditions);
+            tearDown("validation", validations);
+            throw new RuntimeException();
+        }
+
     }
 
     @Test(expected = RuntimeException.class)
     public void testDifferentSplitPositionTest() {
-        String[] splitConditions = {"SP_N_F_001", "SP_N_B_002"};
-        String[] validations = {"V_N_B_001", "V_N_B_002"};
-        List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
+        String[] splitConditions = {"SP_Y_F_TEST_1", "SP_N_B_TEST_2"};
+        String[] validations = {"V_N_B_TEST_1", "V_N_B_TEST_2"};
+
+        createTestFiles("split_condition", splitConditions);
+        createTestFiles("validation", validations);
+
+        try {
+
+            List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
+        } catch (RuntimeException e) {
+            tearDown("split_condition", splitConditions);
+            tearDown("validation", validations);
+            throw new RuntimeException();
+        }
+
     }
 
     @Test(expected = RuntimeException.class)
     public void testInvalidRoleName() {
-        String[] splitConditions = {"POW_N_F_001"};
-        String[] validations = {"V_N_B_001", "V_N_B_002"};
-        List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
+        String[] splitConditions = {"POW_N_F_TEST_1"};
+        String[] validations = {"V_N_B_TEST_1", "V_N_B_TEST_2"};
+        try {
+
+            List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
+        } catch (RuntimeException e) {
+            tearDown("split_condition", splitConditions);
+            tearDown("validation", validations);
+            throw new RuntimeException();
+        }
+
+
     }
 
     @Test(expected = RuntimeException.class)
     public void testInvalidUsePublicOptions() {
-        String[] splitConditions = {"SP_K_F_001"};
-        String[] validations = {"V_N_B_001", "V_N_B_002"};
-        List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
+        String[] splitConditions = {"SP_K_F_TEST_1"};
+        String[] validations = {"V_N_B_TEST_1", "V_N_B_TEST_2"};
+
+        try {
+
+            List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
+        } catch (RuntimeException e) {
+            tearDown("split_condition", splitConditions);
+            tearDown("validation", validations);
+            throw new RuntimeException();
+        }
+
 
     }
 
     @Test(expected = RuntimeException.class)
     public void testInvalidSplitPositionOptions() {
-        String[] splitConditions = {"SP_N_K_002"};
-        String[] validations = {"V_N_B_001", "V_N_B_002"};
-        List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
+        String[] splitConditions = {"SP_N_K_TEST_1"};
+        String[] validations = {"V_N_B_TEST_1", "V_N_B_TEST_2"};
+
+        try {
+
+            List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
+        } catch (RuntimeException e) {
+            tearDown("split_condition", splitConditions);
+            tearDown("validation", validations);
+            throw new RuntimeException();
+        }
+
+
     }
 
     @Test
@@ -122,5 +185,17 @@ public class SplitConditionTest {
         SplitCondition splitCondition1 = new SplitCondition("다.", 'N', 'B');
         SplitCondition splitCondition2 = new SplitCondition("다.", 'N', 'B', true);
 
+    }
+
+    private void createTestFiles(String path, String[] files) {
+        for (String file : files) {
+            FileManager.writeFile("string_group/" + path + "/" + file + ".role", new ArrayList<>());
+        }
+    }
+
+    private void tearDown(String path, String[] files) {
+        for (String file : files) {
+            FileManager.deleteFile("string_group/" + path + "/" + file + ".role");
+        }
     }
 }

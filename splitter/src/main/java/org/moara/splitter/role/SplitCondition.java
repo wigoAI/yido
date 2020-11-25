@@ -15,6 +15,8 @@
  */
 package org.moara.splitter.role;
 
+import org.moara.splitter.utils.RoleProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,6 +81,47 @@ public class  SplitCondition {
      */
     public SplitCondition(String value, char usePublicValidation, char splitPosition, boolean isPattern) {
         this(value, new ArrayList<>(), usePublicValidation, splitPosition, isPattern);
+    }
+
+    /**
+     * 패턴 여부를 전달받는 생성자
+     * @param value 구분 조건 값
+     * @param validations 구분 조건에 해당하는 유효성
+     * @param roleProperty 룰 속성값
+     * @param isPattern 패턴 여부
+     */
+    public SplitCondition(String value, List<Validation> validations, RoleProperty roleProperty, boolean isPattern) {
+        this(value, validations, roleProperty.getFlag(), roleProperty.getPosition(), isPattern);
+    }
+
+    /**
+     * 패턴 여부가 false로 고정된 맴버 변수를 받는 생성자
+     * @param value 구분 조건 값
+     * @param validations 구분 조건에 해당하는 유효성
+     * @param roleProperty 룰 속성값
+     */
+    public SplitCondition(String value, List<Validation> validations, RoleProperty roleProperty) {
+        this(value, validations, roleProperty, false);
+
+    }
+
+    /**
+     * 유효성을 제외한 생성자
+     * @param value 구분 조건 값
+     * @param roleProperty 룰 속성값
+     */
+    public SplitCondition(String value, RoleProperty roleProperty) {
+        this(value, new ArrayList<>(), roleProperty);
+    }
+
+    /**
+     * 패턴 여부를 받으면서 유효성 조건이 없는 생성자
+     * @param value 구분 조건 값
+     * @param roleProperty 룰 속성값
+     * @param isPattern 패턴 여부
+     */
+    public SplitCondition(String value, RoleProperty roleProperty, boolean isPattern) {
+        this(value, new ArrayList<>(), roleProperty, isPattern);
     }
 
     public String getValue() { return value; }

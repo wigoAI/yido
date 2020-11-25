@@ -28,8 +28,6 @@ import java.util.List;
 
 /**
  * 사용자가 원하는 문장 구분기를 제공해주는 클래스
- * TODO 1. splitter 생성 관련 메서드 추가하기
- *          - 뉴스 문장 구분기
  *
  * @author wjrmffldrhrl
  */

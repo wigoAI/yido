@@ -15,17 +15,13 @@
  */
 package org.moara.splitter.role;
 
+import org.moara.splitter.utils.RoleProperty;
 import org.moara.splitter.utils.file.FileManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * TODO 1. 이전에 사용하던 룰 메모리 관련 기능들 추가하기
- *          - 메모리 룰 추가
- *          - 파일 룰 추가
- */
 public class SplitConditionManager {
     protected static final String rolePath = "/string_group/split_condition/";
 
@@ -52,29 +48,26 @@ public class SplitConditionManager {
 
     /**
      * 구분 조건 반환
+     * TODO 1. role type에 대한 검사
      * @param splitConditionRoleNames 구분 조건에 사용되는 룰 데이터 이름
      * @param validationRoleNames 유효성에 사용되는 룰 이름
      * @return 구분 조건 리스트
      */
     public static List<SplitCondition> getSplitConditions(String[] splitConditionRoleNames, String[] validationRoleNames) {
 
-        String[] roleInfoArray = splitConditionRoleNames[0].split("_");
-        String SplitConditionType = roleInfoArray[0];
-        char usePublicValidation = roleInfoArray[1].charAt(0);
-        char splitPosition = roleInfoArray[2].charAt(0);
+        RoleProperty roleProperty = new RoleProperty(splitConditionRoleNames[0]);
 
         for (String splitConditionRoleName : splitConditionRoleNames) {
 
-            String[] tmpRoleInfoArray = splitConditionRoleName.split("_");
-            String tmpSplitConditionType = tmpRoleInfoArray[0];
-            char tmpUsePublicValidation = tmpRoleInfoArray[1].charAt(0);
-            char tmpSplitPosition = tmpRoleInfoArray[2].charAt(0);
+            RoleProperty tmpRoleProperty = new RoleProperty(splitConditionRoleName);
 
-            if (usePublicValidation != tmpUsePublicValidation || splitPosition != tmpSplitPosition) {
-                throw new RuntimeException("SplitConditionRoleNames must have same configs");
+            checkRoleName(splitConditionRoleName);
+
+            if (roleProperty.getFlag() != tmpRoleProperty.getFlag() ||
+                    roleProperty.getPosition() != roleProperty.getPosition()) {
+                throw new RuntimeException("Split Condition Roles must have same property");
             }
 
-            checkRoleName(tmpSplitConditionType, tmpUsePublicValidation, tmpSplitPosition);
         }
 
 
@@ -82,7 +75,7 @@ public class SplitConditionManager {
         for (String validationRoleName : validationRoleNames) {
             validations.addAll(ValidationManager.getValidations(validationRoleName));
         }
-        if (usePublicValidation == 'Y') { validations.addAll(PublicValidationManager.getAllPublicValidations()); }
+        if (roleProperty.getFlag() == 'Y') { validations.addAll(PublicValidationManager.getAllPublicValidations()); }
 
 
         Collection<String> roleDataList = new ArrayList<>();
@@ -93,10 +86,10 @@ public class SplitConditionManager {
         List<SplitCondition> splitConditions = new ArrayList<>();
         for (String roleData : roleDataList) {
             SplitCondition splitCondition;
-            if (SplitConditionType.startsWith("R")) {
-                splitCondition = new SplitCondition(roleData, validations, usePublicValidation, splitPosition, true);
+            if (roleProperty.getType().startsWith("R")) {
+                splitCondition = new SplitCondition(roleData, validations, roleProperty, true);
             } else {
-                splitCondition = new SplitCondition(roleData, validations, usePublicValidation, splitPosition);
+                splitCondition = new SplitCondition(roleData, validations, roleProperty);
             }
             splitConditions.add(splitCondition);
         }
@@ -105,12 +98,13 @@ public class SplitConditionManager {
         return splitConditions;
     }
 
-    private static void checkRoleName(String splitConditionType, char usePublicValidation, char splitPosition) {
-        if (!(splitConditionType.equals("SP") || splitConditionType.equals("RSP")) ||
-                !(usePublicValidation == 'N' || usePublicValidation == 'Y') ||
-                !(splitPosition == 'B' || splitPosition == 'F')) {
-
-            throw new RuntimeException("Invalid role name");
+    public static void checkRoleName(String splitConditionRoleName) {
+        if (!isValid(splitConditionRoleName)) {
+            throw new RuntimeException("Invalid role name : " + splitConditionRoleName);
         }
+    }
+
+    private static boolean isValid(String roleName) {
+        return roleName.startsWith("SP_") || roleName.startsWith("RSP_");
     }
 }

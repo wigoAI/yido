@@ -25,7 +25,6 @@ import java.io.FileWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * 파일 관리자 구현체
@@ -34,12 +33,10 @@ import java.util.List;
  *
  */
 public class FileManager {
-    public static final String pathSeparator = File.separator;
-    public static final String ABSTRACT_PATH = Splitter.class.getResource("")
+    protected static final String pathSeparator = File.separator;
+    protected static final String ABSTRACT_PATH = Splitter.class.getResource("")
             .getPath().split( "build")[0]
             + "data" + pathSeparator;
-
-    private FileManager() { }
 
     /**
      * 경로를 포함한 파일 명으로 파일을 읽어온다.
@@ -120,9 +117,9 @@ public class FileManager {
      */
     public static JsonObject getJsonObjectByFile(String fileName) {
         JsonElement element;
-        File file = new File(ABSTRACT_PATH + fileName);
+
         try {
-            element = JsonParser.parseReader(new FileReader(file.getPath()));
+            element = JsonParser.parseReader(new FileReader(ABSTRACT_PATH + fileName));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             element = new JsonObject();
@@ -130,4 +127,13 @@ public class FileManager {
 
         return element.getAsJsonObject();
     }
+
+    public static boolean deleteFile(String fileName) {
+        File file = new File(ABSTRACT_PATH + fileName);
+
+        return file.delete();
+
+    }
+
+
 }
