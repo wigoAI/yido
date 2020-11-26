@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c093bf49-a09c-4f85-a260-da0c3987baea" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../splitter/build/classes/java/main/org/moara/splitter/Splitter.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/classes/java/main/org/moara/splitter/SplitterFactory.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/classes/java/main/org/moara/splitter/SplitterImpl.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/classes/java/main/org/moara/splitter/processor/ExceptionAreaProcessor.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/classes/java/main/org/moara/splitter/processor/TerminatorAreaProcessor.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/classes/java/main/org/moara/splitter/processor/regularExpression/BracketProcessor.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/classes/java/main/org/moara/splitter/processor/regularExpression/RegularExpressionProcessor.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/classes/java/main/org/moara/splitter/processor/regularExpression/RegularExpressionProcessorImpl.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/classes/java/main/org/moara/splitter/processor/regularExpression/UrlProcessor.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/classes/java/main/org/moara/splitter/role/BasicRoleManager.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/classes/java/main/org/moara/splitter/role/CustomRoleManager.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/classes/java/main/org/moara/splitter/role/NewsRoleManager.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/classes/java/main/org/moara/splitter/role/PublicRoleManager.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/classes/java/main/org/moara/splitter/role/RoleManager.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/classes/java/main/org/moara/splitter/utils/Config.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/classes/java/main/org/moara/splitter/utils/Sentence.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/classes/java/main/org/moara/splitter/utils/file/FileManager.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/classes/java/main/org/moara/splitter/utils/file/FileManagerImpl.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/classes/java/test/org/moara/splitter/SplitTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/classes/java/test/org/moara/splitter/areaProcessor/AreaProcessorTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/classes/java/test/org/moara/splitter/regular/RegularTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/classes/java/test/org/moara/splitter/role/RoleManagerTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/classes/java/test/org/moara/splitter/splitterFactory/SplitterFactoryTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/classes/java/test/org/moara/splitter/utils/file/FileManagerTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/libs/splitter-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/reports/tests/test/classes/org.moara.splitter.role.RoleManagerTest.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/reports/tests/test/css/base-style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/reports/tests/test/css/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/reports/tests/test/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/reports/tests/test/js/report.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/reports/tests/test/packages/org.moara.splitter.role.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/resources/main/data/newRevData.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/resources/main/data/test.role" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/resources/main/driver/mariadb-java-client-2.6.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/resources/main/driver/ojdbc8.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/test-results/test/TEST-org.moara.splitter.role.RoleManagerTest.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/test-results/test/binary/output.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/test-results/test/binary/output.bin.idx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/test-results/test/binary/results.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/tmp/compileJava/source-classes-mapping.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/tmp/compileTestJava/source-classes-mapping.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/build/tmp/jar/MANIFEST.MF" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/doc/role/basic/connective.role" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/doc/role/basic/exception.role" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/doc/role/basic/regx.role" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/doc/role/basic/terminator.role" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/doc/role/custom/regx.role" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/doc/role/custom/terminator.role" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/doc/role/news/connective.role" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/doc/role/news/exception.role" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/doc/role/news/regx.role" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/doc/role/news/terminator.role" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/doc/role/public/connective.role" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/doc/role/public/exception.role" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/doc/role/public/regx.role" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/doc/role/public/terminator.role" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/src/main/resources/data/newRevData.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../splitter/src/main/resources/data/test.role" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/.gradle/6.5/executionHistory/executionHistory.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/.gradle/6.5/executionHistory/executionHistory.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/.gradle/6.5/fileChanges/last-build.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/.gradle/6.5/fileHashes/fileHashes.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/.gradle/6.5/fileHashes/fileHashes.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/.gradle/6.5/gc.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../splitter/doc/role/custom/connective.role" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/.gradle/checksums/checksums.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/.gradle/checksums/md5-checksums.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/.gradle/checksums/sha1-checksums.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/.gradle/vcs-1/gc.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../splitter/doc/role/custom/exception.role" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../splitter/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/src/main/java/org/moara/splitter/file/FileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../splitter/src/main/java/org/moara/splitter/utils/file/FileManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/src/main/java/org/moara/splitter/file/FileManagerImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../splitter/src/main/java/org/moara/splitter/utils/file/FileManagerImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/src/main/java/org/moara/splitter/role/RoleManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../splitter/src/main/java/org/moara/splitter/role/RoleManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/src/main/resources/role/basic/connective.role" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/src/main/resources/role/basic/exception.role" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/src/main/resources/role/basic/regx.role" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/src/main/resources/role/basic/terminator.role" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/src/main/resources/role/custom/connective.role" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/src/main/resources/role/custom/exception.role" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/src/main/resources/role/custom/regx.role" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/src/main/resources/role/custom/terminator.role" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/src/main/resources/role/news/connective.role" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/src/main/resources/role/news/exception.role" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/src/main/resources/role/news/regx.role" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/src/main/resources/role/news/terminator.role" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/src/main/resources/role/public/connective.role" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/src/main/resources/role/public/exception.role" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/src/main/resources/role/public/regx.role" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/src/main/resources/role/public/terminator.role" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/src/test/java/org/moara/splitter/file/FileManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../splitter/src/test/java/org/moara/splitter/utils/file/FileManagerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/src/test/java/org/moara/splitter/role/RoleManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../splitter/src/test/java/org/moara/splitter/role/RoleManagerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/src/test/java/org/moara/yido/areaProcessor/AreaProcessorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../splitter/src/test/java/org/moara/splitter/areaProcessor/AreaProcessorTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/src/test/java/org/moara/yido/regular/RegularTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../splitter/src/test/java/org/moara/splitter/regular/RegularTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../splitter/src/test/java/org/moara/yido/splitterFactory/SplitterFactoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../splitter/src/test/java/org/moara/splitter/splitterFactory/SplitterFactoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="C:\Program Files\JetBrains\IntelliJ IDEA 2020.2.1\plugins\maven\lib\maven3" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1kUOivHQtveVOvVkdMbzzZWdlsU" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="foldersAlwaysOnTop" value="false" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="sortByType" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="show.unlinked.gradle.project.popup" value="true" />
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="gradle build" />
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="tokenizer [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="build" />
+          </list>
+        </option>
+        <option name="vmOptions" value="" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.tokenizer [build]" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c093bf49-a09c-4f85-a260-da0c3987baea" name="Default Changelist" comment="" />
+      <created>1605751833610</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1605751833610</updated>
+      <workItem from="1605751834689" duration="90000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="666" y="296" key="#Notifications" timestamp="1605751856616">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="666" y="296" key="#Notifications/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1605751856616" />
+    <state width="904" height="599" key="GridCell.Tab.0.bottom" timestamp="1605751924714">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="904" height="599" key="GridCell.Tab.0.bottom/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1605751924714" />
+    <state width="904" height="599" key="GridCell.Tab.0.center" timestamp="1605751924714">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="904" height="599" key="GridCell.Tab.0.center/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1605751924714" />
+    <state width="904" height="599" key="GridCell.Tab.0.left" timestamp="1605751924714">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="904" height="599" key="GridCell.Tab.0.left/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1605751924714" />
+    <state width="904" height="599" key="GridCell.Tab.0.right" timestamp="1605751924714">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="904" height="599" key="GridCell.Tab.0.right/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1605751924714" />
+    <state x="532" y="237" width="840" height="1034" key="run.anything.popup" timestamp="1605751917177">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="532" y="237" width="840" height="1034" key="run.anything.popup/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1605751917177" />
+    <state x="539" y="5" width="840" height="1034" key="search.everywhere.popup" timestamp="1605751900089">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="539" y="5" width="840" height="1034" key="search.everywhere.popup/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1605751900089" />
+  </component>
+</project>

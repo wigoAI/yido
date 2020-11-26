@@ -3,3 +3,6 @@
 /splitter/splitter.iml
 /splitter/.idea/
 /splitter/src/main/resources/META-INF/
+/splitter/.gradle
+build
+.gradle
