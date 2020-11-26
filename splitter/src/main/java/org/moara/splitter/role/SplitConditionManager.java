@@ -22,9 +22,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * 구분 조건 관리자
+ * @author wjrmffldrhrl
+ */
 public class SplitConditionManager {
     protected static final String rolePath = "/string_group/split_condition/";
-
 
     public static List<SplitCondition> getSplitConditions(String splitConditionRoleName, String[] validationRoleNames) {
         String[] splitConditionRoleNames = {splitConditionRoleName};
@@ -45,6 +48,15 @@ public class SplitConditionManager {
         return getSplitConditions(splitConditionRoleNames, validationRoleNames);
     }
 
+    public static List<SplitCondition> getSplitConditions(String[] splitConditionRoleNames) {
+        return getSplitConditions(splitConditionRoleNames, new String[] {});
+    }
+
+    public static List<SplitCondition> getSplitConditions(String splitConditionRoleName) {
+        String[] splitConditionRoleNames = {splitConditionRoleName};
+
+        return getSplitConditions(splitConditionRoleNames);
+    }
 
     /**
      * 구분 조건 반환
