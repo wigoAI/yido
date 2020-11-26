@@ -32,11 +32,6 @@ public class SplitterFactoryTest {
 
     }
 
-    @Test
-    public void testGetNewsSplitter() {
-        Splitter splitter = SplitterFactory.getSplitter(2);
-    }
-
     @Test(expected = IllegalArgumentException.class)
     public void testGetSplitterWithIllegalKey() {
         SplitterFactory.getSplitter(525);

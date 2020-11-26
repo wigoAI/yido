@@ -33,7 +33,6 @@ import java.util.List;
  */
 public class SplitterFactory {
     private static final int BASIC_SPLITTER_ID = 1;
-    private static final int NEWS_SPLITTER_ID = 2;
     private static final HashMap<Integer, Splitter> splitterHashMap = new HashMap<>();
 
     /**
@@ -87,12 +86,6 @@ public class SplitterFactory {
 
             splitterHashMap.put(BASIC_SPLITTER_ID,
                     new SplitterImpl(terminatorAreaProcessor, exceptionAreaProcessor));
-
-        } else if(id == NEWS_SPLITTER_ID) {
-            String[] validationList = {"V_N_B_002"};
-            List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions("SP_N_B_002", validationList);
-            TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, new Config());
-            ExceptionAreaProcessor exceptionAreaProcessor = new BracketAreaProcessor();
 
         } else {
             throw new IllegalArgumentException("Key [" + id + "] doesn't exist");

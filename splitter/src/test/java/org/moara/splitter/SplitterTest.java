@@ -1,5 +1,6 @@
 package org.moara.splitter;
 
+import org.apache.poi.ss.formula.functions.T;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -11,6 +12,7 @@ import org.moara.splitter.role.SplitConditionManager;
 import org.moara.splitter.utils.Config;
 import org.moara.splitter.utils.Sentence;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SplitterTest {
@@ -137,6 +139,77 @@ public class SplitterTest {
         for(Sentence sentence : splitter.split(newsData)) {
 
             assertEquals(answer[index++], sentence.getText());
+        }
+    }
+
+    @Test
+    public void testSplitWithRegxFrontSplitPosition() {
+        int key = 13;
+
+
+        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(SplitConditionManager.getSplitConditions("RSP_N_F_001", new String[] {}), new Config());
+        SplitterFactory.createSplitter(terminatorAreaProcessor, new BracketAreaProcessor(), key);
+        Splitter splitter = SplitterFactory.getSplitter(key);
+
+        String data = "지금부터 우리학교 규칙을 설명하겠습니다. 앞에 게시판을 보면 1. 교실에서는 조용히 하기 2. 복도에서 뛰어다니지 않기 3. 지각하면 벌금내기 입니다.";
+        String[] answers = {"지금부터 우리학교 규칙을 설명하겠습니다. 앞에 게시판을 보면",
+                "1. 교실에서는 조용히 하기",
+                "2. 복도에서 뛰어다니지 않기",
+                "3. 지각하면 벌금내기 입니다."};
+
+        assertEquals(answers.length, splitter.split(data).length);
+
+        int answerIndex = 0;
+        for (Sentence sentence : splitter.split(data)) {
+            assertEquals(answers[answerIndex++], sentence.getText());
+
+        }
+    }
+
+    @Test
+    public void testSplitWithRegx() {
+        int key = 14;
+
+
+        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(SplitConditionManager.getSplitConditions("RSP_N_B_002", new String[] {}), new Config());
+        SplitterFactory.createSplitter(terminatorAreaProcessor, new BracketAreaProcessor(), key);
+        Splitter splitter = SplitterFactory.getSplitter(key);
+
+        String data = "지금부터 우리학교 규칙을 설명하겠습니다. 앞에 게시판을 보면 1. 교실에서는 조용히 하기 2. 복도에서 뛰어다니지 않기 3. 지각하면 벌금내기 입니다.";
+        String[] answers = {"지금부터 우리학교 규칙을 설명하겠습니다.",
+                "앞에 게시판을 보면 1. 교실에서는 조용히 하기 2. 복도에서 뛰어다니지 않기 3. 지각하면 벌금내기 입니다."};
+
+        assertEquals(answers.length, splitter.split(data).length);
+
+        int answerIndex = 0;
+        for (Sentence sentence : splitter.split(data)) {
+            assertEquals(answers[answerIndex++], sentence.getText());
+
+
+        }
+    }
+
+    @Test
+    public void testSplitWithFrontSplitPosition() {
+        int key = 15;
+
+
+        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(SplitConditionManager.getSplitConditions("SP_N_F_NUM", new String[] {}), new Config());
+        SplitterFactory.createSplitter(terminatorAreaProcessor, new BracketAreaProcessor(), key);
+        Splitter splitter = SplitterFactory.getSplitter(key);
+
+        String data = "지금부터 우리학교 규칙을 설명하겠습니다. 앞에 게시판을 보면 1. 교실에서는 조용히 하기 2. 복도에서 뛰어다니지 않기 3. 지각하면 벌금내기 입니다.";
+        String[] answers = {"지금부터 우리학교 규칙을 설명하겠습니다. 앞에 게시판을 보면",
+                "1. 교실에서는 조용히 하기",
+                "2. 복도에서 뛰어다니지 않기",
+                "3. 지각하면 벌금내기 입니다."};
+
+        assertEquals(answers.length, splitter.split(data).length);
+
+        int answerIndex = 0;
+        for (Sentence sentence : splitter.split(data)) {
+            assertEquals(answers[answerIndex++], sentence.getText());
+
         }
     }
 

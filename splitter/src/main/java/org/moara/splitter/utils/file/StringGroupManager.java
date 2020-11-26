@@ -20,7 +20,6 @@ import org.moara.splitter.role.ValidationManager;
 import org.moara.splitter.utils.RoleProperty;
 
 import java.io.File;
-import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -85,7 +84,6 @@ public class StringGroupManager extends FileManager{
 
     /**
      * 문자열 그룹 생성
-     * TODO 1. 이상한 이름으로 생성되는 룰 막기
      *
      * @param category 문자열 그룹을 생성할 카테고리 위치
      * @param stringGroupName 생성할 문자열 그룹 이름
@@ -109,7 +107,6 @@ public class StringGroupManager extends FileManager{
     /**
      * 문자열 그룹 제거
      *
-     * TODO 1. 카테고리 위치 입력 안해도 제거할 수 있게 변경
      * @param category 제거할 문자열 그룹이 있는 카테고리 위치
      * @param stringGroupName 제거할 문자열 그룹
      * @return 제거 성공 여부

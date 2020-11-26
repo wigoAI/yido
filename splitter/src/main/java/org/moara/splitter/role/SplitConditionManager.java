@@ -48,7 +48,7 @@ public class SplitConditionManager {
 
     /**
      * 구분 조건 반환
-     * TODO 1. role type에 대한 검사
+     *
      * @param splitConditionRoleNames 구분 조건에 사용되는 룰 데이터 이름
      * @param validationRoleNames 유효성에 사용되는 룰 이름
      * @return 구분 조건 리스트

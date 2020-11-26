@@ -28,7 +28,6 @@ import java.util.regex.Pattern;
 /**
  * 구분점 처리기
  *
- *
  * @author wjrmffldrhrl
  */
 public class TerminatorAreaProcessor {
@@ -100,7 +99,6 @@ public class TerminatorAreaProcessor {
         while (matcher.find()) {
             if (splitCondition.getSplitPosition() == 'B') { // 문장 구분점 뒤
                 int splitPoint = matcher.end();
-                splitPoint += splitCondition.getValue().length();
                 splitPoint += getAdditionalSignLength(splitPoint, text);
                 splitPointSet.add(splitPoint);
             } else { // 앞
@@ -137,14 +135,18 @@ public class TerminatorAreaProcessor {
 
         for (Validation validation : splitCondition.getValidations()) {
             int compareIndexStart = splitPoint;
-            if (validation.getComparePosition() == 'B') { compareIndexStart += splitCondition.getValue().length();
-            } else { compareIndexStart -= validation.getValue().length(); }
 
-            if (compareIndexStart + validation.getValue().length() > text.length()) {
-                continue;
+            if (validation.getComparePosition() == 'B') {
+                compareIndexStart += splitCondition.getValue().length();
+            } else {
+                compareIndexStart -= validation.getValue().length();
             }
+
+            if (compareIndexStart + validation.getValue().length() > text.length()) { continue; }
+
             String compareText = text.substring(compareIndexStart, compareIndexStart + validation.getValue().length());
             boolean isEquals = compareText.equals(validation.getValue());
+
             if ((validation.getMatchFlag() == 'N' && isEquals) ||
                     (validation.getMatchFlag() == 'Y' && !isEquals)) {
                 isValid = false;
@@ -157,8 +159,7 @@ public class TerminatorAreaProcessor {
     }
 
     private void removeInvalidItem(TreeSet<Integer> splitPoints, int textLength) {
-        splitPoints.removeIf(item -> item < config.MIN_RESULT_LENGTH ||
-                item > textLength - config.MIN_RESULT_LENGTH);
+        splitPoints.removeIf(item -> item < config.MIN_RESULT_LENGTH || item > textLength - config.MIN_RESULT_LENGTH);
 
         List<Integer> removeItems = new ArrayList<>();
         int previousItem = 0;
@@ -166,7 +167,6 @@ public class TerminatorAreaProcessor {
             if (item - previousItem < config.MIN_RESULT_LENGTH) {
                 removeItems.add(previousItem);
             }
-
             previousItem = item;
         }
         splitPoints.removeAll(removeItems);

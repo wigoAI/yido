@@ -57,7 +57,7 @@ public class FileManagerTest {
 
     @Test
     public void testInvalidFileRead() {
-        Collection<String> collection = FileManager.readFile("THIS_FILE_DOESNT_EXIST.txt");
+        FileManager.readFile("THIS_FILE_DOESNT_EXIST.txt");
 
     }
 

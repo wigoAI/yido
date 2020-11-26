@@ -1,22 +1,20 @@
 package org.moara.splitter.utils.file;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.nio.file.FileAlreadyExistsException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.ArrayList;
+
 
 public class StringGroupManagerTest {
+
     @Test
     public void testGetStringGroupList() {
-        String[] roleFilesAnswer = {"RSP_N_F_001.role", "SP_N_B_001.role", "SP_N_B_002.role", "SP_N_B_TEST.role", "SP_N_F_NUM.role"};
+        String[] roleFilesAnswer = {"SP_N_B_001.role", "SP_N_B_002.role", "SP_N_B_TEST.role", "SP_N_F_NUM.role"};
         String[] jsonFilesAnswer = {"M_different_side_bracket.json", "M_same_side_bracket.json"};
 
         int answerIndex = 0;
-        for (String stringGroup : StringGroupManager.getStringGroupList("split_condition")) {
+        for (String stringGroup : StringGroupManager.getStringGroupList("test")) {
             Assert.assertEquals(stringGroup, roleFilesAnswer[answerIndex++]);
         }
 
@@ -46,7 +44,6 @@ public class StringGroupManagerTest {
         boolean exceptionFlag = false;
         try {
             StringGroupManager.createStringGroup(category, stringGroupName, values);
-
         } catch (RuntimeException e) {
             exceptionFlag = true;
         }
@@ -62,7 +59,6 @@ public class StringGroupManagerTest {
         String stringGroupName = "SP_N_B_create";
         String[] values = {"다.", "면..."};
 
-
         StringGroupManager.createStringGroup(category, stringGroupName, values);
 
         Assert.assertArrayEquals(values,
@@ -71,8 +67,8 @@ public class StringGroupManagerTest {
         FileManager.deleteFile("string_group/" + category + "/" + stringGroupName + ".role");
 
 
-        category = "split_condition";
-        stringGroupName = "SP_N_B_create";
+        category = "validation";
+        stringGroupName = "V_N_B_create";
         values = new String[] {"다.", "면..."};
         StringGroupManager.createStringGroup(category, stringGroupName, values);
 
@@ -81,6 +77,30 @@ public class StringGroupManagerTest {
 
         FileManager.deleteFile("string_group/" + category + "/" + stringGroupName + ".role");
 
+
+        boolean exceptionFlag = false;
+        try {
+            category = "test";
+            stringGroupName = "V_N_B_create";
+            values = new String[]{"다.", "면..."};
+            StringGroupManager.createStringGroup(category, stringGroupName, values);
+        } catch (RuntimeException e) {
+            exceptionFlag = true;
+        }
+
+        Assert.assertTrue(exceptionFlag);
     }
 
+    @Test
+    public void testDeleteStringGroup() {
+        String category = "test";
+        String stringGroupName = "NO_ROLE";
+        Assert.assertFalse(StringGroupManager.deleteStringGroup(category, stringGroupName));
+
+        category = "test";
+        stringGroupName = "SP_N_F_NUM";
+        Assert.assertTrue(StringGroupManager.deleteStringGroup(category, stringGroupName));
+
+        FileManager.writeFile("string_group/test/SP_N_F_NUM.role", new ArrayList<>());
+    }
 }
