@@ -41,7 +41,7 @@ public class SplitConditionTest {
     @Test
     public void testSplitConditionManager() {
         String[] validationList = {"V_N_B_001"};
-        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions("SP_N_B_001", validationList);
+        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(new String[] {"SP_N_B_001"}, validationList);
 
         Collection<String> dataList = FileManager.readFile("/string_group/split_condition/SP_N_B_001.role");
 
@@ -71,26 +71,25 @@ public class SplitConditionTest {
     }
 
     @Test
-    public void testSplitConditionArray() {
+    public void testUsePublicValidation() {
         String[] splitConditions = {"SP_Y_B_TEST_1", "SP_Y_B_TEST_2"};
         String[] validations = {"V_N_B_TEST_1", "V_N_B_TEST_2"};
 
         createTestFiles("split_condition", splitConditions);
         createTestFiles("validation", validations);
 
-
-
+        try {
 
             List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
-            List<SplitCondition> splitConditionList2 = SplitConditionManager.getSplitConditions(splitConditions[0], validations);
-            List<SplitCondition> splitConditionList3 = SplitConditionManager.getSplitConditions(splitConditions, validations[0]);
-            List<SplitCondition> splitConditionList4 = SplitConditionManager.getSplitConditions(splitConditions[0], validations[0]);
+        } catch (RuntimeException e) {
+            throw new RuntimeException();
+        } finally {
+            tearDown("split_condition", splitConditions);
+            tearDown("validation", validations);
 
-        tearDown("split_condition", splitConditions);
-        tearDown("validation", validations);
+        }
 
     }
-
 
     @Test(expected = RuntimeException.class)
     public void testDifferentUsePublicValidationOptions() {
@@ -104,16 +103,17 @@ public class SplitConditionTest {
 
             List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
         } catch (RuntimeException e) {
+            throw new RuntimeException();
+        } finally {
             tearDown("split_condition", splitConditions);
             tearDown("validation", validations);
-            throw new RuntimeException();
         }
 
     }
 
     @Test(expected = RuntimeException.class)
     public void testDifferentSplitPositionTest() {
-        String[] splitConditions = {"SP_Y_F_TEST_1", "SP_N_B_TEST_2"};
+        String[] splitConditions = {"SP_N_F_TEST_1", "SP_N_B_TEST_2"};
         String[] validations = {"V_N_B_TEST_1", "V_N_B_TEST_2"};
 
         createTestFiles("split_condition", splitConditions);
@@ -123,9 +123,11 @@ public class SplitConditionTest {
 
             List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
         } catch (RuntimeException e) {
+            throw new RuntimeException();
+        } finally {
+
             tearDown("split_condition", splitConditions);
             tearDown("validation", validations);
-            throw new RuntimeException();
         }
 
     }
@@ -138,9 +140,11 @@ public class SplitConditionTest {
 
             List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
         } catch (RuntimeException e) {
+            throw new RuntimeException();
+        } finally {
+
             tearDown("split_condition", splitConditions);
             tearDown("validation", validations);
-            throw new RuntimeException();
         }
 
 
@@ -155,9 +159,11 @@ public class SplitConditionTest {
 
             List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
         } catch (RuntimeException e) {
+            throw new RuntimeException();
+        } finally {
             tearDown("split_condition", splitConditions);
             tearDown("validation", validations);
-            throw new RuntimeException();
+
         }
 
 
@@ -172,9 +178,11 @@ public class SplitConditionTest {
 
             List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions, validations);
         } catch (RuntimeException e) {
+            throw new RuntimeException();
+        } finally {
             tearDown("split_condition", splitConditions);
             tearDown("validation", validations);
-            throw new RuntimeException();
+
         }
 
 

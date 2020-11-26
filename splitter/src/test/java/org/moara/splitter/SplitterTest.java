@@ -76,7 +76,7 @@ public class SplitterTest {
     @Test
     public void testOtherSplitter() {
         String[] validationList = {"V_N_B_TEST"};
-        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions("SP_N_B_TEST", validationList);
+        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(new String[] {"SP_N_B_TEST"}, validationList);
         int key = 10;
         TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, new Config());
         ExceptionAreaProcessor exceptionAreaProcessor = new BracketAreaProcessor();
@@ -96,7 +96,7 @@ public class SplitterTest {
     @Test
     public void testSplitWithAddSplitConditionInMemory() {
         String[] validationList = {"V_N_B_TEST"};
-        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions("SP_N_B_TEST", validationList);
+        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(new String[] {"SP_N_B_TEST"}, validationList);
         int key = 11;
         TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, new Config());
         ExceptionAreaProcessor exceptionAreaProcessor = new BracketAreaProcessor();
@@ -122,7 +122,7 @@ public class SplitterTest {
     @Test
     public void testSplitWithRemoveSplitConditionInMemory() {
         String[] validationList = {"V_N_B_TEST"};
-        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions("SP_N_B_TEST", validationList);
+        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(new String[] {"SP_N_B_TEST"}, validationList);
         int key = 12;
 
         TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, new Config());
@@ -147,7 +147,7 @@ public class SplitterTest {
         int key = 13;
 
 
-        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(SplitConditionManager.getSplitConditions("RSP_N_F_001", new String[] {}), new Config());
+        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(SplitConditionManager.getSplitConditions(new String[] {"RSP_N_F_001"}), new Config());
         SplitterFactory.createSplitter(terminatorAreaProcessor, new BracketAreaProcessor(), key);
         Splitter splitter = SplitterFactory.getSplitter(key);
 
@@ -171,7 +171,7 @@ public class SplitterTest {
         int key = 14;
 
 
-        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(SplitConditionManager.getSplitConditions("RSP_N_B_002", new String[] {}), new Config());
+        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(SplitConditionManager.getSplitConditions(new String[] {"RSP_N_B_002"}), new Config());
         SplitterFactory.createSplitter(terminatorAreaProcessor, new BracketAreaProcessor(), key);
         Splitter splitter = SplitterFactory.getSplitter(key);
 
@@ -194,7 +194,7 @@ public class SplitterTest {
         int key = 15;
 
 
-        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(SplitConditionManager.getSplitConditions("SP_N_F_NUM", new String[] {}), new Config());
+        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(SplitConditionManager.getSplitConditions(new String[] {"SP_N_F_NUM"}), new Config());
         SplitterFactory.createSplitter(terminatorAreaProcessor, new BracketAreaProcessor(), key);
         Splitter splitter = SplitterFactory.getSplitter(key);
 

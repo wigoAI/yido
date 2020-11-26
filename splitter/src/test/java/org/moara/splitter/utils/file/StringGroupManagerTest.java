@@ -82,7 +82,7 @@ public class StringGroupManagerTest {
         try {
             category = "test";
             stringGroupName = "V_N_B_create";
-            values = new String[]{"다.", "면..."};
+            values = new String[] {"다.", "면..."};
             StringGroupManager.createStringGroup(category, stringGroupName, values);
         } catch (RuntimeException e) {
             exceptionFlag = true;
@@ -102,5 +102,6 @@ public class StringGroupManagerTest {
         Assert.assertTrue(StringGroupManager.deleteStringGroup(category, stringGroupName));
 
         FileManager.writeFile("string_group/test/SP_N_F_NUM.role", new ArrayList<>());
+
     }
 }

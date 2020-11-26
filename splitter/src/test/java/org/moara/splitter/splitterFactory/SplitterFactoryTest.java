@@ -41,7 +41,7 @@ public class SplitterFactoryTest {
     public void testCreateSplitterWithAreaProcessor() {
         int key = 7;
         String[] validationList = {"V_N_B_001"};
-        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions("SP_N_B_001", validationList);
+        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(new String[] {"SP_N_B_001"}, validationList);
         TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, new Config());
         ExceptionAreaProcessor exceptionAreaProcessor = new BracketAreaProcessor();
         SplitterFactory.createSplitter(terminatorAreaProcessor, exceptionAreaProcessor, key);
@@ -59,7 +59,7 @@ public class SplitterFactoryTest {
         int key = 8;
 
         String[] validationList = {"V_N_B_001"};
-        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions("SP_N_B_001", validationList);
+        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(new String[] {"SP_N_B_001"}, validationList);
         SplitterFactory.createSplitter(splitConditions, key);
         Splitter splitter = SplitterFactory.getSplitter(key);
 

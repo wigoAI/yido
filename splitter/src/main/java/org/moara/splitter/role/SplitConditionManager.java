@@ -29,34 +29,10 @@ import java.util.List;
 public class SplitConditionManager {
     protected static final String rolePath = "/string_group/split_condition/";
 
-    public static List<SplitCondition> getSplitConditions(String splitConditionRoleName, String[] validationRoleNames) {
-        String[] splitConditionRoleNames = {splitConditionRoleName};
-
-        return getSplitConditions(splitConditionRoleNames, validationRoleNames);
-    }
-
-    public static List<SplitCondition> getSplitConditions(String[] splitConditionRoleNames, String validationRoleName) {
-        String[] validationRoleNames = {validationRoleName};
-
-        return getSplitConditions(splitConditionRoleNames, validationRoleNames);
-    }
-
-    public static List<SplitCondition> getSplitConditions(String splitConditionRoleName, String validationRoleName) {
-        String[] splitConditionRoleNames = {splitConditionRoleName};
-        String[] validationRoleNames = {validationRoleName};
-
-        return getSplitConditions(splitConditionRoleNames, validationRoleNames);
-    }
-
     public static List<SplitCondition> getSplitConditions(String[] splitConditionRoleNames) {
         return getSplitConditions(splitConditionRoleNames, new String[] {});
     }
 
-    public static List<SplitCondition> getSplitConditions(String splitConditionRoleName) {
-        String[] splitConditionRoleNames = {splitConditionRoleName};
-
-        return getSplitConditions(splitConditionRoleNames);
-    }
 
     /**
      * 구분 조건 반환
@@ -76,12 +52,11 @@ public class SplitConditionManager {
             checkRoleName(splitConditionRoleName);
 
             if (roleProperty.getFlag() != tmpRoleProperty.getFlag() ||
-                    roleProperty.getPosition() != roleProperty.getPosition()) {
+                    roleProperty.getPosition() != tmpRoleProperty.getPosition()) {
                 throw new RuntimeException("Split Condition Roles must have same property");
             }
 
         }
-
 
         List<Validation> validations = new ArrayList<>();
         for (String validationRoleName : validationRoleNames) {
