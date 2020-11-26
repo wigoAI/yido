@@ -10,7 +10,7 @@
   <packaging>jar</packaging>
 
   <name>yido-splitter</name>
-  <description>splitter</description>
+  <description>The splitter what performs split by sentence or paragraph unit.</description>
   <url>https://github.com/wigoAI/yido</url>
 
   <licenses>
