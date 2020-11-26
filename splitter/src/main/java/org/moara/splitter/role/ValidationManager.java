@@ -41,6 +41,9 @@ public class ValidationManager {
 
         List<Validation> validations = new ArrayList<>();
         for (String roleData : FileManager.readFile(rolePath + roleName + ".role")) {
+            if (roleData.contains("\\s")) {
+                roleData = roleData.replace("\\s", " ");
+            }
             validations.add(new Validation(roleData, roleProperty));
         }
         return validations;
