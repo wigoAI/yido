@@ -28,7 +28,7 @@ public class MecabTest {
             System.loadLibrary("MeCab");
         } catch (UnsatisfiedLinkError e) {
             e.printStackTrace();
-            System.err.println("Cannot load the example native code.\nMake sure your LD_LIBRARY_PATH contains \'.\'\n" + e);
+            System.err.println("Cannot load the example native code.\nMake sure your LD_LIBRARY_PATH contains");
             System.exit(1);
         }
     }
@@ -37,7 +37,7 @@ public class MecabTest {
 
 
 
-        String sentence ="김용수는 위고에 다녀요";
+        String sentence ="시내버스가 위고에 가요";
 
 
         Tagger tagger = new Tagger();

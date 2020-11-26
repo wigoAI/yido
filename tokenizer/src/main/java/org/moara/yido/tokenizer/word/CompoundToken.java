@@ -20,6 +20,35 @@ package org.moara.yido.tokenizer.word;
  * 복합어 토큰
  * @author macle
  */
-public class CompoundToken{
+public class CompoundToken extends WordToken{
 
+
+    private final String [] wordIds;
+
+    /**
+     * 생성자
+     *
+     * @param id           단어 아이디
+     * @param text         단어 텍스트
+     * @param partOfSpeech 품사
+     * @param begin        시작 위치 (index)
+     * @param end          끝 위치 (index + 1) substring(begin, end)
+     * @param wordIds      복합어 일때 구성 단어 아이디
+     */
+    public CompoundToken(String id, String text, String partOfSpeech, int begin, int end
+        , String [] wordIds
+    
+    ) {
+        super(id, text, partOfSpeech, begin, end);
+        this.wordIds = wordIds;
+    }
+
+    /**
+     * 구성 단어 아이디 배열 얻기
+     * 복합어 일댸
+     * @return 구성단어 아이디 배열
+     */
+    public String[] getWordIds() {
+        return wordIds;
+    }
 }

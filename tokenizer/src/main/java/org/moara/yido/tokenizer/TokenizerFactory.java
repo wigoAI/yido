@@ -14,22 +14,33 @@
  * limitations under the License.
  */
 
-package org.moara.yido.tokenizer.dev;
+package org.moara.yido.tokenizer;
 
-import org.moara.yido.tokenizer.Token;
-import org.moara.yido.tokenizer.TokenizerManager;
+import org.moara.yido.tokenizer.word.ole.MecabTokenizer;
 
 /**
+ * Tokenizer 생성기
  * @author macle
  */
-public class TokenizerManagerTemp {
-    public static void main(String[] args) {
+public class TokenizerFactory {
 
-
-        Token[] tokens = TokenizerManager.getInstance().getTokenizer().getTokens("김용수는 위고에 다녀요");
-
-        for(Token token : tokens){
-            System.out.println(token.getText());
-        }
+    /**
+     * 생성자 막음
+     */
+    private TokenizerFactory(){
+        
     }
+    
+    /**
+     * tokenizer 생성
+     * @param id tokenizer id
+     * @return Tokenizer
+     */
+    static Tokenizer newTokenizer(String id){
+        if(id.equals("mecab")){
+            return new MecabTokenizer();
+        }
+        throw new TokenizerNotFoundException(id);
+    }
+
 }

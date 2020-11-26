@@ -20,7 +20,6 @@ import com.seomse.commons.config.Config;
 import com.seomse.commons.config.ConfigInfo;
 import com.seomse.commons.config.ConfigObserver;
 import com.seomse.commons.utils.ExceptionUtil;
-import org.moara.yido.tokenizer.word.ole.MecabTokenizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,9 +51,17 @@ public class TokenizerManager {
 
     private Tokenizer defaultTokenizer;
 
+    /**
+     * 생성자
+     * Singleton
+     * private
+     */
     private TokenizerManager(){
-        MecabTokenizer mecabTokenizer = new MecabTokenizer();
-        tokenizerMap.put(mecabTokenizer.getId(), mecabTokenizer);
+
+        String [] initTokenizerIds = Config.getConfig("yido.tokenizer.init.ids","mecab").split(",");
+        for(String initTokenizerId : initTokenizerIds){
+            tokenizerMap.put(initTokenizerId,  TokenizerFactory.newTokenizer(initTokenizerId));
+        }
 
         final String defaultKey = "yido.tokenizer.default.id";
 
@@ -75,18 +82,22 @@ public class TokenizerManager {
 
         //설정변경 감시
         Config.addObserver(configObserver);
-
     }
 
 
     /**
      * 기본형 tokenizer
-     * 지금 시점에서 가장 인기있는 tokenizer을 얻음
+     * 지금 시점에서 가장 인기있는 tokenizer 를 얻음
      * @return default(Popular) tokenizer
      */
     public Tokenizer getTokenizer(){
         return defaultTokenizer;
     }
+
+
+
+    private final Object tokenizerLock = new Object();
+    
 
     /**
      * tokenizer 얻기
@@ -98,7 +109,14 @@ public class TokenizerManager {
         Tokenizer tokenizer = tokenizerMap.get(tokenizerId);
 
         if(tokenizer == null){
-            throw new TokenizerNotFoundException(tokenizerId);
+            synchronized (tokenizerLock){
+                tokenizer = tokenizerMap.get(tokenizerId);
+                //lock 구간에서 한번더 체크
+                if(tokenizer == null){
+                    tokenizer = TokenizerFactory.newTokenizer(tokenizerId);
+                    tokenizerMap.put(tokenizerId, tokenizer);
+                }
+            }
         }
 
         return tokenizer;
