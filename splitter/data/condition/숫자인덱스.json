@@ -1,0 +1,16 @@
+{
+  "id": "숫자인덱스",
+  "use_public_validation": "N",
+  "split_position": "F",
+  "value": "숫자인덱스",
+  "validations": [
+    {
+      "code": "NB001",
+      "value": "연결어"
+    },
+    {
+      "code": "YF002",
+      "value": "말머리기호"
+    }
+  ]
+}
