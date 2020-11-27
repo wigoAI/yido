@@ -1,6 +1,9 @@
 # yido-tokenizer
 - jdk 1.8
-
+-   mecab
+    -   mecab-0.996-ko-0.9.2
+    -   mecab-ko-dic-2.1.1-20180720
+    -   mecab-java-0.996  
 
 # 문서
 - tokenizer 문서 및 연구 내역
