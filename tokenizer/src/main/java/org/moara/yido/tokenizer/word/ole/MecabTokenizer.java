@@ -42,9 +42,7 @@ public class MecabTokenizer implements Tokenizer {
         }
     }
 
-
-
-
+    
     private final Tagger tagger = new Tagger();
 
     @Override
@@ -53,6 +51,41 @@ public class MecabTokenizer implements Tokenizer {
     }
 
     private final Object lock = new Object();
+
+
+    /**
+     * 메타 데이터 업데이트
+     */
+    @Override
+    public void updateMetaData(){
+        //mecab은 프로세스 재실행 해야함
+    }
+
+
+    /**
+     * mecab 결과 얻기
+     * @param text mecab 결과를 얻기 위한 text
+     * @return 변형 없는 mecab 결과
+     */
+    public String getMecabResult(String text){
+        synchronized (lock){
+            return tagger.parse(text);
+        }
+    }
+
+    /**
+     * mecab 결과 얻기
+     * synchronized 사용하지 않음
+     * mecab synchronized safe 하지 않은것으로 판단됨.
+     * 단일 쓰레드때 synchronized 를 하지않고 빠르게 호출할때 따로 활용
+     * 단 multi thread 환경에서는 호출하면 안됨
+     * @param text mecab 결과를 얻기 위한 text
+     * @return 변형 없는 mecab 결과
+     */
+    public String getMecabResultUnLock(String text){
+        return tagger.parse(text);
+    }
+
 
     @Override
     public Token [] getTokens(String text) {
@@ -69,6 +102,7 @@ public class MecabTokenizer implements Tokenizer {
      * synchronized 사용하지 않음
      * mecab synchronized safe 하지 않은것으로 판단됨.
      * 단일 쓰레드때 synchronized 를 하지않고 빠르게 호출할때 따로 활용
+     * 단 multi thread 환경에서는 호출하면 안됨
      * @param text 토큰을 나누기 위한 text
      * @return 토큰 [] (순서대로)
      */

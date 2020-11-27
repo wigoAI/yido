@@ -16,21 +16,15 @@
 
 package org.moara.yido.tokenizer.dev;
 
-import org.moara.yido.tokenizer.word.ole.MecabTokenizer;
+import com.seomse.api.server.ApiServer;
 
 /**
- * 개발용 임시
  * @author macle
  */
-public class MecabTest {
-
-
+public class MecabTestApiServer {
     public static void main(String[] args) {
-        //maven 등록문제로    System.loadLibrary("MeCab"); 부분은 한소스에만 둔다
-        MecabTokenizer mecabTokenizer = new MecabTokenizer();
-        String sentence ="시내버스가 우아한형제들에 가요";
-        System.out.println(mecabTokenizer.getMecabResult(sentence));
 
-
+        ApiServer apiServer = new ApiServer(33333, "org.moara.yido.tokenizer.dev");
+        apiServer.start();
     }
 }
