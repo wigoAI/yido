@@ -4,8 +4,9 @@ plugins {
 
 
 dependencies {
-    testImplementation group: 'junit', name: 'junit', version: '4.12'
 
     implementation 'com.seomse.commons:seomse-commons:1.2.1'
+
+    //초기버젼은 mecab을 연동하였기때문에 강제의존성을 둠둠
     implementation group: 'org.chasen.mecab', name: 'mecab-java', version: '0.993'
 }
