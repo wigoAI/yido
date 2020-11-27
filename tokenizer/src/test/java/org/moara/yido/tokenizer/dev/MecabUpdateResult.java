@@ -16,21 +16,26 @@
 
 package org.moara.yido.tokenizer.dev;
 
+import com.seomse.api.ApiMessage;
+import org.moara.yido.tokenizer.TokenizerManager;
 import org.moara.yido.tokenizer.word.ole.MecabTokenizer;
 
 /**
- * 개발용 임시
+ * 서비스를 내리지 않고 사전 업데이트 변경분이 반영되는지 테스트
  * @author macle
  */
-public class MecabTest {
+public class MecabUpdateResult extends ApiMessage {
 
 
-    public static void main(String[] args) {
-        //maven 등록문제로    System.loadLibrary("MeCab"); 부분은 한소스에만 둔다
-        MecabTokenizer mecabTokenizer = new MecabTokenizer();
-        String sentence ="시내버스가 우아한형제들에 가요";
-        System.out.println(mecabTokenizer.getMecabResult(sentence));
-
-
+    @Override
+    public void receive(String message) {
+        try{
+            MecabTokenizer mecabTokenizer = (MecabTokenizer)TokenizerManager.getInstance().getTokenizer("mecab");
+            mecabTokenizer.updateMetaData();
+            sendMessage(mecabTokenizer.getMecabResult(message));
+        }catch(Exception e){
+            e.printStackTrace();
+            sendMessage(e.getMessage());
+        }
     }
 }

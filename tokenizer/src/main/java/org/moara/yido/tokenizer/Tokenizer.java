@@ -37,4 +37,10 @@ public interface Tokenizer {
      * @return 토큰 [] (순서대로)
      */
     Token [] getTokens(String text);
+
+    /**
+     * 메타 데이터 업데이트
+     */
+    void updateMetaData();
+
 }

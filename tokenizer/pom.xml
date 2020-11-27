@@ -6,7 +6,7 @@
 
   <groupId>org.moara.yido</groupId>
   <artifactId>tokenizer</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
   <packaging>jar</packaging>
 
   <name>yido-tokenizer</name>
@@ -146,6 +146,12 @@
       <groupId>org.chasen.mecab</groupId>
       <artifactId>mecab-java</artifactId>
       <version>0.993</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.seomse.api</groupId>
+      <artifactId>seomse-api</artifactId>
+      <version>1.0.5</version>
     </dependency>
 
   </dependencies>

@@ -16,21 +16,27 @@
 
 package org.moara.yido.tokenizer.dev;
 
-import org.moara.yido.tokenizer.word.ole.MecabTokenizer;
+import com.seomse.api.ApiRequests;
 
 /**
- * 개발용 임시
+ * mecab은 프로세스 재실행 해야만 하네요.
+ * 프로세스가 켜있는 도중 사전교체는 안됩니다.
  * @author macle
  */
-public class MecabTest {
-
-
+public class MecabDicChangeTest {
     public static void main(String[] args) {
-        //maven 등록문제로    System.loadLibrary("MeCab"); 부분은 한소스에만 둔다
-        MecabTokenizer mecabTokenizer = new MecabTokenizer();
-        String sentence ="시내버스가 우아한형제들에 가요";
-        System.out.println(mecabTokenizer.getMecabResult(sentence));
+
+        String text = "시내버스가 우아한형제들에 가요";
+
+
+        System.out.println("\n" + ApiRequests.sendToReceiveMessage("localhost",33333, null,"MecabResult",text));
+
+        System.out.println("\n" + ApiRequests.sendToReceiveMessage("localhost",33333, null,"MecabUpdateResult",text));
+
+
+
 
 
     }
+
 }
