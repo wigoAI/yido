@@ -15,8 +15,6 @@
  */
 package org.moara.splitter.utils.file;
 
-import org.moara.splitter.role.SplitConditionManager;
-import org.moara.splitter.role.ValidationManager;
 import org.moara.splitter.utils.RoleProperty;
 
 import java.io.File;
@@ -26,6 +24,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * TODO 1. 바뀐 형태에 맞춰서 변경
+ *          - .dic 파일 형태
  * 문자열 그룹 관리자
  */
 public class StringGroupManager extends FileManager{
@@ -92,13 +92,6 @@ public class StringGroupManager extends FileManager{
     public static void createStringGroup(String category, String stringGroupName, String[] values) {
 
         new RoleProperty(stringGroupName);
-        if (category.equals("split_condition")) {
-            SplitConditionManager.checkRoleName(stringGroupName);
-        } else if (category.equals("validation")) {
-            ValidationManager.checkRoleName(stringGroupName);
-        } else {
-            throw new RuntimeException("Invalid category name : " + category);
-        }
 
         writeFile( "string_group" + pathSeparator + category + pathSeparator + stringGroupName + ".role",
                 Arrays.asList(values.clone()));

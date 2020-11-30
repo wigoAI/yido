@@ -42,6 +42,16 @@ public class RoleProperty {
         }
     }
 
+    public RoleProperty(String type, char flag, char position) {
+        this.type = type;
+        this.flag = flag;
+        this.position = position;
+
+        if (!isValid()) {
+            throw new RuntimeException("Invalid property");
+        }
+    }
+
     public boolean isValid() {
         return  (flag == 'N' || flag == 'Y') && (position == 'B' || position == 'F');
     }

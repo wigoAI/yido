@@ -6,6 +6,9 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 
+/**
+ * TODO 1. 바뀌는 StringGroupManager에 맞춰서 test 변경
+ */
 public class StringGroupManagerTest {
 
     @Test

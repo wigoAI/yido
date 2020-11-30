@@ -130,4 +130,5 @@ public class  SplitCondition {
     public char getSplitPosition() { return splitPosition; }
     public boolean isPattern() { return isPattern; }
 
+
 }
