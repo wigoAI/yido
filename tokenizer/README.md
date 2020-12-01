@@ -8,8 +8,10 @@
 # 문서
 - tokenizer 문서 및 연구 내역
     - https://wigoai.atlassian.net/wiki/spaces/WP/pages/291635238/tokenizer
-    
-
+- 사용 가이드
+    - https://wigoai.atlassian.net/wiki/spaces/WP/pages/307003403/tokenizer    
+- 설정 가이드
+    - https://wigoai.atlassian.net/wiki/spaces/WP/pages/306937886/tokenizer
 # 사용법
 - 0.1 버젼은 내부적으로 mecab을 사용하기때문에 사전관리는 mecab 사전관리 방법에 따름니다
     - https://github.com/Pusnow/mecab-ko-dic-msvc/tree/master/user-dic
@@ -18,6 +20,7 @@
     - 프로세스 restart 해야만 적용 됩니다
     - 관련 방법이 있으면 공유 부탁 드립니다.
 
+- 자세한 사용법은 위에있는 문서페이를 참조해 주세요.
 ```java
 import org.moara.yido.tokenizer.Token;
 import org.moara.yido.tokenizer.TokenizerManager;
