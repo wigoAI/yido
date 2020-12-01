@@ -113,7 +113,7 @@ public class SplitterTest {
 
 
         List<SplitCondition> additionalSplitCondition = new ArrayList<>();
-        additionalSplitCondition.add(new SplitCondition("이지만", 'N', 'B'));
+        additionalSplitCondition.add(new SplitCondition.Builder("이지만", 'N', 'B').build());
 
         SplitterFactory.addSplitCondition(additionalSplitCondition, key);
 

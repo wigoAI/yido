@@ -31,12 +31,12 @@ import java.util.TreeSet;
  */
 class SplitterImpl implements Splitter {
     protected final TerminatorAreaProcessor terminatorAreaProcessor;
-    protected final ExceptionAreaProcessor exceptionAreaProcessor;
+    protected final List<ExceptionAreaProcessor> exceptionAreaProcessors = new ArrayList<>();
 
     SplitterImpl(TerminatorAreaProcessor terminatorAreaProcessor,
-                 ExceptionAreaProcessor exceptionAreaProcessor) {
+                 List<ExceptionAreaProcessor> exceptionAreaProcessors) {
         this.terminatorAreaProcessor = terminatorAreaProcessor;
-        this.exceptionAreaProcessor = exceptionAreaProcessor;
+        this.exceptionAreaProcessors.addAll(exceptionAreaProcessors);
     }
 
     @Override
@@ -53,7 +53,11 @@ class SplitterImpl implements Splitter {
 
     private TreeSet<Integer> getSplitPoint(String text) {
         TreeSet<Integer> splitPoints = terminatorAreaProcessor.find(text);
-        List<Area> exceptionAreas = exceptionAreaProcessor.find(text);
+        List<Area> exceptionAreas = new ArrayList<>();
+        for (ExceptionAreaProcessor exceptionAreaProcessor : exceptionAreaProcessors) {
+            exceptionAreas.addAll(exceptionAreaProcessor.find(text));
+        }
+
         List<Integer> removeItems = new ArrayList<>();
 
         for (Area exceptionArea : exceptionAreas) {

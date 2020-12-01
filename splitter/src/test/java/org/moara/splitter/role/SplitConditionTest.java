@@ -22,8 +22,7 @@ public class SplitConditionTest {
     @Test
     public void testCreateRoleObject() {
         // terminator
-        List<Validation> validations1 = new ArrayList<>();
-        SplitCondition splitCondition1 = new SplitCondition("다.", validations1, 'N', 'B');
+        SplitCondition splitCondition1 = new SplitCondition.Builder("다.", 'N', 'B').build();
         Assert.assertEquals("다.", splitCondition1.getValue());
         Assert.assertEquals('N', splitCondition1.getUsePublicValidation());
         Assert.assertEquals('B', splitCondition1.getSplitPosition());
@@ -31,7 +30,7 @@ public class SplitConditionTest {
 
         // number
         List<Validation> validations2 = new ArrayList<>();
-        SplitCondition splitCondition2 = new SplitCondition("1.", validations2, 'Y', 'F');
+        SplitCondition splitCondition2 = new SplitCondition.Builder("1.", 'Y', 'F').build();
         Assert.assertEquals("1.", splitCondition2.getValue());
         Assert.assertEquals('Y', splitCondition2.getUsePublicValidation());
         Assert.assertEquals('F', splitCondition2.getSplitPosition());
@@ -53,10 +52,16 @@ public class SplitConditionTest {
      */
     @Test
     public void testCheckPatternSplitCondition() {
-        SplitCondition splitCondition1 = new SplitCondition("\\d+\\.", new ArrayList<>(), 'N', 'F', true);
+        SplitCondition splitCondition1 = new SplitCondition
+                .Builder("\\d+\\.", 'N', 'F')
+                .isPattern(true).build();
+
         Assert.assertTrue(splitCondition1.isPattern());
 
-        SplitCondition splitCondition2 = new SplitCondition("\\d+\\.", new ArrayList<>(), 'N', 'F', false);
+        SplitCondition splitCondition2 = new SplitCondition
+                .Builder("\\d+\\.", 'N', 'F')
+                .isPattern(false).build();
+
         Assert.assertFalse(splitCondition2.isPattern());
 
     }
@@ -138,12 +143,6 @@ public class SplitConditionTest {
 
     }
 
-    @Test
-    public void testCreateSplitConditionWithoutValidations() {
-        new SplitCondition("다.", 'N', 'B');
-        new SplitCondition("다.", 'N', 'B', true);
-
-    }
 
 
 

@@ -61,7 +61,8 @@ public class SplitConditionManager {
             if (roleProperty.getFlag() == 'Y') { validations.addAll(CommonValidationManager.getAllPublicValidations()); }
 
             for (String conditionValue : conditionValues) {
-                SplitCondition splitCondition = new SplitCondition(conditionValue, validations, roleProperty);
+                SplitCondition splitCondition = new SplitCondition.Builder(conditionValue, roleProperty)
+                        .validations(validations).build();
                 splitConditions.add(splitCondition);
             }
         }
@@ -87,7 +88,7 @@ public class SplitConditionManager {
     private static RoleProperty getRoleProperty(JsonObject conditionRoleJson) {
         char usePublicValidation = conditionRoleJson.get("use_public_validation").getAsString().charAt(0);
         char splitPosition = conditionRoleJson.get("split_position").getAsString().charAt(0);
-        return new RoleProperty("C", usePublicValidation, splitPosition);
+        return new RoleProperty(usePublicValidation, splitPosition);
     }
 
 

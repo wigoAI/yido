@@ -77,10 +77,11 @@ public class SplitterFactory {
     }
 
 
-    /**
-     * TODO 1. 다중 예외영역 처리기 할당
-     *
-     */
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
     private static void createSplitter(int id) {
         if (id == BASIC_SPLITTER_ID) {
 
@@ -113,8 +114,10 @@ public class SplitterFactory {
         List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(conditionList);
         TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, config);
         terminatorAreaProcessorHashMap.put(key, terminatorAreaProcessor);
-        ExceptionAreaProcessor exceptionAreaProcessor = new BracketAreaProcessor();
-        return new SplitterImpl(terminatorAreaProcessor, exceptionAreaProcessor);
+
+        List<ExceptionAreaProcessor> exceptionAreaProcessors = new ArrayList<>();
+        exceptionAreaProcessors.add(new BracketAreaProcessor());
+        return new SplitterImpl(terminatorAreaProcessor, exceptionAreaProcessors);
     }
 
     private static boolean isKeyEmpty(int key) { return !splitterHashMap.containsKey(key); }

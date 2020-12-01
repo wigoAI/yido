@@ -34,7 +34,7 @@ public class ValidationManager {
      * @return 유효성 리스트
      */
     public static List<Validation> getValidations(String dicName)  {
-        RoleProperty roleProperty = new RoleProperty("V", dicName.charAt(0), dicName.charAt(1));
+        RoleProperty roleProperty = new RoleProperty(dicName.charAt(0), dicName.charAt(1));
 
         List<Validation> validations = new ArrayList<>();
         if (dicName.startsWith("SG_", 2)) {
