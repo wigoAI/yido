@@ -43,14 +43,14 @@ public class SplitConditionManager {
 
 
         for (String splitConditionRoleName : splitConditionRoleNames) {
-            splitConditions.addAll(getSplitConditionByRole(splitConditionRoleName));
+            splitConditions.addAll(getSplitConditionsByRole(splitConditionRoleName));
         }
 
         return splitConditions;
 
     }
 
-    private static List<SplitCondition> getSplitConditionByRole(String splitConditionRoleName) {
+    private static List<SplitCondition> getSplitConditionsByRole(String splitConditionRoleName) {
         List<SplitCondition> splitConditions = new ArrayList<>();
         JsonObject conditionRoleJson = FileManager.getJsonObjectByFile(conditionPath + splitConditionRoleName + ".json");
         List<Validation> validations = getValidations(conditionRoleJson);
@@ -59,10 +59,14 @@ public class SplitConditionManager {
         Collection<String> conditionValues = FileManager.readFile("string_group/" + conditionValueName + ".dic");
 
         for (String conditionValue : conditionValues) {
-            SplitCondition splitCondition = new SplitCondition
+            SplitCondition.Builder splitConditionBuilder = new SplitCondition
                     .Builder(conditionValue, getRoleProperty(conditionRoleJson))
-                    .validations(validations).build();
-            splitConditions.add(splitCondition);
+                    .validations(validations);
+            if (conditionValueName.startsWith("regx_")) {
+                splitConditionBuilder.isPattern(true);
+            }
+
+            splitConditions.add(splitConditionBuilder.build());
         }
 
         return splitConditions;

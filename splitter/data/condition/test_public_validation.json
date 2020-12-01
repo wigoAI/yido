@@ -1,7 +1,0 @@
-{
-  "id": "test_public_validation",
-  "use_public_validation": "Y",
-  "split_position": "B",
-  "value": "test_terminator",
-  "validations": []
-}

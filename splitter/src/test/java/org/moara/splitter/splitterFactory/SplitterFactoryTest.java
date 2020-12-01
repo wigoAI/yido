@@ -10,6 +10,7 @@ import org.moara.splitter.Splitter;
 import org.moara.splitter.SplitterFactory;
 import org.moara.splitter.TestFileInitializer;
 import org.moara.splitter.utils.Sentence;
+import org.moara.splitter.utils.file.FileManager;
 
 
 public class SplitterFactoryTest {
@@ -87,6 +88,20 @@ public class SplitterFactoryTest {
         for (Sentence sentence : splitter.split(text)) {
             Assert.assertEquals(answer[index++], sentence.getText());
         }
+    }
+
+    @Test
+    public void testJsonObjectValidationCheck() {
+        JsonObject normalJson = FileManager.getJsonObjectByFile("splitter/test.json");
+
+        Assert.assertTrue(SplitterFactory.isValid(normalJson));
+
+        JsonObject invalidJson1 = FileManager.getJsonObjectByFile("splitter/test_invalid1.json");
+        Assert.assertFalse(SplitterFactory.isValid(invalidJson1));
+
+        JsonObject invalidJson2 = FileManager.getJsonObjectByFile("splitter/test_invalid2.json");
+        Assert.assertFalse(SplitterFactory.isValid(invalidJson2));
+
     }
 
 }

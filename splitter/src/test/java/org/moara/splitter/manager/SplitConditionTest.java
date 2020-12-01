@@ -48,9 +48,6 @@ public class SplitConditionTest {
 
     }
 
-    /**
-     * TODO 1. 패턴 조건에 맞는 값 만들고 처리하기
-     */
     @Test
     public void testCheckPatternSplitCondition() {
         SplitCondition splitCondition1 = new SplitCondition

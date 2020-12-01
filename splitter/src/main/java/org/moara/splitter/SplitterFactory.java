@@ -66,6 +66,9 @@ public class SplitterFactory {
     }
 
 
+    /**
+     * TODO 1. Json의 유효성 체크
+     */
     public static void createSplitter(String splitterJsonName, int key) {
         Splitter splitter = getSplitterFromJson(splitterJsonName, key);
 
@@ -75,6 +78,22 @@ public class SplitterFactory {
     public static void createSplitter(JsonObject splitterJson, int key) {
         Splitter splitter = getSplitterFromJson(splitterJson, key);
         splitterHashMap.put(key, splitter);
+    }
+
+    public static boolean isValid(JsonObject splitterJson) {
+        if ((!splitterJson.isJsonObject()) || splitterJson.get("id") == null || splitterJson.get("name") == null
+                || splitterJson.get("minimum_split_length") == null || splitterJson.get("conditions") == null
+                || splitterJson.get("exceptions") == null) {
+            return false;
+        }
+        if (!splitterJson.get("conditions").isJsonArray()) {
+            return false;
+        }
+        if (!splitterJson.get("exceptions").isJsonArray()) {
+            return false;
+        }
+
+        return true;
     }
 
 

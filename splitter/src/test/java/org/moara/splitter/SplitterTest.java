@@ -138,7 +138,37 @@ public class SplitterTest {
     }
 
 
+    @Test
+    public void test() {
+        String text = "강남역 맛집으로 소문난 강남 토끼정에 다녀왔습니다. 회사 동료 분들과 다녀왔는데 분위기도 좋고 음식도 맛있었어요 다만, 강남 토끼정이 강남 쉑쉑버거 골목길로 쭉 올라가야 하는데 다들 쉑쉑버거의 유혹에 넘어갈 뻔 했답니다 ";
+        Splitter basicSplitter =  SplitterFactory.getSplitter(); // 구분기 인스턴스 반환
 
+        Sentence[] sentenceArray = basicSplitter.split(text);
+
+        for (int i = 0; i < sentenceArray.length; i++) {
+            System.out.println("sentence " + i + " : " + sentenceArray[i].getText());
+        }
+    }
+
+    @Test
+    public void testSplitWithRegx() {
+        int key = 14;
+
+
+        SplitterFactory.createSplitter("test_regx", key);
+        Splitter splitter = SplitterFactory.getSplitter(key);
+
+        String data = "지금부터 우리학교 규칙을 설명하겠습니다. 앞에 게시판을 보면 1. 교실에서는 조용히 하기 2. 복도에서 뛰어다니지 않기 3. 지각하면 벌금내기 입니다.";
+        String[] answers = {"지금부터 우리학교 규칙을 설명하겠습니다. 앞에 게시판을 보면",
+                "1. 교실에서는 조용히 하기",
+                "2. 복도에서 뛰어다니지 않기",
+                "3. 지각하면 벌금내기 입니다."};
+        assertEquals(answers.length, splitter.split(data).length);
+        int answerIndex = 0;
+        for (Sentence sentence : splitter.split(data)) {
+            assertEquals(answers[answerIndex++], sentence.getText());
+        }
+    }
 
 
 }
