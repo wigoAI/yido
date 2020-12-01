@@ -11,10 +11,11 @@ JSON
   - `B`, `F`
 - value : 구분시 사용하는 값
   - string_group 내부에 존재하는 `.dic` 파일
-- validations : 사용하는 유효성 CODE  
-### Validation Code 발급 규칙
+- validations : 사용하는 유효성 ID  
+
+### Validation ID 발급 규칙
 `ABCD_ID`  
-코드의 앞 네글자는 해당 유효성에 적용되는 속성값을 뜻한다.    
+ID의 앞 네글자는 해당 유효성에 적용되는 속성값을 뜻한다.    
   
 - A : `Y` or `N`
     - 매치 여부  
