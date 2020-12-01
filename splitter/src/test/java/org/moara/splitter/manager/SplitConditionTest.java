@@ -1,7 +1,9 @@
-package org.moara.splitter.role;
+package org.moara.splitter.manager;
 
 import org.junit.*;
 import org.moara.splitter.TestFileInitializer;
+import org.moara.splitter.utils.SplitCondition;
+import org.moara.splitter.utils.Validation;
 import org.moara.splitter.utils.file.FileManager;
 
 import java.util.*;
@@ -29,7 +31,6 @@ public class SplitConditionTest {
 
 
         // number
-        List<Validation> validations2 = new ArrayList<>();
         SplitCondition splitCondition2 = new SplitCondition.Builder("1.", 'Y', 'F').build();
         Assert.assertEquals("1.", splitCondition2.getValue());
         Assert.assertEquals('Y', splitCondition2.getUsePublicValidation());
@@ -47,9 +48,6 @@ public class SplitConditionTest {
 
     }
 
-    /**
-     * TODO 1. 패턴 조건에 맞는 값 만들고 처리하기
-     */
     @Test
     public void testCheckPatternSplitCondition() {
         SplitCondition splitCondition1 = new SplitCondition
@@ -107,24 +105,6 @@ public class SplitConditionTest {
         List<SplitCondition> splitConditionList1 = SplitConditionManager.getSplitConditions(splitConditions);
 
         Assert.assertEquals(splitConditionList1.get(0).getValidations().get(0).getValue(), "하지만");
-
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void testDifferentUsePublicValidationOptions() {
-        String[] splitConditions = {"test", "test_public_validation"};
-
-        SplitConditionManager.getSplitConditions(splitConditions);
-
-
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void testDifferentSplitPositionTest() {
-        String[] splitConditions = {"test", "test_front_split_position"};
-
-        SplitConditionManager.getSplitConditions(splitConditions);
-
 
     }
 

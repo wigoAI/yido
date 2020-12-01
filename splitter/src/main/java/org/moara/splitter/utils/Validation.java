@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.splitter.role;
+package org.moara.splitter.utils;
 
 import org.moara.splitter.utils.RoleProperty;
 

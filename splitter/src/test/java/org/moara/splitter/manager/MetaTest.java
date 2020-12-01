@@ -1,4 +1,4 @@
-package org.moara.splitter.role;
+package org.moara.splitter.manager;
 
 import org.junit.Assert;
 import org.junit.Test;

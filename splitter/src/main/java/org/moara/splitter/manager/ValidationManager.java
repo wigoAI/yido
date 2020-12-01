@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.splitter.role;
+package org.moara.splitter.manager;
 
 import org.moara.splitter.utils.RoleProperty;
+import org.moara.splitter.utils.Validation;
 import org.moara.splitter.utils.file.FileManager;
 import java.util.ArrayList;
 import java.util.List;

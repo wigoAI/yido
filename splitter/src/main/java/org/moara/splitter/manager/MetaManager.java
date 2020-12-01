@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.splitter.role;
+package org.moara.splitter.manager;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
