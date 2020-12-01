@@ -59,7 +59,6 @@ public class FileManager {
                 file.add(line);
             }
 
-
         }catch (IOException e) {
             e.printStackTrace();
 

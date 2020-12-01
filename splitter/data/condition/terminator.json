@@ -2,7 +2,7 @@
   "id": "terminator",
   "use_public_validation": "N",
   "split_position": "B",
-  "value": "terminator_1",
-  "validations": ["NBSG_connective_1", "NBSG_connective_2"]
+  "value": "terminator",
+  "validations": ["NBSG_connective"]
 }
 

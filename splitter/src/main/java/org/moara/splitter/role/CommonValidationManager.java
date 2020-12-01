@@ -23,9 +23,9 @@ import java.util.List;
  *
  * @author wjrmffldrhrl
  */
-public class PublicValidationManager extends ValidationManager {
+public class CommonValidationManager extends ValidationManager {
 
-    private static final String[] roles = {"PV_N_B", "PV_N_F", "PV_Y_B", "PV_Y_F"};
+    private static final String[] roles = {"NBSG_public"};
     private static final List<Validation> publicValidations = initAllPublicValidations();
 
     /**

@@ -22,39 +22,20 @@ package org.moara.splitter.utils;
  * @author wjrmffldrhrl
  */
 public class RoleProperty {
-    private final String type;
-    private final char flag;
-    private final char position;
+    protected final char flag;
+    protected final char position;
 
-    /**
-     * 룰 이름으로부터 속성 값 유틸 생성
-     * @param roleName 룰 이름
-     */
-    public RoleProperty(String roleName) {
-        String[] roleInfoArray = roleName.split("_");
 
-        this.type = roleInfoArray[0];
-        this.flag = roleInfoArray[1].charAt(0);
-        this.position = roleInfoArray[2].charAt(0);
-
+    public RoleProperty(char flag, char position) {
+        this.flag = flag;
+        this.position = position;
         if (!isValid()) {
-            throw new RuntimeException("Invalid role name : " + roleName);
+            throw new RuntimeException("Invalid property");
         }
     }
 
-    public boolean isValid() {
-        return  (flag == 'N' || flag == 'Y') && (position == 'B' || position == 'F');
-    }
 
-    public String getType() {
-        return type;
-    }
-
-    public char getFlag() {
-        return flag;
-    }
-
-    public char getPosition() {
-        return position;
-    }
+    public boolean isValid() { return  (flag == 'N' || flag == 'Y') && (position == 'B' || position == 'F'); }
+    public char getFlag() { return flag; }
+    public char getPosition() { return position; }
 }

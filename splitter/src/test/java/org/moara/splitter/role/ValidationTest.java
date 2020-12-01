@@ -1,13 +1,30 @@
 package org.moara.splitter.role;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+import org.moara.splitter.TestFileInitializer;
 import org.moara.splitter.utils.file.FileManager;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class ValidationTest {
+
+
+
+    @Before
+    public void initializeTest() {
+        TestFileInitializer.initialize();
+    }
+
+    @After
+    public void tearDownTest() {
+        TestFileInitializer.tearDown();
+    }
+
 
     @Test
     public void testCreateValidationObject() {
@@ -21,11 +38,11 @@ public class ValidationTest {
     @Test
     public void testValidationManager() {
 
-        List<Validation> validations = ValidationManager.getValidations("V_N_B_001");
+        List<Validation> validations = ValidationManager.getValidations("NBSG_test_connective");
 
         Assert.assertNotEquals(0, validations.size());
 
-        Collection<String> dataList = FileManager.readFile("/string_group/validation/V_N_B_001.role");
+        Collection<String> dataList = FileManager.readFile("/string_group/test_connective.dic");
 
         int validationIndex = 0;
         for (String data : dataList) {
@@ -40,37 +57,28 @@ public class ValidationTest {
 
     @Test
     public void testInvalidRoleName() {
-        boolean roleTypeException = false;
         boolean matchFlagException = false;
         boolean comparePositionException = false;
+        boolean dataTypeException = false;
 
         try {
-
-            ValidationManager.getValidations("T_Y_B_001");
-        } catch (RuntimeException e) {
-            roleTypeException = true;
-        }
-        try {
-
-            ValidationManager.getValidations("V_K_B_001");
+            ValidationManager.getValidations("KBSG_test_connective");
         } catch (RuntimeException e) {
             matchFlagException = true;
         }
         try {
 
-            ValidationManager.getValidations("V_Y_C_001");
+            ValidationManager.getValidations("NXSG_test_connective");
         } catch (RuntimeException e) {
             comparePositionException = true;
         }
-
-        Assert.assertTrue(roleTypeException);
+        try {
+            ValidationManager.getValidations("NBSK_test_connective");
+        } catch (RuntimeException e) {
+            dataTypeException = true;
+        }
         Assert.assertTrue(matchFlagException);
         Assert.assertTrue(comparePositionException);
+        Assert.assertTrue(dataTypeException);
     }
-
-    @Test
-    public void testGetPublicValidations() {
-        PublicValidationManager.getAllPublicValidations();
-    }
-
 }

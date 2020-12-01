@@ -1,7 +1,0 @@
-{
-  "id": "number_index",
-  "use_public_validation": "N",
-  "split_position": "F",
-  "value": "number_index",
-  "validations": ["NBSG_connective_1", "YFSG_number_index_1"]
-}

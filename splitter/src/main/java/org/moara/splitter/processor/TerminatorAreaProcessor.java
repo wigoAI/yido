@@ -171,4 +171,8 @@ public class TerminatorAreaProcessor {
         }
         splitPoints.removeAll(removeItems);
     }
+
+    public List<SplitCondition> getSplitConditions() {
+        return splitConditions;
+    }
 }

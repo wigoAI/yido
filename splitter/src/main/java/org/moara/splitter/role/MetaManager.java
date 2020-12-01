@@ -26,13 +26,13 @@ import java.util.regex.Pattern;
  * @author wjrmffldrhrl
  */
 public class MetaManager {
-    protected static final String rolePath = "/string_group/meta/";
-    private static final String differentSideBracketRoleName = "M_different_side_bracket.json";
-    private static final String sameSideBracketRoleName = "M_same_side_bracket.json";
+    protected static final String rolePath = "/exception/";
+    private static final String differentSideBracketRoleName = "bracket_exception.json";
+    private static final String sameSideBracketRoleName = "same_bracket_exception.json";
 
     public static Pattern getDifferentSideBracketPattern() {
         JsonObject metaJson = FileManager.getJsonObjectByFile(rolePath + differentSideBracketRoleName);
-        JsonArray dataArray = metaJson.get("data").getAsJsonArray();
+        JsonArray dataArray = metaJson.get("value").getAsJsonArray();
 
         StringBuilder left = new StringBuilder("[]+");
         StringBuilder centerLeft = new StringBuilder("[^]*");
@@ -59,7 +59,7 @@ public class MetaManager {
 
     public static Pattern getSameSideBracketPattern() {
         JsonObject metaJson = FileManager.getJsonObjectByFile(rolePath + sameSideBracketRoleName);
-        JsonArray dataArray = metaJson.get("data").getAsJsonArray();
+        JsonArray dataArray = metaJson.get("value").getAsJsonArray();
 
         StringBuilder left = new StringBuilder("[]+");
         StringBuilder center = new StringBuilder("[^]+");

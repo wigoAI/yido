@@ -1,6 +1,8 @@
 package org.moara.splitter;
 
 import org.apache.poi.ss.formula.functions.T;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -28,6 +30,15 @@ public class SplitterTest {
     
 //    String newsData = "우귀화 기자 wookiza@idomin.com  노동계는 고 염호석 씨 사건 등 삼성 노조 와해 사건의 '몸통'을 수사할 것을 촉구했다. 민주노총 경남지역본부는 '구속 수사하라! 빠르게 재판하라! 몸통을 수사하라!'는 논평을 냈다.  검찰은 염호석 금속노조 삼성전자서비스지회 양산분회장 시신 탈취 사건과 관련해 경찰관 2명을 불구속 기소했다. 이에 대해 민주노총 경남본부는 \"우리는 1년 이상의 하한형을 둔 부정처사후수뢰죄가 있음에도 이언학 서울중앙지법 영장전담 부장판사가 (경찰관 2명에 대해) '피의자가 검찰 수사에 적극적으로 응하고 있으며 범행 당시 피의자의 지위와 역할 등을 고려했을 때 구속 필요성을 인정하기 어렵다'고 기각한 것은 어처구니없다\"고 비판했다.  이어 \"직권남용 등의 과정에서 윗선이 있었는지를 가려내고 경찰관의 불법 개입에 대한 모든 진실을 밝히기 위해서라도 검찰은 구속영장을 재청구하고 서울중앙지법은 구속할 것을 촉구한다\"고 밝혔다.  또, \"검찰이 전사적 역량이 동원된 삼성의 조직적인 범죄에 대해 지난 9월 이상훈(63) 삼성전자 이사회 의장 등 32명을 한꺼번에 재판에 넘겼다. 하지만 검찰이 반헌법적인 노조 와해 공작의 '윗선'을 이상훈 의장이라고 결론 낸 것에 대해서는 알아듣기 어렵다. 우리는 검찰이 다시 몸통을 수사하고, 법원은 빠르게 재판할 것을 촉구한다\"며 삼성 이재용 부회장과 미래전략실 임원을 수사해야 한다고 주장했다. ";
     String newsData = "거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다. 그의 고향은 천안이지만 가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다. 15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다.";
+    @Before
+    public void initializeTest() {
+        TestFileInitializer.initialize();
+    }
+
+    @After
+    public void tearDownTest() {
+        TestFileInitializer.tearDown();
+    }
 
 
     @Test
@@ -59,158 +70,81 @@ public class SplitterTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testSplitEmptyString() {
-        for (Sentence sentence : SplitterFactory.getSplitter().split("")) {
-            System.out.println(sentence.getText());
-        }
+        SplitterFactory.getSplitter().split("");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testSplitNullData() {
-        for (Sentence sentence : SplitterFactory.getSplitter().split(null)) {
-            System.out.println(sentence.getText());
-        }
+        SplitterFactory.getSplitter().split(null);
+
     }
 
 
 
     @Test
     public void testOtherSplitter() {
-        String[] validationList = {"V_N_B_TEST"};
-        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(new String[] {"SP_N_B_TEST"}, validationList);
+
         int key = 10;
-        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, new Config());
-        ExceptionAreaProcessor exceptionAreaProcessor = new BracketAreaProcessor();
-        SplitterFactory.createSplitter(terminatorAreaProcessor, exceptionAreaProcessor, key);
+
+        SplitterFactory.createSplitter("test", key);
         Splitter splitter = SplitterFactory.getSplitter(key);
         String[] answer = {"거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다.",
                 "그의 고향은 천안이지만 가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다.",
                 "15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다."};
 
+        assertEquals(splitter.split(newsData).length, answer.length);
+
         int index = 0;
         for(Sentence sentence : splitter.split(newsData)) {
 
             assertEquals(answer[index++], sentence.getText());
         }
+
+
     }
 
     @Test
-    public void testSplitWithAddSplitConditionInMemory() {
-        String[] validationList = {"V_N_B_TEST"};
-        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(new String[] {"SP_N_B_TEST"}, validationList);
+    public void testConditionEditInMemory() {
+
         int key = 11;
-        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, new Config());
-        ExceptionAreaProcessor exceptionAreaProcessor = new BracketAreaProcessor();
-        SplitterFactory.createSplitter(terminatorAreaProcessor, exceptionAreaProcessor, key);
+
+        SplitterFactory.createSplitter("test", key);
         Splitter splitter = SplitterFactory.getSplitter(key);
 
-        SplitCondition splitCondition = new SplitCondition("이지만", 'N', 'B');
 
-        splitConditions.add(splitCondition);
+        List<SplitCondition> additionalSplitCondition = new ArrayList<>();
+        additionalSplitCondition.add(new SplitCondition.Builder("이지만", 'N', 'B').build());
+
+        SplitterFactory.addSplitCondition(additionalSplitCondition, key);
+
 
         String[] answer = {"거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다.",
                 "그의 고향은 천안이지만",
                 "가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다.",
                 "15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다."};
-
+        assertEquals(splitter.split(newsData).length, answer.length);
         int index = 0;
         for(Sentence sentence : splitter.split(newsData)) {
 
             assertEquals(answer[index++], sentence.getText());
         }
-    }
 
-    @Test
-    public void testSplitWithRemoveSplitConditionInMemory() {
-        String[] validationList = {"V_N_B_TEST"};
-        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(new String[] {"SP_N_B_TEST"}, validationList);
-        int key = 12;
+        String[] answer2 = {"거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다.",
+                "그의 고향은 천안이지만 가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다.",
+                "15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다."};
 
-        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, new Config());
-        ExceptionAreaProcessor exceptionAreaProcessor = new BracketAreaProcessor();
-        SplitterFactory.createSplitter(terminatorAreaProcessor, exceptionAreaProcessor, key);
-        Splitter splitter = SplitterFactory.getSplitter(key);
+        SplitterFactory.deleteSplitCondition(additionalSplitCondition, key);
 
-        splitConditions.removeIf(item -> item.getValue().equals("다."));
-
-        String[] answer = {"거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다.",
-                "그의 고향은 천안이지만 가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다. 15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다."};
-
-        int index = 0;
+        assertEquals(splitter.split(newsData).length, answer2.length);
+        index = 0;
         for(Sentence sentence : splitter.split(newsData)) {
 
-            assertEquals(answer[index++], sentence.getText());
+            assertEquals(answer2[index++], sentence.getText());
         }
     }
 
-    @Test
-    public void testSplitWithRegxFrontSplitPosition() {
-        int key = 13;
 
 
-        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(SplitConditionManager.getSplitConditions(new String[] {"RSP_N_F_001"}), new Config());
-        SplitterFactory.createSplitter(terminatorAreaProcessor, new BracketAreaProcessor(), key);
-        Splitter splitter = SplitterFactory.getSplitter(key);
 
-        String data = "지금부터 우리학교 규칙을 설명하겠습니다. 앞에 게시판을 보면 1. 교실에서는 조용히 하기 2. 복도에서 뛰어다니지 않기 3. 지각하면 벌금내기 입니다.";
-        String[] answers = {"지금부터 우리학교 규칙을 설명하겠습니다. 앞에 게시판을 보면",
-                "1. 교실에서는 조용히 하기",
-                "2. 복도에서 뛰어다니지 않기",
-                "3. 지각하면 벌금내기 입니다."};
-
-        assertEquals(answers.length, splitter.split(data).length);
-
-        int answerIndex = 0;
-        for (Sentence sentence : splitter.split(data)) {
-            assertEquals(answers[answerIndex++], sentence.getText());
-
-        }
-    }
-
-    @Test
-    public void testSplitWithRegx() {
-        int key = 14;
-
-
-        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(SplitConditionManager.getSplitConditions(new String[] {"RSP_N_B_002"}), new Config());
-        SplitterFactory.createSplitter(terminatorAreaProcessor, new BracketAreaProcessor(), key);
-        Splitter splitter = SplitterFactory.getSplitter(key);
-
-        String data = "지금부터 우리학교 규칙을 설명하겠습니다. 앞에 게시판을 보면 1. 교실에서는 조용히 하기 2. 복도에서 뛰어다니지 않기 3. 지각하면 벌금내기 입니다.";
-        String[] answers = {"지금부터 우리학교 규칙을 설명하겠습니다.",
-                "앞에 게시판을 보면 1. 교실에서는 조용히 하기 2. 복도에서 뛰어다니지 않기 3. 지각하면 벌금내기 입니다."};
-
-        assertEquals(answers.length, splitter.split(data).length);
-
-        int answerIndex = 0;
-        for (Sentence sentence : splitter.split(data)) {
-            assertEquals(answers[answerIndex++], sentence.getText());
-
-
-        }
-    }
-
-    @Test
-    public void testSplitWithFrontSplitPosition() {
-        int key = 15;
-
-
-        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(SplitConditionManager.getSplitConditions(new String[] {"SP_N_F_NUM"}), new Config());
-        SplitterFactory.createSplitter(terminatorAreaProcessor, new BracketAreaProcessor(), key);
-        Splitter splitter = SplitterFactory.getSplitter(key);
-
-        String data = "지금부터 우리학교 규칙을 설명하겠습니다. 앞에 게시판을 보면 1. 교실에서는 조용히 하기 2. 복도에서 뛰어다니지 않기 3. 지각하면 벌금내기 입니다.";
-        String[] answers = {"지금부터 우리학교 규칙을 설명하겠습니다. 앞에 게시판을 보면",
-                "1. 교실에서는 조용히 하기",
-                "2. 복도에서 뛰어다니지 않기",
-                "3. 지각하면 벌금내기 입니다."};
-
-        assertEquals(answers.length, splitter.split(data).length);
-
-        int answerIndex = 0;
-        for (Sentence sentence : splitter.split(data)) {
-            assertEquals(answers[answerIndex++], sentence.getText());
-
-        }
-    }
 
 }

@@ -18,7 +18,6 @@ package org.moara.splitter.role;
 import org.moara.splitter.utils.RoleProperty;
 import org.moara.splitter.utils.file.FileManager;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -26,37 +25,31 @@ import java.util.List;
  *
  */
 public class ValidationManager {
-    protected static String rolePath = "/string_group/validation/";
+    protected static String stringGroupPath = "/string_group/";
 
     /**
      * 유효성 반환
      *
-     * @param roleName 유효성 생성에 사용되는 룰 이름
+     * @param dicName 유효성 생성에 사용되는 사전 데이터 이름
      * @return 유효성 리스트
      */
-    public static List<Validation> getValidations(String roleName)  {
-        RoleProperty roleProperty = new RoleProperty(roleName);
-
-        checkRoleName(roleName);
+    public static List<Validation> getValidations(String dicName)  {
+        RoleProperty roleProperty = new RoleProperty(dicName.charAt(0), dicName.charAt(1));
 
         List<Validation> validations = new ArrayList<>();
-        for (String roleData : FileManager.readFile(rolePath + roleName + ".role")) {
-            if (roleData.contains("\\s")) {
-                roleData = roleData.replace("\\s", " ");
+        if (dicName.startsWith("SG_", 2)) {
+            for (String roleData : FileManager.readFile(stringGroupPath + dicName.substring(5) + ".dic")) {
+                if (roleData.contains("\\s")) {
+                    roleData = roleData.replace("\\s", " ");
+                }
+                validations.add(new Validation(roleData, roleProperty));
             }
-            validations.add(new Validation(roleData, roleProperty));
+
+        } else {
+            throw new RuntimeException("Invalid role data type : " + dicName);
         }
         return validations;
 
     }
 
-    public static void checkRoleName(String roleName) {
-        if (!isValid(roleName)) {
-            throw new RuntimeException("Invalid role name : " + roleName);
-        }
-    }
-
-    private static boolean isValid(String roleName) {
-        return roleName.startsWith("PV_") || roleName.startsWith("V_");
-    }
 }

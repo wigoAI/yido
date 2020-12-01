@@ -1,9 +1,12 @@
 package org.moara.splitter.splitterFactory;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.moara.splitter.Splitter;
 import org.moara.splitter.SplitterFactory;
+import org.moara.splitter.TestFileInitializer;
 import org.moara.splitter.processor.BracketAreaProcessor;
 import org.moara.splitter.processor.ExceptionAreaProcessor;
 import org.moara.splitter.processor.TerminatorAreaProcessor;
@@ -19,6 +22,16 @@ import java.util.List;
 
 public class SplitterFactoryTest {
     String text = "안녕하세요 반갑습니다. 조승현입니다.";
+
+    @Before
+    public void initializeTest() {
+        TestFileInitializer.initialize();
+    }
+
+    @After
+    public void tearDownTest() {
+        TestFileInitializer.tearDown();
+    }
 
     @Test
     public void testGetBasicSplitter() {
@@ -37,30 +50,13 @@ public class SplitterFactoryTest {
         SplitterFactory.getSplitter(525);
     }
 
-    @Test
-    public void testCreateSplitterWithAreaProcessor() {
-        int key = 7;
-        String[] validationList = {"V_N_B_001"};
-        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(new String[] {"SP_N_B_001"}, validationList);
-        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, new Config());
-        ExceptionAreaProcessor exceptionAreaProcessor = new BracketAreaProcessor();
-        SplitterFactory.createSplitter(terminatorAreaProcessor, exceptionAreaProcessor, key);
-        Splitter splitter = SplitterFactory.getSplitter(key);
-
-        String[] answer = {"안녕하세요 반갑습니다.", "조승현입니다."};
-        int index = 0;
-        for (Sentence sentence : splitter.split(text)) {
-            Assert.assertEquals(answer[index++], sentence.getText());
-        }
-    }
 
     @Test
     public void testCreateSplitterWithSplitConditions() {
         int key = 8;
 
-        String[] validationList = {"V_N_B_001"};
-        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(new String[] {"SP_N_B_001"}, validationList);
-        SplitterFactory.createSplitter(splitConditions, key);
+        SplitterFactory.createSplitter("test", key);
+
         Splitter splitter = SplitterFactory.getSplitter(key);
 
         String[] answer = {"안녕하세요 반갑습니다.", "조승현입니다."};

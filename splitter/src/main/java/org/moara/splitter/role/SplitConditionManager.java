@@ -15,9 +15,12 @@
  */
 package org.moara.splitter.role;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.moara.splitter.utils.RoleProperty;
 import org.moara.splitter.utils.file.FileManager;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -27,71 +30,66 @@ import java.util.List;
  * @author wjrmffldrhrl
  */
 public class SplitConditionManager {
-    protected static final String rolePath = "/string_group/split_condition/";
+    protected static final String conditionPath = "condition/";
+    public static List<SplitCondition> getSplitConditions(List<String> splitConditionRoleNames) {
+        ArrayList<String> arrayList = (ArrayList<String>) splitConditionRoleNames;
+
+        return getSplitConditions( arrayList.toArray(new String[arrayList.size()]));
+    }
 
     public static List<SplitCondition> getSplitConditions(String[] splitConditionRoleNames) {
-        return getSplitConditions(splitConditionRoleNames, new String[] {});
-    }
-
-
-    /**
-     * 구분 조건 반환
-     *
-     * @param splitConditionRoleNames 구분 조건에 사용되는 룰 데이터 이름
-     * @param validationRoleNames 유효성에 사용되는 룰 이름
-     * @return 구분 조건 리스트
-     */
-    public static List<SplitCondition> getSplitConditions(String[] splitConditionRoleNames, String[] validationRoleNames) {
-
-        RoleProperty roleProperty = new RoleProperty(splitConditionRoleNames[0]);
-
-        for (String splitConditionRoleName : splitConditionRoleNames) {
-
-            RoleProperty tmpRoleProperty = new RoleProperty(splitConditionRoleName);
-
-            checkRoleName(splitConditionRoleName);
-
-            if (roleProperty.getFlag() != tmpRoleProperty.getFlag() ||
-                    roleProperty.getPosition() != tmpRoleProperty.getPosition()) {
-                throw new RuntimeException("Split Condition Roles must have same property");
-            }
-
-        }
-
-        List<Validation> validations = new ArrayList<>();
-        for (String validationRoleName : validationRoleNames) {
-            validations.addAll(ValidationManager.getValidations(validationRoleName));
-        }
-        if (roleProperty.getFlag() == 'Y') { validations.addAll(PublicValidationManager.getAllPublicValidations()); }
-
-
-        Collection<String> roleDataList = new ArrayList<>();
-        for (String splitConditionRoleName : splitConditionRoleNames) {
-            roleDataList.addAll(FileManager.readFile(rolePath + splitConditionRoleName + ".role"));
-        }
-
         List<SplitCondition> splitConditions = new ArrayList<>();
-        for (String roleData : roleDataList) {
-            SplitCondition splitCondition;
-            if (roleProperty.getType().startsWith("R")) {
-                splitCondition = new SplitCondition(roleData, validations, roleProperty, true);
-            } else {
-                splitCondition = new SplitCondition(roleData, validations, roleProperty);
-            }
-            splitConditions.add(splitCondition);
-        }
 
+        checkRoleProperty(splitConditionRoleNames);
+
+        for (String splitConditionRoleName : splitConditionRoleNames) {
+            JsonObject conditionRoleJson = FileManager.getJsonObjectByFile(conditionPath + splitConditionRoleName + ".json");
+            RoleProperty roleProperty = getRoleProperty(conditionRoleJson);
+            String conditionValueName = conditionRoleJson.get("value").getAsString();
+            Collection<String> conditionValues = FileManager.readFile("string_group/" + conditionValueName + ".dic");
+
+            List<String> validationRoleNames = new ArrayList<>();
+            JsonArray validationJsonArray = conditionRoleJson.getAsJsonArray("validations");
+            for (int i = 0; i < validationJsonArray.size(); i++) {
+                validationRoleNames.add(validationJsonArray.get(i).getAsString());
+            }
+
+            List<Validation> validations = new ArrayList<>();
+            for (String validationRoleName : validationRoleNames) {
+                validations.addAll(ValidationManager.getValidations(validationRoleName));
+            }
+            if (roleProperty.getFlag() == 'Y') { validations.addAll(CommonValidationManager.getAllPublicValidations()); }
+
+            for (String conditionValue : conditionValues) {
+                SplitCondition splitCondition = new SplitCondition.Builder(conditionValue, roleProperty)
+                        .validations(validations).build();
+                splitConditions.add(splitCondition);
+            }
+        }
 
         return splitConditions;
+
     }
 
-    public static void checkRoleName(String splitConditionRoleName) {
-        if (!isValid(splitConditionRoleName)) {
-            throw new RuntimeException("Invalid role name : " + splitConditionRoleName);
+    private static void checkRoleProperty(String[] splitConditionRoleNames) {
+        RoleProperty roleProperty = null;
+        for (String splitConditionRoleName : splitConditionRoleNames) {
+            JsonObject conditionRoleJson = FileManager.getJsonObjectByFile("condition/" + splitConditionRoleName + ".json");
+            if (roleProperty != null) {
+                if ((roleProperty.getFlag() != getRoleProperty(conditionRoleJson).getFlag()) ||
+                        (roleProperty.getPosition() != getRoleProperty(conditionRoleJson).getPosition())) {
+                    throw new RuntimeException("Condition roles must have same property");
+                }
+            }
+            roleProperty = getRoleProperty(conditionRoleJson);
         }
     }
 
-    private static boolean isValid(String roleName) {
-        return roleName.startsWith("SP_") || roleName.startsWith("RSP_");
+    private static RoleProperty getRoleProperty(JsonObject conditionRoleJson) {
+        char usePublicValidation = conditionRoleJson.get("use_public_validation").getAsString().charAt(0);
+        char splitPosition = conditionRoleJson.get("split_position").getAsString().charAt(0);
+        return new RoleProperty(usePublicValidation, splitPosition);
     }
+
+
 }

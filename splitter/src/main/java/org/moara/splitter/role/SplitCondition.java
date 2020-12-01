@@ -26,108 +26,58 @@ import java.util.List;
  *
  * @author wjrmffldrhrl
  */
-public class  SplitCondition {
+public class  SplitCondition extends RoleProperty{
 
     private final String value;
     private final List<Validation> validations;
-    private final char usePublicValidation;
-    private final char splitPosition;
     private final boolean isPattern;
 
-    /**
-     * 패턴 여부를 전달받는 생성자
-     * @param value 구분 조건 값
-     * @param validations 구분 조건에 해당하는 유효성
-     * @param usePublicValidation 공통 유효성 사용 여부 'Y' or 'N'
-     * @param splitPosition 구분 위치 'B' or 'F'
-     * @param isPattern 패턴 여부
-     */
-    public SplitCondition(String value, List<Validation> validations, char usePublicValidation, char splitPosition, boolean isPattern) {
-        this.value = value;
-        this.validations = validations;
-        this.usePublicValidation = usePublicValidation;
-        this.splitPosition = splitPosition;
-        this.isPattern = isPattern;
+    public static class Builder {
+        private final String value;
+        private final char usePublicValidation;
+        private final char splitPosition;
+
+        private List<Validation> validations = new ArrayList<>();
+        private boolean isPattern = false;
+
+        public Builder(String value, char usePublicValidation, char splitPosition) {
+            this.value = value;
+            this.usePublicValidation = usePublicValidation;
+            this.splitPosition = splitPosition;
+        }
+
+        public Builder(String value, RoleProperty roleProperty) {
+            this(value, roleProperty.getFlag(), roleProperty.getPosition());
+        }
+
+        public Builder validations(List<Validation> val) {
+            validations = val;
+            return this;
+        }
+
+        public Builder isPattern(boolean val) {
+            isPattern = val;
+            return this;
+        }
+
+        public SplitCondition build() {
+            return new SplitCondition(this);
+        }
     }
 
-    /**
-     * 패턴 여부가 false로 고정된 맴버 변수를 받는 생성자
-     * @param value 구분 조건 값
-     * @param validations 구분 조건에 해당하는 유효성
-     * @param usePublicValidation 공통 유효성 사용 여부 'Y' or 'N'
-     * @param splitPosition 구분 위치 'B' or 'F'
-     */
-    public SplitCondition(String value, List<Validation> validations, char usePublicValidation, char splitPosition) {
-        this(value, validations, usePublicValidation, splitPosition, false);
-
+    private SplitCondition(Builder builder) {
+        super(builder.usePublicValidation, builder.splitPosition);
+        this.value = builder.value;
+        this.validations = builder.validations;
+        this.isPattern = builder.isPattern;
     }
 
-    /**
-     * 유효성을 제외한 생성자
-     * @param value 구분 조건 값
-     * @param usePublicValidation 공통 유효성 사용 여부 'Y' or 'N'
-     * @param splitPosition 구분 위치 'B' or 'F'
-     */
-    public SplitCondition(String value, char usePublicValidation, char splitPosition) {
-        this(value, new ArrayList<>(), usePublicValidation, splitPosition);
-    }
-
-    /**
-     * 패턴 여부를 받으면서 유효성 조건이 없는 생성자
-     * @param value 구분 조건 값
-     * @param usePublicValidation 공통 유효성 사용 여부 'Y' or 'N'
-     * @param splitPosition 구분 위치 'B' or 'F'
-     * @param isPattern 패턴 여부
-     */
-    public SplitCondition(String value, char usePublicValidation, char splitPosition, boolean isPattern) {
-        this(value, new ArrayList<>(), usePublicValidation, splitPosition, isPattern);
-    }
-
-    /**
-     * 패턴 여부를 전달받는 생성자
-     * @param value 구분 조건 값
-     * @param validations 구분 조건에 해당하는 유효성
-     * @param roleProperty 룰 속성값
-     * @param isPattern 패턴 여부
-     */
-    public SplitCondition(String value, List<Validation> validations, RoleProperty roleProperty, boolean isPattern) {
-        this(value, validations, roleProperty.getFlag(), roleProperty.getPosition(), isPattern);
-    }
-
-    /**
-     * 패턴 여부가 false로 고정된 맴버 변수를 받는 생성자
-     * @param value 구분 조건 값
-     * @param validations 구분 조건에 해당하는 유효성
-     * @param roleProperty 룰 속성값
-     */
-    public SplitCondition(String value, List<Validation> validations, RoleProperty roleProperty) {
-        this(value, validations, roleProperty, false);
-
-    }
-
-    /**
-     * 유효성을 제외한 생성자
-     * @param value 구분 조건 값
-     * @param roleProperty 룰 속성값
-     */
-    public SplitCondition(String value, RoleProperty roleProperty) {
-        this(value, new ArrayList<>(), roleProperty);
-    }
-
-    /**
-     * 패턴 여부를 받으면서 유효성 조건이 없는 생성자
-     * @param value 구분 조건 값
-     * @param roleProperty 룰 속성값
-     * @param isPattern 패턴 여부
-     */
-    public SplitCondition(String value, RoleProperty roleProperty, boolean isPattern) {
-        this(value, new ArrayList<>(), roleProperty, isPattern);
-    }
 
     public String getValue() { return value; }
     public List<Validation> getValidations() { return validations; }
-    public char getUsePublicValidation() { return usePublicValidation; }
-    public char getSplitPosition() { return splitPosition; }
+    public char getUsePublicValidation() { return flag; }
+    public char getSplitPosition() { return position; }
     public boolean isPattern() { return isPattern; }
+
 
 }
