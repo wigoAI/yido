@@ -139,7 +139,7 @@
     <dependency>
       <groupId>com.seomse.commons</groupId>
       <artifactId>seomse-commons</artifactId>
-      <version>1.2.1</version>
+      <version>1.2.3</version>
     </dependency>
 
     <dependency>
@@ -151,7 +151,8 @@
     <dependency>
       <groupId>com.seomse.api</groupId>
       <artifactId>seomse-api</artifactId>
-      <version>1.0.5</version>
+      <version>1.0.6</version>
+      <scope>test</scope>
     </dependency>
 
   </dependencies>
