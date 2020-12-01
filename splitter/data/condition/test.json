@@ -1,0 +1,7 @@
+{
+  "id": "test",
+  "use_public_validation": "N",
+  "split_position": "B",
+  "value": "test_terminator",
+  "validations": ["NBSG_test_connective"]
+}

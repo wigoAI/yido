@@ -1,5 +1,7 @@
 package org.moara.splitter.splitterFactory;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -7,17 +9,7 @@ import org.junit.Test;
 import org.moara.splitter.Splitter;
 import org.moara.splitter.SplitterFactory;
 import org.moara.splitter.TestFileInitializer;
-import org.moara.splitter.processor.BracketAreaProcessor;
-import org.moara.splitter.processor.ExceptionAreaProcessor;
-import org.moara.splitter.processor.TerminatorAreaProcessor;
-import org.moara.splitter.role.SplitCondition;
-import org.moara.splitter.role.SplitConditionManager;
-import org.moara.splitter.utils.Config;
 import org.moara.splitter.utils.Sentence;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 
 public class SplitterFactoryTest {
@@ -66,5 +58,35 @@ public class SplitterFactoryTest {
         }
     }
 
+    @Test
+    public void testCreateSplitterByJsonObject() {
+        int key = 20;
+        String id = "json";
+        String name = "json_splitter";
+        int minimumSplitLength = 5;
+        JsonArray conditions = new JsonArray();
+        conditions.add("terminator");
+
+        JsonArray exceptions = new JsonArray();
+        exceptions.add("bracket_exception");
+
+
+        JsonObject splitterJsonObject = new JsonObject();
+        splitterJsonObject.addProperty("id", id);
+        splitterJsonObject.addProperty("name", name);
+        splitterJsonObject.addProperty("minimum_split_length", minimumSplitLength);
+
+        splitterJsonObject.add("conditions", conditions);
+        splitterJsonObject.add("exceptions", exceptions);
+
+        SplitterFactory.createSplitter(splitterJsonObject, key);
+        Splitter splitter = SplitterFactory.getSplitter(key);
+
+        String[] answer = {"안녕하세요 반갑습니다.", "조승현입니다."};
+        int index = 0;
+        for (Sentence sentence : splitter.split(text)) {
+            Assert.assertEquals(answer[index++], sentence.getText());
+        }
+    }
 
 }

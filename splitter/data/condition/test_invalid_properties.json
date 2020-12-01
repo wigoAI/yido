@@ -1,0 +1,7 @@
+{
+  "id": "test_public_validation",
+  "use_public_validation": "N",
+  "split_position": "K",
+  "value": "test_terminator",
+  "validations": []
+}

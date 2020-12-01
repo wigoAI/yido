@@ -22,8 +22,8 @@ import com.google.gson.JsonObject;
 import org.moara.splitter.processor.BracketAreaProcessor;
 import org.moara.splitter.processor.ExceptionAreaProcessor;
 import org.moara.splitter.processor.TerminatorAreaProcessor;
-import org.moara.splitter.role.SplitCondition;
-import org.moara.splitter.role.SplitConditionManager;
+import org.moara.splitter.utils.SplitCondition;
+import org.moara.splitter.manager.SplitConditionManager;
 import org.moara.splitter.utils.Config;
 import org.moara.splitter.utils.file.FileManager;
 
@@ -41,9 +41,10 @@ public class SplitterFactory {
     private static final int NEWS_SPLITTER_ID = 2;
     private static final HashMap<Integer, Splitter> splitterHashMap = new HashMap<>();
     private static final HashMap<Integer, TerminatorAreaProcessor> terminatorAreaProcessorHashMap = new HashMap<>();
+
     /**
      * 문장 구분기 인스턴스 획득
-     * 설정값이 없으면 기본값을로 설정된 BasicSplitter를 반환한다.
+     * 설정값이 없으면 기본값을로 설정된 BasicSplitter 를 반환한다.
      *
      * @return BasicSplitter
      */

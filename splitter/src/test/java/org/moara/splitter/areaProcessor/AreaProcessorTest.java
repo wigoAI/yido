@@ -9,8 +9,9 @@ import org.moara.splitter.TestFileInitializer;
 import org.moara.splitter.processor.BracketAreaProcessor;
 import org.moara.splitter.processor.ExceptionAreaProcessor;
 import org.moara.splitter.processor.TerminatorAreaProcessor;
-import org.moara.splitter.role.*;
+import org.moara.splitter.manager.*;
 import org.moara.splitter.utils.Config;
+import org.moara.splitter.utils.SplitCondition;
 
 import java.util.List;
 

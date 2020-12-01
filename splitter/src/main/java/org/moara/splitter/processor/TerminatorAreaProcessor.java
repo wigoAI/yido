@@ -15,8 +15,8 @@
  */
 package org.moara.splitter.processor;
 
-import org.moara.splitter.role.SplitCondition;
-import org.moara.splitter.role.Validation;
+import org.moara.splitter.utils.SplitCondition;
+import org.moara.splitter.utils.Validation;
 import org.moara.splitter.utils.Config;
 
 import java.util.ArrayList;
@@ -97,14 +97,15 @@ public class TerminatorAreaProcessor {
         Matcher matcher = pattern.matcher(text);
 
         while (matcher.find()) {
+            int splitPoint;
             if (splitCondition.getSplitPosition() == 'B') { // 문장 구분점 뒤
-                int splitPoint = matcher.end();
+                splitPoint = matcher.end();
                 splitPoint += getAdditionalSignLength(splitPoint, text);
-                splitPointSet.add(splitPoint);
+
             } else { // 앞
-                int splitPoint = matcher.start();
-                splitPointSet.add(splitPoint);
+                splitPoint = matcher.start();
             }
+            splitPointSet.add(splitPoint);
         }
     }
 

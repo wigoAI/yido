@@ -1,17 +1,11 @@
 package org.moara.splitter;
 
-import org.apache.poi.ss.formula.functions.T;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import org.moara.splitter.processor.BracketAreaProcessor;
-import org.moara.splitter.processor.ExceptionAreaProcessor;
-import org.moara.splitter.processor.TerminatorAreaProcessor;
-import org.moara.splitter.role.SplitCondition;
-import org.moara.splitter.role.SplitConditionManager;
-import org.moara.splitter.utils.Config;
+import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.utils.Sentence;
 
 import java.util.ArrayList;
