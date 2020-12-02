@@ -146,6 +146,9 @@ public class TerminatorAreaProcessor {
             if (compareIndexStart + validation.getValue().length() > text.length()) { continue; }
 
             String compareText = text.substring(compareIndexStart, compareIndexStart + validation.getValue().length());
+            if (validation.getValue().equals(" 그의")) {
+                System.out.println(splitCondition.getValue() + "] : [" + compareText);
+            }
             boolean isEquals = compareText.equals(validation.getValue());
 
             if ((validation.getMatchFlag() == 'N' && isEquals) ||

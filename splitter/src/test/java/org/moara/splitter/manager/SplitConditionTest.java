@@ -24,14 +24,15 @@ public class SplitConditionTest {
     @Test
     public void testCreateRoleObject() {
         // terminator
-        SplitCondition splitCondition1 = new SplitCondition.Builder("다.", 'N', 'B').build();
+        SplitCondition splitCondition1 = new SplitCondition.Builder("다." , 'B').build();
         Assert.assertEquals("다.", splitCondition1.getValue());
         Assert.assertEquals('N', splitCondition1.getUsePublicValidation());
         Assert.assertEquals('B', splitCondition1.getSplitPosition());
 
 
         // number
-        SplitCondition splitCondition2 = new SplitCondition.Builder("1.", 'Y', 'F').build();
+        SplitCondition splitCondition2 = new SplitCondition.Builder("1.", 'F')
+                .usePublicValidation('Y').build();
         Assert.assertEquals("1.", splitCondition2.getValue());
         Assert.assertEquals('Y', splitCondition2.getUsePublicValidation());
         Assert.assertEquals('F', splitCondition2.getSplitPosition());
@@ -51,13 +52,13 @@ public class SplitConditionTest {
     @Test
     public void testCheckPatternSplitCondition() {
         SplitCondition splitCondition1 = new SplitCondition
-                .Builder("\\d+\\.", 'N', 'F')
+                .Builder("\\d+\\.",  'F')
                 .isPattern(true).build();
 
         Assert.assertTrue(splitCondition1.isPattern());
 
         SplitCondition splitCondition2 = new SplitCondition
-                .Builder("\\d+\\.", 'N', 'F')
+                .Builder("\\d+\\.",  'F')
                 .isPattern(false).build();
 
         Assert.assertFalse(splitCondition2.isPattern());

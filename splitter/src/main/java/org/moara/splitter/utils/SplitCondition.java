@@ -21,10 +21,11 @@ import java.util.List;
 /**
  * 구분 조건
  *
+ * TODO 1. 사용자 사전 관리
  *
  * @author wjrmffldrhrl
  */
-public class  SplitCondition extends RoleProperty{
+public class   SplitCondition extends RoleProperty{
 
     private final String value;
     private final List<Validation> validations;
@@ -32,24 +33,26 @@ public class  SplitCondition extends RoleProperty{
 
     public static class Builder {
         private final String value;
-        private final char usePublicValidation;
         private final char splitPosition;
 
         private List<Validation> validations = new ArrayList<>();
+        private char usePublicValidation = 'N';
         private boolean isPattern = false;
 
-        public Builder(String value, char usePublicValidation, char splitPosition) {
+        public Builder(String value, char splitPosition) {
             this.value = value;
-            this.usePublicValidation = usePublicValidation;
+
             this.splitPosition = splitPosition;
         }
 
-        public Builder(String value, RoleProperty roleProperty) {
-            this(value, roleProperty.getFlag(), roleProperty.getPosition());
-        }
 
         public Builder validations(List<Validation> val) {
             validations = val;
+            return this;
+        }
+
+        public Builder usePublicValidation(char val) {
+            usePublicValidation = val;
             return this;
         }
 

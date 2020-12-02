@@ -42,7 +42,7 @@ public class AreaProcessorTest {
 
         int index = 0;
         for (Area area : exceptionAreaProcessor.find(inputData)) {
-            Assert.assertEquals(area.getStart(), answerStart[index]);
+            Assert.assertEquals(area.getBegin(), answerStart[index]);
             Assert.assertEquals(area.getEnd(), answerEnd[index++]);
         }
 

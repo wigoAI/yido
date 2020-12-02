@@ -29,12 +29,12 @@ public class Sentence extends Area {
     /**
      * Constructor
      *
-     * @param start int
+     * @param begin int
      * @param end int
      * @param text String
      */
-    public Sentence(int start, int end, String text) {
-        super(start, end);
+    public Sentence(int begin, int end, String text) {
+        super(begin, end);
         this.text = text;
     }
 

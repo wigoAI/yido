@@ -25,6 +25,7 @@ import org.moara.splitter.processor.TerminatorAreaProcessor;
 import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.manager.SplitConditionManager;
 import org.moara.splitter.utils.Config;
+import org.moara.splitter.utils.Validation;
 import org.moara.splitter.utils.file.FileManager;
 
 import java.util.ArrayList;
@@ -65,10 +66,6 @@ public class SplitterFactory {
         return splitterHashMap.get(id);
     }
 
-
-    /**
-     * TODO 1. Json의 유효성 체크
-     */
     public static void createSplitter(String splitterJsonName, int key) {
         Splitter splitter = getSplitterFromJson(splitterJsonName, key);
 
@@ -81,26 +78,12 @@ public class SplitterFactory {
     }
 
     public static boolean isValid(JsonObject splitterJson) {
-        if ((!splitterJson.isJsonObject()) || splitterJson.get("id") == null || splitterJson.get("name") == null
-                || splitterJson.get("minimum_split_length") == null || splitterJson.get("conditions") == null
-                || splitterJson.get("exceptions") == null) {
-            return false;
-        }
-        if (!splitterJson.get("conditions").isJsonArray()) {
-            return false;
-        }
-        if (!splitterJson.get("exceptions").isJsonArray()) {
-            return false;
-        }
-
-        return true;
+        return splitterJson.isJsonObject() && splitterJson.get("id") != null && splitterJson.get("name") != null
+                && splitterJson.get("minimum_split_length") != null && splitterJson.get("conditions") != null
+                && splitterJson.get("exceptions") != null && splitterJson.get("conditions").isJsonArray()
+                && splitterJson.get("exceptions").isJsonArray();
     }
 
-
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
 
     private static void createSplitter(int id) {
         if (id == BASIC_SPLITTER_ID) {
@@ -140,15 +123,13 @@ public class SplitterFactory {
         return new SplitterImpl(terminatorAreaProcessor, exceptionAreaProcessors);
     }
 
-    private static boolean isKeyEmpty(int key) { return !splitterHashMap.containsKey(key); }
-
-    public static void addSplitCondition(List<SplitCondition> additionalSplitCondition, int id) {
+    public static void addSplitConditions(List<SplitCondition> additionalSplitCondition, int id) {
         TerminatorAreaProcessor terminatorAreaProcessor = getTerminatorAreaProcessorByKey(id);
         terminatorAreaProcessor.getSplitConditions().addAll(additionalSplitCondition);
 
     }
 
-    public static void deleteSplitCondition(List<SplitCondition> unnecessarySplitCondition, int id) {
+    public static void deleteSplitConditions(List<SplitCondition> unnecessarySplitCondition, int id) {
         TerminatorAreaProcessor terminatorAreaProcessor = getTerminatorAreaProcessorByKey(id);
         for (SplitCondition splitCondition : unnecessarySplitCondition) {
 
@@ -157,9 +138,33 @@ public class SplitterFactory {
         }
     }
 
+    public static void addValidation(List<Validation> validations, int id) {
+        TerminatorAreaProcessor terminatorAreaProcessor = getTerminatorAreaProcessorByKey(id);
+        List<SplitCondition> splitConditions = terminatorAreaProcessor.getSplitConditions();
+
+        for (SplitCondition splitCondition : splitConditions) {
+            splitCondition.getValidations().addAll(validations);
+
+        }
+    }
+
+    public static void deleteValidation(List<Validation> validations, int id) {
+        TerminatorAreaProcessor terminatorAreaProcessor = getTerminatorAreaProcessorByKey(id);
+        List<SplitCondition> splitConditions = terminatorAreaProcessor.getSplitConditions();
+
+        for (SplitCondition splitCondition : splitConditions) {
+            for (Validation validation : validations) {
+                splitCondition.getValidations().removeIf(item -> item.getValue().equals(validation.getValue()));
+            }
+
+        }
+    }
+
     private static TerminatorAreaProcessor getTerminatorAreaProcessorByKey(int id) {
         if(isKeyEmpty(id)) { throw new IllegalArgumentException("Key [" + id + "] doesn't exist"); }
         return terminatorAreaProcessorHashMap.get(id);
     }
+
+    private static boolean isKeyEmpty(int key) { return !splitterHashMap.containsKey(key); }
 }
 

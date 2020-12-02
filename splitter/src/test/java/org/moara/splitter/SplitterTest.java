@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 
 import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.utils.Sentence;
+import org.moara.splitter.utils.Validation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +56,7 @@ public class SplitterTest {
 
             for(int i = 0 ; i < result.length ; i++) {
                 Sentence sentence = result[i];
-                System.out.println(i + " : " + sentence.getStart()+", "+ sentence.getEnd() + " " + sentence.getText());
+                System.out.println(i + " : " + sentence.getBegin()+", "+ sentence.getEnd() + " " + sentence.getText());
             }
         }
     }
@@ -98,7 +99,7 @@ public class SplitterTest {
     }
 
     @Test
-    public void testConditionEditInMemory() {
+    public void testEditConditionInMemory() {
 
         int key = 11;
 
@@ -107,9 +108,9 @@ public class SplitterTest {
 
 
         List<SplitCondition> additionalSplitCondition = new ArrayList<>();
-        additionalSplitCondition.add(new SplitCondition.Builder("이지만", 'N', 'B').build());
+        additionalSplitCondition.add(new SplitCondition.Builder("이지만", 'B').build());
 
-        SplitterFactory.addSplitCondition(additionalSplitCondition, key);
+        SplitterFactory.addSplitConditions(additionalSplitCondition, key);
 
 
         String[] answer = {"거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다.",
@@ -127,7 +128,7 @@ public class SplitterTest {
                 "그의 고향은 천안이지만 가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다.",
                 "15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다."};
 
-        SplitterFactory.deleteSplitCondition(additionalSplitCondition, key);
+        SplitterFactory.deleteSplitConditions(additionalSplitCondition, key);
 
         assertEquals(splitter.split(newsData).length, answer2.length);
         index = 0;
@@ -137,18 +138,62 @@ public class SplitterTest {
         }
     }
 
-
     @Test
-    public void test() {
-        String text = "강남역 맛집으로 소문난 강남 토끼정에 다녀왔습니다. 회사 동료 분들과 다녀왔는데 분위기도 좋고 음식도 맛있었어요 다만, 강남 토끼정이 강남 쉑쉑버거 골목길로 쭉 올라가야 하는데 다들 쉑쉑버거의 유혹에 넘어갈 뻔 했답니다 ";
-        Splitter basicSplitter =  SplitterFactory.getSplitter(); // 구분기 인스턴스 반환
+    public void testEditValidationInMemory() {
+        String[] answer = {"거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다.",
+                "그의 고향은 천안이지만",
+                "가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다.",
+                "15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다."};
 
-        Sentence[] sentenceArray = basicSplitter.split(text);
+        int key = 16;
 
-        for (int i = 0; i < sentenceArray.length; i++) {
-            System.out.println("sentence " + i + " : " + sentenceArray[i].getText());
+        SplitterFactory.createSplitter("test", key);
+        Splitter splitter = SplitterFactory.getSplitter(key);
+
+
+        List<SplitCondition> additionalSplitCondition = new ArrayList<>();
+        additionalSplitCondition.add(new SplitCondition.Builder("이지만", 'B').build());
+
+        SplitterFactory.addSplitConditions(additionalSplitCondition, key);
+
+        assertEquals(splitter.split(newsData).length, answer.length);
+        int index = 0;
+        for(Sentence sentence : splitter.split(newsData)) {
+            assertEquals(answer[index++], sentence.getText());
+        }
+
+
+        String[] answer2 = {"거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다.",
+                "그의 고향은 천안이지만 가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다.",
+                "15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다."};
+
+
+        List<Validation> validations = new ArrayList<>();
+        validations.add(new Validation(" 가족", 'N', 'B'));
+
+        SplitterFactory.addValidation(validations, key);
+
+        Sentence[] sentences = splitter.split(newsData);
+
+        assertEquals(sentences.length, answer2.length);
+
+        index = 0;
+        for(Sentence sentence : sentences) {
+            assertEquals(answer2[index++], sentence.getText());
+        }
+
+        SplitterFactory.deleteValidation(validations, key);
+
+        sentences = splitter.split(newsData);
+        assertEquals(sentences.length, answer.length);
+
+        index = 0;
+        for(Sentence sentence : sentences) {
+            assertEquals(answer[index++], sentence.getText());
         }
     }
+
+
 
     @Test
     public void testSplitWithRegx() {
@@ -169,6 +214,5 @@ public class SplitterTest {
             assertEquals(answers[answerIndex++], sentence.getText());
         }
     }
-
 
 }

@@ -60,7 +60,7 @@ public class SplitConditionManager {
 
         for (String conditionValue : conditionValues) {
             SplitCondition.Builder splitConditionBuilder = new SplitCondition
-                    .Builder(conditionValue, getRoleProperty(conditionRoleJson))
+                    .Builder(conditionValue, getRoleProperty(conditionRoleJson).getPosition())
                     .validations(validations);
             if (conditionValueName.startsWith("regx_")) {
                 splitConditionBuilder.isPattern(true);
