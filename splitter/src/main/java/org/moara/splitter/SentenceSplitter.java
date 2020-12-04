@@ -19,24 +19,26 @@ import com.github.wjrmffldrhrl.Area;
 import org.moara.splitter.processor.ExceptionAreaProcessor;
 import org.moara.splitter.processor.TerminatorAreaProcessor;
 import org.moara.splitter.utils.Sentence;
+import org.moara.splitter.utils.SplitCondition;
+import org.moara.splitter.utils.Validation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeSet;
 
 /**
  * 구분기 구현체
+ * TODO 1. lock
  *
  * @author wjrmffldrhrl
  */
-class SplitterImpl implements Splitter {
+class SentenceSplitter implements Splitter {
     protected final TerminatorAreaProcessor terminatorAreaProcessor;
-    protected final List<ExceptionAreaProcessor> exceptionAreaProcessors = new ArrayList<>();
+    protected final ExceptionAreaProcessor[] exceptionAreaProcessors;
 
-    SplitterImpl(TerminatorAreaProcessor terminatorAreaProcessor,
-                 List<ExceptionAreaProcessor> exceptionAreaProcessors) {
+    SentenceSplitter(TerminatorAreaProcessor terminatorAreaProcessor,
+                     List<ExceptionAreaProcessor> exceptionAreaProcessors) {
         this.terminatorAreaProcessor = terminatorAreaProcessor;
-        this.exceptionAreaProcessors.addAll(exceptionAreaProcessors);
+        this.exceptionAreaProcessors = exceptionAreaProcessors.toArray(new ExceptionAreaProcessor[0]);
     }
 
     @Override
@@ -45,14 +47,14 @@ class SplitterImpl implements Splitter {
             throw new IllegalArgumentException("Input text is null or empty");
         }
 
-        TreeSet<Integer> splitPoint = getSplitPoint(text);
+        List<Integer> splitPoint = getSplitPoint(text);
 
         return doSplit(splitPoint, text);
 
     }
 
-    private TreeSet<Integer> getSplitPoint(String text) {
-        TreeSet<Integer> splitPoints = terminatorAreaProcessor.find(text);
+    private List<Integer> getSplitPoint(String text) {
+        List<Integer> splitPoints = terminatorAreaProcessor.find(text);
         List<Area> exceptionAreas = new ArrayList<>();
         for (ExceptionAreaProcessor exceptionAreaProcessor : exceptionAreaProcessors) {
             exceptionAreas.addAll(exceptionAreaProcessor.find(text));
@@ -66,15 +68,15 @@ class SplitterImpl implements Splitter {
             }
         }
 
-        for (int removeItem : removeItems) {
-            splitPoints.remove(removeItem);
-        }
+
+        splitPoints.removeAll(removeItems);
+
 
         return splitPoints;
     }
 
 
-    private Sentence[] doSplit(TreeSet<Integer> splitPoint, String inputData) {
+    private Sentence[] doSplit(List<Integer> splitPoint, String inputData) {
         Sentence[] result = new Sentence[splitPoint.size() + 1];
         int startIndex = 0;
         int resultIndex = 0;
@@ -90,5 +92,25 @@ class SplitterImpl implements Splitter {
         result[resultIndex] =  new Sentence(startIndex, inputData.length(), inputData.substring(startIndex).trim());
 
         return result;
+    }
+
+    public void addSplitConditions(List<SplitCondition> additionalSplitCondition) {
+        terminatorAreaProcessor.addSplitConditions(additionalSplitCondition);
+    }
+
+    public void deleteSplitConditions(List<SplitCondition> unnecessarySplitCondition) {
+        terminatorAreaProcessor.deleteSplitConditions(unnecessarySplitCondition);
+    }
+
+    public void addValidation(List<Validation> additionalValidations) {
+        terminatorAreaProcessor.addValidation(additionalValidations);
+    }
+
+    public void deleteValidation(List<Validation> unnecessaryValidations) {
+
+        terminatorAreaProcessor.deleteValidation(unnecessaryValidations);
+
+
+
     }
 }

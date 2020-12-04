@@ -16,6 +16,10 @@
 package org.moara.splitter;
 
 import org.moara.splitter.utils.Sentence;
+import org.moara.splitter.utils.SplitCondition;
+import org.moara.splitter.utils.Validation;
+
+import java.util.List;
 
 /**
  * 구분기 추상체
@@ -26,10 +30,33 @@ import org.moara.splitter.utils.Sentence;
 public interface Splitter {
 
     /**
-     * 입력된 문자를 문장 단위로 나누어 반환
+     * 입력된 데이터를 구분 단위에 맞게 반환
      * @param text String
      * @return Sentence Array
      */
     Sentence[] split(String text);
 
+    /**
+     * 구분 조건 추가
+     * @param additionalSplitCondition 추가할 구분 조건
+     */
+    void addSplitConditions(List<SplitCondition> additionalSplitCondition);
+
+    /**
+     * 구분 조건 제거
+     * @param unnecessarySplitCondition 제거할 구분 조건
+     */
+    void deleteSplitConditions(List<SplitCondition> unnecessarySplitCondition);
+
+    /**
+     * 조건 유효성 추가
+     * @param validations 추가할 조건 유효성
+     */
+    void addValidation(List<Validation> validations);
+
+    /**
+     * 조건 유효성 제거
+     * @param validations 제거할 조건 유효성
+     */
+    void deleteValidation(List<Validation> validations);
 }

@@ -85,7 +85,7 @@ public class TestFileInitializer {
             "}";
 
     public static String testRegxSplitter = "{\n" +
-            "  \"id\": \"test\",\n" +
+            "  \"id\": \"test_regx\",\n" +
             "  \"name\": \"test\",\n" +
             "  \"minimum_split_length\": 5,\n" +
             "  \"conditions\": [\"test_regx\"],\n" +
@@ -99,14 +99,14 @@ public class TestFileInitializer {
             "  \"validations\": []\n" +
             "}";
     public static String testInvalidJson1 = "{\n" +
-            "  \"id\": \"test\",\n" +
+            "  \"id\": \"test_invalid1\",\n" +
             "  \"name\": \"test\",\n" +
             "  \"minimum_spngth\": 5,\n" +
             "  \"conditions\": [\"test\"],\n" +
             "  \"exceptions\": [\"test\"]\n" +
             "}";
     public static String testInvalidJson2 = "{\n" +
-            "  \"id\": \"test\",\n" +
+            "  \"id\": \"test_invalid2\",\n" +
             "  \"name\": \"test\",\n" +
             "  \"minimum_split_length\": 5,\n" +
             "  \"conditions\": [\"test\"],\n" +
@@ -135,7 +135,7 @@ public class TestFileInitializer {
         createTestFiles("splitter/test.json", testSplitter);
         createTestFiles("splitter/test_regx.json", testRegxSplitter);
         createTestFiles("splitter/test_invalid1.json", testInvalidJson1);
-        createTestFiles("splitter/test_invalid2.json", testInvalidJson1);
+        createTestFiles("splitter/test_invalid2.json", testInvalidJson2);
         createTestFiles("condition/test_regx.json", testRegxCondition);
         createTestFiles("string_group/regx_test.dic", testRegxString);
         createTestFiles("exception/test.json", testException);

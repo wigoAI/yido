@@ -121,7 +121,7 @@ public class FileManager {
             element = JsonParser.parseReader(new FileReader(ABSTRACT_PATH + fileName));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            element = new JsonObject();
+            throw new RuntimeException(e);
         }
 
         return element.getAsJsonObject();

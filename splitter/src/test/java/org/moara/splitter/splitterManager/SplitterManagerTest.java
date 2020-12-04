@@ -1,4 +1,4 @@
-package org.moara.splitter.splitterFactory;
+package org.moara.splitter.splitterManager;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -7,13 +7,15 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.moara.splitter.Splitter;
-import org.moara.splitter.SplitterFactory;
+import org.moara.splitter.SplitterManager;
 import org.moara.splitter.TestFileInitializer;
 import org.moara.splitter.utils.Sentence;
 import org.moara.splitter.utils.file.FileManager;
 
 
-public class SplitterFactoryTest {
+
+
+public class SplitterManagerTest {
     String text = "안녕하세요 반갑습니다. 조승현입니다.";
 
     @Before
@@ -28,7 +30,7 @@ public class SplitterFactoryTest {
 
     @Test
     public void testGetBasicSplitter() {
-        Splitter splitter = SplitterFactory.getSplitter();
+        Splitter splitter = SplitterManager.getSplitterManager().getSplitter();
 
         String[] answer = {"안녕하세요 반갑습니다.", "조승현입니다."};
         int index = 0;
@@ -38,19 +40,14 @@ public class SplitterFactoryTest {
 
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testGetSplitterWithIllegalKey() {
-        SplitterFactory.getSplitter(525);
-    }
-
-
+    /**
+     * TODO 1. 생성개념 관리
+     */
     @Test
     public void testCreateSplitterWithSplitConditions() {
-        int key = 8;
 
-        SplitterFactory.createSplitter("test", key);
+        Splitter splitter = SplitterManager.getSplitterManager().getSplitter("test");
 
-        Splitter splitter = SplitterFactory.getSplitter(key);
 
         String[] answer = {"안녕하세요 반갑습니다.", "조승현입니다."};
         int index = 0;
@@ -61,7 +58,7 @@ public class SplitterFactoryTest {
 
     @Test
     public void testCreateSplitterByJsonObject() {
-        int key = 20;
+
         String id = "json";
         String name = "json_splitter";
         int minimumSplitLength = 5;
@@ -80,8 +77,8 @@ public class SplitterFactoryTest {
         splitterJsonObject.add("conditions", conditions);
         splitterJsonObject.add("exceptions", exceptions);
 
-        SplitterFactory.createSplitter(splitterJsonObject, key);
-        Splitter splitter = SplitterFactory.getSplitter(key);
+
+        Splitter splitter = SplitterManager.getSplitterManager().getSplitter(splitterJsonObject);
 
         String[] answer = {"안녕하세요 반갑습니다.", "조승현입니다."};
         int index = 0;
@@ -92,16 +89,38 @@ public class SplitterFactoryTest {
 
     @Test
     public void testJsonObjectValidationCheck() {
+        boolean normalJsonFlag = true;
+        boolean invalidJsonFlag1 = false;
+        boolean invalidJsonFlag2 = false;
+
         JsonObject normalJson = FileManager.getJsonObjectByFile("splitter/test.json");
 
-        Assert.assertTrue(SplitterFactory.isValid(normalJson));
+        try {
+            SplitterManager.getSplitterManager().getSplitter(normalJson);
+        } catch (RuntimeException e) {
+            normalJsonFlag = false;
+        }
+
+
 
         JsonObject invalidJson1 = FileManager.getJsonObjectByFile("splitter/test_invalid1.json");
-        Assert.assertFalse(SplitterFactory.isValid(invalidJson1));
+        try {
+            SplitterManager.getSplitterManager().getSplitter(invalidJson1);
+
+        } catch (RuntimeException e) {
+            invalidJsonFlag1 = true;
+        }
 
         JsonObject invalidJson2 = FileManager.getJsonObjectByFile("splitter/test_invalid2.json");
-        Assert.assertFalse(SplitterFactory.isValid(invalidJson2));
+        try {
+            SplitterManager.getSplitterManager().getSplitter(invalidJson2);
+        } catch (RuntimeException e) {
+            invalidJsonFlag2 = true;
+        }
 
+        Assert.assertTrue(normalJsonFlag);
+        Assert.assertTrue(invalidJsonFlag1);
+        Assert.assertTrue(invalidJsonFlag2);
     }
 
 }
