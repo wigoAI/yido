@@ -48,9 +48,9 @@ public class TokenizerExample {
 }
 ```
 # gradle
-implementation 'org.moara.yido:tokenizer:0.1.1'
+implementation 'org.moara.yido:tokenizer:0.1.2'
 - etc 
-    - https://mvnrepository.com/artifact/org.moara.yido/tokenizer/0.1.1
+    - https://mvnrepository.com/artifact/org.moara.yido/tokenizer/0.1.2
 
 # communication
 ### blog, homepage

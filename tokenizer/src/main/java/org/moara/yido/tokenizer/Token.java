@@ -17,18 +17,10 @@
 package org.moara.yido.tokenizer;
 
 /**
+ * token 기본형
  * @author macle
  */
 public interface Token {
-
-    /**
-     * token id
-     * 단어 같은 경우에는 위고/NNG
-     * 위오 같은 형태처럼 특정 아이디를 지정하여 쓰기 위한 기능
-     * 초기 구상단계이므로 바뀔 수 있음
-     * @return token id
-     */
-    String getId();
 
 
     /**

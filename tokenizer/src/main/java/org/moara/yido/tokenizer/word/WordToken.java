@@ -112,7 +112,12 @@ public class WordToken implements Token {
         this.end = end;
     }
 
-    @Override
+    /**
+     * token id
+     * 단어 같은 경우에는 위고/NNG
+     * 위오 같은 형태처럼 특정 아이디를 지정하여 쓰기 위한 기능
+     * @return token id
+     */
     public String getId() {
         return id;
     }
