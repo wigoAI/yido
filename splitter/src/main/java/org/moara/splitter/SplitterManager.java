@@ -36,9 +36,22 @@ import java.util.*;
  * @author wjrmffldrhrl
  */
 public class SplitterManager {
-    private static final SplitterManager splitterManager = new SplitterManager();
+    private static SplitterManager splitterManager = null;
     private static final String BASIC_SPLITTER_ID = "basic";
     private final Map<String, Splitter> splitterMap = new HashMap<>();
+
+    /**
+     * SplitterManager 인스턴스 생성 및 반환
+     * @return SplitterManager instance
+     *
+     */
+    public static synchronized SplitterManager getSplitterManager() {
+        if (splitterManager == null) {
+            splitterManager = new SplitterManager();
+        }
+        return splitterManager;
+    }
+
 
     /**
      * 문장 구분기 인스턴스 획득
@@ -110,9 +123,7 @@ public class SplitterManager {
         }
     }
 
-    public static SplitterManager getSplitterManager() {
-        return splitterManager;
-    }
+
 
 }
 

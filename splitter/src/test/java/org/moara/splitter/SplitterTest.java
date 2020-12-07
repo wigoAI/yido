@@ -14,6 +14,7 @@ import org.moara.splitter.utils.Validation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.stream.IntStream;
 
 public class SplitterTest {
@@ -51,49 +52,6 @@ public class SplitterTest {
 
     }
 
-
-    @Test
-    public void testSplitThread(){
-        List<String> data1000 = new ArrayList<>();
-        for (int i = 0; i < 1; i++) {
-            data1000.add(data[0]);
-        }
-        System.out.println("copy done ");
-
-        Thread[] t = new Thread[2];
-
-        for (int a = 0; a < t.length; a++) {
-            int finalA = a;
-            t[a] = new Thread(() -> {
-
-                Splitter splitter = SplitterManager.getSplitterManager().getSplitter();
-                for (int i = finalA * (data1000.size() / t.length); i < (finalA + 1) * data1000.size() / t.length; i++) {
-
-                    splitter.split(data1000.get(i));
-                }
-                System.out.println("done " + endCount[0]++);
-
-            });
-        }
-
-
-        long start = System.currentTimeMillis();
-        for (Thread thread : t) {
-            System.out.println("start");
-            thread.start();
-
-        }
-        while (true) {
-            if (endCount[0] == t.length) {
-                break;
-            }
-        }
-        long end = System.currentTimeMillis();
-
-        System.out.println( "Thread 실행 시간 : " + ( end - start )/1000.0 );
-
-
-    }
 
     @Test
     public void testSplit() {

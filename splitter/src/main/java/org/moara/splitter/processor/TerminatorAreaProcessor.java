@@ -27,7 +27,8 @@ import java.util.stream.Collectors;
 
 /**
  * 구분점 처리기
- * TODO 1. 성능 테스트
+ *
+ * TODO 1. 조건 lock
  * @author wjrmffldrhrl
  */
 public class TerminatorAreaProcessor {
@@ -67,35 +68,34 @@ public class TerminatorAreaProcessor {
      * @param text 구분점을 찾을 데이터
      * @return 구분점
      */
-    public List<Integer> find(String text) {
+    public List<Integer> find(String text, List<Area> exceptionAreas) {
 
         text = text.trim();
 
-        List<Integer> splitPoint = findByText(text);
+        List<Integer> splitPoint = findByText(text, exceptionAreas);
         splitPoint.sort(null);
 
-        removeInvalidItem(splitPoint, text.length());
         return splitPoint;
     }
 
-    public List<Integer> findByText(String text) {
+    private List<Integer> findByText(String text, List<Area> exceptionAreas) {
         Set<Integer> splitPoints = new HashSet<>();
         String tmpText = text.trim();
+
         conditionLengths.stream().sorted(Comparator.reverseOrder()).forEach(processingLength -> {
             for(int i = tmpText.length() - config.MIN_RESULT_LENGTH; i >= 0 ; i--)  {
+                if (tmpText.length() < i + processingLength) { continue; }
 
-                if (tmpText.length() < i + processingLength) {
-                    continue;
-                }
                 Area targetArea = new Area(i, i + processingLength);
                 String targetString = tmpText.substring(targetArea.getBegin(), targetArea.getEnd());
 
                 if(splitConditionValues.contains(targetString)) {
+
                     SplitCondition splitCondition = splitConditions.stream()
                             .filter(c -> c.getValue().equals(targetString)).findAny()
                             .orElseThrow(() -> new RuntimeException("No condition with this value : [" + targetString + "]"));
 
-                    if(isValid(tmpText, splitCondition, targetArea.getBegin())) {
+                    if(isValidCondition(tmpText, splitCondition, targetArea.getBegin())) {
                         int splitPoint;
                         if (splitCondition.getSplitPosition() == 'F') {
                             splitPoint = targetArea.getBegin();
@@ -104,22 +104,15 @@ public class TerminatorAreaProcessor {
                             splitPoint = targetArea.getEnd() + additionalSignLength;
                         }
 
-                        boolean containNearPoint = false;
-                        for (int p = 0; p <= config.MIN_RESULT_LENGTH; p++) {
-                            if (splitPoints.contains(splitPoint + p)) {
-                                containNearPoint = true;
-                            }
-                        }
-
-                        if (containNearPoint) {
-                            continue;
-                        }
+                        if (isValidSplitPoint(exceptionAreas, splitPoints, tmpText, splitPoint)) continue;
 
                         splitPoints.add(splitPoint);
                     }
                 }
             }
         });
+
+
 
         if (isContainPatternCondition) {
             for (SplitCondition splitCondition : patternSplitConditions) {
@@ -131,6 +124,32 @@ public class TerminatorAreaProcessor {
 
         return splitPoints.stream().sorted().collect(Collectors.toList());
     }
+
+    private boolean isValidSplitPoint(List<Area> exceptionAreas, Set<Integer> splitPoints, String tmpText, int splitPoint) {
+        boolean invalidSplitPointFlag = false;
+
+        for (Area exceptionArea : exceptionAreas) {
+            if (exceptionArea.contains(splitPoint)) {
+                invalidSplitPointFlag = true;
+                break;
+            }
+        }
+
+        for (int p = 0; p <= config.MIN_RESULT_LENGTH && !invalidSplitPointFlag; p++) {
+            if (splitPoints.contains(splitPoint + p)) {
+                invalidSplitPointFlag = true;
+                break;
+            }
+        }
+
+        if (splitPoint < config.MIN_RESULT_LENGTH
+                || splitPoint > tmpText.length() - config.MIN_RESULT_LENGTH) {
+            return true;
+        }
+
+        return invalidSplitPointFlag;
+    }
+
 
     private List<Integer> findSplitPoint(String text) {
         List<Integer> splitPoint = new ArrayList<>();
@@ -152,7 +171,7 @@ public class TerminatorAreaProcessor {
             splitPoint = text.indexOf(splitCondition.getValue(), splitPoint);
             if (splitPoint == -1) { break; } // 구분 조건 x
 
-            if (!isValid(text, splitCondition, splitPoint)) {
+            if (!isValidCondition(text, splitCondition, splitPoint)) {
                 splitPoint += splitCondition.getValue().length();
                 continue;
             }
@@ -207,14 +226,11 @@ public class TerminatorAreaProcessor {
         return additionalSignLength;
     }
 
-    /*
-        TODO 1. condition validation must have to be HashSet
-     */
-    private boolean isValid(String text, SplitCondition splitCondition, int conditionBeginPoint) {
+
+    private boolean isValidCondition(String text, SplitCondition splitCondition, int conditionBeginPoint) {
         boolean isValid = true;
 
         if (conditionBeginPoint < config.MIN_RESULT_LENGTH || conditionBeginPoint > text.length() - config.MIN_RESULT_LENGTH) {
-
             return false;
         }
 
@@ -244,21 +260,11 @@ public class TerminatorAreaProcessor {
         return isValid;
     }
 
-    private void removeInvalidItem(List<Integer> splitPoints, int textLength) {
-        splitPoints.removeIf(item -> item < config.MIN_RESULT_LENGTH || item > textLength - config.MIN_RESULT_LENGTH);
 
-        List<Integer> removeItems = new ArrayList<>();
-        int previousItem = 0;
-        for (int item : splitPoints) {
-            if (item - previousItem < config.MIN_RESULT_LENGTH) {
-                removeItems.add(previousItem);
-            }
-            previousItem = item;
-        }
-        splitPoints.removeAll(removeItems);
-
-    }
-
+    /**
+     * 문장 구분 조건 추가
+     * @param additionalSplitCondition 추가할 문장 구분 조건
+     */
     public void addSplitConditions(List<SplitCondition> additionalSplitCondition) {
         for (SplitCondition splitCondition : additionalSplitCondition) {
             splitConditions.add(splitCondition);
@@ -270,7 +276,8 @@ public class TerminatorAreaProcessor {
     }
 
     /**
-     * TODO 1. value 만으로 제거하는게 옳은가?
+     * 문장 구분 조건 제거
+     * @param unnecessarySplitCondition
      */
     public void deleteSplitConditions(List<SplitCondition> unnecessarySplitCondition) {
         for (SplitCondition splitCondition : unnecessarySplitCondition) {
@@ -294,10 +301,9 @@ public class TerminatorAreaProcessor {
         }
     }
 
-
     /**
-     * TODO 1. isValid 의 탐색 방법이 바뀐다면 해당 유효성 추가도 변경해야 함
-     * @param additionalValidations
+     * 문장 유효성 추가
+     * @param additionalValidations 추가 할 유효성
      */
     public void addValidation(List<Validation> additionalValidations) {
         for (SplitCondition splitCondition : splitConditions) {
@@ -305,6 +311,10 @@ public class TerminatorAreaProcessor {
         }
     }
 
+    /**
+     * 문장 유효성 제거
+     * @param unnecessaryValidations 제거 할 문장 유효성
+     */
     public void deleteValidation(List<Validation> unnecessaryValidations) {
         for (SplitCondition splitCondition : splitConditions) {
             for (Validation validation : unnecessaryValidations) {

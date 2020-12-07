@@ -21,10 +21,6 @@ import java.util.List;
 /**
  * 구분 조건
  *
- * TODO 1. 사용자 사전 관리
- *          - HOW?
- *      2. 조건에 대한 동적 관리
- *      3. Hash
  * @author wjrmffldrhrl
  */
 public class   SplitCondition extends RoleProperty{

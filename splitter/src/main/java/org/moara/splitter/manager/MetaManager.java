@@ -30,6 +30,10 @@ public class MetaManager {
     private static final String differentSideBracketRoleName = "bracket_exception.json";
     private static final String sameSideBracketRoleName = "same_bracket_exception.json";
 
+    /**
+     * 양 방향의 모양이 다른 괄호에 대한 처리
+     * @return Pattern
+     */
     public static Pattern getDifferentSideBracketPattern() {
         JsonObject metaJson = FileManager.getJsonObjectByFile(rolePath + differentSideBracketRoleName);
         JsonArray dataArray = metaJson.get("value").getAsJsonArray();
@@ -57,6 +61,10 @@ public class MetaManager {
         return  Pattern.compile(pattern);
     }
 
+    /**
+     * 괄호의 좌우 방향이 댜른 괄호에 대한 패턴을 찾는 메서드
+     * @return Pattern
+     */
     public static Pattern getSameSideBracketPattern() {
         JsonObject metaJson = FileManager.getJsonObjectByFile(rolePath + sameSideBracketRoleName);
         JsonArray dataArray = metaJson.get("value").getAsJsonArray();

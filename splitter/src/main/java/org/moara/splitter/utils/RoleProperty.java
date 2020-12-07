@@ -29,6 +29,7 @@ public class RoleProperty {
     public RoleProperty(char flag, char position) {
         this.flag = flag;
         this.position = position;
+
         if (!isValid()) {
             throw new RuntimeException("Invalid property");
         }

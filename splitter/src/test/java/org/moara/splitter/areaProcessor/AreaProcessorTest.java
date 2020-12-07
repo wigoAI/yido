@@ -13,6 +13,7 @@ import org.moara.splitter.manager.*;
 import org.moara.splitter.Config;
 import org.moara.splitter.utils.SplitCondition;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -57,36 +58,36 @@ public class AreaProcessorTest {
         int[] answer = {28, 62, 93, 73, 12, 25, 43};
 
         int index = 0;
-        for (int i : terminatorAreaProcessor.findByText(inputData)) {
+        for (int i : terminatorAreaProcessor.find(inputData, new ArrayList<>())) {
 
             System.out.println("1 " + i);
             assertEquals(answer[index++], i);
         }
-        assertNotEquals(0, terminatorAreaProcessor.findByText(inputData).size());
+        assertNotEquals(0, terminatorAreaProcessor.find(inputData, new ArrayList<>()).size());
 
         inputData = "대회 결과, 대상은 신평고 3학년 최지민 학생이 차지했으며, 조리부문 금상과 제빵부문 금상은 신평고 3학년 김기중 학생이, 송탄고 3학년 황유진 학생이 각각 수상했다. 수상자에게는 상장과 메달, 상금 및 장학증서가 수여됐으며 대상은 상금 30만 원과 장학증서 15만 원, 금상은 상금 20만 원과 장학증서 100만 원 등이 전달됐다.";
-        for (int i : terminatorAreaProcessor.findByText(inputData)) {
+        for (int i : terminatorAreaProcessor.find(inputData, new ArrayList<>())) {
 
             assertEquals(answer[index++], i);
         }
-        assertNotEquals(0, terminatorAreaProcessor.findByText(inputData).size());
+        assertNotEquals(0, terminatorAreaProcessor.find(inputData, new ArrayList<>()).size());
 
         inputData = "계획은 구성원들에게 함께 나아가야할 방향을 제시함과 동시에 목적지에 도달하기 위한 수단과 방법을 제공하는 안내서이자 설계도와 같다. 좋은 안내서가 목적한 곳에 무사히 도달할 수 있는데 중요한 역할을 하는 것처럼, 국민과 도민의 삶을 변화시키는 것에는 중앙정부와 지방정부에서 세우는 계획들이 무척 중요하다고 할 것이다.            ";
 
-        for (int i : terminatorAreaProcessor.findByText(inputData)) {
+        for (int i : terminatorAreaProcessor.find(inputData, new ArrayList<>())) {
 
             assertEquals(answer[index++], i);
         }
-        assertNotEquals(0, terminatorAreaProcessor.findByText(inputData).size());
+        assertNotEquals(0, terminatorAreaProcessor.find(inputData, new ArrayList<>()).size());
 
 
         inputData = "안녕하세요 반갑습니다. 저는 조승현입니다!!! 여러분들을 만나서 너무 반가워요 제가 공부를 더 했다면 좋았을텐데...";
 
-        for (int i : terminatorAreaProcessor.findByText(inputData)) {
+        for (int i : terminatorAreaProcessor.find(inputData, new ArrayList<>())) {
 
             assertEquals(answer[index++], i);
         }
-        assertNotEquals(0, terminatorAreaProcessor.findByText(inputData).size());
+        assertNotEquals(0, terminatorAreaProcessor.find(inputData, new ArrayList<>()).size());
     }
 
     @Test
@@ -98,7 +99,7 @@ public class AreaProcessorTest {
 
         int[] answer = {12, 25};
         int answerIndex = 0;
-        for (int splitPoint : terminatorAreaProcessor.findByText(inputData)) {
+        for (int splitPoint : terminatorAreaProcessor.find(inputData, new ArrayList<>())) {
             Assert.assertEquals(splitPoint, answer[answerIndex++]);
         }
 
@@ -113,10 +114,10 @@ public class AreaProcessorTest {
 
         TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, new Config());
 
-        assertEquals(answers.length, terminatorAreaProcessor.find(data).size());
+        assertEquals(answers.length, terminatorAreaProcessor.find(data, new ArrayList<>()).size());
 
         int answerIndex = 0;
-        for (int splitPoint : terminatorAreaProcessor.find(data)) {
+        for (int splitPoint : terminatorAreaProcessor.find(data, new ArrayList<>())) {
             assertEquals(answers[answerIndex++], splitPoint);
 
         }

@@ -1,4 +1,4 @@
 /**
- * TODO 1. 진짜 유틸에 대한 정의
+ * 사용자 편의성 유틸 패키지
  */
 package org.moara.splitter.utils;

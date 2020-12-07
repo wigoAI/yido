@@ -40,9 +40,6 @@ public class SplitterManagerTest {
 
     }
 
-    /**
-     * TODO 1. 생성개념 관리
-     */
     @Test
     public void testCreateSplitterWithSplitConditions() {
 

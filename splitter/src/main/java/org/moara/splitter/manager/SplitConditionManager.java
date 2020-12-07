@@ -38,6 +38,13 @@ public class SplitConditionManager {
         return getSplitConditions( arrayList.toArray(new String[arrayList.size()]));
     }
 
+    /**
+     * 조건 role로부터 조건값을 가져옴
+     * role name에서 파일명을 추출하여 해당 json 파일에 접근
+     *
+     * @param splitConditionRoleNames JSON fil name
+     * @return SplitConditions
+     */
     public static List<SplitCondition> getSplitConditions(String[] splitConditionRoleNames) {
         List<SplitCondition> splitConditions = new ArrayList<>();
 

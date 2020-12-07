@@ -27,6 +27,11 @@ import java.util.List;
 public interface ExceptionAreaProcessor {
 
 
+    /**
+     * 예외 영역 찾기
+     * @param text
+     * @return Exception ]Area list
+     */
     List<Area> find(String text);
 
 }
