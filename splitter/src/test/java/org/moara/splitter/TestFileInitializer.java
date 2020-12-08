@@ -89,7 +89,7 @@ public class TestFileInitializer {
             "  \"name\": \"test\",\n" +
             "  \"minimum_split_length\": 5,\n" +
             "  \"conditions\": [\"test_regx\"],\n" +
-            "  \"exceptions\": [\"test\"]\n" +
+            "  \"exceptions\": [\"bracket_exception\"]\n" +
             "}";
     public static String testRegxCondition = "{\n" +
             "  \"id\": \"test_regx_condition\",\n" +

@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class CommonValidationManager extends ValidationManager {
 
-    private static final String[] roles = {"NBSG_public"};
+    private static final String[] rules = {"NBSG_public"};
     private static final List<Validation> publicValidations = initAllPublicValidations();
 
     /**
@@ -41,8 +41,8 @@ public class CommonValidationManager extends ValidationManager {
     private static List<Validation> initAllPublicValidations() {
         List<Validation> validations = new ArrayList<>();
 
-        for (String role : roles) {
-            validations.addAll(getValidations(role));
+        for (String rule : rules) {
+            validations.addAll(getValidations(rule));
         }
 
         return validations;

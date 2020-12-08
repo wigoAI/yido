@@ -23,7 +23,7 @@ import java.util.List;
  * 해당 조건에 대한 유효성도 포함되어 있다.
  * @author wjrmffldrhrl
  */
-public class   SplitCondition extends RoleProperty{
+public class   SplitCondition extends RuleProperty {
 
     private final String value;
     private final List<Validation> validations;

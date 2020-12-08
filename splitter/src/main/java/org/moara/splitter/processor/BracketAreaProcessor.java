@@ -1,7 +1,7 @@
 package org.moara.splitter.processor;
 
 import com.github.wjrmffldrhrl.Area;
-import org.moara.splitter.manager.ExceptionRoleManager;
+import org.moara.splitter.manager.ExceptionRuleManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +19,12 @@ public class BracketAreaProcessor implements ExceptionAreaProcessor {
     public List<Area> find(String text) {
         List<Area> exceptionAreaList = new ArrayList<>();
 
-        Matcher matcher =  ExceptionRoleManager.getDifferentSideBracketPattern().matcher(text);
+        Matcher matcher =  ExceptionRuleManager.getDifferentSideBracketPattern().matcher(text);
         while (matcher.find()) {
             exceptionAreaList.add(new Area(matcher));
         }
 
-        matcher = ExceptionRoleManager.getSameSideBracketPattern().matcher(text);
+        matcher = ExceptionRuleManager.getSameSideBracketPattern().matcher(text);
         while (matcher.find()) {
             exceptionAreaList.add(new Area(matcher));
         }

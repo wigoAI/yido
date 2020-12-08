@@ -10,7 +10,6 @@ import org.moara.splitter.processor.BracketAreaProcessor;
 import org.moara.splitter.processor.ExceptionAreaProcessor;
 import org.moara.splitter.processor.TerminatorAreaProcessor;
 import org.moara.splitter.manager.*;
-import org.moara.splitter.Config;
 import org.moara.splitter.utils.SplitCondition;
 
 import java.util.ArrayList;
@@ -53,7 +52,7 @@ public class AreaProcessorTest {
     public void testTerminatorAreaProcessor() {
         List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(new String[] {"terminator"});
 
-        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, new Config());
+        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions);
         String inputData = "강남역 맛집으로 소문난 강남 토끼정에 다녀왔습니다. 회사 동료 분들과 다녀왔는데 분위기도 좋고 음식도 맛있었어요 다만, 강남 토끼정이 강남 쉑쉑버거 골목길로 쭉 올라가야 하는데 다들 쉑쉑버거의 유혹에 넘어갈 뻔 했답니다. ";
         int[] answer = {28, 62, 93, 73, 12, 25, 43};
 
@@ -95,7 +94,7 @@ public class AreaProcessorTest {
 
         List<SplitCondition> splitCondition = SplitConditionManager.getSplitConditions(new String[] {"test_condition_with_validations"});
         String inputData = "안녕하세요 반갑습니다. 저는 조승현입니다!!! 여러분들을 만나서 너무 반가워요 제가 공부를 더 했다면 좋았을텐데...";
-        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitCondition, new Config());
+        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitCondition);
 
         int[] answer = {12, 25};
         int answerIndex = 0;
@@ -112,7 +111,7 @@ public class AreaProcessorTest {
 
         List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(new String[] {"start_index"});
 
-        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, new Config());
+        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions);
 
         assertEquals(answers.length, terminatorAreaProcessor.find(data, new ArrayList<>()).size());
 

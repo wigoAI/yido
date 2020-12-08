@@ -17,7 +17,7 @@ package org.moara.splitter.manager;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import org.moara.splitter.utils.RoleProperty;
+import org.moara.splitter.utils.RuleProperty;
 import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.utils.Validation;
 import org.moara.splitter.utils.file.FileManager;
@@ -36,44 +36,44 @@ public class SplitConditionManager {
     /**
      * 문장 구분시에 사용할 구분 조건이 명시된 json 파일 이름을 넘겨받는다.
      * 해당 json 파일에서 정보를 가져와 구분 조건 리스트를 반환한다.
-     * @param splitConditionRoleNames json file names
+     * @param splitConditionRuleNames json file names
      * @return 구분 조건 리스트
      */
-    public static List<SplitCondition> getSplitConditions(List<String> splitConditionRoleNames) {
-        ArrayList<String> arrayList = (ArrayList<String>) splitConditionRoleNames;
+    public static List<SplitCondition> getSplitConditions(List<String> splitConditionRuleNames) {
+        ArrayList<String> arrayList = (ArrayList<String>) splitConditionRuleNames;
 
         return getSplitConditions( arrayList.toArray(new String[arrayList.size()]));
     }
 
     /**
-     * 조건 role로부터 조건값을 가져옴
-     * role name에서 파일명을 추출하여 해당 json 파일에 접근
+     * 조건 rule로부터 조건값을 가져옴
+     * rule name에서 파일명을 추출하여 해당 json 파일에 접근
      *
-     * @param splitConditionRoleNames JSON file name
-     * @return SplitConditions
+     * @param splitConditionRuleNames JSON file name
+     * @return {@code List<SplitCondition>}
      */
-    public static List<SplitCondition> getSplitConditions(String[] splitConditionRoleNames) {
+    public static List<SplitCondition> getSplitConditions(String[] splitConditionRuleNames) {
         List<SplitCondition> splitConditions = new ArrayList<>();
 
-        for (String splitConditionRoleName : splitConditionRoleNames) {
-            splitConditions.addAll(getSplitConditionsByRole(splitConditionRoleName));
+        for (String splitConditionRuleName : splitConditionRuleNames) {
+            splitConditions.addAll(getSplitConditionsByRule(splitConditionRuleName));
         }
 
         return splitConditions;
 
     }
 
-    private static List<SplitCondition> getSplitConditionsByRole(String splitConditionRoleName) {
+    private static List<SplitCondition> getSplitConditionsByRule(String splitConditionRuleName) {
         List<SplitCondition> splitConditions = new ArrayList<>();
-        JsonObject conditionRoleJson = FileManager.getJsonObjectByFile(conditionPath + splitConditionRoleName + ".json");
-        List<Validation> validations = getValidations(conditionRoleJson);
+        JsonObject conditionRuleJson = FileManager.getJsonObjectByFile(conditionPath + splitConditionRuleName + ".json");
+        List<Validation> validations = getValidations(conditionRuleJson);
 
-        String conditionValueName = conditionRoleJson.get("value").getAsString();
+        String conditionValueName = conditionRuleJson.get("value").getAsString();
         Collection<String> conditionValues = FileManager.readFile("string_group/" + conditionValueName + ".dic");
 
         for (String conditionValue : conditionValues) {
             SplitCondition.Builder splitConditionBuilder = new SplitCondition
-                    .Builder(conditionValue, getRoleProperty(conditionRoleJson).getPosition())
+                    .Builder(conditionValue, getRuleProperty(conditionRuleJson).getPosition())
                     .validations(validations);
             if (conditionValueName.startsWith("regx_")) {
                 splitConditionBuilder.isPattern(true);
@@ -85,19 +85,19 @@ public class SplitConditionManager {
         return splitConditions;
     }
 
-    private static List<Validation> getValidations(JsonObject conditionRoleJson) {
-        List<String> validationRoleNames = new ArrayList<>();
-        JsonArray validationJsonArray = conditionRoleJson.getAsJsonArray("validations");
+    private static List<Validation> getValidations(JsonObject conditionRuleJson) {
+        List<String> validationRuleNames = new ArrayList<>();
+        JsonArray validationJsonArray = conditionRuleJson.getAsJsonArray("validations");
         for (int i = 0; i < validationJsonArray.size(); i++) {
-            validationRoleNames.add(validationJsonArray.get(i).getAsString());
+            validationRuleNames.add(validationJsonArray.get(i).getAsString());
         }
 
         List<Validation> validations = new ArrayList<>();
-        for (String validationRoleName : validationRoleNames) {
-            validations.addAll(ValidationManager.getValidations(validationRoleName));
+        for (String validationRuleName : validationRuleNames) {
+            validations.addAll(ValidationManager.getValidations(validationRuleName));
         }
 
-        if (getRoleProperty(conditionRoleJson).getFlag() == 'Y') {
+        if (getRuleProperty(conditionRuleJson).getFlag() == 'Y') {
             validations.addAll(CommonValidationManager.getAllPublicValidations());
         }
 
@@ -106,9 +106,9 @@ public class SplitConditionManager {
 
 
 
-    private static RoleProperty getRoleProperty(JsonObject conditionRoleJson) {
-        return new RoleProperty(conditionRoleJson.get("use_public_validation").getAsString().charAt(0),
-                conditionRoleJson.get("split_position").getAsString().charAt(0));
+    private static RuleProperty getRuleProperty(JsonObject conditionRuleJson) {
+        return new RuleProperty(conditionRuleJson.get("use_public_validation").getAsString().charAt(0),
+                conditionRuleJson.get("split_position").getAsString().charAt(0));
     }
 
 

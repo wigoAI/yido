@@ -30,7 +30,8 @@ import java.util.Collection;
  * 파일 관리자 구현체
  *
  * @author wjrmffldrhrl
- *
+ *  TODO 1. config 적용
+ *          - root path
  */
 public class FileManager {
     protected static final String pathSeparator = File.separator;

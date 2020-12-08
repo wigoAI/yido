@@ -15,28 +15,29 @@
  */
 package org.moara.splitter.utils;
 
+import com.github.wjrmffldrhrl.Area;
 
 /**
- * 룰 속성 값 유틸
- *
+ * 문장 단위 데이터
+ * TODO 1. commons begin end 적용
  * @author wjrmffldrhrl
  */
-public class RoleProperty {
-    protected final char flag;
-    protected final char position;
+public class SplitResult extends Area {
+    private final String text;
 
-
-    public RoleProperty(char flag, char position) {
-        this.flag = flag;
-        this.position = position;
-
-        if (!isValid()) {
-            throw new RuntimeException("Invalid property");
-        }
+    /**
+     * Constructor
+     *
+     * @param begin int
+     * @param end int
+     * @param text String
+     */
+    public SplitResult(int begin, int end, String text) {
+        super(begin, end);
+        this.text = text;
     }
 
+    public String getText() { return this.text; }
 
-    public boolean isValid() { return  (flag == 'N' || flag == 'Y') && (position == 'B' || position == 'F'); }
-    public char getFlag() { return flag; }
-    public char getPosition() { return position; }
+
 }

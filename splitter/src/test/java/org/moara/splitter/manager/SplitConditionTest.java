@@ -22,13 +22,12 @@ public class SplitConditionTest {
     }
 
     @Test
-    public void testCreateRoleObject() {
+    public void testCreateRuleObject() {
         // terminator
         SplitCondition splitCondition1 = new SplitCondition.Builder("다." , 'B').build();
         Assert.assertEquals("다.", splitCondition1.getValue());
         Assert.assertEquals('N', splitCondition1.getUsePublicValidation());
         Assert.assertEquals('B', splitCondition1.getSplitPosition());
-
 
         // number
         SplitCondition splitCondition2 = new SplitCondition.Builder("1.", 'F')
@@ -39,7 +38,7 @@ public class SplitConditionTest {
     }
 
     @Test
-    public void testGetConditionRole() {
+    public void testGetConditionRule() {
         List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(new String[] {"test"});
         SplitCondition splitCondition = splitConditions.get(0);
 

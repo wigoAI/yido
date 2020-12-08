@@ -13,34 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.splitter;
+package org.moara.splitter.utils;
+
 
 /**
- * 문자 구분기 설정 값
+ * 룰 속성 값 유틸
  *
  * @author wjrmffldrhrl
  */
-public class Config {
-    public final int MIN_RESULT_LENGTH;
+public class RuleProperty {
+    protected final char flag;
+    protected final char position;
 
-    /**
-     * Constructor
-     * @param MIN_RESULT_LENGTH 최소 문장 처리 길이 값, 해당 값보다 작으면 문장으로 인정되지 않는다.
-     *
-     */
-    public Config(int MIN_RESULT_LENGTH) {
-        this.MIN_RESULT_LENGTH = MIN_RESULT_LENGTH;
+    public RuleProperty(char flag, char position) {
+        this.flag = flag;
+        this.position = position;
 
+        if (!isValid()) {
+            throw new RuntimeException("Invalid property");
+        }
     }
 
-    /**
-     * Basic constructor
-     *
-     * 기본값으로 초기화를 진행한다.
-     */
-    public Config() {
-        this.MIN_RESULT_LENGTH = 5;
-
-    }
-
+    public boolean isValid() { return  (flag == 'N' || flag == 'Y') && (position == 'B' || position == 'F'); }
+    public char getFlag() { return flag; }
+    public char getPosition() { return position; }
 }

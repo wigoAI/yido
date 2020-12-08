@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.moara.splitter.Splitter;
 import org.moara.splitter.SplitterManager;
 import org.moara.splitter.TestFileInitializer;
-import org.moara.splitter.utils.Sentence;
+import org.moara.splitter.utils.SplitResult;
 import org.moara.splitter.utils.file.FileManager;
 
 
@@ -34,8 +34,8 @@ public class SplitterManagerTest {
 
         String[] answer = {"안녕하세요 반갑습니다.", "조승현입니다."};
         int index = 0;
-        for (Sentence sentence : splitter.split(text)) {
-            Assert.assertEquals(answer[index++], sentence.getText());
+        for (SplitResult splitResult : splitter.split(text)) {
+            Assert.assertEquals(answer[index++], splitResult.getText());
         }
 
     }
@@ -48,8 +48,8 @@ public class SplitterManagerTest {
 
         String[] answer = {"안녕하세요 반갑습니다.", "조승현입니다."};
         int index = 0;
-        for (Sentence sentence : splitter.split(text)) {
-            Assert.assertEquals(answer[index++], sentence.getText());
+        for (SplitResult splitResult : splitter.split(text)) {
+            Assert.assertEquals(answer[index++], splitResult.getText());
         }
     }
 
@@ -79,8 +79,8 @@ public class SplitterManagerTest {
 
         String[] answer = {"안녕하세요 반갑습니다.", "조승현입니다."};
         int index = 0;
-        for (Sentence sentence : splitter.split(text)) {
-            Assert.assertEquals(answer[index++], sentence.getText());
+        for (SplitResult splitResult : splitter.split(text)) {
+            Assert.assertEquals(answer[index++], splitResult.getText());
         }
     }
 

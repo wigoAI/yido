@@ -19,11 +19,9 @@ import com.github.wjrmffldrhrl.Area;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import org.apache.poi.ss.formula.functions.T;
 import org.moara.splitter.manager.SplitConditionManager;
 import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.utils.Validation;
-import org.moara.splitter.Config;
 import org.moara.splitter.utils.file.FileManager;
 
 import java.util.*;
@@ -34,39 +32,53 @@ import java.util.stream.Collectors;
 /**
  * 구분 영역 처리기
  * <p>
- * TODO 1. 조건 변경시 lock
- * 2. refactoring
+ * TODO 1. Collection 줄이기
+ *      2. 조건 변경시 lock
+ *      3. refactoring
+ *      4. 분할 필요
  *
  * @author wjrmffldrhrl
  */
 public class TerminatorAreaProcessor {
 
-    private final List<SplitCondition> splitConditions;
-    private final List<SplitCondition> patternSplitConditions = new ArrayList<>();
+    private SplitCondition[] splitConditions;
+    private SplitCondition[] patternSplitConditions;
+
+    /*
+     * TODO 1. 사용은 배열로, 입력 및 수정은 set 으로 하는게 좋다.
+     *          - 사용과 메모리 관리는 별도로
+     */
     private final Set<Integer> conditionLengths = new HashSet<>(); // 문장에서 조건을 찾을 때 사용됨
     private final Set<String> splitConditionValues = new HashSet<>();
-    private final Config config;
+    private final int minResultLength;
     private boolean isContainPatternCondition = false;
+
+    public TerminatorAreaProcessor(List<SplitCondition> splitConditions) {
+        this(splitConditions, 5);
+    }
 
     /**
      * Constructor
      *
      * @param splitConditions 구분 조건
-     * @param config          설정값
+     * @param minResultLength 설정값
      */
-    public TerminatorAreaProcessor(List<SplitCondition> splitConditions, Config config) {
-        this.splitConditions = splitConditions;
-        this.config = config;
+    public TerminatorAreaProcessor(List<SplitCondition> splitConditions, int minResultLength) {
+        this.splitConditions = splitConditions.toArray(new SplitCondition[0]);
+        this.minResultLength = minResultLength;
 
-        for (SplitCondition splitCondition : splitConditions) {
+        List<SplitCondition> patternSplitConditionList = new ArrayList<>();
+        for (SplitCondition splitCondition : this.splitConditions) {
             if (!splitCondition.isPattern()) {
                 splitConditionValues.add(splitCondition.getValue());
                 conditionLengths.add(splitCondition.getValue().length());
             } else {
                 isContainPatternCondition = true;
-                patternSplitConditions.add(splitCondition);
+                patternSplitConditionList.add(splitCondition);
             }
         }
+
+        this.patternSplitConditions = patternSplitConditionList.toArray(new SplitCondition[0]);
 
     }
 
@@ -90,8 +102,12 @@ public class TerminatorAreaProcessor {
         List<Integer> splitPoints = new ArrayList<>();
         String tmpText = text.trim();
 
+        /*
+         * TODO 1. 이벤트마다 정렬이 되는 부분 수정할 것
+         *          - 정렬된 배열 사용
+         */
         conditionLengths.stream().sorted(Comparator.reverseOrder()).forEach(processingLength -> {
-            for (int i = tmpText.length() - config.MIN_RESULT_LENGTH; i >= 0; i--) {
+            for (int i = tmpText.length() - minResultLength; i >= 0; i--) {
                 if (tmpText.length() < i + processingLength) {
                     continue;
                 }
@@ -101,22 +117,32 @@ public class TerminatorAreaProcessor {
 
                 if (splitConditionValues.contains(targetString)) {
 
-                    SplitCondition splitCondition = splitConditions.stream()
-                            .filter(c -> c.getValue().equals(targetString)).findAny()
-                            .orElseThrow(() -> new RuntimeException("No condition with this value : [" + targetString + "]"));
+                    SplitCondition targetSplitCondition = null;
 
-                    if (isValidCondition(tmpText, splitCondition, targetArea.getBegin())) {
+                    for (SplitCondition splitCondition : splitConditions) {
+                        if (splitCondition.getValue().equals(targetString)) {
+                            targetSplitCondition = splitCondition;
+                            break;
+                        }
+                    }
+
+                    if (targetSplitCondition == null) {
+                        new RuntimeException("No condition with this value : [" + targetString + "]");
+                    }
+
+                    if (isValidCondition(tmpText, targetSplitCondition, targetArea.getBegin())) {
                         int splitPoint;
-                        if (splitCondition.getSplitPosition() == 'F') {
+                        assert targetSplitCondition != null;
+                        if (targetSplitCondition.getSplitPosition() == 'F') {
                             splitPoint = targetArea.getBegin();
                         } else {
                             int additionalSignLength = getAdditionalSignLength(targetArea.getEnd(), tmpText);
                             splitPoint = targetArea.getEnd() + additionalSignLength;
                         }
 
-                        if (isValidSplitPoint(exceptionAreas, splitPoints, tmpText, splitPoint)) continue;
-
-                        splitPoints.add(splitPoint);
+                        if (isValidSplitPoint(exceptionAreas, splitPoints, tmpText, splitPoint)){
+                            splitPoints.add(splitPoint);
+                        }
                     }
                 }
             }
@@ -124,38 +150,14 @@ public class TerminatorAreaProcessor {
 
         if (isContainPatternCondition) {
             for (SplitCondition splitCondition : patternSplitConditions) {
-                splitPoints.addAll(findSplitPointWithPattern(text, splitCondition, exceptionAreas));
+                if (splitCondition.isPattern())
+                    splitPoints.addAll(findSplitPointWithPattern(text, splitCondition, exceptionAreas));
             }
         }
 
         return splitPoints.stream().sorted().collect(Collectors.toList());
     }
 
-    private boolean isValidSplitPoint(List<Area> exceptionAreas, List<Integer> splitPoints, String tmpText, int splitPoint) {
-        boolean invalidSplitPointFlag = false;
-
-        for (Area exceptionArea : exceptionAreas) {
-            if (exceptionArea.contains(splitPoint)) {
-                invalidSplitPointFlag = true;
-                break;
-            }
-        }
-
-        // check near points
-        for (int p = 0; p <= config.MIN_RESULT_LENGTH && !invalidSplitPointFlag; p++) {
-            if (splitPoints.contains(splitPoint + p)) {
-                invalidSplitPointFlag = true;
-                break;
-            }
-        }
-
-        if (splitPoint < config.MIN_RESULT_LENGTH
-                || splitPoint > tmpText.length() - config.MIN_RESULT_LENGTH) {
-            return true;
-        }
-
-        return invalidSplitPointFlag;
-    }
 
 
     private List<Integer> findSplitPoint(String text, List<Area> exceptionAreas) {
@@ -190,11 +192,9 @@ public class TerminatorAreaProcessor {
                 splitPoint += splitCondition.getValue().length();
                 splitPoint += getAdditionalSignLength(splitPoint, tmpText);
 
-                if (!isValidSplitPoint(exceptionAreas, splitPoints, tmpText, splitPoint)) {
-                    continue;
+                if (isValidSplitPoint(exceptionAreas, splitPoints, tmpText, splitPoint)) {
+                    splitPoints.add(splitPoint);
                 }
-
-                splitPoints.add(splitPoint);
 
             } else { // 앞
                 if (isValidSplitPoint(exceptionAreas, splitPoints, tmpText, splitPoint)) {
@@ -204,6 +204,7 @@ public class TerminatorAreaProcessor {
                 splitPoint += splitCondition.getValue().length();
             }
         }
+
         return splitPoints;
     }
 
@@ -228,11 +229,9 @@ public class TerminatorAreaProcessor {
                 splitPoint = matcher.start();
             }
 
-            if (!isValidSplitPoint(exceptionAreas, splitPoints, tmpText, splitPoint)) {
-                continue;
+            if (isValidSplitPoint(exceptionAreas, splitPoints, tmpText, splitPoint)) {
+                splitPoints.add(splitPoint);
             }
-
-            splitPoints.add(splitPoint);
         }
 
         return splitPoints;
@@ -260,7 +259,7 @@ public class TerminatorAreaProcessor {
     private boolean isValidCondition(String text, SplitCondition splitCondition, int conditionBeginPoint) {
         boolean isValid = true;
 
-        if (conditionBeginPoint < config.MIN_RESULT_LENGTH || conditionBeginPoint > text.length() - config.MIN_RESULT_LENGTH) {
+        if (conditionBeginPoint < minResultLength || conditionBeginPoint > text.length() - minResultLength) {
             return false;
         }
 
@@ -286,10 +285,32 @@ public class TerminatorAreaProcessor {
                 isValid = false;
                 break;
             }
-
         }
 
         return isValid;
+    }
+
+    private boolean isValidSplitPoint(List<Area> exceptionAreas, List<Integer> splitPoints, String tmpText, int splitPoint) {
+
+        for (Area exceptionArea : exceptionAreas) {
+            if (exceptionArea.contains(splitPoint)) {
+                return false;
+            }
+        }
+
+        // check near points
+        for (int p = 0; p <= minResultLength; p++) {
+            if (splitPoints.contains(splitPoint + p)) {
+                return false;
+            }
+        }
+
+        if (splitPoint < minResultLength
+                || splitPoint > tmpText.length() - minResultLength) {
+            return false;
+        }
+
+        return true;
     }
 
 
@@ -299,11 +320,23 @@ public class TerminatorAreaProcessor {
      * @param additionalSplitCondition 추가할 문장 구분 조건
      */
     public synchronized void addSplitConditions(List<SplitCondition> additionalSplitCondition) {
+        List<SplitCondition> splitConditions = Arrays.asList(this.splitConditions.clone());
+        List<SplitCondition> patternSplitConditions = Arrays.asList(this.patternSplitConditions.clone());
+
         for (SplitCondition splitCondition : additionalSplitCondition) {
-            splitConditions.add(splitCondition);
-            conditionLengths.add(splitCondition.getValue().length());
-            splitConditionValues.add(splitCondition.getValue());
+            if (splitCondition.isPattern()) {
+                isContainPatternCondition = true;
+                patternSplitConditions.add(splitCondition);
+            } else {
+                splitConditions.add(splitCondition);
+                conditionLengths.add(splitCondition.getValue().length());
+                splitConditionValues.add(splitCondition.getValue());
+            }
+
         }
+
+        this.splitConditions = splitConditions.toArray(new SplitCondition[0]);
+        this.patternSplitConditions = patternSplitConditions.toArray(new SplitCondition[0]);
     }
 
     /**
@@ -312,24 +345,36 @@ public class TerminatorAreaProcessor {
      * @param unnecessarySplitCondition 제거할 문장 구분 조건
      */
     public synchronized void deleteSplitConditions(List<SplitCondition> unnecessarySplitCondition) {
-        for (SplitCondition splitCondition : unnecessarySplitCondition) {
-            splitConditions.removeIf(item -> item.getValue().equals(splitCondition.getValue()));
-            splitConditionValues.remove(splitCondition.getValue());
+        List<SplitCondition> splitConditions = Arrays.asList(this.splitConditions.clone());
+        List<SplitCondition> patternSplitConditions = Arrays.asList(this.patternSplitConditions.clone());
 
-            // 같은 길이의 조건이 있다면
-            // 문자열 길이 set에서 해당 길이를 제거하지 않는다.
-            boolean isContainLength = false;
-            for (String value : splitConditionValues) {
-                if (value.length() == splitCondition.getValue().length()) {
-                    isContainLength = true;
-                    break;
+        for (SplitCondition splitCondition : unnecessarySplitCondition) {
+            if (splitCondition.isPattern()) {
+                patternSplitConditions.removeIf(item -> item.getValue().equals(splitCondition.getValue()));
+            } else {
+                splitConditions.removeIf(item -> item.getValue().equals(splitCondition.getValue()));
+                splitConditionValues.remove(splitCondition.getValue());
+
+                // 같은 길이의 조건이 있다면
+                // 문자열 길이 set에서 해당 길이를 제거하지 않는다.
+                boolean isContainLength = false;
+                for (String value : splitConditionValues) {
+                    if (value.length() == splitCondition.getValue().length()) {
+                        isContainLength = true;
+                        break;
+                    }
+                }
+
+                if (!isContainLength) {
+                    conditionLengths.remove(splitCondition.getValue().length());
                 }
             }
+        }
 
-            if (!isContainLength) {
-                conditionLengths.remove(splitCondition.getValue().length());
-            }
-
+        this.splitConditions = splitConditions.toArray(new SplitCondition[0]);
+        this.patternSplitConditions = patternSplitConditions.toArray(new SplitCondition[0]);
+        if (patternSplitConditions.size() == 0) {
+            isContainPatternCondition = false;
         }
     }
 
@@ -366,13 +411,13 @@ public class TerminatorAreaProcessor {
 
         JsonObject splitterJson = FileManager.getJsonObjectByFile("splitter/basic.json");
 //        String key = splitterJson.get("id").getAsString();
-        Config config = new Config(splitterJson.get("minimum_split_length").getAsInt());
+        int config = splitterJson.get("minimum_split_length").getAsInt();
         JsonArray conditionArray = splitterJson.get("conditions").getAsJsonArray();
-        List<String> conditionRoleNames = new ArrayList<>();
+        List<String> conditionRuleNames = new ArrayList<>();
         for (JsonElement jsonObject : conditionArray) {
-            conditionRoleNames.add(jsonObject.getAsString());
+            conditionRuleNames.add(jsonObject.getAsString());
         }
-        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(conditionRoleNames);
+        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(conditionRuleNames);
         List<ExceptionAreaProcessor> exceptionAreaProcessors = Arrays.asList(new BracketAreaProcessor());
 
         TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, config);

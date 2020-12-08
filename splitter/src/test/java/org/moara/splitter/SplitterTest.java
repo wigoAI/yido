@@ -1,6 +1,5 @@
 package org.moara.splitter;
 
-import org.apache.poi.ss.formula.functions.T;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -8,14 +7,12 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import org.moara.splitter.utils.SplitCondition;
-import org.moara.splitter.utils.Sentence;
+import org.moara.splitter.utils.SplitResult;
 import org.moara.splitter.utils.Validation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.stream.IntStream;
 
 public class SplitterTest {
     static volatile int[] endCount = {0};
@@ -104,9 +101,9 @@ public class SplitterTest {
         assertEquals(splitter.split(newsData).length, answer.length);
 
         int index = 0;
-        for(Sentence sentence : splitter.split(newsData)) {
+        for(SplitResult splitResult : splitter.split(newsData)) {
 
-            assertEquals(answer[index++], sentence.getText());
+            assertEquals(answer[index++], splitResult.getText());
         }
 
 
@@ -128,15 +125,15 @@ public class SplitterTest {
                 "가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다.",
                 "15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다."};
 
-        Sentence[] splitResults = splitter.split(newsData);
+        SplitResult[] splitResults = splitter.split(newsData);
 
-        Arrays.stream(splitResults).forEach(sentence -> System.out.println(sentence.getText()));
+        Arrays.stream(splitResults).forEach(splitResult -> System.out.println(splitResult.getText()));
 
         assertEquals(splitResults.length, answer.length);
         int index = 0;
-        for(Sentence sentence : splitResults) {
+        for(SplitResult splitResult : splitResults) {
 
-            assertEquals(answer[index++], sentence.getText());
+            assertEquals(answer[index++], splitResult.getText());
         }
 
         String[] answer2 = {"거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다.",
@@ -147,9 +144,9 @@ public class SplitterTest {
 
         assertEquals(splitter.split(newsData).length, answer2.length);
         index = 0;
-        for(Sentence sentence : splitter.split(newsData)) {
+        for(SplitResult splitResult : splitter.split(newsData)) {
 
-            assertEquals(answer2[index++], sentence.getText());
+            assertEquals(answer2[index++], splitResult.getText());
         }
     }
 
@@ -170,8 +167,8 @@ public class SplitterTest {
 
         assertEquals(splitter.split(newsData).length, answer.length);
         int index = 0;
-        for(Sentence sentence : splitter.split(newsData)) {
-            assertEquals(answer[index++], sentence.getText());
+        for(SplitResult splitResult : splitter.split(newsData)) {
+            assertEquals(answer[index++], splitResult.getText());
         }
 
 
@@ -185,23 +182,23 @@ public class SplitterTest {
 
         splitter.addValidation(validations);
 
-        Sentence[] sentences = splitter.split(newsData);
+        SplitResult[] splitResults = splitter.split(newsData);
 
-        assertEquals(sentences.length, answer2.length);
+        assertEquals(splitResults.length, answer2.length);
 
         index = 0;
-        for(Sentence sentence : sentences) {
-            assertEquals(answer2[index++], sentence.getText());
+        for(SplitResult splitResult : splitResults) {
+            assertEquals(answer2[index++], splitResult.getText());
         }
 
         splitter.deleteValidation(validations);
 
-        sentences = splitter.split(newsData);
-        assertEquals(sentences.length, answer.length);
+        splitResults = splitter.split(newsData);
+        assertEquals(splitResults.length, answer.length);
 
         index = 0;
-        for(Sentence sentence : sentences) {
-            assertEquals(answer[index++], sentence.getText());
+        for(SplitResult splitResult : splitResults) {
+            assertEquals(answer[index++], splitResult.getText());
         }
     }
 
@@ -216,10 +213,15 @@ public class SplitterTest {
                 "1. 교실에서는 조용히 하기",
                 "2. 복도에서 뛰어다니지 않기",
                 "3. 지각하면 벌금내기 입니다."};
-        assertEquals(answers.length, splitter.split(data).length);
+
+        SplitResult[] splitResults = splitter.split(data);
+        for (SplitResult splitResult : splitResults) {
+            System.out.println(splitResult.getText());
+        }
+        assertEquals(answers.length, splitResults.length);
         int answerIndex = 0;
-        for (Sentence sentence : splitter.split(data)) {
-            assertEquals(answers[answerIndex++], sentence.getText());
+        for (SplitResult splitResult : splitResults) {
+            assertEquals(answers[answerIndex++], splitResult.getText());
         }
     }
 
@@ -237,16 +239,16 @@ public class SplitterTest {
                 "다4.다.다.",
                 "다5.다.다."};
         Splitter splitter = SplitterManager.getSplitterManager().getSplitter("test");
-        Sentence[] sentences = splitter.split(data);
+        SplitResult[] splitResults = splitter.split(data);
 
-        for (Sentence sentence : sentences) {
-            System.out.println(sentence.getText());
+        for (SplitResult splitResult : splitResults) {
+            System.out.println(splitResult.getText());
         }
-        Assert.assertEquals(sentences.length, answer.length);
+        Assert.assertEquals(splitResults.length, answer.length);
 
         int i = 0;
-        for (Sentence sentence : sentences) {
-            Assert.assertEquals(answer[i++], sentence.getText());
+        for (SplitResult splitResult : splitResults) {
+            Assert.assertEquals(answer[i++], splitResult.getText());
         }
 
     }

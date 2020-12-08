@@ -15,13 +15,11 @@
  */
 package org.moara.splitter.utils;
 
-import org.moara.splitter.utils.RoleProperty;
-
 /**
  * 유효성
  * @author wjrmffldrhrl
  */
-public class Validation extends RoleProperty{
+public class Validation extends RuleProperty {
     private final String value;
 
     public Validation(String value, char matchFlag, char comparePosition) {
@@ -29,8 +27,8 @@ public class Validation extends RoleProperty{
         this.value = value;
     }
 
-    public Validation(String value, RoleProperty roleProperty) {
-        this(value, roleProperty.getFlag(), roleProperty.getPosition());
+    public Validation(String value, RuleProperty ruleProperty) {
+        this(value, ruleProperty.getFlag(), ruleProperty.getPosition());
     }
 
     public String getValue() { return value; }

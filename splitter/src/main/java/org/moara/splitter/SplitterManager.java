@@ -33,6 +33,7 @@ import java.util.*;
  *
  * 기본 구분기를 사용하기 위해서는 {@code getSplitter()} 매서드를 사용해 기본 구분기의 인스턴스를 받을 수 있다.
  * 해당 메서드를 처음 호출하기 전 까지는 인스턴스는 존재하지 않다가 첫 호출 시 구분기를 생성한다.
+ *
  * @author wjrmffldrhrl
  */
 public class SplitterManager {
@@ -44,8 +45,9 @@ public class SplitterManager {
      * SplitterManager 인스턴스 생성 및 반환
      * @return SplitterManager instance
      *
+     * TODO 1. 다른 방식 적용
      */
-    public static synchronized SplitterManager getSplitterManager() {
+    public static SplitterManager getSplitterManager() {
         if (splitterManager == null) {
             splitterManager = new SplitterManager();
         }
@@ -86,6 +88,9 @@ public class SplitterManager {
      *
      * 멀티 쓰레드에 안전하게 생성할 수 있도록 동기화처리가 되어있다.
      *
+     * TODO 1. lock 구간을 id 단위로 나눌 수 있다.
+     *      2. json 입력과 분리
+     *      3. core에서 json 고려
      * @param splitterJson 형식에 맞춘 jsonObject
      * @return splitter 구현체
      */
@@ -110,19 +115,19 @@ public class SplitterManager {
 
     private void createSplitterByJson(JsonObject splitterJson) {
         String key = splitterJson.get("id").getAsString();
-        Config config = new Config(splitterJson.get("minimum_split_length").getAsInt());
+        int minResultLength = splitterJson.get("minimum_split_length").getAsInt();
         JsonArray conditionArray = splitterJson.get("conditions").getAsJsonArray();
 
-        List<String> conditionRoleNames = new ArrayList<>();
+        List<String> conditionRuleNames = new ArrayList<>();
         for (JsonElement jsonObject : conditionArray) {
-            conditionRoleNames.add(jsonObject.getAsString());
+            conditionRuleNames.add(jsonObject.getAsString());
         }
 
-        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(conditionRoleNames);
-        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, config);
+        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(conditionRuleNames);
+        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, minResultLength);
         List<ExceptionAreaProcessor> exceptionAreaProcessors = Arrays.asList(new BracketAreaProcessor());
 
-        splitterMap.put(key, new SentenceSplitter(terminatorAreaProcessor, exceptionAreaProcessors));
+        splitterMap.put(key, new RuleSplitter(terminatorAreaProcessor, exceptionAreaProcessors));
 
     }
 

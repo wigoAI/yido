@@ -18,7 +18,7 @@ package org.moara.splitter;
 import com.github.wjrmffldrhrl.Area;
 import org.moara.splitter.processor.ExceptionAreaProcessor;
 import org.moara.splitter.processor.TerminatorAreaProcessor;
-import org.moara.splitter.utils.Sentence;
+import org.moara.splitter.utils.SplitResult;
 import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.utils.Validation;
 
@@ -30,7 +30,7 @@ import java.util.List;
  *
  * @author wjrmffldrhrl
  */
-class SentenceSplitter implements Splitter {
+class RuleSplitter implements Splitter {
 
     protected final TerminatorAreaProcessor terminatorAreaProcessor;
     protected final ExceptionAreaProcessor[] exceptionAreaProcessors;
@@ -39,18 +39,20 @@ class SentenceSplitter implements Splitter {
      * 구분기 생성자
      * package-private 하기 때문에  SplitterManager에서만 접근 가능하다.
      *
-     *
      * @param terminatorAreaProcessor 구분 동작을 수행하는 processor
      * @param exceptionAreaProcessors 예외 영역을 지정해주는 processor, 두 개 이상 적용시킬 수 있다.
+     *                                
+     *  TODO 1. ExceptionAreaProcessor를 HashMap으로 관리
+     *          - 입출력만 hashMap 으로
      */
-    SentenceSplitter(TerminatorAreaProcessor terminatorAreaProcessor,
-                     List<ExceptionAreaProcessor> exceptionAreaProcessors) {
+    RuleSplitter(TerminatorAreaProcessor terminatorAreaProcessor,
+                 List<ExceptionAreaProcessor> exceptionAreaProcessors) {
         this.terminatorAreaProcessor = terminatorAreaProcessor;
         this.exceptionAreaProcessors = exceptionAreaProcessors.toArray(new ExceptionAreaProcessor[0]);
     }
 
     @Override
-    public Sentence[] split(String text) {
+    public SplitResult[] split(String text) {
         if (text == null || text.isEmpty()) {
             throw new IllegalArgumentException("Input text is null or empty");
         }
@@ -58,7 +60,6 @@ class SentenceSplitter implements Splitter {
         List<Integer> splitPoint = getSplitPoint(text);
 
         return doSplit(splitPoint, text);
-
     }
 
     private List<Integer> getSplitPoint(String text) {
@@ -71,20 +72,20 @@ class SentenceSplitter implements Splitter {
     }
 
 
-    private Sentence[] doSplit(List<Integer> splitPoint, String inputData) {
-        Sentence[] result = new Sentence[splitPoint.size() + 1];
+    private SplitResult[] doSplit(List<Integer> splitPoint, String inputData) {
+        SplitResult[] result = new SplitResult[splitPoint.size() + 1];
         int startIndex = 0;
         int resultIndex = 0;
 
         for(int point : splitPoint) {
-            Sentence sentence = new Sentence(startIndex, point, inputData.substring(startIndex, point).trim());
+            SplitResult splitResult = new SplitResult(startIndex, point, inputData.substring(startIndex, point).trim());
 
-            result[resultIndex++] = sentence;
+            result[resultIndex++] = splitResult;
             startIndex = point;
 
         }
 
-        result[resultIndex] =  new Sentence(startIndex, inputData.length(), inputData.substring(startIndex).trim());
+        result[resultIndex] =  new SplitResult(startIndex, inputData.length(), inputData.substring(startIndex).trim());
 
         return result;
     }
