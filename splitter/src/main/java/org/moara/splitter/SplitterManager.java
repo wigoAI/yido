@@ -75,7 +75,20 @@ public class SplitterManager {
         return getSplitter(splitterJson);
     }
 
+
+
+
     private final Object createLock = new Object();
+
+    /**
+     * JsonObject를 통해 Splitter 획득
+     * 해당 JsonObject의 key로 생성된 Splitter가 존재하지 않으면 새로 생성한다.
+     *
+     * 멀티 쓰레드에 안전하게 생성할 수 있도록 동기화처리가 되어있다.
+     *
+     * @param splitterJson 형식에 맞춘 jsonObject
+     * @return splitter 구현체
+     */
     public Splitter getSplitter(JsonObject splitterJson) {
         checkSplitterJsonValidation(splitterJson);
 
@@ -94,7 +107,6 @@ public class SplitterManager {
 
         return splitter;
     }
-
 
     private void createSplitterByJson(JsonObject splitterJson) {
         String key = splitterJson.get("id").getAsString();

@@ -239,6 +239,9 @@ public class SplitterTest {
         Splitter splitter = SplitterManager.getSplitterManager().getSplitter("test");
         Sentence[] sentences = splitter.split(data);
 
+        for (Sentence sentence : sentences) {
+            System.out.println(sentence.getText());
+        }
         Assert.assertEquals(sentences.length, answer.length);
 
         int i = 0;

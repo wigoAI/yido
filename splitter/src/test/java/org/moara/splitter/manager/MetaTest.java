@@ -14,7 +14,7 @@ public class MetaTest {
     @Test
     public void testMetaRole() {
         String data = "[x]d'x'd`x`d‘x’d“x”d{x}d<x>d(x)d\"x\"d";
-        Pattern pattern = MetaManager.getDifferentSideBracketPattern();
+        Pattern pattern = ExceptionRoleManager.getDifferentSideBracketPattern();
 
 
         Matcher matcher = pattern.matcher(data);
@@ -27,7 +27,7 @@ public class MetaTest {
         Assert.assertEquals(6, findCount);
 
 
-        pattern = MetaManager.getSameSideBracketPattern();
+        pattern = ExceptionRoleManager.getSameSideBracketPattern();
         matcher = pattern.matcher(data);
 
         findCount = 0;

@@ -20,7 +20,6 @@ import com.github.wjrmffldrhrl.Area;
 /**
  * 문장 단위 데이터
  *
- *
  * @author wjrmffldrhrl
  */
 public class Sentence extends Area {
@@ -39,5 +38,6 @@ public class Sentence extends Area {
     }
 
     public String getText() { return this.text; }
+
 
 }

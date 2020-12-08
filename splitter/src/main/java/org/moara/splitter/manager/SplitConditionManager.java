@@ -32,6 +32,13 @@ import java.util.List;
  */
 public class SplitConditionManager {
     protected static final String conditionPath = "condition/";
+
+    /**
+     * 문장 구분시에 사용할 구분 조건이 명시된 json 파일 이름을 넘겨받는다.
+     * 해당 json 파일에서 정보를 가져와 구분 조건 리스트를 반환한다.
+     * @param splitConditionRoleNames json file names
+     * @return 구분 조건 리스트
+     */
     public static List<SplitCondition> getSplitConditions(List<String> splitConditionRoleNames) {
         ArrayList<String> arrayList = (ArrayList<String>) splitConditionRoleNames;
 
@@ -42,12 +49,11 @@ public class SplitConditionManager {
      * 조건 role로부터 조건값을 가져옴
      * role name에서 파일명을 추출하여 해당 json 파일에 접근
      *
-     * @param splitConditionRoleNames JSON fil name
+     * @param splitConditionRoleNames JSON file name
      * @return SplitConditions
      */
     public static List<SplitCondition> getSplitConditions(String[] splitConditionRoleNames) {
         List<SplitCondition> splitConditions = new ArrayList<>();
-
 
         for (String splitConditionRoleName : splitConditionRoleNames) {
             splitConditions.addAll(getSplitConditionsByRole(splitConditionRoleName));

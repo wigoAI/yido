@@ -29,8 +29,8 @@ public interface ExceptionAreaProcessor {
 
     /**
      * 예외 영역 찾기
-     * @param text
-     * @return Exception ]Area list
+     * @param text 예외 영역을 찾을 데이터
+     * @return Exception Area list
      */
     List<Area> find(String text);
 

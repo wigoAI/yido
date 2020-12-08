@@ -16,9 +16,15 @@
 package org.moara.splitter.processor;
 
 import com.github.wjrmffldrhrl.Area;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import org.apache.poi.ss.formula.functions.T;
+import org.moara.splitter.manager.SplitConditionManager;
 import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.utils.Validation;
 import org.moara.splitter.Config;
+import org.moara.splitter.utils.file.FileManager;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -26,29 +32,31 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * 구분점 처리기
+ * 구분 영역 처리기
+ * <p>
+ * TODO 1. 조건 변경시 lock
+ * 2. refactoring
  *
- * TODO 1. 조건 lock
  * @author wjrmffldrhrl
  */
 public class TerminatorAreaProcessor {
 
     private final List<SplitCondition> splitConditions;
     private final List<SplitCondition> patternSplitConditions = new ArrayList<>();
-    private final Set<Integer> conditionLengths = new HashSet<>();
+    private final Set<Integer> conditionLengths = new HashSet<>(); // 문장에서 조건을 찾을 때 사용됨
     private final Set<String> splitConditionValues = new HashSet<>();
-    private boolean isContainPatternCondition = false;
     private final Config config;
+    private boolean isContainPatternCondition = false;
 
     /**
      * Constructor
+     *
      * @param splitConditions 구분 조건
-     * @param config 설정값
+     * @param config          설정값
      */
     public TerminatorAreaProcessor(List<SplitCondition> splitConditions, Config config) {
         this.splitConditions = splitConditions;
         this.config = config;
-
 
         for (SplitCondition splitCondition : splitConditions) {
             if (!splitCondition.isPattern()) {
@@ -79,23 +87,25 @@ public class TerminatorAreaProcessor {
     }
 
     private List<Integer> findByText(String text, List<Area> exceptionAreas) {
-        Set<Integer> splitPoints = new HashSet<>();
+        List<Integer> splitPoints = new ArrayList<>();
         String tmpText = text.trim();
 
         conditionLengths.stream().sorted(Comparator.reverseOrder()).forEach(processingLength -> {
-            for(int i = tmpText.length() - config.MIN_RESULT_LENGTH; i >= 0 ; i--)  {
-                if (tmpText.length() < i + processingLength) { continue; }
+            for (int i = tmpText.length() - config.MIN_RESULT_LENGTH; i >= 0; i--) {
+                if (tmpText.length() < i + processingLength) {
+                    continue;
+                }
 
                 Area targetArea = new Area(i, i + processingLength);
                 String targetString = tmpText.substring(targetArea.getBegin(), targetArea.getEnd());
 
-                if(splitConditionValues.contains(targetString)) {
+                if (splitConditionValues.contains(targetString)) {
 
                     SplitCondition splitCondition = splitConditions.stream()
                             .filter(c -> c.getValue().equals(targetString)).findAny()
                             .orElseThrow(() -> new RuntimeException("No condition with this value : [" + targetString + "]"));
 
-                    if(isValidCondition(tmpText, splitCondition, targetArea.getBegin())) {
+                    if (isValidCondition(tmpText, splitCondition, targetArea.getBegin())) {
                         int splitPoint;
                         if (splitCondition.getSplitPosition() == 'F') {
                             splitPoint = targetArea.getBegin();
@@ -112,20 +122,16 @@ public class TerminatorAreaProcessor {
             }
         });
 
-
-
         if (isContainPatternCondition) {
             for (SplitCondition splitCondition : patternSplitConditions) {
-                splitPoints.addAll(findSplitPointWithPattern(text, splitCondition));
+                splitPoints.addAll(findSplitPointWithPattern(text, splitCondition, exceptionAreas));
             }
         }
-
-
 
         return splitPoints.stream().sorted().collect(Collectors.toList());
     }
 
-    private boolean isValidSplitPoint(List<Area> exceptionAreas, Set<Integer> splitPoints, String tmpText, int splitPoint) {
+    private boolean isValidSplitPoint(List<Area> exceptionAreas, List<Integer> splitPoints, String tmpText, int splitPoint) {
         boolean invalidSplitPointFlag = false;
 
         for (Area exceptionArea : exceptionAreas) {
@@ -135,6 +141,7 @@ public class TerminatorAreaProcessor {
             }
         }
 
+        // check near points
         for (int p = 0; p <= config.MIN_RESULT_LENGTH && !invalidSplitPointFlag; p++) {
             if (splitPoints.contains(splitPoint + p)) {
                 invalidSplitPointFlag = true;
@@ -151,57 +158,80 @@ public class TerminatorAreaProcessor {
     }
 
 
-    private List<Integer> findSplitPoint(String text) {
+    private List<Integer> findSplitPoint(String text, List<Area> exceptionAreas) {
         List<Integer> splitPoint = new ArrayList<>();
         for (SplitCondition splitCondition : splitConditions) {
             if (splitCondition.isPattern()) {
-                splitPoint.addAll(findSplitPointWithPattern(text, splitCondition));
+                splitPoint.addAll(findSplitPointWithPattern(text, splitCondition, exceptionAreas));
             } else {
-                splitPoint.addAll(findSplitPointWithValue(text, splitCondition));
+                splitPoint.addAll(findSplitPointWithValue(text, splitCondition, exceptionAreas));
             }
         }
 
         return splitPoint;
     }
 
-    private List<Integer> findSplitPointWithValue(String text, SplitCondition splitCondition) {
+    private List<Integer> findSplitPointWithValue(String text, SplitCondition splitCondition, List<Area> exceptionAreas) {
         List<Integer> splitPoints = new ArrayList<>();
+        String tmpText = text.trim();
         int splitPoint = -1;
         while (true) {
-            splitPoint = text.indexOf(splitCondition.getValue(), splitPoint);
-            if (splitPoint == -1) { break; } // 구분 조건 x
+            splitPoint = tmpText.indexOf(splitCondition.getValue(), splitPoint);
+            if (splitPoint == -1) {
+                break;
+            } // 구분 조건 x
 
-            if (!isValidCondition(text, splitCondition, splitPoint)) {
+            if (!isValidCondition(tmpText, splitCondition, splitPoint)) {
                 splitPoint += splitCondition.getValue().length();
                 continue;
             }
 
             if (splitCondition.getSplitPosition() == 'B') { // 문장 구분점 뒤
                 splitPoint += splitCondition.getValue().length();
-                splitPoint += getAdditionalSignLength(splitPoint, text);
+                splitPoint += getAdditionalSignLength(splitPoint, tmpText);
+
+                if (!isValidSplitPoint(exceptionAreas, splitPoints, tmpText, splitPoint)) {
+                    continue;
+                }
+
                 splitPoints.add(splitPoint);
+
             } else { // 앞
-                splitPoints.add(splitPoint);
+                if (isValidSplitPoint(exceptionAreas, splitPoints, tmpText, splitPoint)) {
+                    splitPoints.add(splitPoint);
+                }
+
                 splitPoint += splitCondition.getValue().length();
             }
         }
         return splitPoints;
     }
 
-    private List<Integer> findSplitPointWithPattern(String text,  SplitCondition splitCondition) {
+
+    /**
+     * TODO 1. isValidSplitPoint 적용이 잘 되는지 확인해야 함.
+     *          - 구분 수행을 앞에서 시작하기 때문에 적용이 안될 수 있음
+     */
+    private List<Integer> findSplitPointWithPattern(String text, SplitCondition splitCondition, List<Area> exceptionAreas) {
+        String tmpText = text.trim();
         Pattern pattern = Pattern.compile(splitCondition.getValue());
-        Matcher matcher = pattern.matcher(text);
+        Matcher matcher = pattern.matcher(tmpText);
         List<Integer> splitPoints = new ArrayList<>();
 
         while (matcher.find()) {
             int splitPoint;
             if (splitCondition.getSplitPosition() == 'B') { // 문장 구분점 뒤
                 splitPoint = matcher.end();
-                splitPoint += getAdditionalSignLength(splitPoint, text);
+                splitPoint += getAdditionalSignLength(splitPoint, tmpText);
 
             } else { // 앞
                 splitPoint = matcher.start();
             }
+
+            if (!isValidSplitPoint(exceptionAreas, splitPoints, tmpText, splitPoint)) {
+                continue;
+            }
+
             splitPoints.add(splitPoint);
         }
 
@@ -243,7 +273,9 @@ public class TerminatorAreaProcessor {
                 compareIndexStart -= validation.getValue().length();
             }
 
-            if (compareIndexStart + validation.getValue().length() > text.length()) { continue; }
+            if (compareIndexStart + validation.getValue().length() > text.length()) {
+                continue;
+            }
 
             String compareText = text.substring(compareIndexStart, compareIndexStart + validation.getValue().length());
 
@@ -263,23 +295,23 @@ public class TerminatorAreaProcessor {
 
     /**
      * 문장 구분 조건 추가
+     *
      * @param additionalSplitCondition 추가할 문장 구분 조건
      */
-    public void addSplitConditions(List<SplitCondition> additionalSplitCondition) {
+    public synchronized void addSplitConditions(List<SplitCondition> additionalSplitCondition) {
         for (SplitCondition splitCondition : additionalSplitCondition) {
             splitConditions.add(splitCondition);
             conditionLengths.add(splitCondition.getValue().length());
             splitConditionValues.add(splitCondition.getValue());
         }
-
-
     }
 
     /**
      * 문장 구분 조건 제거
-     * @param unnecessarySplitCondition
+     *
+     * @param unnecessarySplitCondition 제거할 문장 구분 조건
      */
-    public void deleteSplitConditions(List<SplitCondition> unnecessarySplitCondition) {
+    public synchronized void deleteSplitConditions(List<SplitCondition> unnecessarySplitCondition) {
         for (SplitCondition splitCondition : unnecessarySplitCondition) {
             splitConditions.removeIf(item -> item.getValue().equals(splitCondition.getValue()));
             splitConditionValues.remove(splitCondition.getValue());
@@ -303,9 +335,10 @@ public class TerminatorAreaProcessor {
 
     /**
      * 문장 유효성 추가
+     *
      * @param additionalValidations 추가 할 유효성
      */
-    public void addValidation(List<Validation> additionalValidations) {
+    public synchronized void addValidation(List<Validation> additionalValidations) {
         for (SplitCondition splitCondition : splitConditions) {
             splitCondition.getValidations().addAll(additionalValidations);
         }
@@ -313,13 +346,57 @@ public class TerminatorAreaProcessor {
 
     /**
      * 문장 유효성 제거
+     *
      * @param unnecessaryValidations 제거 할 문장 유효성
      */
-    public void deleteValidation(List<Validation> unnecessaryValidations) {
+    public synchronized void deleteValidation(List<Validation> unnecessaryValidations) {
         for (SplitCondition splitCondition : splitConditions) {
             for (Validation validation : unnecessaryValidations) {
                 splitCondition.getValidations().removeIf(item -> item.getValue().equals(validation.getValue()));
             }
         }
+    }
+
+    /**
+     * 성능 테스트
+     */
+    public static void main(String[] args) {
+        String data = "강남역 맛집으로 소문난 강남 토끼정에 다녀왔습니다. 회사 동료 분들과 다녀왔는데 분위기도 좋고 음식도 맛있었어요 다만, 강남 토끼정이 강남 쉑쉑버거 골목길로 쭉 올라가야 하는데 다들 쉑쉑버거의 유혹에 넘어갈 뻔 했답니다 강남역 맛집 토끼정의 외부 모습. 강남 토끼정은 4층 건물 독채로 이루어져 있습니다. 역시 토끼정 본 점 답죠?ㅎㅅㅎ 건물은 크지만 간판이 없기 때문에 지나칠 수 있으니 조심하세요 강남 토끼정의 내부 인테리어. 평일 저녁이었지만 강남역 맛집 답게 사람들이 많았어요. 전체적으로 편안하고 아늑한 공간으로 꾸며져 있었습니다ㅎㅎ 한 가지 아쉬웠던 건 조명이 너무 어두워 눈이 침침했던... 저희는 3층에 자리를 잡고 음식을 주문했습니다. 총 5명이서 먹고 싶은 음식 하나씩 골라 다양하게 주문했어요 첫 번째 준비된 메뉴는 토끼정 고로케와 깻잎 불고기 사라다를 듬뿍 올려 먹는 맛있는 밥입니다. 여러가지 메뉴를 한 번에 시키면 준비되는 메뉴부터 가져다 주더라구요. 토끼정 고로케 금방 튀겨져 나와 겉은 바삭하고 속은 촉촉해 맛있었어요! 깻잎 불고기 사라다는 불고기, 양배추, 버섯을 볶아 깻잎을 듬뿍 올리고 우엉 튀김을 곁들여 밥이랑 함께 먹는 메뉴입니다. 사실 전 고기를 안 먹어서 무슨 맛인지 모르겠지만.. 다들 엄청 잘 드셨습니다ㅋㅋ 이건 제가 시킨 촉촉한 고로케와 크림스튜우동. 강남 토끼정에서 먹은 음식 중에 이게 제일 맛있었어요!!! 크림소스를 원래 좋아하기도 하지만, 느끼하지 않게 부드럽고 달달한 스튜와 쫄깃한 우동면이 너무 잘 어울려 계속 손이 가더라구요. 사진을 보니 또 먹고 싶습니다 간사이 풍 연어 지라시입니다. 일본 간사이 지방에서 많이 먹는 떠먹는 초밥(지라시스시)이라고 하네요. 밑에 와사비 마요밥 위에 연어들이 담겨져 있어 코끝이 찡할 수 있다고 적혀 있는데, 난 와사비 맛 1도 모르겠던데...? 와사비를 안 좋아하는 저는 불행인지 다행인지 연어 지라시를 매우 맛있게 먹었습니다ㅋㅋㅋ 다음 메뉴는 달짝지근한 숯불 갈비 덮밥입니다! 간장 양념에 구운 숯불 갈비에 양파, 깻잎, 달걀 반숙을 터트려 비벼 먹으면 그 맛이 크.. (물론 전 안 먹었지만...다른 분들이 그렇다고 하더라구요ㅋㅋㅋㅋㅋㅋㅋ) 마지막 메인 메뉴 양송이 크림수프와 숯불떡갈비 밥입니다. 크림리조또를 베이스로 위에 그루통과 숯불로 구운 떡갈비가 올라가 있어요! 크림스튜 우동 만큼이나 대박 맛있습니다...ㅠㅠㅠㅠㅠㅠ (크림 소스면 다 좋아하는 거 절대 아닙니다ㅋㅋㅋㅋㅋㅋ) 강남 토끼정 요리는 다 맛있지만 크림소스 요리를 참 잘하는 거 같네요 요건 물만 마시기 아쉬워 시킨 뉴자몽과 밀키소다 딸기통통! 유자와 자몽의 맛을 함께 느낄 수 있는 뉴자몽은 상큼함 그 자체였어요. 하치만 저는 딸기통통 밀키소다가 더 맛있었습니다ㅎㅎ 밀키소다는 토끼정에서만 만나볼 수 있는 메뉴라고 하니 한 번 드셔보시길 추천할게요!! 강남 토끼정은 강남역 맛집답게 모든 음식들이 대체적으로 맛있었어요! 건물 위치도 강남 대로변에서 조금 떨어져 있어 내부 인테리어처럼 아늑한 느낌도 있었구요ㅎㅎ 기회가 되면 다들 꼭 들러보세요~";
+        data = data + data + data + data + data + data + data + data + data + data + data + data;
+
+        JsonObject splitterJson = FileManager.getJsonObjectByFile("splitter/basic.json");
+//        String key = splitterJson.get("id").getAsString();
+        Config config = new Config(splitterJson.get("minimum_split_length").getAsInt());
+        JsonArray conditionArray = splitterJson.get("conditions").getAsJsonArray();
+        List<String> conditionRoleNames = new ArrayList<>();
+        for (JsonElement jsonObject : conditionArray) {
+            conditionRoleNames.add(jsonObject.getAsString());
+        }
+        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(conditionRoleNames);
+        List<ExceptionAreaProcessor> exceptionAreaProcessors = Arrays.asList(new BracketAreaProcessor());
+
+        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, config);
+        String text = data;
+        List<Area> exceptionAreas = new ArrayList<>();
+        for (ExceptionAreaProcessor exceptionAreaProcessor : exceptionAreaProcessors) {
+            exceptionAreas.addAll(exceptionAreaProcessor.find(text));
+        }
+        long beforeTime = System.currentTimeMillis();
+
+        for (int i = 0; i < 100000; i++) {
+            terminatorAreaProcessor.find(text, exceptionAreas);
+        }
+
+        long afterTime = System.currentTimeMillis();
+        long secDiffTime = (afterTime - beforeTime) / 1000;
+        System.out.println("시간(s) : " + secDiffTime);
+
+        beforeTime = System.currentTimeMillis();
+        for (int i = 0; i < 100000; i++) {
+            terminatorAreaProcessor.findSplitPoint(text, exceptionAreas);
+        }
+        afterTime = System.currentTimeMillis();
+        secDiffTime = (afterTime - beforeTime) / 1000;
+        System.out.println("시간(s) : " + secDiffTime);
     }
 }

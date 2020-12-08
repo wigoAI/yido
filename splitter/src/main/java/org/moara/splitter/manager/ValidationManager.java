@@ -24,6 +24,7 @@ import java.util.List;
 /**
  * 유효성 룰 관리자
  *
+ * @author wjrmffldrhrl
  */
 public class ValidationManager {
     protected static String stringGroupPath = "/string_group/";

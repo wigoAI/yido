@@ -24,7 +24,6 @@ import java.util.List;
 /**
  * 구분기 추상체
  *
- *
  * @author wjrmffldrhrl
  */
 public interface Splitter {

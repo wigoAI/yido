@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * 구분 조건
- *
+ * 해당 조건에 대한 유효성도 포함되어 있다.
  * @author wjrmffldrhrl
  */
 public class   SplitCondition extends RoleProperty{
@@ -29,6 +29,12 @@ public class   SplitCondition extends RoleProperty{
     private final List<Validation> validations;
     private final boolean isPattern;
 
+    /**
+     * 구분 조건 빌더
+     * 구분 조건에 사용되는 값들 중
+     * 선택적으로 사용할 수 있는 값들이 많기 때문에 적용함
+     * @author wjrmffldrhrl
+     */
     public static class Builder {
         private final String value;
         private final char splitPosition;

@@ -22,10 +22,10 @@ import org.moara.splitter.utils.file.FileManager;
 import java.util.regex.Pattern;
 
 /**
- * 메타 룰 관리자
+ * 예외영역 룰 관리자
  * @author wjrmffldrhrl
  */
-public class MetaManager {
+public class ExceptionRoleManager {
     protected static final String rolePath = "/exception/";
     private static final String differentSideBracketRoleName = "bracket_exception.json";
     private static final String sameSideBracketRoleName = "same_bracket_exception.json";
@@ -47,7 +47,6 @@ public class MetaManager {
             JsonObject data  = dataArray.get(i).getAsJsonObject();
             String front = data.get("front").getAsString();
             String back = data.get("back").getAsString();
-
 
             left.insert(1, "\\" +front);
             centerRight.insert(2, "\\" + front);
