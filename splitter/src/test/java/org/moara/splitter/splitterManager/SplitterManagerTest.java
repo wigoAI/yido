@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.moara.splitter.Splitter;
 import org.moara.splitter.SplitterManager;
 import org.moara.splitter.TestFileInitializer;
-import org.moara.splitter.utils.SplitResult;
+import org.moara.splitter.utils.Area;
 
 
 public class SplitterManagerTest {
@@ -27,11 +27,11 @@ public class SplitterManagerTest {
     public void testGetBasicSplitter() {
         Splitter splitter = SplitterManager.getInstance().getSplitter();
 
-        String[] answer = {"안녕하세요 반갑습니다.", "조승현입니다."};
+        int[] answer = {12, 20};
 
         int index = 0;
-        for (SplitResult splitResult : splitter.split(text)) {
-            Assert.assertEquals(answer[index++], splitResult.getText());
+        for (Area splitResult : splitter.split(text)) {
+            Assert.assertEquals(answer[index++], splitResult.getEnd());
         }
 
     }
@@ -42,10 +42,10 @@ public class SplitterManagerTest {
         Splitter splitter = SplitterManager.getInstance().getSplitter("test");
 
 
-        String[] answer = {"안녕하세요 반갑습니다.", "조승현입니다."};
+        int[] answer = {12, 20};
         int index = 0;
-        for (SplitResult splitResult : splitter.split(text)) {
-            Assert.assertEquals(answer[index++], splitResult.getText());
+        for (Area splitResult : splitter.split(text)) {
+            Assert.assertEquals(answer[index++], splitResult.getEnd());
         }
     }
 

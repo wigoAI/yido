@@ -1,6 +1,5 @@
 package org.moara.splitter.areaProcessor;
 
-import com.github.wjrmffldrhrl.Area;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -10,6 +9,7 @@ import org.moara.splitter.processor.BracketAreaProcessor;
 import org.moara.splitter.processor.ExceptionAreaProcessor;
 import org.moara.splitter.processor.TerminatorAreaProcessor;
 import org.moara.splitter.manager.*;
+import org.moara.splitter.utils.Area;
 import org.moara.splitter.utils.SplitCondition;
 
 import java.util.ArrayList;

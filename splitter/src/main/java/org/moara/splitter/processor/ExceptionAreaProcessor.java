@@ -15,7 +15,8 @@
  */
 package org.moara.splitter.processor;
 
-import com.github.wjrmffldrhrl.Area;
+
+import org.moara.splitter.utils.Area;
 
 import java.util.List;
 

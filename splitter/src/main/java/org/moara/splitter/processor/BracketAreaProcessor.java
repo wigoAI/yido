@@ -1,7 +1,7 @@
 package org.moara.splitter.processor;
 
-import com.github.wjrmffldrhrl.Area;
 import org.moara.splitter.manager.ExceptionRuleManager;
+import org.moara.splitter.utils.Area;
 
 import java.util.ArrayList;
 import java.util.List;

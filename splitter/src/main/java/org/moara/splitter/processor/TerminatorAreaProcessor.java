@@ -15,21 +15,19 @@
  */
 package org.moara.splitter.processor;
 
-import com.github.wjrmffldrhrl.Area;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.moara.splitter.manager.SplitConditionManager;
+import org.moara.splitter.utils.Area;
 import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.utils.Validation;
 import org.moara.splitter.utils.file.FileManager;
 
-import java.io.FileInputStream;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * 구분 영역 처리기

@@ -15,10 +15,10 @@
  */
 package org.moara.splitter;
 
-import com.github.wjrmffldrhrl.Area;
+
 import org.moara.splitter.processor.ExceptionAreaProcessor;
 import org.moara.splitter.processor.TerminatorAreaProcessor;
-import org.moara.splitter.utils.SplitResult;
+import org.moara.splitter.utils.Area;
 import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.utils.Validation;
 
@@ -53,7 +53,7 @@ class RuleSplitter implements Splitter {
     }
 
     @Override
-    public SplitResult[] split(String text) {
+    public Area[] split(String text) {
         if (text == null || text.isEmpty()) {
             throw new IllegalArgumentException("Input text is null or empty");
         }
@@ -73,20 +73,20 @@ class RuleSplitter implements Splitter {
     }
 
 
-    private SplitResult[] doSplit(List<Integer> splitPoint, String inputData) {
-        SplitResult[] result = new SplitResult[splitPoint.size() + 1];
+    private Area[] doSplit(List<Integer> splitPoint, String inputData) {
+        Area[] result = new Area[splitPoint.size() + 1];
         int startIndex = 0;
         int resultIndex = 0;
 
         for(int point : splitPoint) {
-            SplitResult splitResult = new SplitResult(startIndex, point, inputData.substring(startIndex, point).trim());
+            Area splitResult = new Area(startIndex, point);
 
             result[resultIndex++] = splitResult;
             startIndex = point;
 
         }
 
-        result[resultIndex] =  new SplitResult(startIndex, inputData.length(), inputData.substring(startIndex).trim());
+        result[resultIndex] =  new Area(startIndex, inputData.length());
 
         return result;
     }
