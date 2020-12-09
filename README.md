@@ -19,10 +19,12 @@
 ### 모듈 설명 및 소스
  - https://github.com/wigoAI/yido/tree/master/tokenizer 
 
+## text-mining
+ - text mining 방법의 클래스 제공
+ 
 ## 신조어
 
 ## 오탈자교정
-
 
 ## 전처리기
 - 전반각

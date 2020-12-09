@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+}
+
+group 'org.moara.yido'
+version 'unspecified'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+
+    implementation 'com.seomse.commons:seomse-commons:1.2.3'
+    implementation project(path: ':tokenizer')
+    implementation project(path: ':splitter')
+
+}
