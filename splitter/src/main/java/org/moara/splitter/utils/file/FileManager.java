@@ -18,6 +18,7 @@ package org.moara.splitter.utils.file;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.seomse.commons.config.Config;
 import org.moara.splitter.Splitter;
 
 import java.io.*;
@@ -30,14 +31,14 @@ import java.util.Collection;
  * 파일 관리자 구현체
  *
  * @author wjrmffldrhrl
- *  TODO 1. config 적용
- *          - root path
+ *
  */
 public class FileManager {
     protected static final String pathSeparator = File.separator;
-    protected static final String ABSTRACT_PATH = Splitter.class.getResource("")
-            .getPath().split( "build")[0]
-            + "data" + pathSeparator;
+    protected static final String ABSTRACT_PATH = Config.getConfig("yido.splitter.file.path", Splitter.class.getResource("")
+            .getPath().split("build")[0]
+            + "data" + pathSeparator);
+
 
     /**
      * 경로를 포함한 파일 명으로 파일을 읽어온다.
@@ -134,6 +135,8 @@ public class FileManager {
         return file.delete();
 
     }
+
+
 
 
 }

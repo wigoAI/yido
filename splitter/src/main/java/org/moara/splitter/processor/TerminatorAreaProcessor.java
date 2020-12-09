@@ -114,10 +114,7 @@ public class TerminatorAreaProcessor {
         List<Integer> splitPoints = new ArrayList<>();
         String tmpText = text.trim();
 
-        /*
-         * TODO 1. 이벤트마다 정렬이 되는 부분 수정할 것
-         *          - 정렬된 배열 사용
-         */
+
         for (int processingLength : conditionLengths) {
 
             System.out.println("length  : " + processingLength);

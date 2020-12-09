@@ -43,7 +43,7 @@ public class SplitterTest {
     @Test
     public void testInitSplitter() {
 
-        Splitter basicSplitter =  SplitterManager.getSplitterManager().getSplitter();
+        Splitter basicSplitter =  SplitterManager.getInstance().getSplitter();
 
         assertEquals("강남역 맛집으로 소문난 강남 토끼정에 다녀왔습니다.", basicSplitter.split(data[0])[0].getText());
 
@@ -62,7 +62,7 @@ public class SplitterTest {
 
         for (int USED_CASE = 0 ; USED_CASE < data1000.size() ; USED_CASE++) {
 
-            Splitter splitterImpl = SplitterManager.getSplitterManager().getSplitter();
+            Splitter splitterImpl = SplitterManager.getInstance().getSplitter();
 
             splitterImpl.split(data1000.get(USED_CASE));
 
@@ -78,12 +78,12 @@ public class SplitterTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testSplitEmptyString() {
-        SplitterManager.getSplitterManager().getSplitter().split("");
+        SplitterManager.getInstance().getSplitter().split("");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testSplitNullData() {
-        SplitterManager.getSplitterManager().getSplitter().split(null);
+        SplitterManager.getInstance().getSplitter().split(null);
 
     }
 
@@ -92,7 +92,7 @@ public class SplitterTest {
     @Test
     public void testOtherSplitter() {
 
-        Splitter splitter = SplitterManager.getSplitterManager().getSplitter("test");
+        Splitter splitter = SplitterManager.getInstance().getSplitter("test");
 
         String[] answer = {"거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다.",
                 "그의 고향은 천안이지만 가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다.",
@@ -111,7 +111,7 @@ public class SplitterTest {
 
     @Test
     public void testEditConditionInMemory() {
-        Splitter splitter = SplitterManager.getSplitterManager().getSplitter("test");
+        Splitter splitter = SplitterManager.getInstance().getSplitter("test");
 
 
         List<SplitCondition> additionalSplitCondition = new ArrayList<>();
@@ -157,7 +157,7 @@ public class SplitterTest {
                 "가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다.",
                 "15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다."};
 
-        Splitter splitter = SplitterManager.getSplitterManager().getSplitter("test");
+        Splitter splitter = SplitterManager.getInstance().getSplitter("test");
 
 
         List<SplitCondition> additionalSplitCondition = new ArrayList<>();
@@ -206,7 +206,7 @@ public class SplitterTest {
 
     @Test
     public void testSplitWithRegx() {
-        Splitter splitter = SplitterManager.getSplitterManager().getSplitter("test_regx");
+        Splitter splitter = SplitterManager.getInstance().getSplitter("test_regx");
 
         String data = "지금부터 우리학교 규칙을 설명하겠습니다. 앞에 게시판을 보면 1. 교실에서는 조용히 하기 2. 복도에서 뛰어다니지 않기 3. 지각하면 벌금내기 입니다.";
         String[] answers = {"지금부터 우리학교 규칙을 설명하겠습니다. 앞에 게시판을 보면",
@@ -238,7 +238,7 @@ public class SplitterTest {
                 "다.다.다.",
                 "다4.다.다.",
                 "다5.다.다."};
-        Splitter splitter = SplitterManager.getSplitterManager().getSplitter("test");
+        Splitter splitter = SplitterManager.getInstance().getSplitter("test");
         SplitResult[] splitResults = splitter.split(data);
 
         for (SplitResult splitResult : splitResults) {

@@ -37,23 +37,17 @@ import java.util.*;
  * @author wjrmffldrhrl
  */
 public class SplitterManager {
-    private static SplitterManager splitterManager = null;
     private static final String BASIC_SPLITTER_ID = "basic";
     private final Map<String, Splitter> splitterMap = new HashMap<>();
 
-    /**
-     * SplitterManager 인스턴스 생성 및 반환
-     * @return SplitterManager instance
-     *
-     * TODO 1. 다른 방식 적용
-     */
-    public static SplitterManager getSplitterManager() {
-        if (splitterManager == null) {
-            splitterManager = new SplitterManager();
-        }
-        return splitterManager;
+
+    public static SplitterManager getInstance() {
+        return Singleton.instance;
     }
 
+    private static class Singleton {
+        private static final SplitterManager instance = new SplitterManager();
+    }
 
     /**
      * 문장 구분기 인스턴스 획득
@@ -82,19 +76,7 @@ public class SplitterManager {
 
     private final Object createLock = new Object();
 
-    /**
-     * JsonObject를 통해 Splitter 획득
-     * 해당 JsonObject의 key로 생성된 Splitter가 존재하지 않으면 새로 생성한다.
-     *
-     * 멀티 쓰레드에 안전하게 생성할 수 있도록 동기화처리가 되어있다.
-     *
-     * TODO 1. lock 구간을 id 단위로 나눌 수 있다.
-     *      2. json 입력과 분리
-     *      3. core에서 json 고려
-     * @param splitterJson 형식에 맞춘 jsonObject
-     * @return splitter 구현체
-     */
-    public Splitter getSplitter(JsonObject splitterJson) {
+    private Splitter getSplitter(JsonObject splitterJson) {
         checkSplitterJsonValidation(splitterJson);
 
         String key = splitterJson.get("id").getAsString();

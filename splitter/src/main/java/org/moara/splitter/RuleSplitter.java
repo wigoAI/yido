@@ -28,6 +28,7 @@ import java.util.List;
 /**
  * 구분기 구현체
  *
+ * TODO 1. 반환값에 text 제거
  * @author wjrmffldrhrl
  */
 class RuleSplitter implements Splitter {
@@ -125,7 +126,7 @@ class RuleSplitter implements Splitter {
             int finalA = a;
             t[a] = new Thread(() -> {
 
-                Splitter splitter = SplitterManager.getSplitterManager().getSplitter();
+                Splitter splitter = SplitterManager.getInstance().getSplitter();
                 for (int i = finalA * (data1000.size() / t.length); i < (finalA + 1) * data1000.size() / t.length; i++) {
 
                     splitter.split(data1000.get(i));
