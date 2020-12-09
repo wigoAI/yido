@@ -32,7 +32,6 @@ public class ValidationTest {
         Assert.assertEquals("면", validation.getValue());
         Assert.assertEquals('N', validation.getMatchFlag());
         Assert.assertEquals('B', validation.getComparePosition());
-
     }
 
     @Test
@@ -56,7 +55,7 @@ public class ValidationTest {
 
 
     @Test
-    public void testInvalidRoleName() {
+    public void testInvalidRuleName() {
         boolean matchFlagException = false;
         boolean comparePositionException = false;
         boolean dataTypeException = false;

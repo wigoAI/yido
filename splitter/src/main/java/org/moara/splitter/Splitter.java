@@ -15,7 +15,7 @@
  */
 package org.moara.splitter;
 
-import org.moara.splitter.utils.Sentence;
+import org.moara.splitter.utils.Area;
 import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.utils.Validation;
 
@@ -24,7 +24,6 @@ import java.util.List;
 /**
  * 구분기 추상체
  *
- *
  * @author wjrmffldrhrl
  */
 public interface Splitter {
@@ -32,9 +31,9 @@ public interface Splitter {
     /**
      * 입력된 데이터를 구분 단위에 맞게 반환
      * @param text String
-     * @return Sentence Array
+     * @return Area Array
      */
-    Sentence[] split(String text);
+    Area[] split(String text);
 
     /**
      * 구분 조건 추가

@@ -1,7 +1,5 @@
 package org.moara.splitter.splitterManager;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -9,10 +7,7 @@ import org.junit.Test;
 import org.moara.splitter.Splitter;
 import org.moara.splitter.SplitterManager;
 import org.moara.splitter.TestFileInitializer;
-import org.moara.splitter.utils.Sentence;
-import org.moara.splitter.utils.file.FileManager;
-
-
+import org.moara.splitter.utils.Area;
 
 
 public class SplitterManagerTest {
@@ -30,12 +25,13 @@ public class SplitterManagerTest {
 
     @Test
     public void testGetBasicSplitter() {
-        Splitter splitter = SplitterManager.getSplitterManager().getSplitter();
+        Splitter splitter = SplitterManager.getInstance().getSplitter();
 
-        String[] answer = {"안녕하세요 반갑습니다.", "조승현입니다."};
+        int[] answer = {12, 20};
+
         int index = 0;
-        for (Sentence sentence : splitter.split(text)) {
-            Assert.assertEquals(answer[index++], sentence.getText());
+        for (Area splitResult : splitter.split(text)) {
+            Assert.assertEquals(answer[index++], splitResult.getEnd());
         }
 
     }
@@ -43,46 +39,16 @@ public class SplitterManagerTest {
     @Test
     public void testCreateSplitterWithSplitConditions() {
 
-        Splitter splitter = SplitterManager.getSplitterManager().getSplitter("test");
+        Splitter splitter = SplitterManager.getInstance().getSplitter("test");
 
 
-        String[] answer = {"안녕하세요 반갑습니다.", "조승현입니다."};
+        int[] answer = {12, 20};
         int index = 0;
-        for (Sentence sentence : splitter.split(text)) {
-            Assert.assertEquals(answer[index++], sentence.getText());
+        for (Area splitResult : splitter.split(text)) {
+            Assert.assertEquals(answer[index++], splitResult.getEnd());
         }
     }
 
-    @Test
-    public void testCreateSplitterByJsonObject() {
-
-        String id = "json";
-        String name = "json_splitter";
-        int minimumSplitLength = 5;
-        JsonArray conditions = new JsonArray();
-        conditions.add("terminator");
-
-        JsonArray exceptions = new JsonArray();
-        exceptions.add("bracket_exception");
-
-
-        JsonObject splitterJsonObject = new JsonObject();
-        splitterJsonObject.addProperty("id", id);
-        splitterJsonObject.addProperty("name", name);
-        splitterJsonObject.addProperty("minimum_split_length", minimumSplitLength);
-
-        splitterJsonObject.add("conditions", conditions);
-        splitterJsonObject.add("exceptions", exceptions);
-
-
-        Splitter splitter = SplitterManager.getSplitterManager().getSplitter(splitterJsonObject);
-
-        String[] answer = {"안녕하세요 반갑습니다.", "조승현입니다."};
-        int index = 0;
-        for (Sentence sentence : splitter.split(text)) {
-            Assert.assertEquals(answer[index++], sentence.getText());
-        }
-    }
 
     @Test
     public void testJsonObjectValidationCheck() {
@@ -90,27 +56,24 @@ public class SplitterManagerTest {
         boolean invalidJsonFlag1 = false;
         boolean invalidJsonFlag2 = false;
 
-        JsonObject normalJson = FileManager.getJsonObjectByFile("splitter/test.json");
 
         try {
-            SplitterManager.getSplitterManager().getSplitter(normalJson);
+            SplitterManager.getInstance().getSplitter("test");
         } catch (RuntimeException e) {
             normalJsonFlag = false;
         }
 
 
 
-        JsonObject invalidJson1 = FileManager.getJsonObjectByFile("splitter/test_invalid1.json");
         try {
-            SplitterManager.getSplitterManager().getSplitter(invalidJson1);
+            SplitterManager.getInstance().getSplitter("test_invalid1");
 
         } catch (RuntimeException e) {
             invalidJsonFlag1 = true;
         }
 
-        JsonObject invalidJson2 = FileManager.getJsonObjectByFile("splitter/test_invalid2.json");
         try {
-            SplitterManager.getSplitterManager().getSplitter(invalidJson2);
+            SplitterManager.getInstance().getSplitter("test_invalid2");
         } catch (RuntimeException e) {
             invalidJsonFlag2 = true;
         }

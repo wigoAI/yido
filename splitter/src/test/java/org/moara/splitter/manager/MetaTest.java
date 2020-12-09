@@ -9,12 +9,12 @@ import java.util.regex.Pattern;
 public class MetaTest {
 
     /**
-     * Meta role read test (json)
+     * Meta rule read test (json)
      */
     @Test
-    public void testMetaRole() {
+    public void testMetaRule() {
         String data = "[x]d'x'd`x`d‘x’d“x”d{x}d<x>d(x)d\"x\"d";
-        Pattern pattern = MetaManager.getDifferentSideBracketPattern();
+        Pattern pattern = ExceptionRuleManager.getDifferentSideBracketPattern();
 
 
         Matcher matcher = pattern.matcher(data);
@@ -27,7 +27,7 @@ public class MetaTest {
         Assert.assertEquals(6, findCount);
 
 
-        pattern = MetaManager.getSameSideBracketPattern();
+        pattern = ExceptionRuleManager.getSameSideBracketPattern();
         matcher = pattern.matcher(data);
 
         findCount = 0;

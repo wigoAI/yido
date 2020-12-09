@@ -15,7 +15,8 @@
  */
 package org.moara.splitter.processor;
 
-import com.github.wjrmffldrhrl.Area;
+
+import org.moara.splitter.utils.Area;
 
 import java.util.List;
 
@@ -29,8 +30,8 @@ public interface ExceptionAreaProcessor {
 
     /**
      * 예외 영역 찾기
-     * @param text
-     * @return Exception ]Area list
+     * @param text 예외 영역을 찾을 데이터
+     * @return Exception Area list
      */
     List<Area> find(String text);
 

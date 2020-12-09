@@ -1,21 +1,18 @@
 package org.moara.splitter;
 
-import org.apache.poi.ss.formula.functions.T;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import org.moara.splitter.utils.Area;
 import org.moara.splitter.utils.SplitCondition;
-import org.moara.splitter.utils.Sentence;
 import org.moara.splitter.utils.Validation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.stream.IntStream;
 
 public class SplitterTest {
     static volatile int[] endCount = {0};
@@ -46,9 +43,9 @@ public class SplitterTest {
     @Test
     public void testInitSplitter() {
 
-        Splitter basicSplitter =  SplitterManager.getSplitterManager().getSplitter();
+        Splitter basicSplitter =  SplitterManager.getInstance().getSplitter();
 
-        assertEquals("강남역 맛집으로 소문난 강남 토끼정에 다녀왔습니다.", basicSplitter.split(data[0])[0].getText());
+        assertEquals(28, basicSplitter.split(data[0])[0].getEnd());
 
     }
 
@@ -65,7 +62,7 @@ public class SplitterTest {
 
         for (int USED_CASE = 0 ; USED_CASE < data1000.size() ; USED_CASE++) {
 
-            Splitter splitterImpl = SplitterManager.getSplitterManager().getSplitter();
+            Splitter splitterImpl = SplitterManager.getInstance().getSplitter();
 
             splitterImpl.split(data1000.get(USED_CASE));
 
@@ -81,12 +78,12 @@ public class SplitterTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testSplitEmptyString() {
-        SplitterManager.getSplitterManager().getSplitter().split("");
+        SplitterManager.getInstance().getSplitter().split("");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testSplitNullData() {
-        SplitterManager.getSplitterManager().getSplitter().split(null);
+        SplitterManager.getInstance().getSplitter().split(null);
 
     }
 
@@ -95,18 +92,16 @@ public class SplitterTest {
     @Test
     public void testOtherSplitter() {
 
-        Splitter splitter = SplitterManager.getSplitterManager().getSplitter("test");
+        Splitter splitter = SplitterManager.getInstance().getSplitter("test");
 
-        String[] answer = {"거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다.",
-                "그의 고향은 천안이지만 가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다.",
-                "15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다."};
+        int[] answer = {32, 105, 222};
 
         assertEquals(splitter.split(newsData).length, answer.length);
 
         int index = 0;
-        for(Sentence sentence : splitter.split(newsData)) {
+        for(Area splitResult : splitter.split(newsData)) {
 
-            assertEquals(answer[index++], sentence.getText());
+            assertEquals(answer[index++], splitResult.getEnd());
         }
 
 
@@ -114,7 +109,7 @@ public class SplitterTest {
 
     @Test
     public void testEditConditionInMemory() {
-        Splitter splitter = SplitterManager.getSplitterManager().getSplitter("test");
+        Splitter splitter = SplitterManager.getInstance().getSplitter("test");
 
 
         List<SplitCondition> additionalSplitCondition = new ArrayList<>();
@@ -123,44 +118,35 @@ public class SplitterTest {
         splitter.addSplitConditions(additionalSplitCondition);
 
 
-        String[] answer = {"거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다.",
-                "그의 고향은 천안이지만",
-                "가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다.",
-                "15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다."};
+        int[] answer = {32, 45, 105, 222};
 
-        Sentence[] splitResults = splitter.split(newsData);
+        Area[] splitResults = splitter.split(newsData);
 
-        Arrays.stream(splitResults).forEach(sentence -> System.out.println(sentence.getText()));
+        Arrays.stream(splitResults).forEach(splitResult -> System.out.println(splitResult.getEnd()));
 
         assertEquals(splitResults.length, answer.length);
         int index = 0;
-        for(Sentence sentence : splitResults) {
+        for(Area splitResult : splitResults) {
 
-            assertEquals(answer[index++], sentence.getText());
+            assertEquals(answer[index++], splitResult.getEnd());
         }
 
-        String[] answer2 = {"거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다.",
-                "그의 고향은 천안이지만 가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다.",
-                "15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다."};
+        int[] answer2 = {32, 105, 222};
 
         splitter.deleteSplitConditions(additionalSplitCondition);
 
         assertEquals(splitter.split(newsData).length, answer2.length);
         index = 0;
-        for(Sentence sentence : splitter.split(newsData)) {
+        for(Area splitResult : splitter.split(newsData)) {
 
-            assertEquals(answer2[index++], sentence.getText());
+            assertEquals(answer2[index++], splitResult.getEnd());
         }
     }
 
     @Test
     public void testEditValidationInMemory() {
-        String[] answer = {"거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다.",
-                "그의 고향은 천안이지만",
-                "가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다.",
-                "15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다."};
-
-        Splitter splitter = SplitterManager.getSplitterManager().getSplitter("test");
+        int[] answer = {32, 45, 105, 222};
+        Splitter splitter = SplitterManager.getInstance().getSplitter("test");
 
 
         List<SplitCondition> additionalSplitCondition = new ArrayList<>();
@@ -170,38 +156,35 @@ public class SplitterTest {
 
         assertEquals(splitter.split(newsData).length, answer.length);
         int index = 0;
-        for(Sentence sentence : splitter.split(newsData)) {
-            assertEquals(answer[index++], sentence.getText());
+        for(Area splitResult : splitter.split(newsData)) {
+            assertEquals(answer[index++], splitResult.getEnd());
         }
 
 
-        String[] answer2 = {"거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다.",
-                "그의 고향은 천안이지만 가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다.",
-                "15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다."};
-
+        int[] answer2 = {32, 105, 222};
 
         List<Validation> validations = new ArrayList<>();
         validations.add(new Validation(" 가족", 'N', 'B'));
 
         splitter.addValidation(validations);
 
-        Sentence[] sentences = splitter.split(newsData);
+        Area[] splitResults = splitter.split(newsData);
 
-        assertEquals(sentences.length, answer2.length);
+        assertEquals(splitResults.length, answer2.length);
 
         index = 0;
-        for(Sentence sentence : sentences) {
-            assertEquals(answer2[index++], sentence.getText());
+        for(Area splitResult : splitResults) {
+            assertEquals(answer2[index++], splitResult.getEnd());
         }
 
         splitter.deleteValidation(validations);
 
-        sentences = splitter.split(newsData);
-        assertEquals(sentences.length, answer.length);
+        splitResults = splitter.split(newsData);
+        assertEquals(splitResults.length, answer.length);
 
         index = 0;
-        for(Sentence sentence : sentences) {
-            assertEquals(answer[index++], sentence.getText());
+        for(Area splitResult : splitResults) {
+            assertEquals(answer[index++], splitResult.getEnd());
         }
     }
 
@@ -209,41 +192,37 @@ public class SplitterTest {
 
     @Test
     public void testSplitWithRegx() {
-        Splitter splitter = SplitterManager.getSplitterManager().getSplitter("test_regx");
+        Splitter splitter = SplitterManager.getInstance().getSplitter("test_regx");
 
         String data = "지금부터 우리학교 규칙을 설명하겠습니다. 앞에 게시판을 보면 1. 교실에서는 조용히 하기 2. 복도에서 뛰어다니지 않기 3. 지각하면 벌금내기 입니다.";
-        String[] answers = {"지금부터 우리학교 규칙을 설명하겠습니다. 앞에 게시판을 보면",
-                "1. 교실에서는 조용히 하기",
-                "2. 복도에서 뛰어다니지 않기",
-                "3. 지각하면 벌금내기 입니다."};
-        assertEquals(answers.length, splitter.split(data).length);
+        int[] answers = {34, 50, 67, 84};
+
+        Area[] splitResults = splitter.split(data);
+        for (Area splitResult : splitResults) {
+            System.out.println(splitResult.getEnd());
+        }
+        assertEquals(answers.length, splitResults.length);
         int answerIndex = 0;
-        for (Sentence sentence : splitter.split(data)) {
-            assertEquals(answers[answerIndex++], sentence.getText());
+        for (Area splitResult : splitResults) {
+            assertEquals(answers[answerIndex++], splitResult.getEnd());
         }
     }
 
     @Test
     public void testNearSplitPoint() {
         String data = "1다.다.다.다.다.다.다.다.다2.다.다.다.다.다.다.다.다.다3.다.다.다.다.다.다.다.다.다4.다.다.다5.다.다.";
-        String[] answer = {"1다.다.다.다.다.",
-                "다.다.다.",
-                "다2.다.다.",
-                "다.다.다.",
-                "다.다.다.",
-                "다3.다.다.",
-                "다.다.다.",
-                "다.다.다.",
-                "다4.다.다.",
-                "다5.다.다."};
-        Splitter splitter = SplitterManager.getSplitterManager().getSplitter("test");
-        Sentence[] sentences = splitter.split(data);
+        int[] answer = {11, 17, 24, 30, 36, 43, 49, 55, 62, 69};
+        Splitter splitter = SplitterManager.getInstance().getSplitter("test");
+        Area[] splitResults = splitter.split(data);
 
-        Assert.assertEquals(sentences.length, answer.length);
+        for (Area splitResult : splitResults) {
+            System.out.println(splitResult.getEnd());
+        }
+        Assert.assertEquals(splitResults.length, answer.length);
 
         int i = 0;
-        for (Sentence sentence : sentences) {
-            Assert.assertEquals(answer[i++], sentence.getText());
+        for (Area splitResult : splitResults) {
+            Assert.assertEquals(answer[i++], splitResult.getEnd());
         }
 
     }

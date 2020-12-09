@@ -33,25 +33,21 @@ import java.util.*;
  *
  * 기본 구분기를 사용하기 위해서는 {@code getSplitter()} 매서드를 사용해 기본 구분기의 인스턴스를 받을 수 있다.
  * 해당 메서드를 처음 호출하기 전 까지는 인스턴스는 존재하지 않다가 첫 호출 시 구분기를 생성한다.
+ *
  * @author wjrmffldrhrl
  */
 public class SplitterManager {
-    private static SplitterManager splitterManager = null;
     private static final String BASIC_SPLITTER_ID = "basic";
     private final Map<String, Splitter> splitterMap = new HashMap<>();
 
-    /**
-     * SplitterManager 인스턴스 생성 및 반환
-     * @return SplitterManager instance
-     *
-     */
-    public static synchronized SplitterManager getSplitterManager() {
-        if (splitterManager == null) {
-            splitterManager = new SplitterManager();
-        }
-        return splitterManager;
+
+    public static SplitterManager getInstance() {
+        return Singleton.instance;
     }
 
+    private static class Singleton {
+        private static final SplitterManager instance = new SplitterManager();
+    }
 
     /**
      * 문장 구분기 인스턴스 획득
@@ -75,8 +71,12 @@ public class SplitterManager {
         return getSplitter(splitterJson);
     }
 
+
+
+
     private final Object createLock = new Object();
-    public Splitter getSplitter(JsonObject splitterJson) {
+
+    private Splitter getSplitter(JsonObject splitterJson) {
         checkSplitterJsonValidation(splitterJson);
 
         String key = splitterJson.get("id").getAsString();
@@ -95,22 +95,21 @@ public class SplitterManager {
         return splitter;
     }
 
-
     private void createSplitterByJson(JsonObject splitterJson) {
         String key = splitterJson.get("id").getAsString();
-        Config config = new Config(splitterJson.get("minimum_split_length").getAsInt());
+        int minResultLength = splitterJson.get("minimum_split_length").getAsInt();
         JsonArray conditionArray = splitterJson.get("conditions").getAsJsonArray();
 
-        List<String> conditionRoleNames = new ArrayList<>();
+        List<String> conditionRuleNames = new ArrayList<>();
         for (JsonElement jsonObject : conditionArray) {
-            conditionRoleNames.add(jsonObject.getAsString());
+            conditionRuleNames.add(jsonObject.getAsString());
         }
 
-        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(conditionRoleNames);
-        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, config);
+        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(conditionRuleNames);
+        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, minResultLength);
         List<ExceptionAreaProcessor> exceptionAreaProcessors = Arrays.asList(new BracketAreaProcessor());
 
-        splitterMap.put(key, new SentenceSplitter(terminatorAreaProcessor, exceptionAreaProcessors));
+        splitterMap.put(key, new RuleSplitter(terminatorAreaProcessor, exceptionAreaProcessors));
 
     }
 

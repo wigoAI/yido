@@ -15,7 +15,7 @@
  */
 package org.moara.splitter.manager;
 
-import org.moara.splitter.utils.RoleProperty;
+import org.moara.splitter.utils.RuleProperty;
 import org.moara.splitter.utils.Validation;
 import org.moara.splitter.utils.file.FileManager;
 import java.util.ArrayList;
@@ -24,6 +24,7 @@ import java.util.List;
 /**
  * 유효성 룰 관리자
  *
+ * @author wjrmffldrhrl
  */
 public class ValidationManager {
     protected static String stringGroupPath = "/string_group/";
@@ -35,19 +36,19 @@ public class ValidationManager {
      * @return 유효성 리스트
      */
     public static List<Validation> getValidations(String dicName)  {
-        RoleProperty roleProperty = new RoleProperty(dicName.charAt(0), dicName.charAt(1));
+        RuleProperty ruleProperty = new RuleProperty(dicName.charAt(0), dicName.charAt(1));
 
         List<Validation> validations = new ArrayList<>();
         if (dicName.startsWith("SG_", 2)) {
-            for (String roleData : FileManager.readFile(stringGroupPath + dicName.substring(5) + ".dic")) {
-                if (roleData.contains("\\s")) {
-                    roleData = roleData.replace("\\s", " ");
+            for (String ruleData : FileManager.readFile(stringGroupPath + dicName.substring(5) + ".dic")) {
+                if (ruleData.contains("\\s")) {
+                    ruleData = ruleData.replace("\\s", " ");
                 }
-                validations.add(new Validation(roleData, roleProperty));
+                validations.add(new Validation(ruleData, ruleProperty));
             }
 
         } else {
-            throw new RuntimeException("Invalid role data type : " + dicName);
+            throw new RuntimeException("Invalid rule data type : " + dicName);
         }
         return validations;
 

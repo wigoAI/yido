@@ -22,20 +22,21 @@ import org.moara.splitter.utils.file.FileManager;
 import java.util.regex.Pattern;
 
 /**
- * 메타 룰 관리자
+ * 예외영역 룰 관리자
  * @author wjrmffldrhrl
  */
-public class MetaManager {
-    protected static final String rolePath = "/exception/";
-    private static final String differentSideBracketRoleName = "bracket_exception.json";
-    private static final String sameSideBracketRoleName = "same_bracket_exception.json";
+public class ExceptionRuleManager {
+    protected static final String rulePath = "/exception/";
+    private static final String differentSideBracketRuleName = "bracket_exception.json";
+    private static final String sameSideBracketRuleName = "same_bracket_exception.json";
 
     /**
-     * 양 방향의 모양이 다른 괄호에 대한 처리
+     * 괄호의 좌우 방향이 다른 괄호에 대한 패턴 찾기
+     *
      * @return Pattern
      */
     public static Pattern getDifferentSideBracketPattern() {
-        JsonObject metaJson = FileManager.getJsonObjectByFile(rolePath + differentSideBracketRoleName);
+        JsonObject metaJson = FileManager.getJsonObjectByFile(rulePath + differentSideBracketRuleName);
         JsonArray dataArray = metaJson.get("value").getAsJsonArray();
 
         StringBuilder left = new StringBuilder("[]+");
@@ -47,7 +48,6 @@ public class MetaManager {
             JsonObject data  = dataArray.get(i).getAsJsonObject();
             String front = data.get("front").getAsString();
             String back = data.get("back").getAsString();
-
 
             left.insert(1, "\\" +front);
             centerRight.insert(2, "\\" + front);
@@ -62,11 +62,11 @@ public class MetaManager {
     }
 
     /**
-     * 괄호의 좌우 방향이 댜른 괄호에 대한 패턴을 찾는 메서드
+     * 괄호의 좌우 방향이 같은 괄호에 대한 패턴 찾기
      * @return Pattern
      */
     public static Pattern getSameSideBracketPattern() {
-        JsonObject metaJson = FileManager.getJsonObjectByFile(rolePath + sameSideBracketRoleName);
+        JsonObject metaJson = FileManager.getJsonObjectByFile(rulePath + sameSideBracketRuleName);
         JsonArray dataArray = metaJson.get("value").getAsJsonArray();
 
         StringBuilder left = new StringBuilder("[]+");
