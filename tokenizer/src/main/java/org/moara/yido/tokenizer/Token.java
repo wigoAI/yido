@@ -27,7 +27,7 @@ public interface Token {
      * 토근 텍스트
      * @return token text
      */
-    String getEnd();
+    String getText();
 
     /**
      * 시작위치

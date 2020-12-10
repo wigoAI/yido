@@ -33,7 +33,7 @@ public class TokenizerExample {
         for(Token token : tokens){
             WordToken wordToken = (WordToken)token;
 
-            System.out.print(token.getEnd() +", " + wordToken.getPartOfSpeech());
+            System.out.print(token.getText() +", " + wordToken.getPartOfSpeech());
 
             if(wordToken instanceof CompoundToken){
                 CompoundToken compoundToken =(CompoundToken) wordToken;

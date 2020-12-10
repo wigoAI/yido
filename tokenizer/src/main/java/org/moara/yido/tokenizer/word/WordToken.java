@@ -123,7 +123,7 @@ public class WordToken implements Token {
     }
 
     @Override
-    public String getEnd() {
+    public String getText() {
         return text;
     }
 
