@@ -7,7 +7,6 @@ import java.util.regex.Matcher;
 /**
  * String slice util
  *
- * TODO 1. Need new name
  * @author wjrmffldrhrl
  */
 public class Area implements BeginEnd {

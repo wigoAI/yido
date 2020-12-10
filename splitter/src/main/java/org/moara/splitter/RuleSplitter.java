@@ -52,14 +52,20 @@ class RuleSplitter implements Splitter {
     }
 
     @Override
-    public Area[] split(String text) {
+    public int[] split(String text) {
         if (text == null || text.isEmpty()) {
             throw new IllegalArgumentException("Input text is null or empty");
         }
 
-        List<Integer> splitPoint = getSplitPoint(text);
+        List<Integer> splitPoints = getSplitPoint(text);
+        int[] splitPointArray = new int[splitPoints.size()];
 
-        return doSplit(splitPoint, text);
+        for (int i = 0; i < splitPointArray.length; i++) {
+            splitPointArray[i] = splitPoints.get(i);
+        }
+
+        return splitPointArray;
+
     }
 
     private List<Integer> getSplitPoint(String text) {
@@ -71,24 +77,6 @@ class RuleSplitter implements Splitter {
         return terminatorAreaProcessor.find(text, exceptionAreas);
     }
 
-
-    private Area[] `doSplit`(List<Integer> splitPoint, String inputData) {
-        Area[] result = new Area[splitPoint.size() + 1];
-        int startIndex = 0;
-        int resultIndex = 0;
-
-        for(int point : splitPoint) {
-            Area splitResult = new Area(startIndex, point);
-
-            result[resultIndex++] = splitResult;
-            startIndex = point;
-
-        }
-
-        result[resultIndex] =  new Area(startIndex, inputData.length());
-
-        return result;
-    }
 
     public void addSplitConditions(List<SplitCondition> additionalSplitCondition) {
         terminatorAreaProcessor.addSplitConditions(additionalSplitCondition);

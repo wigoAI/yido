@@ -45,7 +45,7 @@ public class SplitterTest {
 
         Splitter basicSplitter =  SplitterManager.getInstance().getSplitter();
 
-        assertEquals(28, basicSplitter.split(data[0])[0].getEnd());
+        assertEquals(28, basicSplitter.split(data[0])[0]);
 
     }
 
@@ -71,7 +71,7 @@ public class SplitterTest {
 
         long end = System.currentTimeMillis();
 
-        System.out.println( "Non thread 실행 시간 : " + ( end - start )/1000.0 );
+//        System.out.println( "Non thread 실행 시간 : " + ( end - start )/1000.0 );
     }
 
 
@@ -94,14 +94,14 @@ public class SplitterTest {
 
         Splitter splitter = SplitterManager.getInstance().getSplitter("test");
 
-        int[] answer = {32, 105, 222};
+        int[] answer = {32, 105};
 
         assertEquals(splitter.split(newsData).length, answer.length);
 
         int index = 0;
-        for(Area splitResult : splitter.split(newsData)) {
+        for(int splitResult : splitter.split(newsData)) {
 
-            assertEquals(answer[index++], splitResult.getEnd());
+            assertEquals(answer[index++], splitResult);
         }
 
 
@@ -112,6 +112,7 @@ public class SplitterTest {
      */
     @Test
     public void testEditConditionInMemory() {
+
         Splitter splitter = SplitterManager.getInstance().getSplitter("test");
 
 
@@ -121,34 +122,38 @@ public class SplitterTest {
         splitter.addSplitConditions(additionalSplitCondition);
 
 
-        int[] answer = {32, 45, 105, 222};
+        int[] answer = {32, 45, 105};
 
-        Area[] splitResults = splitter.split(newsData);
-
-        Arrays.stream(splitResults).forEach(splitResult -> System.out.println(splitResult.getEnd()));
-
+        int[] splitResults = splitter.split(newsData);
+        Arrays.stream(splitResults).forEach(System.out::println);
+        System.out.println();
         assertEquals(splitResults.length, answer.length);
-        int index = 0;
-        for(Area splitResult : splitResults) {
 
-            assertEquals(answer[index++], splitResult.getEnd());
+        int index = 0;
+        for (int splitResult : splitResults) {
+
+            assertEquals(answer[index++], splitResult);
         }
 
-        int[] answer2 = {32, 105, 222};
+        int[] answer2 = {32, 105};
 
         splitter.deleteSplitConditions(additionalSplitCondition);
+        splitResults = splitter.split(newsData);
 
-        assertEquals(splitter.split(newsData).length, answer2.length);
+        Arrays.stream(splitResults).forEach(System.out::println);
+        System.out.println();
+        assertEquals(splitResults.length, answer2.length);
         index = 0;
-        for(Area splitResult : splitter.split(newsData)) {
+        for (int splitResult : splitResults) {
 
-            assertEquals(answer2[index++], splitResult.getEnd());
+            assertEquals(answer2[index++], splitResult);
         }
+
     }
 
     @Test
     public void testEditValidationInMemory() {
-        int[] answer = {32, 45, 105, 222};
+        int[] answer = {32, 45, 105};
         Splitter splitter = SplitterManager.getInstance().getSplitter("test");
 
 
@@ -159,25 +164,25 @@ public class SplitterTest {
 
         assertEquals(splitter.split(newsData).length, answer.length);
         int index = 0;
-        for(Area splitResult : splitter.split(newsData)) {
-            assertEquals(answer[index++], splitResult.getEnd());
+        for(int splitResult : splitter.split(newsData)) {
+            assertEquals(answer[index++], splitResult);
         }
 
 
-        int[] answer2 = {32, 105, 222};
+        int[] answer2 = {32, 105};
 
         List<Validation> validations = new ArrayList<>();
         validations.add(new Validation(" 가족", 'N', 'B'));
 
         splitter.addValidation(validations);
 
-        Area[] splitResults = splitter.split(newsData);
+        int[] splitResults = splitter.split(newsData);
 
         assertEquals(splitResults.length, answer2.length);
 
         index = 0;
-        for(Area splitResult : splitResults) {
-            assertEquals(answer2[index++], splitResult.getEnd());
+        for(int splitResult : splitResults) {
+            assertEquals(answer2[index++], splitResult);
         }
 
         splitter.deleteValidation(validations);
@@ -186,8 +191,8 @@ public class SplitterTest {
         assertEquals(splitResults.length, answer.length);
 
         index = 0;
-        for(Area splitResult : splitResults) {
-            assertEquals(answer[index++], splitResult.getEnd());
+        for(int splitResult : splitResults) {
+            assertEquals(answer[index++], splitResult);
         }
     }
 
@@ -198,34 +203,29 @@ public class SplitterTest {
         Splitter splitter = SplitterManager.getInstance().getSplitter("test_regx");
 
         String data = "지금부터 우리학교 규칙을 설명하겠습니다. 앞에 게시판을 보면 1. 교실에서는 조용히 하기 2. 복도에서 뛰어다니지 않기 3. 지각하면 벌금내기 입니다.";
-        int[] answers = {34, 50, 67, 84};
+        int[] answers = {34, 50, 67};
 
-        Area[] splitResults = splitter.split(data);
-        for (Area splitResult : splitResults) {
-            System.out.println(splitResult.getEnd());
-        }
+        int[] splitResults = splitter.split(data);
+
         assertEquals(answers.length, splitResults.length);
         int answerIndex = 0;
-        for (Area splitResult : splitResults) {
-            assertEquals(answers[answerIndex++], splitResult.getEnd());
+        for (int splitResult : splitResults) {
+            assertEquals(answers[answerIndex++], splitResult);
         }
     }
 
     @Test
     public void testNearSplitPoint() {
         String data = "1다.다.다.다.다.다.다.다.다2.다.다.다.다.다.다.다.다.다3.다.다.다.다.다.다.다.다.다4.다.다.다5.다.다.";
-        int[] answer = {11, 17, 24, 30, 36, 43, 49, 55, 62, 69};
+        int[] answer = {11, 17, 24, 30, 36, 43, 49, 55, 62};
         Splitter splitter = SplitterManager.getInstance().getSplitter("test");
-        Area[] splitResults = splitter.split(data);
+        int[] splitResults = splitter.split(data);
 
-        for (Area splitResult : splitResults) {
-            System.out.println(splitResult.getEnd());
-        }
         Assert.assertEquals(splitResults.length, answer.length);
 
         int i = 0;
-        for (Area splitResult : splitResults) {
-            Assert.assertEquals(answer[i++], splitResult.getEnd());
+        for (int splitResult : splitResults) {
+            Assert.assertEquals(answer[i++], splitResult);
         }
 
     }

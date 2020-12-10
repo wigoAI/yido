@@ -30,8 +30,8 @@ public class SplitterManagerTest {
         int[] answer = {12, 20};
 
         int index = 0;
-        for (Area splitResult : splitter.split(text)) {
-            Assert.assertEquals(answer[index++], splitResult.getEnd());
+        for (int splitResult : splitter.split(text)) {
+            Assert.assertEquals(answer[index++], splitResult);
         }
 
     }
@@ -44,8 +44,8 @@ public class SplitterManagerTest {
 
         int[] answer = {12, 20};
         int index = 0;
-        for (Area splitResult : splitter.split(text)) {
-            Assert.assertEquals(answer[index++], splitResult.getEnd());
+        for (int splitResult : splitter.split(text)) {
+            Assert.assertEquals(answer[index++], splitResult);
         }
     }
 

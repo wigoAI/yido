@@ -33,7 +33,7 @@ public interface Splitter {
      * @param text String
      * @return Area Array
      */
-    Area[] split(String text);
+    int[] split(String text);
 
     /**
      * 구분 조건 추가
