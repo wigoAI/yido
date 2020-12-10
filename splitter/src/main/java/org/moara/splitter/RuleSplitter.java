@@ -28,7 +28,6 @@ import java.util.List;
 /**
  * 구분기 구현체
  *
- * TODO 1. 반환값에 text 제거
  * @author wjrmffldrhrl
  */
 class RuleSplitter implements Splitter {
@@ -73,7 +72,7 @@ class RuleSplitter implements Splitter {
     }
 
 
-    private Area[] doSplit(List<Integer> splitPoint, String inputData) {
+    private Area[] `doSplit`(List<Integer> splitPoint, String inputData) {
         Area[] result = new Area[splitPoint.size() + 1];
         int startIndex = 0;
         int resultIndex = 0;

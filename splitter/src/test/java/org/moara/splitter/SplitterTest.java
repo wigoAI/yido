@@ -107,6 +107,9 @@ public class SplitterTest {
 
     }
 
+    /**
+     * TODO 1. regx 규칙 추가 테스트
+     */
     @Test
     public void testEditConditionInMemory() {
         Splitter splitter = SplitterManager.getInstance().getSplitter("test");
