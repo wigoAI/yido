@@ -20,6 +20,7 @@ package org.moara.yido.textmining;
 import com.seomse.commons.data.BeginEnd;
 import org.moara.yido.tokenizer.word.WordToken;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -33,8 +34,8 @@ public class Sentence implements BeginEnd {
 
     WordToken[] tokens;
 
-    private final int begin;
-    private final int end;
+    int begin;
+    int end;
 
     //문장의 그밖의 속성들
     //STT 의 텍스트일경우 값이 생김
@@ -79,5 +80,29 @@ public class Sentence implements BeginEnd {
     @Override
     public int getEnd() {
         return end;
+    }
+
+    /**
+     * 데이터 얻기
+     * @param dataKey 데이터키
+     * @return 데이터
+     */
+    public Object getData(String dataKey) {
+        if(dataMap == null){
+            return null;
+        }
+        return dataMap.get(dataKey);
+    }
+
+    /**
+     * 데이터 설정
+     * @param dataKey 데이터키
+     * @param data 데이터
+     */
+    public void setDataMap(String dataKey, Object data) {
+        if(dataMap == null){
+            dataMap = new HashMap<>();
+        }
+        dataMap.put(dataKey, data);
     }
 }

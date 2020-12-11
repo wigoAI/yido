@@ -16,6 +16,7 @@
 
 package org.moara.yido.textmining;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -89,30 +90,58 @@ public class Document {
     }
 
     /**
-     *
-     * @return
+     * 문서유형 얻기
+     * @return 문서유형얻기
      */
     public String getType() {
         return type;
     }
 
+    /**
+     * 문서 유형 설정
+     * @param type 문서 유형
+     */
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * 시간 얻기
+     * @return 시간 unix time
+     */
     public long getTime() {
         return time;
     }
 
+    /**
+     * 시간 설정
+     * @param time 시간 unix time
+     */
     public void setTime(long time) {
         this.time = time;
     }
 
-    public Map<String, Object> getDataMap() {
-        return dataMap;
+    /**
+     * 데이터 얻기
+     * @param dataKey 데이터키
+     * @return 데이터
+     */
+    public Object getData(String dataKey) {
+        if(dataMap == null){
+            return null;
+        }
+        return dataMap.get(dataKey);
     }
 
-    public void setDataMap(Map<String, Object> dataMap) {
-        this.dataMap = dataMap;
+    /**
+     * 데이터 설정
+     * @param dataKey 데이터키
+     * @param data 데이터
+     */
+    public void setDataMap(String dataKey, Object data) {
+        if(dataMap == null){
+            dataMap = new HashMap<>();
+        }
+        dataMap.put(dataKey, data);
     }
 }

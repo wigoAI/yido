@@ -17,6 +17,8 @@
 package org.moara.yido.textmining;
 
 import org.moara.yido.textmining.splitter.SentenceSplitter;
+import org.moara.yido.tokenizer.Tokenizer;
+import org.moara.yido.tokenizer.word.WordToken;
 
 /**
  * 문서 마이닝 
@@ -33,13 +35,12 @@ import org.moara.yido.textmining.splitter.SentenceSplitter;
 public class DocumentMining {
 
     
-    final Document document;
+    protected final Document document;
 
     //제목 문장구성
     Sentence[] titleSentences;
     
-    //내용 문단구성
-    Paragraph[] paragraphs;
+
     //내용 문장구성
     Sentence[] sentences;
 
@@ -53,8 +54,6 @@ public class DocumentMining {
     }
 
 
-
-   
     /**
      * 제목 문장단위로 구분
      * 문장 구분 및 문자 을 활용한 토큰 추출
@@ -62,38 +61,61 @@ public class DocumentMining {
      * @return 문장 배열
      */
     public Sentence [] miningTitle(){
+        if(document.title == null){
+            return new Sentence[0];
+        }
+
         SentenceSplitter splitter = DocumentModule.getSentenceSplitter(document.type);
 
         Contents contents = () -> document.title;
         Sentence[] sentences = splitter.split(contents);
+
+        tokenExtract(sentences);
+        this.titleSentences = sentences;
+        return this.titleSentences;
+    }
+
+    protected void tokenExtract(Sentence[] sentences){
+        Tokenizer tokenizer = DocumentModule.getTokenizer(document.type);
         for (Sentence sentence : sentences){
-            sentence.getContents();
+            String text = sentence.getContents();
+            sentence.tokens = (WordToken[])tokenizer.getTokens(text);
         }
-
-
-        return null;
     }
 
-    public void setSentences(Sentence[] sentences) {
-        this.sentences = sentences;
-    }
 
     /**
      * 본문 문장 단위로 구분
      * 문장 구분 및 문장을 활용한 토큰 추출
+     * @return 문장 배열
      */
-    public void miningContents(){
-        SentenceSplitter sentenceSplitter = DocumentModule.getSentenceSplitter(document.type);
+    public Sentence [] miningContents(){
 
+        if(document.title == null){
+            return new Sentence[0];
+        }
+        SentenceSplitter splitter = DocumentModule.getSentenceSplitter(document.type);
+
+        Contents contents = () -> document.contents;
+        Sentence[] sentences = splitter.split(contents);
+        tokenExtract(sentences);
+        this.sentences = sentences;
+        return this.sentences;
     }
 
 
-
-
+    /**
+     * 원문 얻기
+     * @return 원문
+     */
     public Document getDocument() {
         return document;
     }
 
+    /**
+     * 제목 마이닝 결과 얻기
+     * @return 문장배열 및 문장별 단어 토큰 배열
+     */
     public Sentence[] getTitleSentences() {
         if(sentences != null){
             return sentences;
@@ -102,11 +124,17 @@ public class DocumentMining {
         return miningTitle();
     }
 
-    public Paragraph[] getParagraphs() {
-        return paragraphs;
-    }
 
+
+    /**
+     * 본문 마이닝 결과 얻기
+     * @return 문장배열 및 분잘 별 단어 토큰 배열
+     */
     public Sentence[] getSentences() {
-        return sentences;
+        if(sentences != null){
+            return sentences;
+        }
+
+        return miningContents();
     }
 }

@@ -18,6 +18,7 @@ package org.moara.yido.textmining;
 
 import com.seomse.commons.config.Config;
 import org.moara.splitter.Splitter;
+import org.moara.splitter.SplitterManager;
 import org.moara.yido.textmining.splitter.JsonSplitter;
 import org.moara.yido.textmining.splitter.YidoSplitter;
 import org.moara.yido.textmining.splitter.SentenceSplitter;
@@ -43,20 +44,20 @@ public class DocumentModule {
      */
     public static SentenceSplitter getSentenceSplitter(String docType){
 
-        String value;
+        String splitterInfos;
         if(docType == null){
             return new YidoSplitter(null);
         }else{
-            value = Config.getConfig("text.mining.sentence.splitter." + docType);
-            if(value == null){
+            splitterInfos = Config.getConfig("text.mining.sentence.splitter." + docType);
+            if(splitterInfos == null){
                 return new YidoSplitter(null);
             }
 
-            if(value.equals("json")){
+            if(splitterInfos.equals("json")){
                 return JSON_SPLITTER;
             }
 
-            return new YidoSplitter(value.substring(value.indexOf(',')+1));
+            return new YidoSplitter(splitterInfos.substring(splitterInfos.indexOf(',')+1));
         }
 
     }
@@ -68,32 +69,42 @@ public class DocumentModule {
      */
     public static Splitter getParagraphSplitter(String docType){
 
+        String splitterId = Config.getConfig("text.mining.paragraph.splitter." + docType);
 
-//        String value = Config.getConfig("yido.sentence.splitter." + docType);
-//        if(value == null){
-//            value = Config.getConfig("yido.sentence.splitter.default", "rule,news");
-//        }
-//
-//        if(value.equals("json")){
-//            return JSON_SPLITTER;
-//        }
-//        return new YidoSplitter(value.substring(value.indexOf(',')+1));
+        if(splitterId == null){
+            splitterId = Config.getConfig("text.mining.paragraph.splitter.default");
+        }
 
-        return null;
+        Splitter splitter = SplitterManager.getInstance().getSplitter(splitterId);
+        if(splitter == null){
+            throw new RuntimeException("paragraph splitter null: " + splitterId);
+        }
+        return splitter;
     }
 
-
-    public static Tokenizer tokenizer(String docType){
+    /**
+     * 도크나이져 얻기
+     * @param docType 문서유형
+     * @return 토크나이져
+     */
+    public static Tokenizer getTokenizer(String docType){
 
 
         if(docType == null) {
             return TokenizerManager.getInstance().getTokenizer();
         }
 
-        String value = Config.getConfig("yido.sentence.splitter.default", "rule,news");
+        String tokenizerId = Config.getConfig("text.mining.sentence.tokenizer." + docType);
+        if(tokenizerId == null){
+            return TokenizerManager.getInstance().getTokenizer();
+        }
+        TokenizerManager tokenizerManager = TokenizerManager.getInstance();
+        Tokenizer tokenizer = tokenizerManager.getTokenizer(tokenizerId);
+        if(tokenizer == null){
+            return tokenizerManager.getTokenizer();
+        }
 
-
-        return null;
+        return tokenizer;
     }
 
 }
