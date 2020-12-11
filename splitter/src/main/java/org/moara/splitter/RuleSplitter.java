@@ -74,19 +74,20 @@ class RuleSplitter implements Splitter {
     }
 
 
-    public void addSplitConditions(List<SplitCondition> additionalSplitCondition) {
+    public void addSplitConditions(SplitCondition additionalSplitCondition) {
         terminatorAreaProcessor.addSplitConditions(additionalSplitCondition);
     }
 
-    public void deleteSplitConditions(List<SplitCondition> unnecessarySplitCondition) {
+    public void deleteSplitConditions(SplitCondition unnecessarySplitCondition) {
+
         terminatorAreaProcessor.deleteSplitConditions(unnecessarySplitCondition);
     }
 
-    public void addValidation(List<Validation> additionalValidations) {
+    public void addValidation(Validation additionalValidations) {
         terminatorAreaProcessor.addValidation(additionalValidations);
     }
 
-    public void deleteValidation(List<Validation> unnecessaryValidations) {
+    public void deleteValidation(Validation unnecessaryValidations) {
         terminatorAreaProcessor.deleteValidation(unnecessaryValidations);
     }
 

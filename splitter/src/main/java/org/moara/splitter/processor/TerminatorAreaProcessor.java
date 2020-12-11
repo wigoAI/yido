@@ -317,32 +317,44 @@ public class TerminatorAreaProcessor {
      *
      * @param additionalSplitCondition 추가할 문장 구분 조건
      */
-    public synchronized void addSplitConditions(List<SplitCondition> additionalSplitCondition) {
+    public synchronized void addSplitConditions(SplitCondition additionalSplitCondition) {
 
-        List<SplitCondition> splitConditions = new ArrayList(Arrays.asList(this.splitConditions.clone()));
-        List<SplitCondition> patternSplitConditions = new ArrayList(Arrays.asList(this.patternSplitConditions.clone()));
+
 
         List<Integer> conditionLengths = new ArrayList<>();
         for (int i : this.conditionLengths) {
             conditionLengths.add(i);
         }
 
-        for (SplitCondition splitCondition : additionalSplitCondition) {
-            if (splitCondition.isPattern()) {
-                patternSplitConditions.add(splitCondition);
-            } else {
-                splitConditions.add(splitCondition);
-                splitConditionValues.add(splitCondition.getValue());
 
-                if (!conditionLengths.contains(splitCondition.getValue().length())) {
-                    conditionLengths.add(splitCondition.getValue().length());
-                }
+        if (additionalSplitCondition.isPattern()) {
+            patternSplitConditions[patternSplitConditions.length - 1] = additionalSplitCondition;
+            SplitCondition[] patternSplitConditions = new SplitCondition[this.patternSplitConditions.length + 1];
+
+            for (int i = 0; i < this.patternSplitConditions.length; i++) {
+                patternSplitConditions[i] = this.patternSplitConditions[i];
             }
 
+            this.patternSplitConditions = patternSplitConditions;
+        } else {
+            SplitCondition[] splitConditions = new SplitCondition[this.splitConditions.length + 1];
+
+
+            for (int i = 0; i < this.splitConditions.length; i++) {
+                splitConditions[i] = this.splitConditions[i];
+            }
+
+            splitConditions[splitConditions.length - 1] = additionalSplitCondition;
+            splitConditionValues.add(additionalSplitCondition.getValue());
+
+            if (!conditionLengths.contains(additionalSplitCondition.getValue().length())) {
+                conditionLengths.add(additionalSplitCondition.getValue().length());
+            }
+            this.splitConditions = splitConditions;
         }
 
-        this.splitConditions = splitConditions.toArray(new SplitCondition[0]);
-        this.patternSplitConditions = patternSplitConditions.toArray(new SplitCondition[0]);
+
+
 
         updateConditionLengths(conditionLengths);
     }
@@ -352,44 +364,56 @@ public class TerminatorAreaProcessor {
      *
      * @param unnecessarySplitCondition 제거할 문장 구분 조건
      */
-    public synchronized void deleteSplitConditions(List<SplitCondition> unnecessarySplitCondition) {
-        List<SplitCondition> splitConditions = new ArrayList(Arrays.asList(this.splitConditions.clone()));
-        List<SplitCondition> patternSplitConditions = new ArrayList(Arrays.asList(this.patternSplitConditions.clone()));
-        List<Integer> removeValues = new ArrayList<>();
+    public synchronized void deleteSplitConditions(SplitCondition unnecessarySplitCondition) {
 
-        for (SplitCondition splitCondition : unnecessarySplitCondition) {
-            if (splitCondition.isPattern()) {
-                patternSplitConditions.removeIf(item -> item.getValue().equals(splitCondition.getValue()));
-            } else {
-                splitConditions.removeIf(item -> item.getValue().equals(splitCondition.getValue()));
-                splitConditionValues.remove(splitCondition.getValue());
+        boolean removeLengthFlag = true;
+        if (unnecessarySplitCondition.isPattern()) {
 
-                // 같은 길이의 조건이 있다면
-                // 문자열 길이 set에서 해당 길이를 제거하지 않는다.
-                for (String value : splitConditionValues) {
-                    if (value.length() == splitCondition.getValue().length()) {
-                        removeValues.add(value.length());
-                        break;
-                    }
+            SplitCondition[] patternSplitConditions = new SplitCondition[this.patternSplitConditions.length - 1];
+
+            for (int i = 0; i < patternSplitConditions.length; i++) {
+
+                if (!this.patternSplitConditions[i].getValue().equals(unnecessarySplitCondition.getValue())) {
+                    patternSplitConditions[i] = this.patternSplitConditions[i];
+                }
+            }
+
+            this.patternSplitConditions = patternSplitConditions;
+            removeLengthFlag = false;
+        } else {
+            SplitCondition[] splitConditions = new SplitCondition[this.splitConditions.length - 1];
+
+            for (int i = 0; i < splitConditions.length; i++) {
+                if (!this.splitConditions[i].getValue().equals(unnecessarySplitCondition.getValue())) {
+                    splitConditions[i] = this.splitConditions[i];
+                }
+            }
+            this.splitConditions = splitConditions;
+
+            splitConditionValues.remove(unnecessarySplitCondition.getValue());
+
+            // 같은 길이의 조건이 있다면
+            // 문자열 길이 set에서 해당 길이를 제거하지 않는다.
+            for (String value : splitConditionValues) {
+                if (value.length() == unnecessarySplitCondition.getValue().length()) {
+                    removeLengthFlag = false;
+                    break;
                 }
             }
         }
 
-        this.splitConditions = splitConditions.toArray(new SplitCondition[0]);
-        this.patternSplitConditions = patternSplitConditions.toArray(new SplitCondition[0]);
 
 
-        if (removeValues.size() > 0) {
+
+        if (removeLengthFlag) {
             List<Integer> conditionLengths = new ArrayList<>();
             for (int i : this.conditionLengths) {
                 conditionLengths.add(i);
             }
 
-            conditionLengths.removeAll(removeValues);
+            conditionLengths.removeIf(length -> length == unnecessarySplitCondition.getValue().length());
 
-            if (conditionLengths.size() > 0) {
-                updateConditionLengths(conditionLengths);
-            }
+            updateConditionLengths(conditionLengths);
 
         }
     }
@@ -409,24 +433,22 @@ public class TerminatorAreaProcessor {
     /**
      * 문장 유효성 추가
      *
-     * @param additionalValidations 추가 할 유효성
+     * @param additionalValidation 추가 할 유효성
      */
-    public synchronized void addValidation(List<Validation> additionalValidations) {
+    public synchronized void addValidation(Validation additionalValidation) {
         for (SplitCondition splitCondition : splitConditions) {
-            splitCondition.getValidations().addAll(additionalValidations);
+            splitCondition.getValidations().add(additionalValidation);
         }
     }
 
     /**
      * 문장 유효성 제거
      *
-     * @param unnecessaryValidations 제거 할 문장 유효성
+     * @param unnecessaryValidation 제거 할 문장 유효성
      */
-    public synchronized void deleteValidation(List<Validation> unnecessaryValidations) {
+    public synchronized void deleteValidation(Validation unnecessaryValidation) {
         for (SplitCondition splitCondition : splitConditions) {
-            for (Validation validation : unnecessaryValidations) {
-                splitCondition.getValidations().removeIf(item -> item.getValue().equals(validation.getValue()));
-            }
+            splitCondition.getValidations().removeIf(item -> item.getValue().equals(unnecessaryValidation.getValue()));
         }
     }
 }

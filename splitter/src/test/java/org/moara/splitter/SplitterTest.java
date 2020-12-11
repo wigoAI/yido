@@ -115,11 +115,7 @@ public class SplitterTest {
 
         Splitter splitter = SplitterManager.getInstance().getSplitter("test");
 
-
-        List<SplitCondition> additionalSplitCondition = new ArrayList<>();
-        additionalSplitCondition.add(new SplitCondition.Builder("이지만", 'B').build());
-
-        splitter.addSplitConditions(additionalSplitCondition);
+        ((RuleSplitter)splitter).addSplitConditions(new SplitCondition.Builder("이지만", 'B').build());
 
 
         int[] answer = {32, 45, 105, 222};
@@ -137,7 +133,7 @@ public class SplitterTest {
 
         int[] answer2 = {32, 105, 222};
 
-        splitter.deleteSplitConditions(additionalSplitCondition);
+        ((RuleSplitter)splitter).deleteSplitConditions(new SplitCondition.Builder("이지만", 'B').build());
         splitResults = splitter.split(newsData);
 
         Arrays.stream(splitResults).forEach(System.out::println);
@@ -156,10 +152,8 @@ public class SplitterTest {
         Splitter splitter = SplitterManager.getInstance().getSplitter("test");
 
 
-        List<SplitCondition> additionalSplitCondition = new ArrayList<>();
-        additionalSplitCondition.add(new SplitCondition.Builder("이지만", 'B').build());
 
-        splitter.addSplitConditions(additionalSplitCondition);
+        ((RuleSplitter)splitter).addSplitConditions(new SplitCondition.Builder("이지만", 'B').build());
 
         assertEquals(splitter.split(newsData).length, answer.length);
         int index = 0;
@@ -170,10 +164,7 @@ public class SplitterTest {
 
         int[] answer2 = {32, 105, 222};
 
-        List<Validation> validations = new ArrayList<>();
-        validations.add(new Validation(" 가족", 'N', 'B'));
-
-        splitter.addValidation(validations);
+        ((RuleSplitter)splitter).addValidation(new Validation(" 가족", 'N', 'B'));
 
         BeginEnd[] splitResults = splitter.split(newsData);
 
@@ -184,7 +175,7 @@ public class SplitterTest {
             assertEquals(answer2[index++], splitResult.getEnd());
         }
 
-        splitter.deleteValidation(validations);
+        ((RuleSplitter)splitter).deleteValidation(new Validation(" 가족", 'N', 'B'));
 
         splitResults = splitter.split(newsData);
         assertEquals(splitResults.length, answer.length);
