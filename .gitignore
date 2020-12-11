@@ -6,3 +6,5 @@
 /splitter/.gradle
 build
 .gradle
+out
+/splitter/data/*/test*
