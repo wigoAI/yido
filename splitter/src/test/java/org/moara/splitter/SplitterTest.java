@@ -145,7 +145,6 @@ public class SplitterTest {
         assertEquals(splitResults.length, answer2.length);
         index = 0;
         for (int splitResult : splitResults) {
-
             assertEquals(answer2[index++], splitResult);
         }
 
