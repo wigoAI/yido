@@ -15,6 +15,7 @@
  */
 package org.moara.splitter;
 
+import com.seomse.commons.data.BeginEnd;
 import org.moara.splitter.utils.Area;
 import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.utils.Validation;
@@ -33,7 +34,7 @@ public interface Splitter {
      * @param text String
      * @return Area Array
      */
-    int[] split(String text);
+    BeginEnd[] split(String text);
 
     /**
      * 구분 조건 추가

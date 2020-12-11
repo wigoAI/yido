@@ -1,5 +1,6 @@
 package org.moara.splitter.splitterManager;
 
+import com.seomse.commons.data.BeginEnd;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -7,7 +8,6 @@ import org.junit.Test;
 import org.moara.splitter.Splitter;
 import org.moara.splitter.SplitterManager;
 import org.moara.splitter.TestFileInitializer;
-import org.moara.splitter.utils.Area;
 
 
 public class SplitterManagerTest {
@@ -30,8 +30,8 @@ public class SplitterManagerTest {
         int[] answer = {12, 20};
 
         int index = 0;
-        for (int splitResult : splitter.split(text)) {
-            Assert.assertEquals(answer[index++], splitResult);
+        for (BeginEnd splitResult : splitter.split(text)) {
+            Assert.assertEquals(answer[index++], splitResult.getEnd());
         }
 
     }
@@ -44,8 +44,8 @@ public class SplitterManagerTest {
 
         int[] answer = {12, 20};
         int index = 0;
-        for (int splitResult : splitter.split(text)) {
-            Assert.assertEquals(answer[index++], splitResult);
+        for (BeginEnd splitResult : splitter.split(text)) {
+            Assert.assertEquals(answer[index++], splitResult.getEnd());
         }
     }
 

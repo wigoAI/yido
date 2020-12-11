@@ -16,6 +16,7 @@
 package org.moara.splitter;
 
 
+import com.seomse.commons.data.BeginEnd;
 import org.moara.splitter.processor.ExceptionAreaProcessor;
 import org.moara.splitter.processor.TerminatorAreaProcessor;
 import org.moara.splitter.utils.Area;
@@ -52,19 +53,14 @@ class RuleSplitter implements Splitter {
     }
 
     @Override
-    public int[] split(String text) {
+    public BeginEnd[] split(String text) {
         if (text == null || text.isEmpty()) {
             throw new IllegalArgumentException("Input text is null or empty");
         }
 
-        List<Integer> splitPoints = getSplitPoint(text);
-        int[] splitPointArray = new int[splitPoints.size()];
+        List<Integer> splitPoint = getSplitPoint(text);
 
-        for (int i = 0; i < splitPointArray.length; i++) {
-            splitPointArray[i] = splitPoints.get(i);
-        }
-
-        return splitPointArray;
+        return doSplit(splitPoint, text);
 
     }
 
@@ -94,6 +90,23 @@ class RuleSplitter implements Splitter {
         terminatorAreaProcessor.deleteValidation(unnecessaryValidations);
     }
 
+    private Area[] doSplit(List<Integer> splitPoint, String inputData) {
+        Area[] result = new Area[splitPoint.size() + 1];
+        int startIndex = 0;
+        int resultIndex = 0;
+
+        for(int point : splitPoint) {
+            Area splitResult = new Area(startIndex, point);
+
+            result[resultIndex++] = splitResult;
+            startIndex = point;
+
+        }
+
+        result[resultIndex] =  new Area(startIndex, inputData.length());
+
+        return result;
+    }
 
 
     /**
@@ -105,10 +118,9 @@ class RuleSplitter implements Splitter {
         System.out.println(data);
         Splitter splitter = SplitterManager.getInstance().getSplitter();
 
-        int startPoint = 0;
-        for (int splitPoint : splitter.split(data)) {
-            System.out.println(data.substring(splitPoint, splitPoint));
-            startPoint = splitPoint;
+        for (BeginEnd splitPoint : splitter.split(data)) {
+            System.out.println(data.substring(splitPoint.getBegin(), splitPoint.getEnd()));
+
         }
 
     }
