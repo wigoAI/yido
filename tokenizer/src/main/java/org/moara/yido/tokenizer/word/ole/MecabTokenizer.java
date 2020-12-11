@@ -54,15 +54,6 @@ public class MecabTokenizer implements Tokenizer {
 
 
     /**
-     * 메타 데이터 업데이트
-     */
-    @Override
-    public void updateMetaData(){
-        //mecab은 프로세스 재실행 해야함
-    }
-
-
-    /**
      * mecab 결과 얻기
      * @param text mecab 결과를 얻기 위한 text
      * @return 변형 없는 mecab 결과

@@ -38,9 +38,6 @@ public interface Tokenizer {
      */
     Token [] getTokens(String text);
 
-    /**
-     * 메타 데이터 업데이트
-     */
-    void updateMetaData();
+
 
 }
