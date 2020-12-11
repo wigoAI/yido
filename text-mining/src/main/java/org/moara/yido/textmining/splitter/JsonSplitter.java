@@ -14,16 +14,28 @@
  * limitations under the License.
  */
 
-package org.moara.yido.textmining.document;
+package org.moara.yido.textmining.splitter;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
+import org.moara.yido.textmining.Contents;
+import org.moara.yido.textmining.Sentence;
 
 /**
+ * json 형태의 구분
  * @author macle
  */
-public interface Contents {
+public class JsonSplitter implements SentenceSplitter{
+    @Override
+    public Sentence[] split(Contents contents) {
 
-    /**
-     * contents 텍스트 얻기
-     * @return contents text
-     */
-    String getText();
+
+        JsonArray array = (JsonArray)JsonParser.parseString(contents.getText());
+
+
+
+        return new Sentence[0];
+    }
+
+
 }

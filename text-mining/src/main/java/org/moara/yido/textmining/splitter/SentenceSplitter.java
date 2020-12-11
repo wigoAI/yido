@@ -14,23 +14,21 @@
  * limitations under the License.
  */
 
-package org.moara.yido.textmining.document;
+package org.moara.yido.textmining.splitter;
+
+import org.moara.yido.textmining.Contents;
+import org.moara.yido.textmining.Sentence;
 
 /**
- * 분석원문
+ * 문장구분기
  * @author macle
  */
-public class Document {
-
-    //제목
-    String title;
-    //내용
-    String contents;
-
-    //문서유형
-    String type;
-    
-    //문서언어
-    String lang;
+public interface SentenceSplitter {
+    /**
+     * 문장 구분
+     * @param contents 구분할 내용
+     * @return 문장 배열
+     */
+    Sentence[] split(Contents contents);
 
 }

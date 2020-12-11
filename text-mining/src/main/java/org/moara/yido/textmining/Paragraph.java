@@ -14,56 +14,44 @@
  * limitations under the License.
  */
 
-package org.moara.yido.textmining.document;
-
+package org.moara.yido.textmining;
 
 import com.seomse.commons.data.BeginEnd;
-import org.moara.yido.tokenizer.word.WordToken;
 
 /**
- * 문장
+ * 문단
  * @author macle
  */
-public class Sentence implements BeginEnd {
+public class Paragraph implements BeginEnd {
 
-    //문장내용
-    Contents contents;
-
-    WordToken[] tokens;
+    DocumentMining documentMining;
 
     private final int begin;
     private final int end;
 
+    //문단에 속하는 문장구성 정보
+    //단 문단에 속해 있지만 문서 기준의 인덱스를 가진다.
+
     /**
      * 생성자
-     * @param contents 내용
+     * @param documentMining 내용
      * @param begin 시작위치
      * @param end 끝위치
      */
-    public Sentence(Contents contents, int begin, int end){
-        this.contents = contents;
+    public Paragraph(DocumentMining documentMining, int begin, int end){
+        this.documentMining = documentMining;
         this.begin = begin;
         this.end = end;
     }
 
-
     /**
-     * 문장 내용 얻기
+     * 문단 내용 얻기
      * @return 문장내용
      */
     public String getContents() {
-        return contents.getText().substring(begin, end);
+        return documentMining.document.contents.substring(begin, end);
     }
 
-    /**
-     * 문장을 구성하는 토큰들 얻기
-     * begin end는 문장 단위다
-     * 문서단위를 얻으려면 문장의 시작 위치를 더해서 얻어야 한다
-     * @return 문장을 구성하는 토큰
-     */
-    public WordToken[] getTokens() {
-        return tokens;
-    }
 
     @Override
     public int getBegin() {
