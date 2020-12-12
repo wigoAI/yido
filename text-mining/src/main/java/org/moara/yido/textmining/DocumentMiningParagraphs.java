@@ -16,6 +16,11 @@
 
 package org.moara.yido.textmining;
 
+import com.seomse.commons.data.BeginEnd;
+import org.moara.splitter.Splitter;
+import org.moara.yido.textmining.sentence.ContentsSentence;
+import org.moara.yido.textmining.sentence.SentenceSplitter;
+
 /**
  * @author macle
  */
@@ -39,9 +44,40 @@ public class DocumentMiningParagraphs extends DocumentMining{
      */
     public Paragraph[] miningParagraph(){
 
+        if(document.contents == null){
+            return null;
+        }
 
+        Splitter splitter = DocumentModule.getParagraphSplitter(document.type);
+        BeginEnd[] beginEnds = splitter.split(document.contents);
 
-        return null;
+        Paragraph[] paragraphs = new Paragraph[beginEnds.length];
+
+        Contents documentContents = () -> document.contents;
+
+        for (int i = 0; i <paragraphs.length ; i++) {
+            Paragraph paragraph  = new Paragraph(this, beginEnds[i].getBegin(), paragraphs[i].getEnd());
+
+            final String text =paragraphs[i].getContents();
+            Contents contents = () -> text;
+
+            SentenceSplitter sentenceSplitter = DocumentModule.getSentenceSplitter(document.type);
+            Sentence[] sentences = sentenceSplitter.split(contents);
+            tokenExtract(sentences);
+            
+            for(Sentence sentence : sentences){
+                //원문 단위 정보로 변경하기
+                ContentsSentence contentsSentence = (ContentsSentence)sentence;
+                contentsSentence.changeContents(documentContents);
+                sentence.begin += paragraph.begin;
+                sentence.end += paragraph.begin;
+            }
+            paragraphs[i] = paragraph;
+        }
+
+        this.paragraphs = paragraphs;
+
+        return this.paragraphs;
 
     }
 

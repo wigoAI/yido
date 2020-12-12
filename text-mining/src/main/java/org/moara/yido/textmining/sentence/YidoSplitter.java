@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.moara.yido.textmining.splitter;
+package org.moara.yido.textmining.sentence;
 
 import com.seomse.commons.data.BeginEnd;
 import org.moara.splitter.Splitter;
@@ -52,20 +52,18 @@ public class YidoSplitter implements SentenceSplitter{
             }
         }
 
-
         this.splitter = splitter;
     }
 
     @Override
     public Sentence[] split(Contents contents) {
 
-        BeginEnd[] positions = splitter.split(contents.getText());
+        BeginEnd[] beginEnds = splitter.split(contents.getText());
+        Sentence [] sentences = new Sentence[beginEnds.length];
+        for (int i = 0; i <sentences.length; i++) {
+            sentences[i] = new ContentsSentence(contents, beginEnds[i].getBegin(), beginEnds[i].getEnd());
+        }
 
-
-
-
-        //splitter 을 이용하여 구분한 결과를 문장결과로 사용
-
-        return new Sentence[0];
+        return sentences;
     }
 }

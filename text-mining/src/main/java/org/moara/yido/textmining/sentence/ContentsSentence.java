@@ -14,21 +14,42 @@
  * limitations under the License.
  */
 
-package org.moara.yido.textmining.splitter;
+package org.moara.yido.textmining.sentence;
 
 import org.moara.yido.textmining.Contents;
 import org.moara.yido.textmining.Sentence;
 
 /**
- * 문장구분기
  * @author macle
  */
-public interface SentenceSplitter {
+public class ContentsSentence extends Sentence {
+    //문장내용
+    private Contents contents;
+
     /**
-     * 문장 구분
-     * @param contents 구분할 내용
-     * @return 문장 배열
+     * 생성자
+     * @param contents 내용
+     * @param begin 시작위치
+     * @param end 끝위치
      */
-    Sentence[] split(Contents contents);
+    public ContentsSentence(Contents contents, int begin, int end){
+        super(begin, end);
+        this.contents = contents;
+        this.begin = begin;
+        this.end = end;
+    }
+
+    /**
+     * contents 변경
+     * @param contents 내용
+     */
+    public void changeContents(Contents contents) {
+        this.contents = contents;
+    }
+
+    @Override
+    public String getContents() {
+        return contents.getText().substring(begin, end);
+    }
 
 }

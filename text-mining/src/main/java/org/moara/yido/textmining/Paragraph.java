@@ -26,8 +26,8 @@ public class Paragraph implements BeginEnd {
 
     DocumentMining documentMining;
 
-    private final int begin;
-    private final int end;
+    final int begin;
+    final int end;
 
     //문단에 속하는 문장구성 정보
     //단 문단에 속해 있지만 문서 기준의 인덱스를 가진다.

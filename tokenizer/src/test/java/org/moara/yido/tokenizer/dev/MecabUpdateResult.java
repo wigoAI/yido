@@ -31,7 +31,6 @@ public class MecabUpdateResult extends ApiMessage {
     public void receive(String message) {
         try{
             MecabTokenizer mecabTokenizer = (MecabTokenizer)TokenizerManager.getInstance().getTokenizer("mecab");
-            mecabTokenizer.updateMetaData();
             sendMessage(mecabTokenizer.getMecabResult(message));
         }catch(Exception e){
             e.printStackTrace();

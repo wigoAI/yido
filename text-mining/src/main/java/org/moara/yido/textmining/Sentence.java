@@ -27,40 +27,34 @@ import java.util.Map;
  * 문장
  * @author macle
  */
-public class Sentence implements BeginEnd {
+public abstract class Sentence implements BeginEnd {
 
-    //문장내용
-    Contents contents;
 
-    WordToken[] tokens;
+    protected WordToken[] tokens;
 
-    int begin;
-    int end;
+    protected int begin;
+    protected int end;
 
     //문장의 그밖의 속성들
     //STT 의 텍스트일경우 값이 생김
-    Map<String, Object> dataMap;
+    protected Map<String, Object> dataMap;
 
+    
     /**
      * 생성자
-     * @param contents 내용
      * @param begin 시작위치
      * @param end 끝위치
      */
-    public Sentence(Contents contents, int begin, int end){
-        this.contents = contents;
+    public Sentence(int begin, int end){
         this.begin = begin;
         this.end = end;
     }
-
 
     /**
      * 문장 내용 얻기
      * @return 문장내용
      */
-    public String getContents() {
-        return contents.getText().substring(begin, end);
-    }
+    public abstract String getContents();
 
     /**
      * 문장을 구성하는 토큰들 얻기

@@ -16,7 +16,7 @@
 
 package org.moara.yido.textmining;
 
-import org.moara.yido.textmining.splitter.SentenceSplitter;
+import org.moara.yido.textmining.sentence.SentenceSplitter;
 import org.moara.yido.tokenizer.Tokenizer;
 import org.moara.yido.tokenizer.word.WordToken;
 
@@ -34,17 +34,14 @@ import org.moara.yido.tokenizer.word.WordToken;
  */
 public class DocumentMining {
 
-    
     protected final Document document;
 
     //제목 문장구성
-    Sentence[] titleSentences;
-    
+    protected Sentence[] titleSentences;
 
     //내용 문장구성
-    Sentence[] sentences;
+    protected Sentence[] sentences;
 
-    
     /**
      * 생성자
      * @param document 문서
@@ -52,7 +49,6 @@ public class DocumentMining {
     public DocumentMining(Document document){
         this.document = document;
     }
-
 
     /**
      * 제목 문장단위로 구분
@@ -82,7 +78,6 @@ public class DocumentMining {
             sentence.tokens = (WordToken[])tokenizer.getTokens(text);
         }
     }
-
 
     /**
      * 본문 문장 단위로 구분
@@ -124,8 +119,6 @@ public class DocumentMining {
         return miningTitle();
     }
 
-
-
     /**
      * 본문 마이닝 결과 얻기
      * @return 문장배열 및 분잘 별 단어 토큰 배열
@@ -137,4 +130,6 @@ public class DocumentMining {
 
         return miningContents();
     }
+
+
 }
