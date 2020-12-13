@@ -71,6 +71,10 @@ public class DocumentMining {
         return this.titleSentences;
     }
 
+    /**
+     * 문장 별 token 추출
+     * @param sentences 문장배열
+     */
     protected void tokenExtract(Sentence[] sentences){
         Tokenizer tokenizer = DocumentModule.getTokenizer(document.type);
         for (Sentence sentence : sentences){
@@ -86,7 +90,7 @@ public class DocumentMining {
      */
     public Sentence [] miningContents(){
 
-        if(document.title == null){
+        if(document.contents == null){
             return new Sentence[0];
         }
         SentenceSplitter splitter = DocumentModule.getSentenceSplitter(document.type);
@@ -97,7 +101,6 @@ public class DocumentMining {
         this.sentences = sentences;
         return this.sentences;
     }
-
 
     /**
      * 원문 얻기
@@ -131,5 +134,20 @@ public class DocumentMining {
         return miningContents();
     }
 
+
+    /**
+     * 범위에 해당하는 내용 얻기
+     * @param begin 시작
+     * @param end 끝
+     * @return sub contents
+     */
+    public String subContents(int begin, int end){
+
+        if(document.contents == null){
+            return null;
+        }
+
+        return document.contents.substring(begin,end);
+    }
 
 }

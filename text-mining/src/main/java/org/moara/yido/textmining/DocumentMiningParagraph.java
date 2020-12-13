@@ -21,10 +21,14 @@ import org.moara.splitter.Splitter;
 import org.moara.yido.textmining.sentence.ContentsSentence;
 import org.moara.yido.textmining.sentence.SentenceSplitter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
+ * 문단 구성이 필요한 문서 마이닝
  * @author macle
  */
-public class DocumentMiningParagraphs extends DocumentMining{
+public class DocumentMiningParagraph extends DocumentMining{
 
     //내용 문단구성
     Paragraph[] paragraphs;
@@ -34,7 +38,7 @@ public class DocumentMiningParagraphs extends DocumentMining{
      *
      * @param document 문서
      */
-    public DocumentMiningParagraphs(Document document) {
+    public DocumentMiningParagraph(Document document) {
         super(document);
     }
 
@@ -48,11 +52,12 @@ public class DocumentMiningParagraphs extends DocumentMining{
             return null;
         }
 
+        List<Sentence> sentenceList = new ArrayList<>();
+        //문장유형 쪽 구현
+        //범위로 컨텐츠 얻어오는 기능 구현
         Splitter splitter = DocumentModule.getParagraphSplitter(document.type);
         BeginEnd[] beginEnds = splitter.split(document.contents);
-
         Paragraph[] paragraphs = new Paragraph[beginEnds.length];
-
         Contents documentContents = () -> document.contents;
 
         for (int i = 0; i <paragraphs.length ; i++) {
@@ -71,14 +76,23 @@ public class DocumentMiningParagraphs extends DocumentMining{
                 contentsSentence.changeContents(documentContents);
                 sentence.begin += paragraph.begin;
                 sentence.end += paragraph.begin;
+                sentenceList.add(sentence);
             }
             paragraphs[i] = paragraph;
         }
-
         this.paragraphs = paragraphs;
+        this.sentences = sentenceList.toArray(new Sentence[0]);
+        sentenceList.clear();
 
         return this.paragraphs;
 
+    }
+
+
+    @Override
+    public Sentence [] miningContents(){
+        miningParagraph();
+        return this.sentences;
     }
 
     /**

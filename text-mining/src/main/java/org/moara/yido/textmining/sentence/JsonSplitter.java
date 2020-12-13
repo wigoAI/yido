@@ -25,6 +25,7 @@ import java.util.Set;
 
 /**
  * json 형태의 구분
+ * stt 문서로 전달받을때 json 으로 만들어서 사용하는 경우가 많음
  * @author macle
  */
 public class JsonSplitter implements SentenceSplitter{
