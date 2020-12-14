@@ -6,9 +6,8 @@ description =  "Korean natural language processing"
 
 allprojects {
     group 'org.moara.yido'
-    repositories
-            {
+    repositories {
                 mavenCentral()
-            }
+    }
 }
 

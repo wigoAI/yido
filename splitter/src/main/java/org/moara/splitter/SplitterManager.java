@@ -19,6 +19,7 @@ package org.moara.splitter;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.seomse.commons.config.Config;
 import org.moara.splitter.exception.SplitterNotFoundException;
 import org.moara.splitter.processor.BracketAreaProcessor;
 import org.moara.splitter.processor.ExceptionAreaProcessor;
@@ -38,7 +39,7 @@ import java.util.*;
  * @author wjrmffldrhrl
  */
 public class SplitterManager {
-    private static final String DEFAULT_SPLITTER_ID = "sns";
+    private static final String DEFAULT_SPLITTER_ID = Config.getConfig("yido.splitter.default.id", "sns");
     private final Map<String, Splitter> splitterMap = new HashMap<>();
 
 
