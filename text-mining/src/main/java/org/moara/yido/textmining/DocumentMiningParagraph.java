@@ -78,6 +78,7 @@ public class DocumentMiningParagraph extends DocumentMining{
                 sentence.end += paragraph.begin;
                 sentenceList.add(sentence);
             }
+            paragraphs[i].sentences = sentences;
             paragraphs[i] = paragraph;
         }
         this.paragraphs = paragraphs;

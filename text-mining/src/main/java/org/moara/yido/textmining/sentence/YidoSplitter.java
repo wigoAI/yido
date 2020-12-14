@@ -21,8 +21,6 @@ import org.moara.splitter.Splitter;
 import org.moara.splitter.SplitterManager;
 import org.moara.yido.textmining.Contents;
 import org.moara.yido.textmining.Sentence;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Yido 구분기 프로젝트를 사용하는 문장 구분기
@@ -30,8 +28,6 @@ import org.slf4j.LoggerFactory;
  */
 public class YidoSplitter implements SentenceSplitter{
 
-
-    private static final Logger logger = LoggerFactory.getLogger(YidoSplitter.class);
 
     private final Splitter splitter;
 
@@ -46,10 +42,6 @@ public class YidoSplitter implements SentenceSplitter{
             splitter = splitterManager.getSplitter();
         }else{
             splitter = splitterManager.getSplitter(splitterId);
-            if(splitter == null){
-                logger.debug("splitter null default splitter use.... null id: " +  splitterId);
-                splitter = splitterManager.getSplitter();
-            }
         }
 
         this.splitter = splitter;

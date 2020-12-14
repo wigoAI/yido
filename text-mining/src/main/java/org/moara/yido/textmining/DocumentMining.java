@@ -111,7 +111,7 @@ public class DocumentMining {
     }
 
     /**
-     * 제목 마이닝 결과 얻기
+     * 제목 문장 얻기
      * @return 문장배열 및 문장별 단어 토큰 배열
      */
     public Sentence[] getTitleSentences() {
@@ -123,7 +123,7 @@ public class DocumentMining {
     }
 
     /**
-     * 본문 마이닝 결과 얻기
+     * 문장 배열 얻기
      * @return 문장배열 및 분잘 별 단어 토큰 배열
      */
     public Sentence[] getSentences() {

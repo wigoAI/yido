@@ -75,11 +75,7 @@ public class DocumentModule {
             splitterId = Config.getConfig("text.mining.paragraph.splitter.default");
         }
 
-        Splitter splitter = SplitterManager.getInstance().getSplitter(splitterId);
-        if(splitter == null){
-            throw new RuntimeException("paragraph splitter null: " + splitterId);
-        }
-        return splitter;
+        return SplitterManager.getInstance().getSplitter(splitterId);
     }
 
     /**
@@ -99,12 +95,7 @@ public class DocumentModule {
             return TokenizerManager.getInstance().getTokenizer();
         }
         TokenizerManager tokenizerManager = TokenizerManager.getInstance();
-        Tokenizer tokenizer = tokenizerManager.getTokenizer(tokenizerId);
-        if(tokenizer == null){
-            return tokenizerManager.getTokenizer();
-        }
-
-        return tokenizer;
+        return tokenizerManager.getTokenizer(tokenizerId);
     }
 
 }

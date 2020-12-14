@@ -26,6 +26,9 @@ public class Paragraph implements BeginEnd {
 
     DocumentMining documentMining;
 
+    //내용 문장구성
+    Sentence[] sentences;
+
     final int begin;
     final int end;
 
@@ -61,5 +64,14 @@ public class Paragraph implements BeginEnd {
     @Override
     public int getEnd() {
         return end;
+    }
+
+
+    /**
+     * 문장 배열 얻기
+     * @return 문장배열 및 분잘 별 단어 토큰 배열
+     */
+    public Sentence[] getSentences() {
+        return sentences;
     }
 }

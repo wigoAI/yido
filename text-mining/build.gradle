@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'org.moara.yido'
-version 'unspecified'
+version '0.1.0'
 
 repositories {
     mavenCentral()
