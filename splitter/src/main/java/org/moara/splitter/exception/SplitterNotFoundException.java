@@ -21,14 +21,16 @@ package org.moara.splitter.exception;
  *
  * @author wjrmffldrhrl
  */
-public class NoSuchSplitterException extends RuntimeException {
+public class SplitterNotFoundException extends RuntimeException {
 
     /**
      * 예외 생성자
      * 매개변수로 받은 구분가 id로 로그 처리
      * @param splitterId 존재하지 않는 구분기 id
      */
-    public NoSuchSplitterException(String splitterId) {
-        super("No such has a splitter : " + splitterId);
+    public SplitterNotFoundException(String splitterId) {
+        super("splitter not found : " + splitterId);
+
+
     }
 }

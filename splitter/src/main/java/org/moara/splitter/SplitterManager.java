@@ -19,7 +19,7 @@ package org.moara.splitter;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import org.moara.splitter.exception.NoSuchSplitterException;
+import org.moara.splitter.exception.SplitterNotFoundException;
 import org.moara.splitter.processor.BracketAreaProcessor;
 import org.moara.splitter.processor.ExceptionAreaProcessor;
 import org.moara.splitter.processor.TerminatorAreaProcessor;
@@ -27,7 +27,6 @@ import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.manager.SplitConditionManager;
 import org.moara.splitter.utils.file.FileManager;
 
-import java.nio.file.NoSuchFileException;
 import java.util.*;
 
 /**
@@ -39,7 +38,7 @@ import java.util.*;
  * @author wjrmffldrhrl
  */
 public class SplitterManager {
-    private static final String BASIC_SPLITTER_ID = "basic";
+    private static final String DEFAULT_SPLITTER_ID = "sns";
     private final Map<String, Splitter> splitterMap = new HashMap<>();
 
 
@@ -61,7 +60,7 @@ public class SplitterManager {
      * @return BasicSplitter
      */
     public Splitter getSplitter() {
-        return getSplitter(BASIC_SPLITTER_ID);
+        return getSplitter(DEFAULT_SPLITTER_ID);
     }
 
     /**
@@ -77,7 +76,7 @@ public class SplitterManager {
             splitterJson = FileManager.getJsonObjectByFile("splitter/" + id + ".json");
 
         } catch (RuntimeException e) {
-            throw new NoSuchSplitterException(id);
+            throw new SplitterNotFoundException(id);
         }
 
         return getSplitter(splitterJson);
