@@ -43,6 +43,10 @@ public class SplitterManager {
     private final Map<String, Splitter> splitterMap = new HashMap<>();
 
 
+    /**
+     * 분리기 관리자 인스턴스 획득
+     * @return SplitterManager instance
+     */
     public static SplitterManager getInstance() {
         return Singleton.instance;
     }

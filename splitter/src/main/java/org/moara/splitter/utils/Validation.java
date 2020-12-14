@@ -22,11 +22,22 @@ package org.moara.splitter.utils;
 public class Validation extends RuleProperty {
     private final String value;
 
+    /**
+     * 유효성의 모든 정보를 초기화 하는 생성자
+     * @param value 유효성 값
+     * @param matchFlag 유효성 일치 여부
+     * @param comparePosition 유효성 비교 위치
+     */
     public Validation(String value, char matchFlag, char comparePosition) {
         super(matchFlag, comparePosition);
         this.value = value;
     }
 
+    /**
+     * 이미 생성된 룰 속성을 통해 초기화
+     * @param value 유효성 값
+     * @param ruleProperty 룰 속성
+     */
     public Validation(String value, RuleProperty ruleProperty) {
         this(value, ruleProperty.getFlag(), ruleProperty.getPosition());
     }
