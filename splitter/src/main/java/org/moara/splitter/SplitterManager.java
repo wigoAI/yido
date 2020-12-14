@@ -19,6 +19,7 @@ package org.moara.splitter;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import org.moara.splitter.exception.NoSuchSplitterException;
 import org.moara.splitter.processor.BracketAreaProcessor;
 import org.moara.splitter.processor.ExceptionAreaProcessor;
 import org.moara.splitter.processor.TerminatorAreaProcessor;
@@ -26,6 +27,7 @@ import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.manager.SplitConditionManager;
 import org.moara.splitter.utils.file.FileManager;
 
+import java.nio.file.NoSuchFileException;
 import java.util.*;
 
 /**
@@ -66,7 +68,14 @@ public class SplitterManager {
      * @return Splitter
      */
     public Splitter getSplitter(String id) {
-        JsonObject splitterJson = FileManager.getJsonObjectByFile("splitter/" + id + ".json");
+        JsonObject splitterJson;
+        try {
+            splitterJson = FileManager.getJsonObjectByFile("splitter/" + id + ".json");
+
+        } catch (RuntimeException e) {
+            throw new NoSuchSplitterException(e);
+        }
+
 
         return getSplitter(splitterJson);
     }

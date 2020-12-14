@@ -41,10 +41,10 @@ public class ValidationTest {
 
         Assert.assertNotEquals(0, validations.size());
 
-        Collection<String> dataList = FileManager.readFile("/string_group/test_connective.dic");
+
 
         int validationIndex = 0;
-        for (String data : dataList) {
+        for (String data : FileManager.readFile("/string_group/test_connective.dic")) {
             Validation validation = validations.get(validationIndex++);
             Assert.assertEquals(data, validation.getValue());
             Assert.assertEquals('N', validation.getMatchFlag());

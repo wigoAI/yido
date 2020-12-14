@@ -69,10 +69,9 @@ public class SplitConditionTest {
 
         List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(new String[] {"test"});
 
-        Collection<String> dataList = FileManager.readFile("/string_group/test_terminator.dic");
 
         int splitConditionIndex = 0;
-        for (String data : dataList) {
+        for (String data : FileManager.readFile("/string_group/test_terminator.dic")) {
             SplitCondition splitCondition = splitConditions.get(splitConditionIndex++);
             Assert.assertEquals(data, splitCondition.getValue());
             Assert.assertEquals('N', splitCondition.getUsePublicValidation());
@@ -84,10 +83,9 @@ public class SplitConditionTest {
 
             Assert.assertNotEquals(0, validations.size());
 
-            Collection<String> validationDataList = FileManager.readFile("/string_group/test_connective.dic");
 
             int validationIndex = 0;
-            for (String validationData : validationDataList) {
+            for (String validationData : FileManager.readFile("/string_group/test_connective.dic")) {
                 Validation validation = validations.get(validationIndex++);
                 Assert.assertEquals(validationData, validation.getValue());
                 Assert.assertEquals('N', validation.getMatchFlag());
