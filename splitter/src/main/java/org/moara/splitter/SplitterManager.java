@@ -73,9 +73,8 @@ public class SplitterManager {
             splitterJson = FileManager.getJsonObjectByFile("splitter/" + id + ".json");
 
         } catch (RuntimeException e) {
-            throw new NoSuchSplitterException(e);
+            throw new NoSuchSplitterException(id);
         }
-
 
         return getSplitter(splitterJson);
     }
