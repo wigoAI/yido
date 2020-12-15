@@ -63,7 +63,7 @@ public class DocumentMiningParagraph extends DocumentMining{
         for (int i = 0; i <paragraphs.length ; i++) {
             Paragraph paragraph  = new Paragraph(this, beginEnds[i].getBegin(), beginEnds[i].getEnd());
 
-            final String text =paragraphs[i].getContents();
+            final String text = paragraph.getContents();
             Contents contents = () -> text;
 
             SentenceSplitter sentenceSplitter = DocumentModule.getSentenceSplitter(document.type);
