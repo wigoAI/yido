@@ -44,8 +44,10 @@ public class SplitterTest {
     public void testInitSplitter() {
 
         Splitter basicSplitter =  SplitterManager.getInstance().getSplitter();
+        BeginEnd[] beginEnds = basicSplitter.split(data[0]);
 
-        assertEquals(28, basicSplitter.split(data[0])[0].getEnd());
+        assertEquals(28, beginEnds[0].getEnd());
+        assertEquals(29, beginEnds[1].getBegin());
 
     }
 
@@ -94,15 +96,20 @@ public class SplitterTest {
 
         Splitter splitter = SplitterManager.getInstance().getSplitter("test");
 
-        int[] answer = {32, 105, 222};
+        int[] beginAnswer = {0, 33, 106};
+        int[] endAnswer = {32, 105, 222};
 
-        assertEquals(splitter.split(newsData).length, answer.length);
+        BeginEnd[] beginEnds = splitter.split(newsData);
+
+        assertEquals(endAnswer.length, beginEnds.length);
 
         int index = 0;
-        for(BeginEnd splitResult : splitter.split(newsData)) {
+        for(BeginEnd beginEnd : beginEnds) {
 
-            assertEquals(answer[index++], splitResult.getEnd());
+            assertEquals(beginAnswer[index], beginEnd.getBegin());
+            assertEquals(endAnswer[index++], beginEnd.getEnd());
         }
+
 
 
     }
@@ -117,72 +124,80 @@ public class SplitterTest {
 
         ((RuleSplitter)splitter).addSplitConditions(new SplitCondition.Builder("이지만", 'B').build());
 
-
-        int[] answer = {32, 45, 105, 222};
+        int[] beginAnswer = {0, 33, 46, 106};
+        int[] endAnswer = {32, 45, 105, 222};
 
         BeginEnd[] splitResults = splitter.split(newsData);
         Arrays.stream(splitResults).forEach(System.out::println);
-        System.out.println();
-        assertEquals(splitResults.length, answer.length);
+        assertEquals(endAnswer.length, splitResults.length);
+
 
         int index = 0;
         for (BeginEnd splitResult : splitResults) {
 
-            assertEquals(answer[index++], splitResult.getEnd());
+            assertEquals(beginAnswer[index], splitResult.getBegin());
+            assertEquals(endAnswer[index++], splitResult.getEnd());
         }
 
-        int[] answer2 = {32, 105, 222};
+        int[] beginAnswer2 = {0, 33, 106};
+        int[] endAnswer2 = {32, 105, 222};
 
         ((RuleSplitter)splitter).deleteSplitConditions(new SplitCondition.Builder("이지만", 'B').build());
         splitResults = splitter.split(newsData);
 
-        Arrays.stream(splitResults).forEach(System.out::println);
-        System.out.println();
-        assertEquals(splitResults.length, answer2.length);
+        assertEquals(endAnswer2.length, splitResults.length);
+
         index = 0;
         for (BeginEnd splitResult : splitResults) {
-            assertEquals(answer2[index++], splitResult.getEnd());
+            assertEquals(beginAnswer2[index], splitResult.getBegin());
+            assertEquals(endAnswer2[index++], splitResult.getEnd());
         }
 
     }
 
     @Test
     public void testEditValidationInMemory() {
-        int[] answer = {32, 45, 105, 222};
+
+        int[] beginAnswer = {0, 33, 46, 106};
+        int[] endAnswer = {32, 45, 105, 222};
         Splitter splitter = SplitterManager.getInstance().getSplitter("test");
 
 
 
         ((RuleSplitter)splitter).addSplitConditions(new SplitCondition.Builder("이지만", 'B').build());
-
-        assertEquals(splitter.split(newsData).length, answer.length);
+        BeginEnd[] splitResults = splitter.split(newsData);
+        assertEquals(endAnswer.length, splitResults.length);
         int index = 0;
-        for(BeginEnd splitResult : splitter.split(newsData)) {
-            assertEquals(answer[index++], splitResult.getEnd());
+        for(BeginEnd splitResult : splitResults) {
+            assertEquals(beginAnswer[index], splitResult.getBegin());
+            assertEquals(endAnswer[index++], splitResult.getEnd());
         }
 
 
-        int[] answer2 = {32, 105, 222};
+        int[] beginAnswer2 = {0, 33, 106};
+        int[] endAnswer2 = {32, 105, 222};
 
         ((RuleSplitter)splitter).addValidation(new Validation(" 가족", 'N', 'B'));
 
-        BeginEnd[] splitResults = splitter.split(newsData);
+        splitResults = splitter.split(newsData);
 
-        assertEquals(splitResults.length, answer2.length);
+        assertEquals(endAnswer2.length, splitResults.length);
 
         index = 0;
         for(BeginEnd splitResult : splitResults) {
-            assertEquals(answer2[index++], splitResult.getEnd());
+            assertEquals(beginAnswer2[index], splitResult.getBegin());
+            assertEquals(endAnswer2[index++], splitResult.getEnd());
         }
 
         ((RuleSplitter)splitter).deleteValidation(new Validation(" 가족", 'N', 'B'));
 
         splitResults = splitter.split(newsData);
-        assertEquals(splitResults.length, answer.length);
+        assertEquals(endAnswer.length, splitResults.length);
 
         index = 0;
         for(BeginEnd splitResult : splitResults) {
-            assertEquals(answer[index++], splitResult.getEnd());
+            assertEquals(beginAnswer[index], splitResult.getBegin());
+            assertEquals(endAnswer[index++], splitResult.getEnd());
         }
     }
 
@@ -193,14 +208,16 @@ public class SplitterTest {
         Splitter splitter = SplitterManager.getInstance().getSplitter("test_regx");
 
         String data = "지금부터 우리학교 규칙을 설명하겠습니다. 앞에 게시판을 보면 1. 교실에서는 조용히 하기 2. 복도에서 뛰어다니지 않기 3. 지각하면 벌금내기 입니다.";
-        int[] answers = {34, 50, 67, 84};
+        int[] beginAnswer = {0, 34, 50, 67};
+        int[] endAnswer = {33, 49, 66, 84};
 
         BeginEnd[] splitResults = splitter.split(data);
 
-        assertEquals(answers.length, splitResults.length);
+        assertEquals(beginAnswer.length, splitResults.length);
         int answerIndex = 0;
         for (BeginEnd splitResult : splitResults) {
-            assertEquals(answers[answerIndex++], splitResult.getEnd());
+            assertEquals(beginAnswer[answerIndex], splitResult.getBegin());
+            assertEquals(endAnswer[answerIndex++], splitResult.getEnd());
         }
     }
 
@@ -218,6 +235,27 @@ public class SplitterTest {
             Assert.assertEquals(answer[i++], splitResult.getEnd());
         }
 
+    }
+
+    @Test
+    public void testEmptyStrings() {
+        String emptyStr = "거산공인중개사 이명혜 대표는 9년 전 당진에 터를 잡았다.      그의 고향은 천안이지만 가족과 서울에서 오랫동안 살다가 \"남은 인생을 고향에서 보내고 싶다. \"는 남편의 말에 당진으로 내려왔다.         15년 동안 공인중개사로 일하고 있는 이명혜 대표는 \"지인의 사무실을 우연히 방문했는데 상담하는 모습이 상당히 전문적이었다\"며 \"그때부터 어느 한 분야에 전문성을 갖고 일하고 싶다는 생각이 들었다\"고 말했다.          ";
+
+        Splitter splitter = SplitterManager.getInstance().getSplitter();
+        BeginEnd[] splitResult = splitter.split(emptyStr);
+
+        Arrays.stream(splitResult).forEach(System.out::println);
+
+        int[] beginAnswer = {0, 38, 119};
+        int[] endAnswer = {32, 110, 235};
+
+        assertEquals(beginAnswer.length, splitResult.length);
+
+        int index = 0;
+        for (BeginEnd beginEnd : splitResult) {
+            assertEquals(beginAnswer[index], beginEnd.getBegin());
+            assertEquals(endAnswer[index++], beginEnd.getEnd());
+        }
     }
 
 }

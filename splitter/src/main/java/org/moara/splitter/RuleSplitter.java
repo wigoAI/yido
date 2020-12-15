@@ -35,6 +35,7 @@ class RuleSplitter implements Splitter {
 
     protected final TerminatorAreaProcessor terminatorAreaProcessor;
     protected final ExceptionAreaProcessor[] exceptionAreaProcessors;
+    protected final String[] emptyStrings = {"\n", "\t", " "};
 
     /**
      * 구분기 생성자
@@ -42,9 +43,9 @@ class RuleSplitter implements Splitter {
      *
      * @param terminatorAreaProcessor 구분 동작을 수행하는 processor
      * @param exceptionAreaProcessors 예외 영역을 지정해주는 processor, 두 개 이상 적용시킬 수 있다.
-     *                                
-     *  TODO 1. ExceptionAreaProcessor를 HashMap으로 관리
-     *          - 입출력만 hashMap 으로
+     *                                <p>
+     *                                TODO 1. ExceptionAreaProcessor를 HashMap으로 관리
+     *                                - 입출력만 hashMap 으로
      */
     RuleSplitter(TerminatorAreaProcessor terminatorAreaProcessor,
                  List<ExceptionAreaProcessor> exceptionAreaProcessors) {
@@ -91,24 +92,64 @@ class RuleSplitter implements Splitter {
         terminatorAreaProcessor.deleteValidation(unnecessaryValidations);
     }
 
-    private Area[] doSplit(List<Integer> splitPoint, String inputData) {
-        Area[] result = new Area[splitPoint.size() + 1];
-        int startIndex = 0;
-        int resultIndex = 0;
+    private Area[] doSplit(List<Integer> splitPoints, String inputData) {
 
-        for(int point : splitPoint) {
-            Area splitResult = new Area(startIndex, point);
+        List<Area> areaList = new ArrayList<>();
 
-            result[resultIndex++] = splitResult;
-            startIndex = point;
+        int beginPoint = 0;
+        int endPoint;
+        for (int splitPoint : splitPoints) {
+            Area targetArea = getAreaWithOutEmpty(beginPoint, splitPoint, inputData);
+
+            beginPoint = targetArea.getBegin();
+            endPoint = targetArea.getEnd();
+
+            // 해당 영역이 비어있으면 구분 영역으로 취급하지 않고 스킵한다.
+            if (beginPoint == endPoint) {
+                continue;
+            }
+
+            areaList.add(targetArea);
+            beginPoint = endPoint;
 
         }
 
-        result[resultIndex] =  new Area(startIndex, inputData.length());
+        if (beginPoint < inputData.length()) {
+            Area targetArea = getAreaWithOutEmpty(beginPoint, inputData.length(), inputData);
 
-        return result;
+            if (targetArea.getBegin() != targetArea.getEnd()) {
+                areaList.add(targetArea);
+            }
+        }
+
+        return areaList.toArray(new Area[0]);
     }
 
+    private Area getAreaWithOutEmpty(int begin, int end, String inputData) {
+        String targetString = inputData.substring(begin, end);
+
+        for (int i = 0; i < targetString.length(); i++) {
+            if (targetString.charAt(i) == ' ' || targetString.charAt(i) == '\n' || targetString.charAt(i) == '\t') {
+                begin++;
+            } else {
+                break;
+            }
+        }
+
+        for (int i = targetString.length() - 1; i > -1; i--) {
+            if (targetString.charAt(i) == ' ' || targetString.charAt(i) == '\n' || targetString.charAt(i) == '\t') {
+                end--;
+            } else {
+                break;
+            }
+        }
+
+        if (begin >= end) {
+            return new Area(begin);
+        }
+
+        return new Area(begin, end);
+    }
 
     /**
      * Thread test

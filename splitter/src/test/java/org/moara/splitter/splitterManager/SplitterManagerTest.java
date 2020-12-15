@@ -27,11 +27,15 @@ public class SplitterManagerTest {
     public void testGetBasicSplitter() {
         Splitter splitter = SplitterManager.getInstance().getSplitter();
 
-        int[] answer = {12, 20};
-
+        int[] beginAnswer = {0, 13};
+        int[] endAnswer = {12, 20};
         int index = 0;
-        for (BeginEnd splitResult : splitter.split(text)) {
-            Assert.assertEquals(answer[index++], splitResult.getEnd());
+
+        BeginEnd[] splitResults = splitter.split(text);
+
+        for (BeginEnd splitResult : splitResults) {
+            Assert.assertEquals(beginAnswer[index], splitResult.getBegin());
+            Assert.assertEquals(endAnswer[index++], splitResult.getEnd());
         }
 
     }
@@ -41,11 +45,14 @@ public class SplitterManagerTest {
 
         Splitter splitter = SplitterManager.getInstance().getSplitter("test");
 
+        BeginEnd[] splitResults = splitter.split(text);
 
-        int[] answer = {12, 20};
+        int[] beginAnswer = {0, 13};
+        int[] endAnswer = {12, 20};
         int index = 0;
-        for (BeginEnd splitResult : splitter.split(text)) {
-            Assert.assertEquals(answer[index++], splitResult.getEnd());
+        for (BeginEnd splitResult : splitResults) {
+            Assert.assertEquals(beginAnswer[index], splitResult.getBegin());
+            Assert.assertEquals(endAnswer[index++], splitResult.getEnd());
         }
     }
 
