@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
+
 package org.moara.yido.textmining;
 
 /**
- * 컨텐츠
+ * 문서유형
  * @author macle
  */
-public interface Contents {
+public interface DocType {
 
     /**
-     * contents 텍스트 얻기
-     * @return contents text
+     * 문서 유형 얻기
+     * @return 문서 유형
      */
-    String getText();
+    String getDocType();
+    
 }

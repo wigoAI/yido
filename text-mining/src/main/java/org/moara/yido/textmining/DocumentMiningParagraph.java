@@ -61,7 +61,7 @@ public class DocumentMiningParagraph extends DocumentMining{
         Contents documentContents = () -> document.contents;
 
         for (int i = 0; i <paragraphs.length ; i++) {
-            Paragraph paragraph  = new Paragraph(this, beginEnds[i].getBegin(), paragraphs[i].getEnd());
+            Paragraph paragraph  = new Paragraph(this, beginEnds[i].getBegin(), beginEnds[i].getEnd());
 
             final String text =paragraphs[i].getContents();
             Contents contents = () -> text;
