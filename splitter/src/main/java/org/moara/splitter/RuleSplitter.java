@@ -69,13 +69,13 @@ class RuleSplitter implements Splitter {
             throw new IllegalArgumentException("Input text is null or empty");
         }
 
-        List<Integer> splitPoint = getSplitPoint(text);
+        int[] splitPoint = getSplitPoint(text);
 
         return doSplit(splitPoint, text);
 
     }
 
-    private List<Integer> getSplitPoint(String text) {
+    private int[] getSplitPoint(String text) {
         List<Area> exceptionAreas = new ArrayList<>();
 
         for (ExceptionAreaProcessor exceptionAreaProcessor : exceptionAreaProcessors) {
@@ -103,7 +103,7 @@ class RuleSplitter implements Splitter {
         terminatorAreaProcessor.deleteValidation(unnecessaryValidations);
     }
 
-    private Area[] doSplit(List<Integer> splitPoints, String inputData) {
+    private Area[] doSplit(int[] splitPoints, String inputData) {
 
         List<Area> areaList = new ArrayList<>();
 
