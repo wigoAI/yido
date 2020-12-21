@@ -194,7 +194,7 @@ class RuleSplitter implements Splitter {
         Splitter splitter = SplitterManager.getInstance().getSplitter();
 
         long total = 0;
-        for(int i = 0 ; i < 10 ; i++) {
+        for(int i = 0 ; i < 100 ; i++) {
             long start = System.nanoTime();
             BeginEnd[] splitResult = splitter.split(data);
             long end = System.nanoTime();
