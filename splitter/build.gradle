@@ -9,6 +9,9 @@ repositories {
 }
 
 dependencies {
+
+    implementation project(path: ':classification')
+
     implementation 'com.seomse.commons:seomse-commons:1.2.3'
     implementation 'commons-io:commons-io:2.5'
     implementation 'org.apache.poi:poi:4.1.2'

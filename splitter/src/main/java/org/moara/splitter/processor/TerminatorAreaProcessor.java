@@ -96,7 +96,7 @@ public class TerminatorAreaProcessor {
     public List<Integer> find(String text, List<Area> exceptionAreas) {
         text = text.trim();
 //        if (splitConditions.length >= 10000) {
-
+//
 //        } else {
 //            return findByRuleLoop(text, exceptionAreas);
 //        }
@@ -154,7 +154,7 @@ public class TerminatorAreaProcessor {
      *      4. 구분점을 나누는 방식에 대한 정보로 반환
      *
      */
-    private int[] findByTextWithArray(String text, List<Area> exceptionAreas) {
+    public int[] findByTextWithArray(String text, List<Area> exceptionAreas) {
         boolean[] isSplitPointArray = new boolean[text.length() + 1];
         int splitPointCount = 0;
 
