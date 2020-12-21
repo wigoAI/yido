@@ -9,6 +9,7 @@ public class TestFileInitializer {
             "  \"id\": \"test\",\n" +
             "  \"name\": \"test\",\n" +
             "  \"minimum_split_length\": 5,\n" +
+            "\"contain_split_condition\": \"Y\",\n" +
             "  \"conditions\": [\"test\"],\n" +
             "  \"exceptions\": [\"test\"]\n" +
             "}";
@@ -88,6 +89,7 @@ public class TestFileInitializer {
             "  \"id\": \"test_regx\",\n" +
             "  \"name\": \"test\",\n" +
             "  \"minimum_split_length\": 5,\n" +
+            "\"contain_split_condition\": \"Y\",\n" +
             "  \"conditions\": [\"test_regx\"],\n" +
             "  \"exceptions\": [\"bracket_exception\"]\n" +
             "}";
@@ -102,6 +104,7 @@ public class TestFileInitializer {
             "  \"id\": \"test_invalid1\",\n" +
             "  \"name\": \"test\",\n" +
             "  \"minimum_spngth\": 5,\n" +
+            "\"contain_split_condition\": \"Y\",\n" +
             "  \"conditions\": [\"test\"],\n" +
             "  \"exceptions\": [\"test\"]\n" +
             "}";
@@ -109,6 +112,7 @@ public class TestFileInitializer {
             "  \"id\": \"test_invalid2\",\n" +
             "  \"name\": \"test\",\n" +
             "  \"minimum_split_length\": 5,\n" +
+            "\"contain_split_condition\": \"Y\",\n" +
             "  \"conditions\": [\"test\"],\n" +
             "  \"exceptions\": \"test\"\n" +
             "}";

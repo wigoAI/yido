@@ -43,6 +43,7 @@ public class TerminatorAreaProcessor {
     private final Set<String> splitConditionValues = new HashSet<>(); // 빠른 탐색을 위해 HashSet
     private final int minResultLength;
 
+
     /**
      * Constructor
      * 구분기 생성시 함께 초기화 된다.
@@ -150,13 +151,13 @@ public class TerminatorAreaProcessor {
      * TODO 1. 테스트 추가
      *      2. boolean -> int change
      *      3. 구분점 파악 시 최소 문장 길이만큼 넘기기
-     * @param text
-     * @param exceptionAreas
-     * @return
+     *      4. 구분점을 나누는 방식에 대한 정보로 반환
+     *
      */
     private int[] findByTextWithArray(String text, List<Area> exceptionAreas) {
         boolean[] isSplitPointArray = new boolean[text.length() + 1];
         int splitPointCount = 0;
+
         for (int processingLength : conditionLengths) {
             for (int i = text.length() - minResultLength; i >= 0; i--) {
                 if (text.length() < i + processingLength) {
@@ -180,7 +181,7 @@ public class TerminatorAreaProcessor {
                             splitPoint = targetArea.getEnd() + additionalSignLength;
                         }
 
-                        if (isValidSplitPointWithArray(exceptionAreas, isSplitPointArray, text, splitPoint)) {
+                        if (isValidSplitPointWithArray(exceptionAreas, text, splitPoint)) {
                             isSplitPointArray[splitPoint] = true;
                             splitPointCount++;
                             i -= minResultLength;
@@ -358,7 +359,7 @@ public class TerminatorAreaProcessor {
         return splitPoint >= minResultLength && splitPoint <= tmpText.length() - minResultLength;
     }
 
-    private boolean isValidSplitPointWithArray(List<Area> exceptionAreas, boolean[] splitPoints, String tmpText, int splitPoint) {
+    private boolean isValidSplitPointWithArray(List<Area> exceptionAreas, String tmpText, int splitPoint) {
 
 
         for (Area exceptionArea : exceptionAreas) {
@@ -571,10 +572,9 @@ public class TerminatorAreaProcessor {
                 }
             }
         }
+    }
 
-
-
-
-
+    public SplitCondition[] getSplitConditions() {
+        return this.splitConditions;
     }
 }

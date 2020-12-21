@@ -1,5 +1,6 @@
 package org.moara.splitter;
 
+import com.seomse.commons.config.Config;
 import com.seomse.commons.data.BeginEnd;
 import org.junit.After;
 import org.junit.Assert;
@@ -256,6 +257,25 @@ public class SplitterTest {
             assertEquals(beginAnswer[index], beginEnd.getBegin());
             assertEquals(endAnswer[index++], beginEnd.getEnd());
         }
+    }
+
+    @Test
+    public void testNotIncludeSplitCondition() {
+        String data = "해맞이 명소로 손꼽히는 강릉 정동진, 울산 간절곶, 포항 호미곶, 부산 해운대 등에는 해맞이객이 해안선을 따라 길게 늘어섰다.\\r\\n\\r\\n황금돼지해의 첫 태양이 수평선 위로 모습을 드러내자 해맞이객들은 탄성을 터뜨리며 가족·연인과 함께 저마다 간직한 새해 소망을 빌었다.";
+        Splitter splitter = SplitterManager.getInstance().getSplitter("paragraph");
+
+        BeginEnd[] splitResult = splitter.split(data);
+
+
+
+        assertEquals(0, splitResult[0].getBegin());
+        assertEquals(70, splitResult[0].getEnd());
+
+        assertEquals(78, splitResult[1].getBegin());
+        assertEquals(152, splitResult[1].getEnd());;
+
+
+
     }
 
 }

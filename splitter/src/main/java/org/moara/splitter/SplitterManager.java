@@ -110,6 +110,8 @@ public class SplitterManager {
     private void createSplitterByJson(JsonObject splitterJson) {
         String key = splitterJson.get("id").getAsString();
         int minResultLength = splitterJson.get("minimum_split_length").getAsInt();
+        char containSplitCondition = splitterJson.get("contain_split_condition").getAsString().charAt(0);
+
         JsonArray conditionArray = splitterJson.get("conditions").getAsJsonArray();
 
         List<String> conditionRuleNames = new ArrayList<>();
@@ -121,7 +123,7 @@ public class SplitterManager {
         TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, minResultLength);
         List<ExceptionAreaProcessor> exceptionAreaProcessors = Arrays.asList(new BracketAreaProcessor());
 
-        splitterMap.put(key, new RuleSplitter(terminatorAreaProcessor, exceptionAreaProcessors));
+        splitterMap.put(key, new RuleSplitter(terminatorAreaProcessor, exceptionAreaProcessors, containSplitCondition));
 
     }
 
@@ -129,7 +131,7 @@ public class SplitterManager {
         if (!(splitterJson.isJsonObject() && splitterJson.get("id") != null && splitterJson.get("name") != null
                 && splitterJson.get("minimum_split_length") != null && splitterJson.get("conditions") != null
                 && splitterJson.get("exceptions") != null && splitterJson.get("conditions").isJsonArray()
-                && splitterJson.get("exceptions").isJsonArray())) {
+                && splitterJson.get("exceptions").isJsonArray()) && splitterJson.get("contain_split_condition") != null) {
             throw new RuntimeException("Invalid splitter json");
         }
     }
