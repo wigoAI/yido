@@ -64,14 +64,28 @@ public class SplitterManager {
         return getSplitter(DEFAULT_SPLITTER_ID);
     }
 
-    /**
-     * 특정 id로 분류한 문장 구분기 인스턴스 반환
-     *
-     * @param id Splitter ID
-     *
-     * @return Splitter
-     */
+
+    private final Object createLock = new Object();
+
     public Splitter getSplitter(String id) {
+
+
+        Splitter splitter = splitterMap.get(id);
+        if(splitter == null) {
+            synchronized (createLock) {
+                splitter = splitterMap.get(id);
+                if(splitter == null) {
+                    createSplitter(id);
+                    splitter = splitterMap.get(id);
+                }
+            }
+        }
+
+        return splitter;
+    }
+
+    private void createSplitter(String id) {
+
         JsonObject splitterJson;
         try {
             splitterJson = FileManager.getJsonObjectByFile("splitter/" + id + ".json");
@@ -80,34 +94,8 @@ public class SplitterManager {
             throw new SplitterNotFoundException(id);
         }
 
-        return getSplitter(splitterJson);
-    }
-
-
-
-
-    private final Object createLock = new Object();
-
-    private Splitter getSplitter(JsonObject splitterJson) {
         checkSplitterJsonValidation(splitterJson);
 
-        String key = splitterJson.get("id").getAsString();
-        Splitter splitter = splitterMap.get(key);
-
-        if(splitter == null) {
-            synchronized (createLock) {
-                splitter = splitterMap.get(key);
-                if(splitter == null) {
-                    createSplitterByJson(splitterJson);
-                    splitter = splitterMap.get(key);
-                }
-            }
-        }
-
-        return splitter;
-    }
-
-    private void createSplitterByJson(JsonObject splitterJson) {
         String key = splitterJson.get("id").getAsString();
         int minResultLength = splitterJson.get("minimum_split_length").getAsInt();
         char containSplitCondition = splitterJson.get("contain_split_condition").getAsString().charAt(0);
