@@ -15,7 +15,6 @@
  */
 package org.moara.splitter.processor;
 
-import com.seomse.commons.data.BeginEnd;
 import org.moara.splitter.manager.SplitConditionManager;
 import org.moara.splitter.utils.Area;
 import org.moara.splitter.utils.SplitCondition;
@@ -24,14 +23,11 @@ import org.moara.splitter.utils.Validation;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * 구분 영역 처리기
- * <p>
- * TODO 1. 조건 변경시 lock
  *
- * 2. refactoring
+ * TODO 1. 조건 변경시 lock
  *
  * @author wjrmffldrhrl
  */
@@ -89,82 +85,33 @@ public class TerminatorAreaProcessor {
     }
 
     /**
-     * rule이 10000개를 넘어가는 순간 text를 돌면서 조건을 찾는 방법으로 변경된다.
+     * TODO 1. 정규식 조건 처리
      *
-     * TODO 1. 정규식에 조건 처리
      * @param text           구분점을 찾을 데이터
      * @param exceptionAreas 예외 영역
      * @return 구분점 리스트
      */
     public int[] find(String text, List<Area> exceptionAreas) {
-//        if (splitConditions.length >= 10000) {
-//
-//        } else {
-//            return findByRuleLoop(text, exceptionAreas);
-//        }
+        if (patternSplitConditions.length == 0 && splitConditions.length == 0) {
+            throw new RuntimeException("This splitter has no conditions");
+        }
 
-        return findByTextWithArray(text, exceptionAreas);
+
+        if (patternSplitConditions.length > 0) {
+            return findByRuleLoop(text, exceptionAreas);
+        } else {
+            return findByTextLoop(text, exceptionAreas);
+        }
 
     }
 
 
-    private List<Integer> findByTextLoop(String text, List<Area> exceptionAreas) {
-        List<Integer> splitPoints = new ArrayList<>();
-
-        for (int processingLength : conditionLengths) {
-            for (int i = text.length() - minResultLength; i >= 0; i--) {
-                if (text.length() < i + processingLength) {
-                    continue;
-                }
-
-                Area targetArea = new Area(i, i + processingLength);
-                String targetString = text.substring(targetArea.getBegin(), targetArea.getEnd());
-
-                if (splitConditionValues.contains(targetString)) {
-
-                    SplitCondition targetSplitCondition = getSplitConditionByValue(targetString);
-
-                    if (isValidCondition(text, targetSplitCondition, targetArea.getBegin())) {
-                        int splitPoint;
-
-                        if (targetSplitCondition.getSplitPosition() == 'F') {
-                            splitPoint = targetArea.getBegin();
-                        } else { // splitPosition == 'B'
-                            int additionalSignLength = getAdditionalSignLength(targetArea.getEnd(), text);
-                            splitPoint = targetArea.getEnd() + additionalSignLength;
-                        }
-
-                        if (isValidSplitPoint(exceptionAreas, splitPoints, text, splitPoint)) {
-                            splitPoints.add(splitPoint);
-                        }
-                    }
-                }
-            }
-        }
-
-        for (SplitCondition patternSplitCondition : patternSplitConditions) {
-            splitPoints.addAll(findSplitPointWithPattern(text, patternSplitCondition, exceptionAreas));
-        }
-
-        return splitPoints.stream().sorted().collect(Collectors.toList());
-    }
-
-    /**
-     * TODO 1. 테스트 추가
-     * 2. boolean -> int change
-     * 3. 구분점 파악 시 최소 문장 길이만큼 넘기기
-     * 4. 구분점을 나누는 방식에 대한 정보로 반환
-     */
-    public int[] findByTextWithArray(String text, List<Area> exceptionAreas) {
+    private int[] findByTextLoop(String text, List<Area> exceptionAreas) {
 
 
         int[] tmpSplitPoint = new int[text.length() / minResultLength + 1];
         int splitPointCount = 0;
-        // 조건 길이가 4, 3, 2 세가지가 존재할 경우
-        // 4의 범위로 데이터를 탐색한다.
-        // 그다음은 3, 2 순서대로 데이터를 탐색한다.
-        // 이때 4범위에서 발견되지 못한 구분점이 3범위에서 발견된다면
-        // 구분점의 순서가 바뀔 수 있다.
+
         for (int i = text.length() - minResultLength; i >= 0; i--) {
             for (int processingLength : conditionLengths) {
 
@@ -189,7 +136,7 @@ public class TerminatorAreaProcessor {
                             splitPoint = targetArea.getEnd() + additionalSignLength;
                         }
 
-                        if (isValidSplitPointWithArray(exceptionAreas, text, splitPoint)) {
+                        if (isValidSplitPoint(exceptionAreas, text, splitPoint)) {
 
                             tmpSplitPoint[splitPointCount] = splitPoint;
                             splitPointCount++;
@@ -200,6 +147,7 @@ public class TerminatorAreaProcessor {
             }
         }
 
+
         int[] splitPoints = new int[splitPointCount];
 
         for (int i = 0; i < splitPoints.length; i++) {
@@ -209,28 +157,16 @@ public class TerminatorAreaProcessor {
         return splitPoints;
     }
 
-    private SplitCondition getSplitConditionByValue(String targetString) {
-        for (SplitCondition splitCondition : splitConditions) {
-            if (splitCondition.getValue().equals(targetString)) {
-                return splitCondition;
-            }
-        }
-
-        throw new RuntimeException("No condition with this value : [" + targetString + "]");
-    }
-
-
-    private List<Integer> findByRuleLoop(String text, List<Area> exceptionAreas) {
+    private int[] findByRuleLoop(String text, List<Area> exceptionAreas) {
         Set<Integer> splitPoints = new HashSet<>();
         for (SplitCondition splitCondition : splitConditions) {
-            if (splitCondition.isPattern()) {
-                splitPoints.addAll(findSplitPointWithPattern(text, splitCondition, exceptionAreas));
-            } else {
-                splitPoints.addAll(findSplitPointWithValue(text, splitCondition, exceptionAreas));
-            }
+            splitPoints.addAll(findSplitPointWithValue(text, splitCondition, exceptionAreas));
+        }
+        for (SplitCondition splitCondition : patternSplitConditions) {
+            splitPoints.addAll(findSplitPointWithPattern(text, splitCondition, exceptionAreas));
         }
 
-        return splitPoints.stream().sorted().collect(Collectors.toList());
+        return splitPoints.stream().sorted().mapToInt(x -> x).toArray();
     }
 
     private List<Integer> findSplitPointWithValue(String text, SplitCondition splitCondition, List<Area> exceptionAreas) {
@@ -275,6 +211,7 @@ public class TerminatorAreaProcessor {
         Matcher matcher = pattern.matcher(text);
         List<Integer> splitPoints = new ArrayList<>();
 
+
         while (matcher.find()) {
             int splitPoint;
             if (splitCondition.getSplitPosition() == 'B') { // 문장 구분점 뒤
@@ -291,6 +228,17 @@ public class TerminatorAreaProcessor {
         }
 
         return splitPoints;
+    }
+
+
+    private SplitCondition getSplitConditionByValue(String targetString) {
+        for (SplitCondition splitCondition : splitConditions) {
+            if (splitCondition.getValue().equals(targetString)) {
+                return splitCondition;
+            }
+        }
+
+        throw new RuntimeException("No condition with this value : [" + targetString + "]");
     }
 
     private boolean isValidCondition(String text, SplitCondition splitCondition, int conditionBeginPoint) {
@@ -345,7 +293,6 @@ public class TerminatorAreaProcessor {
         return additionalSignLength;
     }
 
-
     private boolean isValidSplitPoint(List<Area> exceptionAreas, List<Integer> splitPoints, String tmpText, int splitPoint) {
 
         for (Area exceptionArea : exceptionAreas) {
@@ -365,7 +312,7 @@ public class TerminatorAreaProcessor {
         return splitPoint >= minResultLength && splitPoint <= tmpText.length() - minResultLength;
     }
 
-    private boolean isValidSplitPointWithArray(List<Area> exceptionAreas, String tmpText, int splitPoint) {
+    private boolean isValidSplitPoint(List<Area> exceptionAreas, String tmpText, int splitPoint) {
 
 
         for (Area exceptionArea : exceptionAreas) {
@@ -395,12 +342,14 @@ public class TerminatorAreaProcessor {
 
 
         if (additionalSplitCondition.isPattern()) {
-            patternSplitConditions[patternSplitConditions.length - 1] = additionalSplitCondition;
             SplitCondition[] patternSplitConditions = new SplitCondition[this.patternSplitConditions.length + 1];
 
-            for (int i = 0; i < this.patternSplitConditions.length; i++) {
+            int i = 0;
+            for (; i < this.patternSplitConditions.length; i++) {
                 patternSplitConditions[i] = this.patternSplitConditions[i];
             }
+
+            patternSplitConditions[i] = additionalSplitCondition;
 
             this.patternSplitConditions = patternSplitConditions;
         } else {
@@ -433,18 +382,27 @@ public class TerminatorAreaProcessor {
 
         boolean removeLengthFlag = true;
         if (unnecessarySplitCondition.isPattern()) {
+            if (this.patternSplitConditions.length == 0) {
+                return;
+            }
 
             SplitCondition[] patternSplitConditions = new SplitCondition[this.patternSplitConditions.length - 1];
 
-            for (int i = 0; i < patternSplitConditions.length; i++) {
 
-                if (!this.patternSplitConditions[i].getValue().equals(unnecessarySplitCondition.getValue())) {
-                    patternSplitConditions[i] = this.patternSplitConditions[i];
+            int index = 0;
+            for (SplitCondition patternSplitCondition : this.patternSplitConditions) {
+                if (!patternSplitCondition.getValue().equals(unnecessarySplitCondition.getValue())) {
+                    patternSplitConditions[index] = patternSplitCondition;
                 }
+            }
+
+            if (this.patternSplitConditions.length == patternSplitConditions.length) {
+                return;
             }
 
             this.patternSplitConditions = patternSplitConditions;
             removeLengthFlag = false;
+
         } else {
             SplitCondition[] splitConditions = new SplitCondition[this.splitConditions.length - 1];
 
@@ -550,19 +508,10 @@ public class TerminatorAreaProcessor {
 
 
         int i = 0;
-        for (; i < 100; i++) {
-            long start1 = System.nanoTime();
-            ruleLoopResult = terminatorAreaProcessor.findByRuleLoop(data, exceptionAreas);
-            long end1 = System.nanoTime();
-            ruleLoopTotal += (end1 - start1);
-
-            long start2 = System.nanoTime();
-            textLoopResult = terminatorAreaProcessor.findByTextLoop(data, exceptionAreas);
-            long end2 = System.nanoTime();
-            textLoopTotal += (end2 - start2);
+        for (; i < 1000; i++) {
 
             long start3 = System.nanoTime();
-            arrayResult = terminatorAreaProcessor.findByTextWithArray(data, exceptionAreas);
+            arrayResult = terminatorAreaProcessor.findByTextLoop(data, exceptionAreas);
             long end3 = System.nanoTime();
             arrayTotal += (end3 - start3);
 

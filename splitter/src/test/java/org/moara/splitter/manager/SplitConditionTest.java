@@ -52,13 +52,12 @@ public class SplitConditionTest {
     public void testCheckPatternSplitCondition() {
         SplitCondition splitCondition1 = new SplitCondition
                 .Builder("\\d+\\.",  'F')
-                .isPattern(true).build();
+                .isPattern().build();
 
         Assert.assertTrue(splitCondition1.isPattern());
 
         SplitCondition splitCondition2 = new SplitCondition
-                .Builder("\\d+\\.",  'F')
-                .isPattern(false).build();
+                .Builder("\\d+\\.",  'F').build();
 
         Assert.assertFalse(splitCondition2.isPattern());
 

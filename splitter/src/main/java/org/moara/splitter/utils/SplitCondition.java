@@ -60,8 +60,8 @@ public class   SplitCondition extends RuleProperty {
             return this;
         }
 
-        public Builder isPattern(boolean val) {
-            isPattern = val;
+        public Builder isPattern() {
+            isPattern = true;
             return this;
         }
 

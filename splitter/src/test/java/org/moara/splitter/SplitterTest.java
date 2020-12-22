@@ -154,6 +154,34 @@ public class SplitterTest {
             assertEquals(endAnswer2[index++], splitResult.getEnd());
         }
 
+        int[] beginAnswer3 = {0, 33, 46, 106};
+        int[] endAnswer3 = {32, 45, 105, 222};
+
+        ((RuleSplitter)splitter).addSplitConditions(new SplitCondition.Builder("천...만", 'B').isPattern().build());
+        splitResults = splitter.split(newsData);
+
+        assertEquals(endAnswer3.length, splitResults.length);
+
+        index = 0;
+        for (BeginEnd splitResult : splitResults) {
+            assertEquals(beginAnswer3[index], splitResult.getBegin());
+            assertEquals(endAnswer3[index++], splitResult.getEnd());
+        }
+
+
+        int[] beginAnswer4 = {0, 33, 106};
+        int[] endAnswer4 = {32, 105, 222};
+
+        ((RuleSplitter)splitter).deleteSplitConditions(new SplitCondition.Builder("천...만", 'B').isPattern().build());
+        splitResults = splitter.split(newsData);
+
+        assertEquals(endAnswer4.length, splitResults.length);
+
+        index = 0;
+        for (BeginEnd splitResult : splitResults) {
+            assertEquals(beginAnswer4[index], splitResult.getBegin());
+            assertEquals(endAnswer4[index++], splitResult.getEnd());
+        }
     }
 
     @Test

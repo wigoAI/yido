@@ -1,5 +1,18 @@
 plugins {
     id 'java'
+    id 'jacoco'
+}
+
+
+jacoco {
+    toolVersion = '0.8.5'
+
+}
+test {
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
 }
 
 version = '0.1.0'

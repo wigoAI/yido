@@ -76,7 +76,7 @@ public class SplitConditionManager {
                     .Builder(conditionValue, getRuleProperty(conditionRuleJson).getPosition())
                     .validations(validations);
             if (conditionValueName.startsWith("regx_")) {
-                splitConditionBuilder.isPattern(true);
+                splitConditionBuilder.isPattern();
             }
 
             splitConditions.add(splitConditionBuilder.build());
