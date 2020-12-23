@@ -184,15 +184,11 @@ public class SpltterEvaluator {
         spltterEvaluator.initSplitterSheet("evaluation/hannanum/submit3");
         BinaryClassificationEvaluation binaryClassificationEvaluation = spltterEvaluator.answerCheck();
 
-
         double accuracy = binaryClassificationEvaluation.getAccuracy();
         double geometricMean = binaryClassificationEvaluation.getGeometricMean();
         double sensitivity = binaryClassificationEvaluation.getSensitivity();
         double precision = binaryClassificationEvaluation.getPrecision();
         double f1Score = binaryClassificationEvaluation.getF1Score();
-
-
-
 
         System.out.println("Accuracy (정확도) \t\t\t: " + accuracy);
         System.out.println("sensitivity (재현율)\t\t\t: " + sensitivity );
