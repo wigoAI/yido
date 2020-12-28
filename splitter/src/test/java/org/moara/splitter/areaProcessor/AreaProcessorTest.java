@@ -119,10 +119,6 @@ public class AreaProcessorTest {
 
     }
 
-    @Test
-    public void testAddPatternCondition() {
-
-    }
 
 
 }

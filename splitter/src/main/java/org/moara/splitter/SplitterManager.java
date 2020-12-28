@@ -69,7 +69,6 @@ public class SplitterManager {
 
     public Splitter getSplitter(String id) {
 
-
         Splitter splitter = splitterMap.get(id);
         if(splitter == null) {
             synchronized (createLock) {
@@ -89,7 +88,6 @@ public class SplitterManager {
         JsonObject splitterJson;
         try {
             splitterJson = FileManager.getJsonObjectByFile("splitter/" + id + ".json");
-
         } catch (RuntimeException e) {
             throw new SplitterNotFoundException(id);
         }
@@ -109,7 +107,9 @@ public class SplitterManager {
 
         List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(conditionRuleNames);
         TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, minResultLength);
-        List<ExceptionAreaProcessor> exceptionAreaProcessors = Arrays.asList(new BracketAreaProcessor());
+
+        // ExceptionAreaProcessor 는 추가될 가능성 있음
+       List<ExceptionAreaProcessor> exceptionAreaProcessors = Arrays.asList(new BracketAreaProcessor());
 
         splitterMap.put(key, new RuleSplitter(terminatorAreaProcessor, exceptionAreaProcessors, containSplitCondition));
 
@@ -123,8 +123,5 @@ public class SplitterManager {
             throw new RuntimeException("Invalid splitter json");
         }
     }
-
-
-
 }
 

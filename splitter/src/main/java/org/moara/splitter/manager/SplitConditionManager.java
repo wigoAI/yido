@@ -42,7 +42,7 @@ public class SplitConditionManager {
     public static List<SplitCondition> getSplitConditions(List<String> splitConditionRuleNames) {
         ArrayList<String> arrayList = (ArrayList<String>) splitConditionRuleNames;
 
-        return getSplitConditions( arrayList.toArray(new String[arrayList.size()]));
+        return getSplitConditions( arrayList.toArray(new String[0]));
     }
 
     /**
@@ -103,8 +103,6 @@ public class SplitConditionManager {
 
         return validations;
     }
-
-
 
     private static RuleProperty getRuleProperty(JsonObject conditionRuleJson) {
         return new RuleProperty(conditionRuleJson.get("use_public_validation").getAsString().charAt(0),

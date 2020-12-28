@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
  * 구분 영역 처리기
  *
  * TODO 1. 조건 변경시 lock
+ *      2. 조건 변경 다른 클래스로 분리하기
  *
  * @author wjrmffldrhrl
  */
@@ -41,11 +42,10 @@ public class TerminatorAreaProcessor {
     private final Set<String> splitConditionValues = new HashSet<>(); // 빠른 탐색을 위해 HashSet
     private final int minResultLength;
 
-
     /**
      * Constructor
      * 구분기 생성시 함께 초기화 된다.
-     * 구분 조건과 구분점 판별 시 사용될 정보들이 초기화 됨
+     * 구분 조건과 구분점 판별 시 사용될 정보들이 초기화 된다.
      *
      * @param splitConditions 구분 조건
      * @param minResultLength 설정값
@@ -72,7 +72,6 @@ public class TerminatorAreaProcessor {
         this.patternSplitConditions = patternSplitConditionList.toArray(new SplitCondition[0]);
 
         updateConditionLengths(conditionLengths);
-
     }
 
     /**
@@ -85,7 +84,6 @@ public class TerminatorAreaProcessor {
     }
 
     /**
-     * TODO 1. 정규식 조건 처리
      *
      * @param text           구분점을 찾을 데이터
      * @param exceptionAreas 예외 영역
@@ -96,7 +94,6 @@ public class TerminatorAreaProcessor {
             throw new RuntimeException("This splitter has no conditions");
         }
 
-
         if (patternSplitConditions.length > 0) {
             return findByRuleLoop(text, exceptionAreas);
         } else {
@@ -105,9 +102,7 @@ public class TerminatorAreaProcessor {
 
     }
 
-
     private int[] findByTextLoop(String text, List<Area> exceptionAreas) {
-
 
         int[] tmpSplitPoint = new int[text.length() / minResultLength + 1];
         int splitPointCount = 0;
@@ -147,7 +142,6 @@ public class TerminatorAreaProcessor {
             }
         }
 
-
         int[] splitPoints = new int[splitPointCount];
 
         for (int i = 0; i < splitPoints.length; i++) {
@@ -171,7 +165,6 @@ public class TerminatorAreaProcessor {
 
     private List<Integer> findSplitPointWithValue(String text, SplitCondition splitCondition, List<Area> exceptionAreas) {
         List<Integer> splitPoints = new ArrayList<>();
-
         int splitPoint = -1;
         while (true) {
             splitPoint = text.indexOf(splitCondition.getValue(), splitPoint);
@@ -230,7 +223,6 @@ public class TerminatorAreaProcessor {
         return splitPoints;
     }
 
-
     private SplitCondition getSplitConditionByValue(String targetString) {
         for (SplitCondition splitCondition : splitConditions) {
             if (splitCondition.getValue().equals(targetString)) {
@@ -244,10 +236,13 @@ public class TerminatorAreaProcessor {
     private boolean isValidCondition(String text, SplitCondition splitCondition, int conditionBeginPoint) {
         boolean isValid = true;
 
+        // 구분점 범위 체크
         if (conditionBeginPoint < minResultLength || conditionBeginPoint > text.length() - minResultLength) {
             return false;
         }
 
+
+        // 구분 조건 유효성 체크
         for (Validation validation : splitCondition.getValidations()) {
             int compareIndexStart = conditionBeginPoint;
 
@@ -314,13 +309,11 @@ public class TerminatorAreaProcessor {
 
     private boolean isValidSplitPoint(List<Area> exceptionAreas, String tmpText, int splitPoint) {
 
-
         for (Area exceptionArea : exceptionAreas) {
             if (exceptionArea.contains(splitPoint)) {
                 return false;
             }
         }
-
 
         // check out of range
         return splitPoint >= minResultLength && splitPoint <= tmpText.length() - minResultLength;
@@ -334,12 +327,10 @@ public class TerminatorAreaProcessor {
      */
     public synchronized void addSplitConditions(SplitCondition additionalSplitCondition) {
 
-
         List<Integer> conditionLengths = new ArrayList<>();
         for (int i : this.conditionLengths) {
             conditionLengths.add(i);
         }
-
 
         if (additionalSplitCondition.isPattern()) {
             SplitCondition[] patternSplitConditions = new SplitCondition[this.patternSplitConditions.length + 1];
@@ -352,9 +343,9 @@ public class TerminatorAreaProcessor {
             patternSplitConditions[i] = additionalSplitCondition;
 
             this.patternSplitConditions = patternSplitConditions;
+
         } else {
             SplitCondition[] splitConditions = new SplitCondition[this.splitConditions.length + 1];
-
 
             for (int i = 0; i < this.splitConditions.length; i++) {
                 splitConditions[i] = this.splitConditions[i];
@@ -368,7 +359,6 @@ public class TerminatorAreaProcessor {
             }
             this.splitConditions = splitConditions;
         }
-
 
         updateConditionLengths(conditionLengths);
     }
@@ -388,29 +378,31 @@ public class TerminatorAreaProcessor {
 
             SplitCondition[] patternSplitConditions = new SplitCondition[this.patternSplitConditions.length - 1];
 
-
             int index = 0;
             for (SplitCondition patternSplitCondition : this.patternSplitConditions) {
                 if (!patternSplitCondition.getValue().equals(unnecessarySplitCondition.getValue())) {
-                    patternSplitConditions[index] = patternSplitCondition;
+                    patternSplitConditions[index++] = patternSplitCondition;
                 }
-            }
-
-            if (this.patternSplitConditions.length == patternSplitConditions.length) {
-                return;
             }
 
             this.patternSplitConditions = patternSplitConditions;
             removeLengthFlag = false;
 
         } else {
+            if (this.splitConditions.length == 0) {
+                return;
+            }
+
             SplitCondition[] splitConditions = new SplitCondition[this.splitConditions.length - 1];
 
-            for (int i = 0; i < splitConditions.length; i++) {
-                if (!this.splitConditions[i].getValue().equals(unnecessarySplitCondition.getValue())) {
-                    splitConditions[i] = this.splitConditions[i];
+
+            int index = 0;
+            for (SplitCondition splitCondition : this.splitConditions) {
+                if (!splitCondition.getValue().equals(unnecessarySplitCondition.getValue())) {
+                    splitConditions[index++] = splitCondition;
                 }
             }
+
             this.splitConditions = splitConditions;
 
             splitConditionValues.remove(unnecessarySplitCondition.getValue());
@@ -424,7 +416,6 @@ public class TerminatorAreaProcessor {
                 }
             }
         }
-
 
         if (removeLengthFlag) {
             List<Integer> conditionLengths = new ArrayList<>();

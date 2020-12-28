@@ -1,6 +1,5 @@
 package org.moara.splitter;
 
-import com.seomse.commons.config.Config;
 import com.seomse.commons.data.BeginEnd;
 import org.junit.After;
 import org.junit.Assert;
@@ -115,9 +114,6 @@ public class SplitterTest {
 
     }
 
-    /**
-     * TODO 1. regx 규칙 추가 테스트
-     */
     @Test
     public void testEditConditionInMemory() {
 
@@ -129,7 +125,6 @@ public class SplitterTest {
         int[] endAnswer = {32, 45, 105, 222};
 
         BeginEnd[] splitResults = splitter.split(newsData);
-        Arrays.stream(splitResults).forEach(System.out::println);
         assertEquals(endAnswer.length, splitResults.length);
 
 
@@ -153,35 +148,56 @@ public class SplitterTest {
             assertEquals(beginAnswer2[index], splitResult.getBegin());
             assertEquals(endAnswer2[index++], splitResult.getEnd());
         }
+    }
 
-        int[] beginAnswer3 = {0, 33, 46, 106};
-        int[] endAnswer3 = {32, 45, 105, 222};
+    /**
+     * TODO 1. pattern condition test
+     */
+    @Test
+    public void testEditPatternConditionInMemory() {
+        Splitter splitter = SplitterManager.getInstance().getSplitter("test_regx");
+        int[] beginAnswer1 = {0, 46, 113};
+        int[] endAnswer1 = {45, 112, 222};
 
         ((RuleSplitter)splitter).addSplitConditions(new SplitCondition.Builder("천...만", 'B').isPattern().build());
-        splitResults = splitter.split(newsData);
+        ((RuleSplitter)splitter).addSplitConditions(new SplitCondition.Builder("공인중개사로", 'F').build());
+        ((RuleSplitter)splitter).addSplitConditions(new SplitCondition.Builder("앍돡", 'F').build());
 
-        assertEquals(endAnswer3.length, splitResults.length);
+        BeginEnd[] splitResults = splitter.split(newsData);
 
-        index = 0;
+        assertEquals(endAnswer1.length, splitResults.length);
+
+        int index = 0;
         for (BeginEnd splitResult : splitResults) {
-            assertEquals(beginAnswer3[index], splitResult.getBegin());
-            assertEquals(endAnswer3[index++], splitResult.getEnd());
+            assertEquals(beginAnswer1[index], splitResult.getBegin());
+            assertEquals(endAnswer1[index++], splitResult.getEnd());
         }
 
 
-        int[] beginAnswer4 = {0, 33, 106};
-        int[] endAnswer4 = {32, 105, 222};
+        int[] beginAnswer2 = {0};
+        int[] endAnswer2 = {222};
 
         ((RuleSplitter)splitter).deleteSplitConditions(new SplitCondition.Builder("천...만", 'B').isPattern().build());
+        ((RuleSplitter)splitter).deleteSplitConditions(new SplitCondition.Builder("공인중개사로", 'F').build());
+
+
         splitResults = splitter.split(newsData);
 
-        assertEquals(endAnswer4.length, splitResults.length);
+        assertEquals(endAnswer2.length, splitResults.length);
 
         index = 0;
         for (BeginEnd splitResult : splitResults) {
-            assertEquals(beginAnswer4[index], splitResult.getBegin());
-            assertEquals(endAnswer4[index++], splitResult.getEnd());
+            assertEquals(beginAnswer2[index], splitResult.getBegin());
+            assertEquals(endAnswer2[index++], splitResult.getEnd());
         }
+
+
+
+        ((RuleSplitter)splitter).deleteSplitConditions(new SplitCondition.Builder("\\d+\\.", 'F').isPattern().build());
+        ((RuleSplitter)splitter).deleteSplitConditions(new SplitCondition.Builder("\\d+\\.", 'F').isPattern().build());
+        ((RuleSplitter)splitter).deleteSplitConditions(new SplitCondition.Builder("\\d+\\.", 'F').isPattern().build());
+
+        ((RuleSplitter)splitter).deleteSplitConditions(new SplitCondition.Builder("공인중개사로", 'F').build());
     }
 
     @Test
@@ -189,11 +205,12 @@ public class SplitterTest {
 
         int[] beginAnswer = {0, 33, 46, 106};
         int[] endAnswer = {32, 45, 105, 222};
-        Splitter splitter = SplitterManager.getInstance().getSplitter("test");
 
-
+        // 해당 Splitter 를 "test"로 변경하면 testEditConditionInMemory 테스트와 동시 실행 중 "이지만" 조건이 삭제되어 NPE 발생생
+       Splitter splitter = SplitterManager.getInstance().getSplitter();
 
         ((RuleSplitter)splitter).addSplitConditions(new SplitCondition.Builder("이지만", 'B').build());
+
         BeginEnd[] splitResults = splitter.split(newsData);
         assertEquals(endAnswer.length, splitResults.length);
         int index = 0;
@@ -207,6 +224,7 @@ public class SplitterTest {
         int[] endAnswer2 = {32, 105, 222};
 
         ((RuleSplitter)splitter).addValidation(new Validation(" 가족", 'N', 'B'));
+        ((RuleSplitter)splitter).addValidation(new Validation(" 가족", 'N', 'F'));
 
         splitResults = splitter.split(newsData);
 
@@ -219,6 +237,7 @@ public class SplitterTest {
         }
 
         ((RuleSplitter)splitter).deleteValidation(new Validation(" 가족", 'N', 'B'));
+        ((RuleSplitter)splitter).deleteValidation(new Validation(" 가족", 'N', 'F'));
 
         splitResults = splitter.split(newsData);
         assertEquals(endAnswer.length, splitResults.length);

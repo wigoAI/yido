@@ -41,12 +41,12 @@ class RuleSplitter implements Splitter {
     /**
      * 구분기 생성자
      * package-private 하기 때문에  SplitterManager에서만 접근 가능하다.
+     * TODO 1. ExceptionAreaProcessor 를 HashMap 으로 관리
+     *      - 입출력만 hashMap 으로
      *
      * @param terminatorAreaProcessor 구분 동작을 수행하는 processor
      * @param exceptionAreaProcessors 예외 영역을 지정해주는 processor, 두 개 이상 적용시킬 수 있다.
-     *                                <p>
-     *                                TODO 1. ExceptionAreaProcessor를 HashMap으로 관리
-     *                                - 입출력만 hashMap 으로
+     *
      */
     RuleSplitter(TerminatorAreaProcessor terminatorAreaProcessor,
                  List<ExceptionAreaProcessor> exceptionAreaProcessors,
@@ -72,7 +72,6 @@ class RuleSplitter implements Splitter {
         int[] splitPoint = getSplitPoint(text);
 
         return doSplit(splitPoint, text);
-
     }
 
     private int[] getSplitPoint(String text) {
