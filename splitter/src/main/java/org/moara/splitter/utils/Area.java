@@ -32,7 +32,7 @@ public class Area implements BeginEnd {
      * End value under then start value
      */
     public Area(int begin, int end) {
-        if(isInvalid(begin, end)) { throw new IllegalArgumentException("Don't use invalid value"); }
+        if(isInvalid(begin, end)) { throw new IllegalArgumentException("Don't use invalid value : begin [" + begin + "], end [" + end + "]" ); }
         this.begin = begin;
         this.end = end;
     }

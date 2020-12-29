@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import org.moara.splitter.processor.TerminatorAreaProcessor;
 import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.utils.Validation;
 
@@ -193,11 +194,6 @@ public class SplitterTest {
 
 
 
-        ((RuleSplitter)splitter).deleteSplitConditions(new SplitCondition.Builder("\\d+\\.", 'F').isPattern().build());
-        ((RuleSplitter)splitter).deleteSplitConditions(new SplitCondition.Builder("\\d+\\.", 'F').isPattern().build());
-        ((RuleSplitter)splitter).deleteSplitConditions(new SplitCondition.Builder("\\d+\\.", 'F').isPattern().build());
-
-        ((RuleSplitter)splitter).deleteSplitConditions(new SplitCondition.Builder("공인중개사로", 'F').build());
     }
 
     @Test
@@ -271,14 +267,27 @@ public class SplitterTest {
 
     @Test
     public void testNearSplitPoint() {
-        String data = "1다.다.다.다.다.다.다.다.다2.다.다.다.다.다.다.다.다.다3.다.다.다.다.다.다.다.다.다4.다.다.다5.다.다.";
-        int[] answer = {11, 17, 24, 30, 36, 43, 49, 55, 62, 69};
+        String data = "다.다.다.다.다.다.다.다.다.다.다.다.다.다.다.다.다.다.다.다.다.다.다.다.다.다.다.다.다.다.다.다.";
+        int[] answer = {10, 16, 22, 28, 34, 40, 46, 52, 58, 64};
         Splitter splitter = SplitterManager.getInstance().getSplitter("test");
         BeginEnd[] splitResults = splitter.split(data);
 
-        Assert.assertEquals(splitResults.length, answer.length);
+        Assert.assertEquals(answer.length, splitResults.length);
 
         int i = 0;
+        for (BeginEnd splitResult : splitResults) {
+            Assert.assertEquals(answer[i++], splitResult.getEnd());
+        }
+
+        splitter = SplitterManager.getInstance().getSplitter("test_rule_loop");
+        splitResults = splitter.split(data);
+        for (BeginEnd splitResult : splitResults) {
+            System.out.println(splitResult);
+        }
+
+        Assert.assertEquals(answer.length, splitResults.length);
+
+        i = 0;
         for (BeginEnd splitResult : splitResults) {
             Assert.assertEquals(answer[i++], splitResult.getEnd());
         }
@@ -322,6 +331,35 @@ public class SplitterTest {
         assertEquals(152, splitResult[1].getEnd());;
 
 
+
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testNoConditionSplitter() {
+        String data = "test";
+
+        Splitter splitter = SplitterManager.getInstance().getSplitter("test_no_condition");
+        ((RuleSplitter) splitter).deleteSplitConditions(new SplitCondition.Builder("removed", 'F').build());
+        splitter.split(data);
+
+    }
+
+    @Test
+    public void testFindByManyRuleLoop() {
+        Splitter splitter = SplitterManager.getInstance().getSplitter("test_rule_loop");
+        int[] beginAnswer = {0, 33, 106};
+        int[] endAnswer = {32, 105, 222};
+
+
+        BeginEnd[] splitResult = splitter.split(newsData);
+
+        assertEquals(beginAnswer.length, splitResult.length);
+
+        int index = 0;
+        for (BeginEnd beginEnd : splitResult) {
+            assertEquals(beginAnswer[index], beginEnd.getBegin());
+            assertEquals(endAnswer[index++], beginEnd.getEnd());
+        }
 
     }
 

@@ -116,7 +116,29 @@ public class TestFileInitializer {
             "  \"conditions\": [\"test\"],\n" +
             "  \"exceptions\": \"test\"\n" +
             "}";
-
+    public static String testNoConditionSplitter = "{\n" +
+            "  \"id\": \"test_no_condition\",\n" +
+            "  \"name\": \"test_no_condition\",\n" +
+            "  \"minimum_split_length\": 5,\n" +
+            "  \"contain_split_condition\": \"Y\",\n" +
+            "  \"conditions\": [\"test_no_condition\"],\n" +
+            "  \"exceptions\": [\"test\"]\n" +
+            "}";
+    public static String testNoValueCondition = "{\n" +
+            "  \"id\": \"test_no_condition\",\n" +
+            "  \"use_public_validation\": \"N\",\n" +
+            "  \"split_position\": \"F\",\n" +
+            "  \"value\": \"test_no_condition\",\n" +
+            "  \"validations\": [\"NBSG_test_connective\"]\n" +
+            "}";
+    public static String testRuleLoopSplitter = "{\n" +
+            "  \"id\": \"test_rule_loop\",\n" +
+            "  \"name\": \"test_rule_loop\",\n" +
+            "  \"minimum_split_length\": 5,\n" +
+            "  \"contain_split_condition\": \"Y\",\n" +
+            "  \"conditions\": [\"terminator\", \"sns_terminator\", \"test_regx\"],\n" +
+            "  \"exceptions\": [\"bracket_exception\"]" +
+            "}";
 
     public static String testConnectiveDic = "면";
     public static String testTerminator = "했다\n" +
@@ -132,16 +154,21 @@ public class TestFileInitializer {
         createTestFiles("condition/test_invalid_properties.json", testInvalidProperties);
         createTestFiles("condition/test_invalid_public_option.json", testInvalidPublicOption);
         createTestFiles("condition/test_condition_with_validations.json", testConditionWithFrontValidations);
+        createTestFiles("condition/test_no_condition.json", testNoValueCondition);
+        createTestFiles("condition/test_regx.json", testRegxCondition);
         createTestFiles("string_group/test_connective.dic", testConnectiveDic);
         createTestFiles("string_group/test_terminator.dic", testTerminator);
         createTestFiles("string_group/test_front_validation.dic", testFrontValidation);
         createTestFiles("string_group/test_back_validation.dic", testBackValidation);
+        createTestFiles("string_group/test_no_condition.dic", "removed");
+        createTestFiles("string_group/regx_test.dic", testRegxString);
         createTestFiles("splitter/test.json", testSplitter);
         createTestFiles("splitter/test_regx.json", testRegxSplitter);
         createTestFiles("splitter/test_invalid1.json", testInvalidJson1);
         createTestFiles("splitter/test_invalid2.json", testInvalidJson2);
-        createTestFiles("condition/test_regx.json", testRegxCondition);
-        createTestFiles("string_group/regx_test.dic", testRegxString);
+        createTestFiles("splitter/test_no_condition.json", testNoConditionSplitter);
+        createTestFiles("splitter/test_no_condition.json", testNoConditionSplitter);
+        createTestFiles("splitter/test_rule_loop.json", testRuleLoopSplitter);
         createTestFiles("exception/test.json", testException);
     }
 
@@ -149,20 +176,23 @@ public class TestFileInitializer {
         FileManager.deleteFile("condition/test.json");
         FileManager.deleteFile("condition/test_front_split_position.json");
         FileManager.deleteFile("condition/test_public_validation.json");
-        FileManager.deleteFile("splitter/test.json");
-        FileManager.deleteFile("exception/test.json");
-        FileManager.deleteFile("string_group/test_connective.dic");
-        FileManager.deleteFile("string_group/test_terminator.dic");
         FileManager.deleteFile("condition/test_invalid_properties.json");
         FileManager.deleteFile("condition/test_invalid_public_option.json");
         FileManager.deleteFile("condition/test_condition_with_validations.json");
-        FileManager.deleteFile("string_group/test_back_validation.dic");
-        FileManager.deleteFile("string_group/test_front_validation.dic");
-        FileManager.deleteFile("splitter/test_regx.json");
         FileManager.deleteFile("condition/test_regx.json");
-        FileManager.deleteFile("string_group/regx_test.dic");
+        FileManager.deleteFile("condition/test_no_condition.json");
+        FileManager.deleteFile("splitter/test.json");
         FileManager.deleteFile("splitter/test_invalid1.json");
         FileManager.deleteFile("splitter/test_invalid2.json");
+        FileManager.deleteFile("splitter/test_no_condition.json");
+        FileManager.deleteFile("splitter/test_rule_loop.json");
+        FileManager.deleteFile("splitter/test_regx.json");
+        FileManager.deleteFile("string_group/test_connective.dic");
+        FileManager.deleteFile("string_group/test_terminator.dic");
+        FileManager.deleteFile("string_group/test_back_validation.dic");
+        FileManager.deleteFile("string_group/test_front_validation.dic");
+        FileManager.deleteFile("string_group/regx_test.dic");
+        FileManager.deleteFile("exception/test.json");
     }
     private static void createTestFiles(String fileName, String value) {
         FileManager.writeFile(fileName, Collections.singletonList(value));

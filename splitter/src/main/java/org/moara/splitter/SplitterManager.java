@@ -64,7 +64,6 @@ public class SplitterManager {
         return getSplitter(DEFAULT_SPLITTER_ID);
     }
 
-
     private final Object createLock = new Object();
 
     public Splitter getSplitter(String id) {

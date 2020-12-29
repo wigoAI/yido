@@ -13,6 +13,7 @@ import org.moara.splitter.utils.Area;
 import org.moara.splitter.utils.SplitCondition;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -115,6 +116,25 @@ public class AreaProcessorTest {
         for (int splitPoint : terminatorAreaProcessor.find(data, new ArrayList<>())) {
             assertEquals(answers[answerIndex++], splitPoint);
 
+        }
+
+    }
+
+    @Test
+    public void testDeleteSameLengthCondition() {
+        String data = "aaaaa가나다abc라마바def사아자aaaaa";
+        List<SplitCondition> splitConditions = new ArrayList<>(Arrays.asList(
+                new SplitCondition.Builder("abc", 'B').build(),
+                new SplitCondition.Builder("def", 'B').build()
+        ));
+
+        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions);
+        terminatorAreaProcessor.deleteSplitConditions(new SplitCondition.Builder("def", 'B').build());
+
+        int[] splitPoints = terminatorAreaProcessor.find(data, new ArrayList<>());
+
+        for (int splitPoint : splitPoints) {
+            assertEquals(11, splitPoint);
         }
 
     }
