@@ -34,7 +34,7 @@ import java.util.stream.IntStream;
  * 구분기 성능 평과 클래스
  * @author wjrmffldrhrl
  */
-public class SpltterEvaluator {
+public class SplitterEvaluator {
     private final String[] answerSheet;
     private final Integer[] answerSplitPoints;
     private final Integer[] answerNonSplitPoints;
@@ -47,7 +47,7 @@ public class SpltterEvaluator {
      *
      * @param fileName {@code SentenceExtractor}에 의해 추출된 문장 정보가 담긴 파일 명
      */
-    public SpltterEvaluator(String fileName) {
+    public SplitterEvaluator(String fileName) {
 
         this.answerSheet = getSheetByFile(fileName).toArray(new String[0]);
 
@@ -180,9 +180,9 @@ public class SpltterEvaluator {
     public static void main(String[] args) {
 
 
-        SpltterEvaluator spltterEvaluator = new SpltterEvaluator("evaluation/answer3");
-        spltterEvaluator.initSplitterSheet("evaluation/hannanum/submit3");
-        BinaryClassificationEvaluation binaryClassificationEvaluation = spltterEvaluator.answerCheck();
+        SplitterEvaluator splitterEvaluator = new SplitterEvaluator("evaluation/answer3");
+        splitterEvaluator.initSplitterSheet("evaluation/hannanum/submit3");
+        BinaryClassificationEvaluation binaryClassificationEvaluation = splitterEvaluator.answerCheck();
 
         double accuracy = binaryClassificationEvaluation.getAccuracy();
         double geometricMean = binaryClassificationEvaluation.getGeometricMean();

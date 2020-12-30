@@ -120,6 +120,12 @@ public class SplitConditionTest {
 
     }
 
+    @Test
+    public void testSplitConditionToString() {
+        SplitCondition splitCondition = new SplitCondition.Builder("다." , 'B').build();
+        Assert.assertEquals("SplitCondition{flag=N, position=B, value='다.', isPattern=false}", splitCondition.toString());
+    }
+
 
 
 

@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.moara.splitter.Splitter;
 import org.moara.splitter.SplitterManager;
 import org.moara.splitter.TestFileInitializer;
+import org.moara.splitter.exception.SplitterNotFoundException;
 
 
 public class SplitterManagerTest {
@@ -62,6 +63,7 @@ public class SplitterManagerTest {
         boolean normalJsonFlag = true;
         boolean invalidJsonFlag1 = false;
         boolean invalidJsonFlag2 = false;
+        boolean notFoundFlag = false;
 
 
         try {
@@ -85,9 +87,16 @@ public class SplitterManagerTest {
             invalidJsonFlag2 = true;
         }
 
+        try {
+            SplitterManager.getInstance().getSplitter("this_is_not_exist");
+        } catch (SplitterNotFoundException e) {
+            notFoundFlag = true;
+        }
+
         Assert.assertTrue(normalJsonFlag);
         Assert.assertTrue(invalidJsonFlag1);
         Assert.assertTrue(invalidJsonFlag2);
+        Assert.assertTrue(notFoundFlag);
     }
 
 }
