@@ -18,6 +18,7 @@ package org.moara.splitter;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.seomse.commons.config.Config;
 import org.moara.splitter.exception.SplitterNotFoundException;
@@ -153,7 +154,7 @@ public class SplitterManager {
                 && splitterJson.get("minimum_split_length") != null && splitterJson.get("conditions") != null
                 && splitterJson.get("exceptions") != null && splitterJson.get("conditions").isJsonArray()
                 && splitterJson.get("exceptions").isJsonArray()) && splitterJson.get("contain_split_condition") != null) {
-            throw new RuntimeException("Invalid splitter json");
+            throw new JsonIOException("Invalid splitter json");
         }
     }
 }
