@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import org.moara.splitter.processor.TerminatorAreaProcessor;
 import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.utils.Validation;
 

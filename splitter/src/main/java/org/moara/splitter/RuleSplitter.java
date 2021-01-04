@@ -17,8 +17,9 @@ package org.moara.splitter;
 
 
 import com.seomse.commons.data.BeginEnd;
+import org.moara.splitter.processor.ConditionTerminatorProcessor;
 import org.moara.splitter.processor.ExceptionAreaProcessor;
-import org.moara.splitter.processor.TerminatorAreaProcessor;
+import org.moara.splitter.processor.TerminatorProcessor;
 import org.moara.splitter.utils.Area;
 import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.utils.Validation;
@@ -34,31 +35,23 @@ import java.util.List;
  */
 class RuleSplitter implements Splitter {
 
-    protected final TerminatorAreaProcessor terminatorAreaProcessor;
+    protected final TerminatorProcessor conditionTerminatorProcessor;
     protected final ExceptionAreaProcessor[] exceptionAreaProcessors;
-    protected final List<String> passWords = new ArrayList<>();
+    protected final List<String> exceptionWords;
 
     /**
      * 구분기 생성자
      * package-private 하기 때문에  SplitterManager에서만 접근 가능하다.
      *
-     * @param terminatorAreaProcessor 구분 동작을 수행하는 processor
+     * @param conditionTerminatorProcessor 구분 동작을 수행하는 processor
      * @param exceptionAreaProcessors 예외 영역을 지정해주는 processor, 두 개 이상 적용시킬 수 있다.
-     *
      */
-    RuleSplitter(TerminatorAreaProcessor terminatorAreaProcessor,
+    RuleSplitter(TerminatorProcessor conditionTerminatorProcessor,
                  List<ExceptionAreaProcessor> exceptionAreaProcessors,
-                 char containSplitCondition) {
-        this.terminatorAreaProcessor = terminatorAreaProcessor;
+                 List<String> exceptionWords) {
+        this.conditionTerminatorProcessor = conditionTerminatorProcessor;
         this.exceptionAreaProcessors = exceptionAreaProcessors.toArray(new ExceptionAreaProcessor[0]);
-        passWords.addAll(Arrays.asList(" ", "\n", "\t"));
-
-        if (containSplitCondition == 'N') {
-            SplitCondition[] splitConditions = terminatorAreaProcessor.getSplitConditions();
-            for (SplitCondition splitCondition : splitConditions) {
-                passWords.add(splitCondition.getValue());
-            }
-        }
+        this.exceptionWords = exceptionWords;
     }
 
     @Override
@@ -79,26 +72,10 @@ class RuleSplitter implements Splitter {
             exceptionAreas.addAll(exceptionAreaProcessor.find(text));
         }
 
-        return terminatorAreaProcessor.find(text, exceptionAreas);
+        return conditionTerminatorProcessor.find(text, exceptionAreas);
     }
 
 
-    public void addSplitConditions(SplitCondition additionalSplitCondition) {
-        terminatorAreaProcessor.addSplitConditions(additionalSplitCondition);
-    }
-
-    public void deleteSplitConditions(SplitCondition unnecessarySplitCondition) {
-
-        terminatorAreaProcessor.deleteSplitConditions(unnecessarySplitCondition);
-    }
-
-    public void addValidation(Validation additionalValidations) {
-        terminatorAreaProcessor.addValidation(additionalValidations);
-    }
-
-    public void deleteValidation(Validation unnecessaryValidations) {
-        terminatorAreaProcessor.deleteValidation(unnecessaryValidations);
-    }
 
     private Area[] doSplit(int[] splitPoints, String inputData) {
 
@@ -146,12 +123,12 @@ class RuleSplitter implements Splitter {
         for (int i = 0; i < targetString.length();) {
 
             // 모든 제외 문자를 체크해도 없다면 Pass
-            for (String passWord : passWords) {
+            for (String exceptionWord : exceptionWords) {
 
                 // 있다면 구분점과 체크 인덱스를 이동
-                if (targetString.startsWith(passWord, i)) {
-                    begin += passWord.length();
-                    i += passWord.length();
+                if (targetString.startsWith(exceptionWord, i)) {
+                    begin += exceptionWord.length();
+                    i += exceptionWord.length();
                     continue findBegin;
                 }
             }
@@ -161,10 +138,10 @@ class RuleSplitter implements Splitter {
 
         findEnd:
         for (int i = targetString.length() - 1; i > -1;) {
-            for (String passWord : passWords) {
-                if (targetString.startsWith(passWord, i - passWord.length() + 1)) {
-                    end -= passWord.length();
-                    i -= passWord.length();
+            for (String exceptionWord : exceptionWords) {
+                if (targetString.startsWith(exceptionWord, i - exceptionWord.length() + 1)) {
+                    end -= exceptionWord.length();
+                    i -= exceptionWord.length();
                     continue findEnd;
                 }
             }
@@ -176,6 +153,40 @@ class RuleSplitter implements Splitter {
         }
 
         return new Area(begin, end);
+    }
+
+
+    /**
+     * 구분 조건 추가
+     * @param additionalSplitCondition 추가할 구분 조건
+     */
+    public void addSplitConditions(SplitCondition additionalSplitCondition) {
+        ((ConditionTerminatorProcessor)conditionTerminatorProcessor).addSplitConditions(additionalSplitCondition);
+    }
+
+    /**
+     * 구분 조건 제거
+     * @param unnecessarySplitCondition 제거할 구분 조건
+     */
+    public void deleteSplitConditions(SplitCondition unnecessarySplitCondition) {
+
+        ((ConditionTerminatorProcessor)conditionTerminatorProcessor).deleteSplitConditions(unnecessarySplitCondition);
+    }
+
+    /**
+     * 유효성 추가
+     * @param additionalValidations 추가할 유효성
+     */
+    public void addValidation(Validation additionalValidations) {
+        ((ConditionTerminatorProcessor)conditionTerminatorProcessor).addValidation(additionalValidations);
+    }
+
+    /**
+     * 유효성 제거
+     * @param unnecessaryValidations 제거할 유효성
+     */
+    public void deleteValidation(Validation unnecessaryValidations) {
+        ((ConditionTerminatorProcessor)conditionTerminatorProcessor).deleteValidation(unnecessaryValidations);
     }
 
     /**

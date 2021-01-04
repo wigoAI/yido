@@ -22,8 +22,8 @@ import com.google.gson.JsonObject;
 import com.seomse.commons.config.Config;
 import org.moara.splitter.exception.SplitterNotFoundException;
 import org.moara.splitter.processor.BracketAreaProcessor;
+import org.moara.splitter.processor.ConditionTerminatorProcessor;
 import org.moara.splitter.processor.ExceptionAreaProcessor;
-import org.moara.splitter.processor.TerminatorAreaProcessor;
 import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.manager.SplitConditionManager;
 import org.moara.splitter.utils.file.FileManager;
@@ -87,9 +87,43 @@ public class SplitterManager {
 
     // splitter 생성
     private void createSplitter(String id) {
+        JsonObject splitterJson = getSplitterJson(id);
 
+        String key = splitterJson.get("id").getAsString(); // splitter key value
+        int minResultLength = splitterJson.get("minimum_split_length").getAsInt(); // 최소 문장 길이
+        char containSplitCondition = splitterJson.get("contain_split_condition").getAsString().charAt(0); // 구분점 포함 여부
+        List<String> conditionRuleNames = getConditionRuleNames(splitterJson); // 구분 조건 이름
+
+        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(conditionRuleNames); // 구분 조건
+        ConditionTerminatorProcessor conditionTerminatorProcessor = new ConditionTerminatorProcessor(splitConditions, minResultLength); // 구분 처리기
+        // ExceptionAreaProcessor 는 추가될 가능성 있음
+        List<ExceptionAreaProcessor> exceptionAreaProcessors = Arrays.asList(new BracketAreaProcessor());
+
+        // 구분 결과 예외 단어
+        List<String> exceptionWords = new ArrayList<>(Arrays.asList(" ", "\n", "\t"));
+        // 구분 조건 미 포함시 exceptionWords에 해당 조건들을 추가시켜
+        // 문장 구분 결과에 구분 조건을 포함시키지 않는다.
+        if (containSplitCondition == 'N') {
+            for (SplitCondition splitCondition : splitConditions) {
+                exceptionWords.add(splitCondition.getValue());
+            }
+        }
+
+        splitterMap.put(key, new RuleSplitter(conditionTerminatorProcessor, exceptionAreaProcessors, exceptionWords));
+
+    }
+
+    private List<String> getConditionRuleNames(JsonObject splitterJson) {
+        List<String> conditionRuleNames = new ArrayList<>();
+        JsonArray conditionArray = splitterJson.get("conditions").getAsJsonArray();
+        for (JsonElement jsonObject : conditionArray) {
+            conditionRuleNames.add(jsonObject.getAsString());
+        }
+        return conditionRuleNames;
+    }
+
+    private JsonObject getSplitterJson(String id) {
         JsonObject splitterJson;
-
         try {
             splitterJson = FileManager.getJsonObjectByFile("splitter/" + id + ".json");
         } catch (RuntimeException e) {
@@ -97,26 +131,7 @@ public class SplitterManager {
         }
 
         checkSplitterJsonValidation(splitterJson);
-
-        String key = splitterJson.get("id").getAsString();
-        int minResultLength = splitterJson.get("minimum_split_length").getAsInt();
-        char containSplitCondition = splitterJson.get("contain_split_condition").getAsString().charAt(0);
-
-        JsonArray conditionArray = splitterJson.get("conditions").getAsJsonArray();
-
-        List<String> conditionRuleNames = new ArrayList<>();
-        for (JsonElement jsonObject : conditionArray) {
-            conditionRuleNames.add(jsonObject.getAsString());
-        }
-
-        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(conditionRuleNames);
-        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, minResultLength);
-
-        // ExceptionAreaProcessor 는 추가될 가능성 있음
-        List<ExceptionAreaProcessor> exceptionAreaProcessors = Arrays.asList(new BracketAreaProcessor());
-
-        splitterMap.put(key, new RuleSplitter(terminatorAreaProcessor, exceptionAreaProcessors, containSplitCondition));
-
+        return splitterJson;
     }
 
     private void checkSplitterJsonValidation(JsonObject splitterJson) {

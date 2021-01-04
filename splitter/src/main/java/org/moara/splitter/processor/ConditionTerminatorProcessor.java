@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  *
  * @author wjrmffldrhrl
  */
-public class TerminatorAreaProcessor {
+public class ConditionTerminatorProcessor implements TerminatorProcessor{
 
     private SplitCondition[] splitConditions;
     private SplitCondition[] patternSplitConditions;
@@ -48,7 +48,7 @@ public class TerminatorAreaProcessor {
      * @param splitConditions 구분 조건
      * @param minResultLength 설정값
      */
-    public TerminatorAreaProcessor(List<SplitCondition> splitConditions, int minResultLength) {
+    public ConditionTerminatorProcessor(List<SplitCondition> splitConditions, int minResultLength) {
         this.minResultLength = minResultLength;
         List<Integer> conditionLengths = new ArrayList<>();
         List<SplitCondition> patternSplitConditionList = new ArrayList<>();
@@ -78,15 +78,11 @@ public class TerminatorAreaProcessor {
      *
      * @param splitConditions 구분 조건 리스트
      */
-    public TerminatorAreaProcessor(List<SplitCondition> splitConditions) {
+    public ConditionTerminatorProcessor(List<SplitCondition> splitConditions) {
         this(splitConditions, 5);
     }
 
-    /**
-     * @param text           구분점을 찾을 데이터
-     * @param exceptionAreas 예외 영역
-     * @return 구분점 리스트
-     */
+    @Override
     public int[] find(String text, List<Area> exceptionAreas) {
         if (patternSplitConditions.length == 0 && splitConditions.length == 0) {
             throw new RuntimeException("This splitter has no conditions");
@@ -459,7 +455,7 @@ public class TerminatorAreaProcessor {
 
         String[] rule = {"terminator"};
         splitConditions = SplitConditionManager.getSplitConditions(rule);
-        TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions);
+        ConditionTerminatorProcessor conditionTerminatorProcessor = new ConditionTerminatorProcessor(splitConditions);
         List<Area> exceptionAreas;
         ExceptionAreaProcessor exceptionAreaProcessor = new BracketAreaProcessor();
         exceptionAreas = exceptionAreaProcessor.find(data);
@@ -467,7 +463,7 @@ public class TerminatorAreaProcessor {
 //
 //        // increase rule
 //        for (int i = 0; i < 100000; i++) {
-//            terminatorAreaProcessor.addSplitConditions(new SplitCondition.Builder("TAE", 'B' ).build());
+//            conditionTerminatorProcessor.addSplitConditions(new SplitCondition.Builder("TAE", 'B' ).build());
 //
 //        }
 
@@ -484,7 +480,7 @@ public class TerminatorAreaProcessor {
         for (; i < 1000; i++) {
 
             long start3 = System.nanoTime();
-            arrayResult = terminatorAreaProcessor.findByTextLoop(data, exceptionAreas);
+            arrayResult = conditionTerminatorProcessor.findByTextLoop(data, exceptionAreas);
             long end3 = System.nanoTime();
             arrayTotal += (end3 - start3);
 
