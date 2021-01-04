@@ -35,9 +35,9 @@ import java.util.stream.IntStream;
  * @author wjrmffldrhrl
  */
 public class SplitterEvaluator {
-    private final String[] answerSheet;
-    private final Integer[] answerSplitPoints;
-    private final Integer[] answerNonSplitPoints;
+    private final List<String> answerSheet;
+    private final List<Integer> answerSplitPoints;
+    private final List<Integer> answerNonSplitPoints;
     private final String answerStr;
 
     private List<String> splitterSheet;
@@ -45,27 +45,22 @@ public class SplitterEvaluator {
     /**
      * 정답 데이터 초기화
      *
-     * @param fileName {@code SentenceExtractor}에 의해 추출된 문장 정보가 담긴 파일 명
+     * @param answerFileName {@code SentenceExtractor}에 의해 추출된 문장 정보가 담긴 파일 명
      */
-    public SplitterEvaluator(String fileName) {
+    public SplitterEvaluator(String answerFileName) {
 
-        this.answerSheet = getSheetByFile(fileName).toArray(new String[0]);
+        // 정답지 구분 결과 데이터
+        this.answerSheet = getSheetByFile(answerFileName);
 
-        List<Integer> answerSplitPoints = getSplitPoints(Arrays.asList(answerSheet.clone()));
-        Integer[] tmpAnswerSplitPoints = new Integer[answerSplitPoints.size()];
-        for (int i = 0; i < tmpAnswerSplitPoints.length; i++) {
-            tmpAnswerSplitPoints[i] = answerSplitPoints.get(i);
-        }
-        this.answerSplitPoints = tmpAnswerSplitPoints;
+        this.answerSplitPoints = getSplitPoints(this.answerSheet);
 
         StringBuilder answerSheetString = new StringBuilder();
-        Arrays.stream(this.answerSheet).map(sheet -> sheet = sheet.replace(" ", ""))
+        this.answerSheet.stream().map(sheet -> sheet = sheet.replace(" ", ""))
                 .forEach(answerSheetString::append);
         this.answerStr = answerSheetString.toString();
 
         this.answerNonSplitPoints = IntStream.range(1, answerStr.length())
-                .filter(point -> !answerSplitPoints.contains(point)).boxed().toArray(Integer[]::new);
-
+                .filter(point -> !answerSplitPoints.contains(point)).boxed().collect(Collectors.toList());
 
     }
 
@@ -108,12 +103,9 @@ public class SplitterEvaluator {
      * @return {@code BinaryClassificationEvaluation}
      */
     public BinaryClassificationEvaluation answerCheck() {
-        List<Integer> answerSplitPoints = new ArrayList(Arrays.asList(this.answerSplitPoints));
-        List<Integer> answerNonSplitPoints = new ArrayList(Arrays.asList(this.answerNonSplitPoints));
         List<Integer> splitterSplitPoints = getSplitPoints(splitterSheet);
         List<Integer> splitterNonSplitPoints = IntStream.range(1, answerStr.length())
                 .filter(point -> !splitterSplitPoints.contains(point)).boxed().collect(Collectors.toList());
-
 
         List<Integer> truePositivePoints = answerSplitPoints.stream()
                 .filter(splitterSplitPoints::contains).collect(Collectors.toList());
@@ -168,7 +160,7 @@ public class SplitterEvaluator {
         return sheet;
     }
 
-    public String[] getAnswerSheet() {
+    public List<String> getAnswerSheet() {
         return answerSheet;
     }
 

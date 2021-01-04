@@ -2,6 +2,7 @@ package org.moara.splitter;
 
 import org.moara.splitter.utils.file.FileManager;
 
+import java.io.File;
 import java.util.Collections;
 
 public class TestFileInitializer {
@@ -147,6 +148,8 @@ public class TestFileInitializer {
     public static String testBackValidation = "면";
     public static String testRegxString = "\\d+\\.";
 
+    public static String testEvaluation = "apple.\n" + "orange.\n" + "banana.\n" + "melon.";
+
     public static void initialize() {
         createTestFiles("condition/test.json", testCondition);
         createTestFiles("condition/test_front_split_position.json", testFrontSplitPosition);
@@ -170,6 +173,8 @@ public class TestFileInitializer {
         createTestFiles("splitter/test_no_condition.json", testNoConditionSplitter);
         createTestFiles("splitter/test_rule_loop.json", testRuleLoopSplitter);
         createTestFiles("exception/test.json", testException);
+        createTestFiles("evaluation/test_answer.txt", testEvaluation);
+
     }
 
     public static void tearDown() {
@@ -193,6 +198,7 @@ public class TestFileInitializer {
         FileManager.deleteFile("string_group/test_front_validation.dic");
         FileManager.deleteFile("string_group/regx_test.dic");
         FileManager.deleteFile("exception/test.json");
+        FileManager.deleteFile("evaluation/test_answer.txt");
     }
     private static void createTestFiles(String fileName, String value) {
         FileManager.writeFile(fileName, Collections.singletonList(value));

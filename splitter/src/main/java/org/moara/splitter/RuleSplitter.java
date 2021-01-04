@@ -41,8 +41,6 @@ class RuleSplitter implements Splitter {
     /**
      * 구분기 생성자
      * package-private 하기 때문에  SplitterManager에서만 접근 가능하다.
-     * TODO 1. ExceptionAreaProcessor 를 HashMap 으로 관리
-     *      - 입출력만 hashMap 으로
      *
      * @param terminatorAreaProcessor 구분 동작을 수행하는 processor
      * @param exceptionAreaProcessors 예외 영역을 지정해주는 processor, 두 개 이상 적용시킬 수 있다.
@@ -115,9 +113,7 @@ class RuleSplitter implements Splitter {
             endPoint = targetArea.getEnd();
 
             // 해당 영역이 비어있으면 구분 영역으로 취급하지 않고 스킵한다.
-            if (beginPoint == endPoint) {
-                continue;
-            }
+            if (beginPoint == endPoint) { continue; }
 
             areaList.add(targetArea);
             beginPoint = endPoint;

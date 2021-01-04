@@ -151,9 +151,6 @@ public class SplitterTest {
         }
     }
 
-    /**
-     * TODO 1. pattern condition test
-     */
     @Test
     public void testEditPatternConditionInMemory() {
         Splitter splitter = SplitterManager.getInstance().getSplitter("test_regx");

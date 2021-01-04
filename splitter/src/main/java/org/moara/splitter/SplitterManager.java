@@ -32,7 +32,7 @@ import java.util.*;
 
 /**
  * 문장 구분기를 관리해주는 클래스
- *
+ * <p>
  * 기본 구분기를 사용하기 위해서는 {@code getSplitter()} 매서드를 사용해 기본 구분기의 인스턴스를 받을 수 있다.
  * 해당 메서드를 처음 호출하기 전 까지는 인스턴스는 존재하지 않다가 첫 호출 시 구분기를 생성한다.
  *
@@ -45,6 +45,7 @@ public class SplitterManager {
 
     /**
      * 분리기 관리자 인스턴스 획득
+     *
      * @return SplitterManager instance
      */
     public static SplitterManager getInstance() {
@@ -58,21 +59,23 @@ public class SplitterManager {
     /**
      * 문장 구분기 인스턴스 획득
      * 설정값이 없으면 기본값을로 설정된 BasicSplitter 를 반환한다.
+     *
      * @return BasicSplitter
      */
     public Splitter getSplitter() {
         return getSplitter(DEFAULT_SPLITTER_ID);
     }
 
+    // thread lock
     private final Object createLock = new Object();
 
     public Splitter getSplitter(String id) {
 
         Splitter splitter = splitterMap.get(id);
-        if(splitter == null) {
-            synchronized (createLock) {
+        if (splitter == null) {
+            synchronized (createLock) { // thread lock 을 걸고 splitter instance 확인
                 splitter = splitterMap.get(id);
-                if(splitter == null) {
+                if (splitter == null) {
                     createSplitter(id);
                     splitter = splitterMap.get(id);
                 }
@@ -82,9 +85,11 @@ public class SplitterManager {
         return splitter;
     }
 
+    // splitter 생성
     private void createSplitter(String id) {
 
         JsonObject splitterJson;
+
         try {
             splitterJson = FileManager.getJsonObjectByFile("splitter/" + id + ".json");
         } catch (RuntimeException e) {
@@ -108,7 +113,7 @@ public class SplitterManager {
         TerminatorAreaProcessor terminatorAreaProcessor = new TerminatorAreaProcessor(splitConditions, minResultLength);
 
         // ExceptionAreaProcessor 는 추가될 가능성 있음
-       List<ExceptionAreaProcessor> exceptionAreaProcessors = Arrays.asList(new BracketAreaProcessor());
+        List<ExceptionAreaProcessor> exceptionAreaProcessors = Arrays.asList(new BracketAreaProcessor());
 
         splitterMap.put(key, new RuleSplitter(terminatorAreaProcessor, exceptionAreaProcessors, containSplitCondition));
 

@@ -28,9 +28,6 @@ import java.util.stream.IntStream;
 
 /**
  * 구분 영역 처리기
- * <p>
- * TODO 1. 조건 변경시 lock
- * 2. 조건 변경 다른 클래스로 분리하기
  *
  * @author wjrmffldrhrl
  */
