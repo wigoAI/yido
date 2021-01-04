@@ -27,7 +27,7 @@ public interface Splitter {
     /**
      * 입력된 데이터를 구분 단위에 맞게 반환
      * @param text String
-     * @return Area Array
+     * @return BeginEnd Array
      */
     BeginEnd[] split(String text);
 
