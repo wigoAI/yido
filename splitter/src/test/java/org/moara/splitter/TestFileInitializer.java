@@ -12,7 +12,7 @@ public class TestFileInitializer {
             "  \"minimum_split_length\": 5,\n" +
             "\"contain_split_condition\": \"Y\",\n" +
             "  \"conditions\": [\"test\"],\n" +
-            "  \"exceptions\": [\"test\"]\n" +
+            "  \"exceptions\": [\"bracket_exception\"]\n" +
             "}";
     public static String testException = "{\n" +
             "  \"id\": \"test\",\n" +

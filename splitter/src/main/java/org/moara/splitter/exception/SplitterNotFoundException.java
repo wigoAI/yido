@@ -30,7 +30,5 @@ public class SplitterNotFoundException extends RuntimeException {
      */
     public SplitterNotFoundException(String splitterId) {
         super("splitter not found : " + splitterId);
-
-
     }
 }

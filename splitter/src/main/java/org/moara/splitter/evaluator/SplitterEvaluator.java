@@ -45,11 +45,8 @@ public class SplitterEvaluator {
      */
     public SplitterEvaluator(String answerFileName) {
 
-        
         // 정답지 구분 결과 데이터
         this.answerSheet = getSheetByFile(answerFileName);
-
-
         this.answerSplitPoints = getSplitPoints(this.answerSheet);
 
         StringBuilder answerSheetString = new StringBuilder();
@@ -126,7 +123,6 @@ public class SplitterEvaluator {
         return new BinaryClassificationEvaluation(truePositive, falsePositive, falseNegative, trueNegative);
     }
 
-
     private List<Integer> getSplitPoints(List<String> sheets) {
 
         List<Integer> sheetSplitPoints = new LinkedList<>();
@@ -137,10 +133,8 @@ public class SplitterEvaluator {
             sheetSplitPoints.add(previousSplitPoint);
         }
 
-
         return sheetSplitPoints;
     }
-
 
     private List<String> getSheetByFile(String fileName) {
         List<String> sheet = new ArrayList<>();
@@ -170,9 +164,7 @@ public class SplitterEvaluator {
         return splitterSheet;
     }
 
-
     public static void main(String[] args) {
-
 
         SplitterEvaluator splitterEvaluator = new SplitterEvaluator("evaluation/answer3");
         splitterEvaluator.initSplitterSheet("evaluation/hannanum/submit3");

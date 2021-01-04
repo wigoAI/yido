@@ -25,8 +25,8 @@ public class Validation extends RuleProperty {
     /**
      * 유효성의 모든 정보를 초기화 하는 생성자
      * @param value 유효성 값
-     * @param matchFlag 유효성 일치 여부
-     * @param comparePosition 유효성 비교 위치
+     * @param matchFlag 유효성 일치 여부 'Y' or 'N'
+     * @param comparePosition 유효성 비교 위치 'F' or 'B'
      */
     public Validation(String value, char matchFlag, char comparePosition) {
         super(matchFlag, comparePosition);

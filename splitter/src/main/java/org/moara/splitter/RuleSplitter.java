@@ -25,7 +25,6 @@ import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.utils.Validation;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -45,9 +44,9 @@ class RuleSplitter implements Splitter {
      *
      * @param conditionTerminatorProcessor 구분 동작을 수행하는 processor
      * @param exceptionAreaProcessors 예외 영역을 지정해주는 processor, 두 개 이상 적용시킬 수 있다.
+     * @param exceptionWords 구분 수행 시 포함하지 않을 예외 단어들
      */
-    RuleSplitter(TerminatorProcessor conditionTerminatorProcessor,
-                 List<ExceptionAreaProcessor> exceptionAreaProcessors,
+    RuleSplitter(TerminatorProcessor conditionTerminatorProcessor, List<ExceptionAreaProcessor> exceptionAreaProcessors,
                  List<String> exceptionWords) {
         this.conditionTerminatorProcessor = conditionTerminatorProcessor;
         this.exceptionAreaProcessors = exceptionAreaProcessors.toArray(new ExceptionAreaProcessor[0]);
@@ -74,8 +73,6 @@ class RuleSplitter implements Splitter {
 
         return conditionTerminatorProcessor.find(text, exceptionAreas);
     }
-
-
 
     private Area[] doSplit(int[] splitPoints, String inputData) {
 
@@ -134,7 +131,6 @@ class RuleSplitter implements Splitter {
             }
             break;
         }
-
 
         findEnd:
         for (int i = targetString.length() - 1; i > -1;) {

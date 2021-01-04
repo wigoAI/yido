@@ -33,7 +33,6 @@ public class SplitCondition extends RuleProperty {
      * 구분 조건 빌더
      * 구분 조건에 사용되는 값들 중
      * 선택적으로 사용할 수 있는 값들이 많기 때문에 적용함
-     * @author wjrmffldrhrl
      */
     public static class Builder {
         private final String value;

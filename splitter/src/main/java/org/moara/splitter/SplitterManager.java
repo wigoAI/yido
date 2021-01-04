@@ -32,7 +32,7 @@ import java.util.*;
 
 /**
  * 문장 구분기를 관리해주는 클래스
- * <p>
+ *
  * 기본 구분기를 사용하기 위해서는 {@code getSplitter()} 매서드를 사용해 기본 구분기의 인스턴스를 받을 수 있다.
  * 해당 메서드를 처음 호출하기 전 까지는 인스턴스는 존재하지 않다가 첫 호출 시 구분기를 생성한다.
  *
@@ -41,7 +41,6 @@ import java.util.*;
 public class SplitterManager {
     private static final String DEFAULT_SPLITTER_ID = Config.getConfig("yido.splitter.default.id", "sns");
     private final Map<String, Splitter> splitterMap = new HashMap<>();
-
 
     /**
      * 분리기 관리자 인스턴스 획득
@@ -89,36 +88,51 @@ public class SplitterManager {
     private void createSplitter(String id) {
         JsonObject splitterJson = getSplitterJson(id);
 
-        String key = splitterJson.get("id").getAsString(); // splitter key value
-        int minResultLength = splitterJson.get("minimum_split_length").getAsInt(); // 최소 문장 길이
-        char containSplitCondition = splitterJson.get("contain_split_condition").getAsString().charAt(0); // 구분점 포함 여부
-        List<String> conditionRuleNames = getConditionRuleNames(splitterJson); // 구분 조건 이름
+        // 구분 조건 생성
+        List<String> conditionRuleNames = getConditionRuleNames(splitterJson);
+        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(conditionRuleNames);
 
-        List<SplitCondition> splitConditions = SplitConditionManager.getSplitConditions(conditionRuleNames); // 구분 조건
+        // Processors 생성
+        int minResultLength = splitterJson.get("minimum_split_length").getAsInt(); // 최소 문장 길이
         ConditionTerminatorProcessor conditionTerminatorProcessor = new ConditionTerminatorProcessor(splitConditions, minResultLength); // 구분 처리기
-        // ExceptionAreaProcessor 는 추가될 가능성 있음
-        List<ExceptionAreaProcessor> exceptionAreaProcessors = Arrays.asList(new BracketAreaProcessor());
+        List<ExceptionAreaProcessor> exceptionAreaProcessors = getExceptionAreaProcessors(splitterJson);
 
         // 구분 결과 예외 단어
         List<String> exceptionWords = new ArrayList<>(Arrays.asList(" ", "\n", "\t"));
-        // 구분 조건 미 포함시 exceptionWords에 해당 조건들을 추가시켜
-        // 문장 구분 결과에 구분 조건을 포함시키지 않는다.
+        char containSplitCondition = splitterJson.get("contain_split_condition").getAsString().charAt(0); // 구분점 포함 여부
         if (containSplitCondition == 'N') {
+            // 구분 조건 미 포함시 exceptionWords에 해당 조건들을 추가시켜
+            // 문장 구분 결과에 구분 조건을 포함시키지 않는다.
             for (SplitCondition splitCondition : splitConditions) {
                 exceptionWords.add(splitCondition.getValue());
             }
         }
 
+        String key = splitterJson.get("id").getAsString(); // splitter key value
         splitterMap.put(key, new RuleSplitter(conditionTerminatorProcessor, exceptionAreaProcessors, exceptionWords));
 
+    }
+
+    private List<ExceptionAreaProcessor> getExceptionAreaProcessors(JsonObject splitterJson) {
+        List<ExceptionAreaProcessor> exceptionAreaProcessors = new ArrayList<>();
+        JsonArray exceptions = splitterJson.get("exceptions").getAsJsonArray();
+        for (JsonElement exception : exceptions) {
+            if (exception.getAsString().equals("bracket_exception")) {
+                exceptionAreaProcessors.add(new BracketAreaProcessor());
+            }
+        }
+
+        return exceptionAreaProcessors;
     }
 
     private List<String> getConditionRuleNames(JsonObject splitterJson) {
         List<String> conditionRuleNames = new ArrayList<>();
         JsonArray conditionArray = splitterJson.get("conditions").getAsJsonArray();
+
         for (JsonElement jsonObject : conditionArray) {
             conditionRuleNames.add(jsonObject.getAsString());
         }
+
         return conditionRuleNames;
     }
 
