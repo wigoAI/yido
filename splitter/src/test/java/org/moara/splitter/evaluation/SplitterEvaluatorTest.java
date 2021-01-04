@@ -63,6 +63,13 @@ public class SplitterEvaluatorTest {
             Assert.assertEquals(sheet, splitterEvaluator.getSplitterSheet().get(index++));
         }
 
+        splitterEvaluator.initSplitterSheet("evaluation/test_answer");
+
+        index = 0;
+        for (String sheet : answerSheet) {
+            Assert.assertEquals(sheet, splitterEvaluator.getSplitterSheet().get(index++));
+        }
+
     }
 
     @Test

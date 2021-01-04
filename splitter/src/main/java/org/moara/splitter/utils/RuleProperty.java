@@ -25,6 +25,11 @@ public class RuleProperty {
     protected final char flag;
     protected final char position;
 
+    /**
+     * 룰 속성 생성자
+     * @param flag 룰에서의 일치여부, 사용 여부 등
+     * @param position 룰의 사용, 비교 위치
+     */
     public RuleProperty(char flag, char position) {
         this.flag = flag;
         this.position = position;

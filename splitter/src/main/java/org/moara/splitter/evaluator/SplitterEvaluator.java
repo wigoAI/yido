@@ -23,10 +23,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -39,7 +36,6 @@ public class SplitterEvaluator {
     private final List<Integer> answerSplitPoints;
     private final List<Integer> answerNonSplitPoints;
     private final String answerStr;
-
     private List<String> splitterSheet;
 
     /**
@@ -49,8 +45,10 @@ public class SplitterEvaluator {
      */
     public SplitterEvaluator(String answerFileName) {
 
+        
         // 정답지 구분 결과 데이터
         this.answerSheet = getSheetByFile(answerFileName);
+
 
         this.answerSplitPoints = getSplitPoints(this.answerSheet);
 
@@ -64,6 +62,10 @@ public class SplitterEvaluator {
 
     }
 
+    /**
+     * 구분기 데이터 초기화
+     * @param splitterSheet 구분기 결과
+     */
     public void initSplitterSheet(String[] splitterSheet) {
         initSplitterSheet(Arrays.asList(splitterSheet.clone()));
     }

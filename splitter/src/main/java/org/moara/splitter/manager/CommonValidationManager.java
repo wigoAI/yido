@@ -23,11 +23,13 @@ import java.util.List;
 /**
  * 공통 유효성 룰 관리자
  *
+ * TODO 1. 공통 유효성 룰 값 넣기
+ *          - test 추가
  * @author wjrmffldrhrl
  */
 public class CommonValidationManager extends ValidationManager {
 
-    private static final String[] rules = {"NBSG_public"};
+    private static final String[] rules = {"NBSG_common"};
     private static final List<Validation> publicValidations = initAllPublicValidations();
 
     /**

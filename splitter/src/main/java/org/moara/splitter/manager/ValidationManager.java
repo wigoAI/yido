@@ -48,8 +48,9 @@ public class ValidationManager {
             }
 
         } else {
-            throw new RuntimeException("Invalid rule data type : " + dicName);
+            throw new IllegalArgumentException("Illegal rule data type : " + dicName);
         }
+
         return validations;
 
     }

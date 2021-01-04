@@ -23,7 +23,7 @@ import java.util.List;
  * 해당 조건에 대한 유효성도 포함되어 있다.
  * @author wjrmffldrhrl
  */
-public class   SplitCondition extends RuleProperty {
+public class SplitCondition extends RuleProperty {
 
     private final String value;
     private final List<Validation> validations;
@@ -43,23 +43,40 @@ public class   SplitCondition extends RuleProperty {
         private char usePublicValidation = 'N';
         private boolean isPattern = false;
 
+        /**
+         *
+         * @param value 구분 조건 값
+         * @param splitPosition 구분 위치
+         */
         public Builder(String value, char splitPosition) {
             this.value = value;
-
             this.splitPosition = splitPosition;
         }
 
-
+        /**
+         *
+         * @param val 해당 조건 유효성
+         * @return Builder
+         */
         public Builder validations(List<Validation> val) {
             validations = val;
             return this;
         }
 
+        /**
+         * 조건에서의 공통 유효성 사용 여부
+         * @param val Y or N
+         * @return Builder
+         */
         public Builder usePublicValidation(char val) {
             usePublicValidation = val;
             return this;
         }
 
+        /**
+         * 해당 조건이 패턴 조건일 시 호출
+         * @return Builder
+         */
         public Builder isPattern() {
             isPattern = true;
             return this;

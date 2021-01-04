@@ -65,14 +65,11 @@ public class SplitterManagerTest {
         boolean invalidJsonFlag2 = false;
         boolean notFoundFlag = false;
 
-
         try {
             SplitterManager.getInstance().getSplitter("test");
         } catch (RuntimeException e) {
             normalJsonFlag = false;
         }
-
-
 
         try {
             SplitterManager.getInstance().getSplitter("test_invalid1");

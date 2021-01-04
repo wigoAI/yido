@@ -109,7 +109,7 @@ public class FileManager {
 
 
     /**
-     * json파일로부터 json object 생성
+     * json 파일로부터 json object 생성
      * @param fileName json file name
      * @return JsonObject
      */
@@ -126,6 +126,11 @@ public class FileManager {
         return element.getAsJsonObject();
     }
 
+    /**
+     * File 삭제
+     * @param fileName 삭제 할 파일 이름
+     * @return 파일 삭제 성공 여부
+     */
     public static boolean deleteFile(String fileName) {
         File file = new File(ABSTRACT_PATH + fileName);
 
