@@ -119,6 +119,7 @@ public class FileManager {
         try {
             element = JsonParser.parseReader(new FileReader(ABSTRACT_PATH + fileName));
         } catch (FileNotFoundException e) {
+            System.out.println("file not found");
             e.printStackTrace();
             throw new RuntimeException(e);
         }

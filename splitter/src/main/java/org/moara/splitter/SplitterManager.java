@@ -30,11 +30,12 @@ import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.manager.SplitConditionManager;
 import org.moara.splitter.utils.file.FileManager;
 
+import java.io.FileNotFoundException;
 import java.util.*;
 
 /**
  * 문장 구분기를 관리해주는 클래스
- * <p>
+ *
  * 기본 구분기를 사용하기 위해서는 {@code getSplitter()} 매서드를 사용해 기본 구분기의 인스턴스를 받을 수 있다.
  * 해당 메서드를 처음 호출하기 전 까지는 인스턴스는 존재하지 않다가 첫 호출 시 구분기를 생성한다.
  *
@@ -102,8 +103,8 @@ public class SplitterManager {
 
         // 구분 결과 예외 단어
         List<String> exceptionWords = new ArrayList<>(Arrays.asList(" ", "\n", "\t"));
-        char containSplitCondition = splitterJson.get("contain_split_condition").getAsString().charAt(0); // 구분점 포함 여부
-        if (containSplitCondition == 'N') {
+        boolean containSplitCondition = splitterJson.get("contain_split_condition").getAsBoolean(); // 구분점 포함 여부
+        if (!containSplitCondition) {
             // 구분 조건 미 포함시 exceptionWords에 해당 조건들을 추가시켜
             // 문장 구분 결과에 구분 조건을 포함시키지 않는다.
             for (SplitCondition splitCondition : splitConditions) {
@@ -144,6 +145,7 @@ public class SplitterManager {
         try {
             splitterJson = FileManager.getJsonObjectByFile("splitter/" + id + ".json");
         } catch (RuntimeException e) {
+            System.out.println("splitter not found exception");
             throw new SplitterNotFoundException(id);
         }
 

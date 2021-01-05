@@ -118,11 +118,7 @@ public class SplitterManagerTest {
             Assert.assertEquals(endAnswers[index++], beginEnd.getEnd());
         }
 
-        String stringGroup = "다.\n" +
-                "둘제\n" +
-                "넿다\n" +
-                "룾다\n" +
-                "제바울";
+        String stringGroup = "다.";
 
         FileManager.writeFile("string_group/test_reload_string_group.dic", Collections.singletonList(stringGroup));
 

@@ -106,7 +106,6 @@ public class ConditionTerminatorProcessor implements TerminatorProcessor{
         for (int i = text.length() - minResultLength; i >= 0; i--) {
             for (int processingLength : conditionLengths) {
 
-
                 if (text.length() < i + processingLength || i <= 0) {
                     continue;
                 }
@@ -117,8 +116,6 @@ public class ConditionTerminatorProcessor implements TerminatorProcessor{
                 if (splitConditionValues.contains(targetString)) {
 
                     SplitCondition targetSplitCondition = getSplitConditionByValue(targetString);
-                    System.out.println("targetString : [" + targetString + "]");
-                    System.out.println("testSplitCondition : [" + targetSplitCondition.toString() + "]");
                     if (isValidCondition(text, targetSplitCondition, targetArea.getBegin())) {
                         int splitPoint;
 
@@ -282,8 +279,8 @@ public class ConditionTerminatorProcessor implements TerminatorProcessor{
 
             boolean isEquals = compareText.equals(validation.getValue());
 
-            if ((validation.getMatchFlag() == 'N' && isEquals) ||
-                    (validation.getMatchFlag() == 'Y' && !isEquals)) {
+            if ((!validation.getMatchFlag() && isEquals) ||
+                    (validation.getMatchFlag() && !isEquals)) {
                 isValid = false;
                 break;
             }

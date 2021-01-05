@@ -1,5 +1,6 @@
 package org.moara.splitter.manager;
 
+import com.google.gson.JsonIOException;
 import org.junit.*;
 import org.moara.splitter.TestFileInitializer;
 import org.moara.splitter.utils.SplitCondition;
@@ -29,14 +30,13 @@ public class SplitConditionTest {
         // terminator
         SplitCondition splitCondition1 = new SplitCondition.Builder("다." , 'B').build();
         Assert.assertEquals("다.", splitCondition1.getValue());
-        Assert.assertEquals('N', splitCondition1.getUsePublicValidation());
+        Assert.assertFalse(splitCondition1.getUsePublicValidation());
         Assert.assertEquals('B', splitCondition1.getSplitPosition());
 
         // number
-        SplitCondition splitCondition2 = new SplitCondition.Builder("1.", 'F')
-                .usePublicValidation('Y').build();
+        SplitCondition splitCondition2 = new SplitCondition.Builder("1.", 'F').build();
         Assert.assertEquals("1.", splitCondition2.getValue());
-        Assert.assertEquals('Y', splitCondition2.getUsePublicValidation());
+        Assert.assertFalse(splitCondition2.getUsePublicValidation());
         Assert.assertEquals('F', splitCondition2.getSplitPosition());
     }
 
@@ -76,7 +76,7 @@ public class SplitConditionTest {
         for (String data : FileManager.readFile("/string_group/test_terminator.dic")) {
             SplitCondition splitCondition = splitConditions.get(splitConditionIndex++);
             Assert.assertEquals(data, splitCondition.getValue());
-            Assert.assertEquals('N', splitCondition.getUsePublicValidation());
+            Assert.assertFalse(splitCondition.getUsePublicValidation());
             Assert.assertEquals('B', splitCondition.getSplitPosition());
 
 
@@ -90,7 +90,7 @@ public class SplitConditionTest {
             for (String validationData : FileManager.readFile("/string_group/test_connective.dic")) {
                 Validation validation = validations.get(validationIndex++);
                 Assert.assertEquals(validationData, validation.getValue());
-                Assert.assertEquals('N', validation.getMatchFlag());
+                Assert.assertFalse(validation.getMatchFlag());
                 Assert.assertEquals('B', validation.getComparePosition());
             }
         }
@@ -114,7 +114,7 @@ public class SplitConditionTest {
 
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test(expected = JsonIOException.class)
     public void testInvalidUsePublicOptions() {
         String[] splitConditions = {"test_invalid_public_option"};
 
@@ -125,7 +125,7 @@ public class SplitConditionTest {
     @Test
     public void testSplitConditionToString() {
         SplitCondition splitCondition = new SplitCondition.Builder("다." , 'B').build();
-        Assert.assertEquals("SplitCondition{flag=N, position=B, value='다.', isPattern=false}", splitCondition.toString());
+        Assert.assertEquals("SplitCondition{flag=false, position=B, value='다.', isPattern=false}", splitCondition.toString());
     }
 
 

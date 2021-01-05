@@ -16,6 +16,7 @@
 package org.moara.splitter.manager;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import org.moara.splitter.utils.RuleProperty;
 import org.moara.splitter.utils.SplitCondition;
@@ -66,6 +67,8 @@ public class SplitConditionManager {
     private static List<SplitCondition> getSplitConditionsByRule(String splitConditionRuleName) {
         List<SplitCondition> splitConditions = new ArrayList<>();
         JsonObject conditionRuleJson = FileManager.getJsonObjectByFile(conditionPath + splitConditionRuleName + ".json");
+
+        checkConditionJsonValidation(conditionRuleJson);
         List<Validation> validations = getValidations(conditionRuleJson);
 
         String conditionValueName = conditionRuleJson.get("value").getAsString();
@@ -101,7 +104,7 @@ public class SplitConditionManager {
             validations.addAll(ValidationManager.getValidations(validationRuleName));
         }
 
-        if (getRuleProperty(conditionRuleJson).getFlag() == 'Y') {
+        if (getRuleProperty(conditionRuleJson).getFlag()) {
             validations.addAll(CommonValidationManager.getAllPublicValidations());
         }
 
@@ -109,9 +112,25 @@ public class SplitConditionManager {
     }
 
     private static RuleProperty getRuleProperty(JsonObject conditionRuleJson) {
-        return new RuleProperty(conditionRuleJson.get("use_public_validation").getAsString().charAt(0),
+        return new RuleProperty(conditionRuleJson.get("use_public_validation").getAsBoolean(),
                 conditionRuleJson.get("split_position").getAsString().charAt(0));
     }
+
+
+    private static void checkConditionJsonValidation(JsonObject conditionRuleJson) {
+        System.out.println(conditionRuleJson.get("use_public_validation").getAsString());
+        if (!conditionRuleJson.isJsonObject()
+                || conditionRuleJson.get("id") == null
+                || conditionRuleJson.get("split_position") == null
+                || conditionRuleJson.get("value") == null
+                || !(conditionRuleJson.get("use_public_validation").getAsString().equals("true") ||
+                    conditionRuleJson.get("use_public_validation").getAsString().equals("false"))) {
+
+            throw new JsonIOException("Invalid condition json");
+        }
+
+    }
+
 
 
 }

@@ -28,9 +28,9 @@ public class ValidationTest {
 
     @Test
     public void testCreateValidationObject() {
-        Validation validation = new Validation("면", 'N', 'B');
+        Validation validation = new Validation("면", false, 'B');
         Assert.assertEquals("면", validation.getValue());
-        Assert.assertEquals('N', validation.getMatchFlag());
+        Assert.assertFalse(validation.getMatchFlag());
         Assert.assertEquals('B', validation.getComparePosition());
     }
 
@@ -47,7 +47,7 @@ public class ValidationTest {
         for (String data : FileManager.readFile("/string_group/test_connective.dic")) {
             Validation validation = validations.get(validationIndex++);
             Assert.assertEquals(data, validation.getValue());
-            Assert.assertEquals('N', validation.getMatchFlag());
+            Assert.assertFalse(validation.getMatchFlag());
             Assert.assertEquals('B', validation.getComparePosition());
         }
 

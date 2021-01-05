@@ -39,7 +39,7 @@ public class SplitCondition extends RuleProperty {
         private final char splitPosition;
 
         private List<Validation> validations = new ArrayList<>();
-        private char usePublicValidation = 'N';
+        private boolean usePublicValidation = false;
         private boolean isPattern = false;
 
         /**
@@ -64,11 +64,10 @@ public class SplitCondition extends RuleProperty {
 
         /**
          * 조건에서의 공통 유효성 사용 여부
-         * @param val Y or N
          * @return Builder
          */
-        public Builder usePublicValidation(char val) {
-            usePublicValidation = val;
+        public Builder usePublicValidation() {
+            usePublicValidation = true;
             return this;
         }
 
@@ -96,7 +95,7 @@ public class SplitCondition extends RuleProperty {
 
     public String getValue() { return value; }
     public List<Validation> getValidations() { return validations; }
-    public char getUsePublicValidation() { return flag; }
+    public boolean getUsePublicValidation() { return flag; }
     public char getSplitPosition() { return position; }
     public boolean isPattern() { return isPattern; }
 

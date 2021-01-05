@@ -215,8 +215,8 @@ public class SplitterTest {
         int[] beginAnswer2 = {0, 33, 106};
         int[] endAnswer2 = {32, 105, 222};
 
-        ((RuleSplitter)splitter).addValidationInMemory(new Validation(" 가족", 'N', 'B'));
-        ((RuleSplitter)splitter).addValidationInMemory(new Validation(" 가족", 'N', 'F'));
+        ((RuleSplitter)splitter).addValidationInMemory(new Validation(" 가족", false, 'B'));
+        ((RuleSplitter)splitter).addValidationInMemory(new Validation(" 가족", false, 'F'));
 
         splitResults = splitter.split(newsData);
 
@@ -228,8 +228,8 @@ public class SplitterTest {
             assertEquals(endAnswer2[index++], splitResult.getEnd());
         }
 
-        ((RuleSplitter)splitter).deleteValidationInMemory(new Validation(" 가족", 'N', 'B'));
-        ((RuleSplitter)splitter).deleteValidationInMemory(new Validation(" 가족", 'N', 'F'));
+        ((RuleSplitter)splitter).deleteValidationInMemory(new Validation(" 가족", false, 'B'));
+        ((RuleSplitter)splitter).deleteValidationInMemory(new Validation(" 가족", false, 'F'));
 
         splitResults = splitter.split(newsData);
         assertEquals(endAnswer.length, splitResults.length);
@@ -277,9 +277,6 @@ public class SplitterTest {
 
         splitter = SplitterManager.getInstance().getSplitter("test_rule_loop");
         splitResults = splitter.split(data);
-        for (BeginEnd splitResult : splitResults) {
-            System.out.println(splitResult);
-        }
 
         Assert.assertEquals(answer.length, splitResults.length);
 
@@ -296,8 +293,6 @@ public class SplitterTest {
 
         Splitter splitter = SplitterManager.getInstance().getSplitter();
         BeginEnd[] splitResult = splitter.split(emptyStr);
-
-        Arrays.stream(splitResult).forEach(System.out::println);
 
         int[] beginAnswer = {0, 38, 119};
         int[] endAnswer = {32, 110, 235};

@@ -36,7 +36,18 @@ public class ValidationManager {
      * @return 유효성 리스트
      */
     public static List<Validation> getValidations(String dicName)  {
-        RuleProperty ruleProperty = new RuleProperty(dicName.charAt(0), dicName.charAt(1));
+
+        boolean flag;
+
+        if (dicName.charAt(0) == 'Y') {
+            flag = true;
+        } else if (dicName.charAt(0) == 'N') {
+            flag = false;
+        } else {
+            throw new IllegalArgumentException("Illegal rule data type : " + dicName);
+        }
+
+        RuleProperty ruleProperty = new RuleProperty(flag, dicName.charAt(1));
 
         List<Validation> validations = new ArrayList<>();
         if (dicName.startsWith("SG_", 2)) {

@@ -22,7 +22,7 @@ package org.moara.splitter.utils;
  * @author wjrmffldrhrl
  */
 public class RuleProperty {
-    protected final char flag;
+    protected final boolean flag;
     protected final char position;
 
     /**
@@ -30,7 +30,7 @@ public class RuleProperty {
      * @param flag 룰에서의 일치여부, 사용 여부 등
      * @param position 룰의 사용, 비교 위치
      */
-    public RuleProperty(char flag, char position) {
+    public RuleProperty(boolean flag, char position) {
         this.flag = flag;
         this.position = position;
 
@@ -39,7 +39,7 @@ public class RuleProperty {
         }
     }
 
-    public boolean isValid() { return  (flag == 'N' || flag == 'Y') && (position == 'B' || position == 'F'); }
-    public char getFlag() { return flag; }
+    public boolean isValid() { return  position == 'B' || position == 'F'; }
+    public boolean getFlag() { return flag; }
     public char getPosition() { return position; }
 }
