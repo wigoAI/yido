@@ -34,7 +34,7 @@ import java.util.List;
  */
 class RuleSplitter implements Splitter {
 
-    protected final TerminatorProcessor conditionTerminatorProcessor;
+    protected final TerminatorProcessor terminatorProcessor;
     protected final ExceptionAreaProcessor[] exceptionAreaProcessors;
     protected final List<String> exceptionWords;
 
@@ -42,13 +42,13 @@ class RuleSplitter implements Splitter {
      * 구분기 생성자
      * package-private 하기 때문에  SplitterManager에서만 접근 가능하다.
      *
-     * @param conditionTerminatorProcessor 구분 동작을 수행하는 processor
+     * @param terminatorProcessor 구분 동작을 수행하는 processor
      * @param exceptionAreaProcessors 예외 영역을 지정해주는 processor, 두 개 이상 적용시킬 수 있다.
      * @param exceptionWords 구분 수행 시 포함하지 않을 예외 단어들
      */
-    RuleSplitter(TerminatorProcessor conditionTerminatorProcessor, List<ExceptionAreaProcessor> exceptionAreaProcessors,
+    RuleSplitter(TerminatorProcessor terminatorProcessor, List<ExceptionAreaProcessor> exceptionAreaProcessors,
                  List<String> exceptionWords) {
-        this.conditionTerminatorProcessor = conditionTerminatorProcessor;
+        this.terminatorProcessor = terminatorProcessor;
         this.exceptionAreaProcessors = exceptionAreaProcessors.toArray(new ExceptionAreaProcessor[0]);
         this.exceptionWords = exceptionWords;
     }
@@ -71,7 +71,7 @@ class RuleSplitter implements Splitter {
             exceptionAreas.addAll(exceptionAreaProcessor.find(text));
         }
 
-        return conditionTerminatorProcessor.find(text, exceptionAreas);
+        return terminatorProcessor.find(text, exceptionAreas);
     }
 
     private Area[] doSplit(int[] splitPoints, String inputData) {
@@ -153,36 +153,36 @@ class RuleSplitter implements Splitter {
 
 
     /**
-     * 구분 조건 추가
+     * 메모리 상의 구분 조건 추가
      * @param additionalSplitCondition 추가할 구분 조건
      */
-    public void addSplitConditions(SplitCondition additionalSplitCondition) {
-        ((ConditionTerminatorProcessor)conditionTerminatorProcessor).addSplitConditions(additionalSplitCondition);
+    public void addSplitConditionsInMemory(SplitCondition additionalSplitCondition) {
+        ((ConditionTerminatorProcessor) terminatorProcessor).addSplitConditions(additionalSplitCondition);
     }
 
     /**
      * 구분 조건 제거
      * @param unnecessarySplitCondition 제거할 구분 조건
      */
-    public void deleteSplitConditions(SplitCondition unnecessarySplitCondition) {
+    public void deleteSplitConditionsInMemory(SplitCondition unnecessarySplitCondition) {
 
-        ((ConditionTerminatorProcessor)conditionTerminatorProcessor).deleteSplitConditions(unnecessarySplitCondition);
+        ((ConditionTerminatorProcessor) terminatorProcessor).deleteSplitConditions(unnecessarySplitCondition);
     }
 
     /**
      * 유효성 추가
      * @param additionalValidations 추가할 유효성
      */
-    public void addValidation(Validation additionalValidations) {
-        ((ConditionTerminatorProcessor)conditionTerminatorProcessor).addValidation(additionalValidations);
+    public void addValidationInMemory(Validation additionalValidations) {
+        ((ConditionTerminatorProcessor) terminatorProcessor).addValidation(additionalValidations);
     }
 
     /**
      * 유효성 제거
      * @param unnecessaryValidations 제거할 유효성
      */
-    public void deleteValidation(Validation unnecessaryValidations) {
-        ((ConditionTerminatorProcessor)conditionTerminatorProcessor).deleteValidation(unnecessaryValidations);
+    public void deleteValidationInMemory(Validation unnecessaryValidations) {
+        ((ConditionTerminatorProcessor) terminatorProcessor).deleteValidation(unnecessaryValidations);
     }
 
     /**

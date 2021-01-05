@@ -25,6 +25,7 @@ import org.moara.splitter.exception.SplitterNotFoundException;
 import org.moara.splitter.processor.BracketAreaProcessor;
 import org.moara.splitter.processor.ConditionTerminatorProcessor;
 import org.moara.splitter.processor.ExceptionAreaProcessor;
+import org.moara.splitter.processor.TerminatorProcessor;
 import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.manager.SplitConditionManager;
 import org.moara.splitter.utils.file.FileManager;
@@ -33,7 +34,7 @@ import java.util.*;
 
 /**
  * 문장 구분기를 관리해주는 클래스
- *
+ * <p>
  * 기본 구분기를 사용하기 위해서는 {@code getSplitter()} 매서드를 사용해 기본 구분기의 인스턴스를 받을 수 있다.
  * 해당 메서드를 처음 호출하기 전 까지는 인스턴스는 존재하지 않다가 첫 호출 시 구분기를 생성한다.
  *
@@ -53,6 +54,7 @@ public class SplitterManager {
     }
 
     private static class Singleton {
+
         private static final SplitterManager instance = new SplitterManager();
     }
 
@@ -95,7 +97,7 @@ public class SplitterManager {
 
         // Processors 생성
         int minResultLength = splitterJson.get("minimum_split_length").getAsInt(); // 최소 문장 길이
-        ConditionTerminatorProcessor conditionTerminatorProcessor = new ConditionTerminatorProcessor(splitConditions, minResultLength); // 구분 처리기
+        TerminatorProcessor terminatorProcessor = new ConditionTerminatorProcessor(splitConditions, minResultLength); // 구분 처리기
         List<ExceptionAreaProcessor> exceptionAreaProcessors = getExceptionAreaProcessors(splitterJson);
 
         // 구분 결과 예외 단어
@@ -110,7 +112,7 @@ public class SplitterManager {
         }
 
         String key = splitterJson.get("id").getAsString(); // splitter key value
-        splitterMap.put(key, new RuleSplitter(conditionTerminatorProcessor, exceptionAreaProcessors, exceptionWords));
+        splitterMap.put(key, new RuleSplitter(terminatorProcessor, exceptionAreaProcessors, exceptionWords));
 
     }
 
@@ -157,5 +159,24 @@ public class SplitterManager {
             throw new JsonIOException("Invalid splitter json");
         }
     }
+
+    /**
+     * 구분기 reload
+     *
+     * 해당 메서드를 호출한 뒤 {@code SplitterManager.getInstance().getSplitter(splitterId)}를 통해 구분기를 새로 할당받아야 한다.
+     * 기존에 참조하고 있는 구분기 인스턴스에는 영향이 가지 않는다.
+     *
+     * @param id reload 할 구분기 id
+     */
+    public void reloadSplitter(String id) {
+        synchronized (createLock) { // thread lock 을 걸고 splitter instance 확인
+            Splitter splitter = splitterMap.get(id);
+            if (splitter == null) { throw new SplitterNotFoundException(id); }
+
+            createSplitter(id);
+        }
+
+    }
+
 }
 

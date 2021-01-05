@@ -9,6 +9,11 @@ import org.moara.splitter.Splitter;
 import org.moara.splitter.SplitterManager;
 import org.moara.splitter.TestFileInitializer;
 import org.moara.splitter.exception.SplitterNotFoundException;
+import org.moara.splitter.utils.file.FileManager;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 
 public class SplitterManagerTest {
@@ -19,10 +24,10 @@ public class SplitterManagerTest {
         TestFileInitializer.initialize();
     }
 
-    @After
-    public void tearDownTest() {
-        TestFileInitializer.tearDown();
-    }
+//    @After
+//    public void tearDownTest() {
+//        TestFileInitializer.tearDown();
+//    }
 
     @Test
     public void testGetBasicSplitter() {
@@ -94,6 +99,47 @@ public class SplitterManagerTest {
         Assert.assertTrue(invalidJsonFlag1);
         Assert.assertTrue(invalidJsonFlag2);
         Assert.assertTrue(notFoundFlag);
+    }
+
+    @Test
+    public void testReload() {
+        String data = "안녕하세요 반갑습니다. 저는 조승현입니다. 오늘 신제품 발표를 했다고하는데 사실인가요?";
+        int[] beginAnswers = {0, 13, 24, 37};
+        int[] endAnswers = {12, 23, 37, 48};
+        Splitter splitter = SplitterManager.getInstance().getSplitter("test_reload_splitter");
+
+        BeginEnd[] beginEnds = splitter.split(data);
+
+        Assert.assertEquals(beginAnswers.length, beginEnds.length);
+
+        int index = 0;
+        for (BeginEnd beginEnd : beginEnds) {
+            Assert.assertEquals(beginAnswers[index], beginEnd.getBegin());
+            Assert.assertEquals(endAnswers[index++], beginEnd.getEnd());
+        }
+
+        String stringGroup = "다.\n" +
+                "둘제\n" +
+                "넿다\n" +
+                "룾다\n" +
+                "제바울";
+
+        FileManager.writeFile("string_group/test_reload_string_group.dic", Collections.singletonList(stringGroup));
+
+        int[] beginAnswers2 = {0, 13, 24};
+        int[] endAnswers2 = {12, 23, 48};
+
+        SplitterManager.getInstance().reloadSplitter("test_reload_splitter");
+
+        beginEnds = SplitterManager.getInstance().getSplitter("test_reload_splitter").split(data);
+        Assert.assertEquals(beginAnswers2.length, beginEnds.length);
+
+        index = 0;
+        for (BeginEnd beginEnd : beginEnds) {
+            Assert.assertEquals(beginAnswers2[index], beginEnd.getBegin());
+            Assert.assertEquals(endAnswers2[index++], beginEnd.getEnd());
+        }
+
     }
 
 }

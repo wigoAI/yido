@@ -119,7 +119,7 @@ public class SplitterTest {
 
         Splitter splitter = SplitterManager.getInstance().getSplitter("test");
 
-        ((RuleSplitter)splitter).addSplitConditions(new SplitCondition.Builder("이지만", 'B').build());
+        ((RuleSplitter)splitter).addSplitConditionsInMemory(new SplitCondition.Builder("이지만", 'B').build());
 
         int[] beginAnswer = {0, 33, 46, 106};
         int[] endAnswer = {32, 45, 105, 222};
@@ -138,7 +138,7 @@ public class SplitterTest {
         int[] beginAnswer2 = {0, 33, 106};
         int[] endAnswer2 = {32, 105, 222};
 
-        ((RuleSplitter)splitter).deleteSplitConditions(new SplitCondition.Builder("이지만", 'B').build());
+        ((RuleSplitter)splitter).deleteSplitConditionsInMemory(new SplitCondition.Builder("이지만", 'B').build());
         splitResults = splitter.split(newsData);
 
         assertEquals(endAnswer2.length, splitResults.length);
@@ -156,9 +156,9 @@ public class SplitterTest {
         int[] beginAnswer1 = {0, 46, 113};
         int[] endAnswer1 = {45, 112, 222};
 
-        ((RuleSplitter)splitter).addSplitConditions(new SplitCondition.Builder("천...만", 'B').isPattern().build());
-        ((RuleSplitter)splitter).addSplitConditions(new SplitCondition.Builder("공인중개사로", 'F').build());
-        ((RuleSplitter)splitter).addSplitConditions(new SplitCondition.Builder("앍돡", 'F').build());
+        ((RuleSplitter)splitter).addSplitConditionsInMemory(new SplitCondition.Builder("천...만", 'B').isPattern().build());
+        ((RuleSplitter)splitter).addSplitConditionsInMemory(new SplitCondition.Builder("공인중개사로", 'F').build());
+        ((RuleSplitter)splitter).addSplitConditionsInMemory(new SplitCondition.Builder("앍돡", 'F').build());
 
         BeginEnd[] splitResults = splitter.split(newsData);
 
@@ -174,8 +174,8 @@ public class SplitterTest {
         int[] beginAnswer2 = {0};
         int[] endAnswer2 = {222};
 
-        ((RuleSplitter)splitter).deleteSplitConditions(new SplitCondition.Builder("천...만", 'B').isPattern().build());
-        ((RuleSplitter)splitter).deleteSplitConditions(new SplitCondition.Builder("공인중개사로", 'F').build());
+        ((RuleSplitter)splitter).deleteSplitConditionsInMemory(new SplitCondition.Builder("천...만", 'B').isPattern().build());
+        ((RuleSplitter)splitter).deleteSplitConditionsInMemory(new SplitCondition.Builder("공인중개사로", 'F').build());
 
 
         splitResults = splitter.split(newsData);
@@ -201,7 +201,7 @@ public class SplitterTest {
         // 해당 Splitter 를 "test"로 변경하면 testEditConditionInMemory 테스트와 동시 실행 중 "이지만" 조건이 삭제되어 NPE 발생생
        Splitter splitter = SplitterManager.getInstance().getSplitter();
 
-        ((RuleSplitter)splitter).addSplitConditions(new SplitCondition.Builder("이지만", 'B').build());
+        ((RuleSplitter)splitter).addSplitConditionsInMemory(new SplitCondition.Builder("이지만", 'B').build());
 
         BeginEnd[] splitResults = splitter.split(newsData);
         assertEquals(endAnswer.length, splitResults.length);
@@ -215,8 +215,8 @@ public class SplitterTest {
         int[] beginAnswer2 = {0, 33, 106};
         int[] endAnswer2 = {32, 105, 222};
 
-        ((RuleSplitter)splitter).addValidation(new Validation(" 가족", 'N', 'B'));
-        ((RuleSplitter)splitter).addValidation(new Validation(" 가족", 'N', 'F'));
+        ((RuleSplitter)splitter).addValidationInMemory(new Validation(" 가족", 'N', 'B'));
+        ((RuleSplitter)splitter).addValidationInMemory(new Validation(" 가족", 'N', 'F'));
 
         splitResults = splitter.split(newsData);
 
@@ -228,8 +228,8 @@ public class SplitterTest {
             assertEquals(endAnswer2[index++], splitResult.getEnd());
         }
 
-        ((RuleSplitter)splitter).deleteValidation(new Validation(" 가족", 'N', 'B'));
-        ((RuleSplitter)splitter).deleteValidation(new Validation(" 가족", 'N', 'F'));
+        ((RuleSplitter)splitter).deleteValidationInMemory(new Validation(" 가족", 'N', 'B'));
+        ((RuleSplitter)splitter).deleteValidationInMemory(new Validation(" 가족", 'N', 'F'));
 
         splitResults = splitter.split(newsData);
         assertEquals(endAnswer.length, splitResults.length);
@@ -335,7 +335,7 @@ public class SplitterTest {
         String data = "test";
 
         Splitter splitter = SplitterManager.getInstance().getSplitter("test_no_condition");
-        ((RuleSplitter) splitter).deleteSplitConditions(new SplitCondition.Builder("removed", 'F').build());
+        ((RuleSplitter) splitter).deleteSplitConditionsInMemory(new SplitCondition.Builder("removed", 'F').build());
         splitter.split(data);
 
     }

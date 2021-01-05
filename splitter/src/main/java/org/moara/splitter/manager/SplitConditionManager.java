@@ -72,6 +72,10 @@ public class SplitConditionManager {
         Collection<String> conditionValues = FileManager.readFile("string_group/" + conditionValueName + ".dic");
 
         for (String conditionValue : conditionValues) {
+
+            // Don't use empty condition
+            if (conditionValue.length() < 1) { continue; }
+
             SplitCondition.Builder splitConditionBuilder = new SplitCondition
                     .Builder(conditionValue, getRuleProperty(conditionRuleJson).getPosition())
                     .validations(validations);
