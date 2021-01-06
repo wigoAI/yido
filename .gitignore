@@ -7,4 +7,4 @@
 build
 .gradle
 out
-/splitter/data/*/test*
+/splitter/data/*/*test*

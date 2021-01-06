@@ -156,7 +156,7 @@ class RuleSplitter implements Splitter {
      * 메모리 상의 구분 조건 추가
      * @param additionalSplitCondition 추가할 구분 조건
      */
-    public void addSplitConditionsInMemory(SplitCondition additionalSplitCondition) {
+    public void addSplitConditionInMemory(SplitCondition additionalSplitCondition) {
         ((ConditionTerminatorProcessor) terminatorProcessor).addSplitConditions(additionalSplitCondition);
     }
 
@@ -164,7 +164,7 @@ class RuleSplitter implements Splitter {
      * 구분 조건 제거
      * @param unnecessarySplitCondition 제거할 구분 조건
      */
-    public void deleteSplitConditionsInMemory(SplitCondition unnecessarySplitCondition) {
+    public void deleteSplitConditionInMemory(SplitCondition unnecessarySplitCondition) {
 
         ((ConditionTerminatorProcessor) terminatorProcessor).deleteSplitConditions(unnecessarySplitCondition);
     }
