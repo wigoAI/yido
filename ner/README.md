@@ -1,11 +1,18 @@
 # NER
 ## Named Entity Recognizer
-각 단어가 어떤 유형에 속해있는지를 알아내는 태깅 작업 중 하나인 개체명 인식을 수행하는 인식기
+용자는 원하는 인식기의 id를 통해 NamedEntityRecognizerManager로부터 NamedEntityRecognizer의 인스턴스를 얻을 수 있다.  
+  
+이 둘은 모두 추상체로써 큰 범주마다 구현체가 존재한다.  
+  
+예를 들어 사람 개체명 범주에는NamedEntityRecognizerManager의 구현체인 PersonNamedEntityRecognizerManager가 존재하며 여기서 기자 개체명을 인식할 수 있는 ReporterRecognizer의 인스턴스를 받아 사용할 수 있다.  
 
-코퍼스로부터 각 개체명을 인식하는것, 즉 이름을 가진 개체를 인식하겠다는 것을 뜻한다.  
-쉽게 말해, 어떤 이름을 의미하는 단어를 보고는 그 단어가 어떤 유형인지 인식하는 것을 말한다. 
+```java
+NamedEntityRecognizer namedEntityRecognizer = PersonNamedEntityRecognizerManager.getInstance().getNamedEntityRecognizer("reporter");
 
-특정 도메인 마다 적용되는 인식기를 호출하여 사용할 수 있다.
+NamedEntity[] namedEntities = namedEntityRecognizer.recognize(corpus);
+```
+
+
 
 # Version
 ## Java
