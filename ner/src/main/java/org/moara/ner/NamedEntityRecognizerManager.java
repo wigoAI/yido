@@ -15,28 +15,18 @@
  */
 package org.moara.ner;
 
-
 /**
- * 사람 개체명
+ * 개체명인식기 팩토리 추상체
  *
  * @author wjrmffldrhrl
  */
-public class PersonEntity implements NamedEntity {
+public interface NamedEntityRecognizerManager {
 
-    private final String value;
-    private static final String TAG = "PER";
+    /**
+     * 인식기 획득
+     * @param id 획득하려는 인식기의 id
+     * @return NamedEntityRecognizer
+     */
+    NamedEntityRecognizer getNamedEntityRecognizer(String id);
 
-    public PersonEntity(String value) {
-        this.value = value;
-    }
-
-    @Override
-    public String getValue() {
-        return value;
-    }
-
-    @Override
-    public String getTag() {
-        return TAG;
-    }
 }

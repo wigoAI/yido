@@ -1,0 +1,49 @@
+package org.moara.ner.person;
+
+import org.moara.ner.NamedEntityRecognizer;
+import org.moara.ner.NamedEntityRecognizerManager;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class PersonNamedEntityRecognizerManager implements NamedEntityRecognizerManager {
+
+    Map<String, NamedEntityRecognizer> namedEntityRecognizerMap = new HashMap<>();
+
+    public static NamedEntityRecognizerManager getInstance() {
+        return Singleton.instance;
+    }
+
+    private static class Singleton {
+        private static final NamedEntityRecognizerManager instance = new PersonNamedEntityRecognizerManager();
+    }
+
+
+    // thread lock
+    private final Object createLock = new Object();
+
+    @Override
+    public NamedEntityRecognizer getNamedEntityRecognizer(String id) {
+        NamedEntityRecognizer namedEntityRecognizer = namedEntityRecognizerMap.get(id);
+
+        if (namedEntityRecognizer == null) {
+            synchronized (createLock) {
+                namedEntityRecognizer = namedEntityRecognizerMap.get(id);
+                if (namedEntityRecognizer == null) {
+                    createRecognizer(id);
+                    namedEntityRecognizer = namedEntityRecognizerMap.get(id);
+                }
+            }
+        }
+
+
+        return namedEntityRecognizer;
+    }
+
+
+    private void createRecognizer(String id) {
+        if (id.equals("reporter")) {
+            namedEntityRecognizerMap.put(id, new ReporterRecognizer());
+        }
+    }
+}

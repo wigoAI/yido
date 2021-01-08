@@ -15,24 +15,26 @@
  */
 package org.moara.ner;
 
+import com.seomse.commons.data.BeginEnd;
+
 /**
  * 개체명 정보 추상체
  *
  * @author wjrmffldrhrl
  */
-public interface NamedEntity {
+public interface NamedEntity extends BeginEnd {
 
     /**
      * 개체명 값 반환
      * @return 개체 정보
      */
-    String getValue();
+    String getText();
 
     /**
-     * 개체명 테그 범주 반환
+     * 개체명 타입 반환
      *
-     * @return 개체명 테그
+     * @return 개체명 타입
      */
-    String getTag();
+    String getType();
 
 }

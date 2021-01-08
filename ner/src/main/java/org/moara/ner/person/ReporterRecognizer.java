@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.ner;
+package org.moara.ner.person;
+
+import org.moara.ner.NamedEntity;
+import org.moara.ner.NamedEntityRecognizer;
 
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -24,13 +26,12 @@ import java.util.stream.Collectors;
  *
  * @author wjrmffldrhrl
  */
-public class ReporterRecognizer implements NamedEntityRecognizer {
+class ReporterRecognizer implements NamedEntityRecognizer {
 
-    private final static String TARGET_WORD = "기자";
-    private final static String[] SPLITTERS = {"·", "?", "/"};
-    private final static String[] exceptionWords = {"엄마", "취재", "인턴", "촬영"};
+    private final String targetWord = "기자";
+    private final String[] SPLITTERS = {"·", "?", "/"};
+    private final String[] exceptionWords = {"엄마", "취재", "인턴", "촬영"};
     private final String splitterStr;
-
 
     public ReporterRecognizer() {
         StringBuilder stringBuilder = new StringBuilder();
@@ -41,14 +42,12 @@ public class ReporterRecognizer implements NamedEntityRecognizer {
         splitterStr = stringBuilder.toString();
     }
 
-
     @Override
     public NamedEntity[] recognize(String corpus) {
 
         List<NamedEntity> reporterEntityList = new ArrayList<>();
 
         reporterEntityList.addAll(recognizeBySplitSpace(corpus));
-
 
         return reporterEntityList.toArray(new NamedEntity[0]);
 
@@ -63,7 +62,7 @@ public class ReporterRecognizer implements NamedEntityRecognizer {
         // 공백으로 구분한 데이터 조회
         for (int i = 1; i < splitCorpus.length; i++) {
 
-            if (splitCorpus[i].equals(TARGET_WORD)) {
+            if (splitCorpus[i].equals(targetWord)) {
 
                 for (String splitter : SPLITTERS) {
 
@@ -84,11 +83,10 @@ public class ReporterRecognizer implements NamedEntityRecognizer {
             }
         }
 
-
         // 붙어있는 기자 이름 검출
         for (int i = 1; i < splitCorpus.length; i++) {
 
-            if (splitCorpus[i].endsWith(TARGET_WORD)) {
+            if (splitCorpus[i].endsWith(targetWord)) {
                 String containReporterString = splitCorpus[i].substring(0, splitCorpus[i].length() - 2);
                 for (String splitter : SPLITTERS) {
 
@@ -107,11 +105,9 @@ public class ReporterRecognizer implements NamedEntityRecognizer {
             }
         }
 
-
         reporterNameSet = reporterNameSet.stream()
-                .map(reporterName -> reporterName.replaceAll("[" + splitterStr + "]", "")).collect(Collectors.toSet());
-
-
+                .map(reporterName -> reporterName.replaceAll("[" + splitterStr + "]", ""))
+                .collect(Collectors.toSet());
 
         for (String exceptionWord : exceptionWords) {
             reporterNameSet.removeIf(r -> r.equals(exceptionWord) || r.length() < 2);
@@ -120,7 +116,10 @@ public class ReporterRecognizer implements NamedEntityRecognizer {
         List<NamedEntity> reporterEntityList = new ArrayList<>();
 
         for (String reporterName : reporterNameSet) {
-            reporterEntityList.add(new PersonEntity(reporterName));
+            int begin = corpus.indexOf(reporterName);
+            int end = begin + reporterName.length();
+
+            reporterEntityList.add(new ReporterEntity(reporterName, begin, end));
         }
         return reporterEntityList;
     }
