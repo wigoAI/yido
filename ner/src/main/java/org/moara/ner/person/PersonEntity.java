@@ -73,4 +73,14 @@ public class PersonEntity implements NamedEntity {
     public int getEnd() {
         return end;
     }
+
+    @Override
+    public String toString() {
+        return "PersonEntity{" +
+                "text='" + text + '\'' +
+                ", type='" + type + '\'' +
+                ", begin=" + begin +
+                ", end=" + end +
+                '}';
+    }
 }

@@ -1,6 +1,5 @@
 package org.moara.ner.person;
 
-import org.moara.ner.person.PersonEntity;
 
 public class ReporterEntity extends PersonEntity {
 

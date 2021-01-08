@@ -23,17 +23,18 @@ import java.util.stream.Collectors;
 
 /**
  * 기자 개체명 인식기
- *
+ * TODO 두 메서드 모두 테스트하기
  * @author wjrmffldrhrl
  */
 class ReporterRecognizer implements NamedEntityRecognizer {
 
     private final String targetWord = "기자";
     private final String[] SPLITTERS = {"·", "?", "/"};
-    private final String[] exceptionWords = {"엄마", "취재", "인턴", "촬영"};
+    private final String[] exceptionWords;
     private final String splitterStr;
 
-    public ReporterRecognizer() {
+    public ReporterRecognizer(String[] exceptionWords) {
+        this.exceptionWords = exceptionWords;
         StringBuilder stringBuilder = new StringBuilder();
         for (String splitter : SPLITTERS) {
             stringBuilder.append("\\").append(splitter);
@@ -47,13 +48,93 @@ class ReporterRecognizer implements NamedEntityRecognizer {
 
         List<NamedEntity> reporterEntityList = new ArrayList<>();
 
-        reporterEntityList.addAll(recognizeBySplitSpace(corpus));
+        reporterEntityList.addAll(recognizeByWordParse(corpus));
 
         return reporterEntityList.toArray(new NamedEntity[0]);
 
     }
 
-    private  List<NamedEntity> recognizeBySplitSpace(String corpus) {
+    private  List<NamedEntity> recognizeByWordParse(String corpus) {
+        corpus = corpus.replaceAll("[^가-힣" + splitterStr + "]", " ");
+        corpus = corpus.replaceAll("[" + splitterStr + "]", "S");
+        List<NamedEntity> reporterEntities = new ArrayList<>();
+
+        int targetIndex = 0;
+        while (targetIndex < corpus.length()) {
+            targetIndex = corpus.indexOf(" " + targetWord + " ", targetIndex);
+
+            if (targetIndex == -1) {
+                break;
+            }
+
+            int entityBegin = corpus.substring(0, targetIndex).lastIndexOf(" ") + 1;
+
+            if (entityBegin == -1) {
+                break;
+            }
+
+            String[] reporterNames = corpus.substring(entityBegin, targetIndex).split("S");
+
+            for (String reporterName : reporterNames) {
+                if (reporterName.length() == 0 || Arrays.asList(exceptionWords).contains(reporterName)) {
+                    continue;
+                }
+
+                int entityEnd = entityBegin + reporterName.length();
+                reporterEntities.add(new ReporterEntity(reporterName, entityBegin, entityEnd));
+
+                entityBegin = entityEnd + 1;
+            }
+
+
+            System.out.println("split reporter : " + targetIndex);
+
+            targetIndex++;
+
+        }
+
+
+        targetIndex = 0;
+        while (targetIndex < corpus.length()) {
+            targetIndex = corpus.indexOf(targetWord + " ", targetIndex);
+
+            if (targetIndex == -1) {
+                break;
+            }
+
+            // 조승현기자     조승현 기자
+            int entityBegin = corpus.substring(0, targetIndex).lastIndexOf(" ") + 1;
+
+            if (entityBegin == -1 || entityBegin == targetIndex) {
+                break;
+            }
+
+
+
+            String[] reporterNames = corpus.substring(entityBegin, targetIndex).split("S");
+
+            for (String reporterName : reporterNames) {
+                int entityEnd = entityBegin + reporterName.length();
+                ReporterEntity reporterEntity = new ReporterEntity(reporterName, entityBegin, entityEnd);
+                entityBegin = entityEnd + 1;
+
+                if (reporterName.length() == 0 || Arrays.asList(exceptionWords).contains(reporterName)) {
+                    continue;
+                }
+                reporterEntities.add(reporterEntity);
+
+
+            }
+
+            System.out.println("non split reporter : " + targetIndex);
+            targetIndex++;
+        }
+
+        return reporterEntities;
+
+    }
+
+    private  List<NamedEntity> testrecognizeByWordParse(String corpus) {
         corpus = corpus.replaceAll("[^가-힣" + splitterStr + "]", " ");
         String[] splitCorpus = corpus.split(" ");
 
@@ -68,7 +149,7 @@ class ReporterRecognizer implements NamedEntityRecognizer {
 
                     if (splitCorpus[i - 1].contains(splitter)) {
 
-                        String[] reporterNames = splitCorpus[i - 1].trim().split(new StringBuilder().append("\\").append(splitter).toString());
+                        String[] reporterNames = splitCorpus[i - 1].split(new StringBuilder().append("\\").append(splitter).toString());
 
                         reporterNameSet.addAll(Arrays.asList(reporterNames));
 
@@ -92,7 +173,7 @@ class ReporterRecognizer implements NamedEntityRecognizer {
 
                     if (containReporterString.contains(splitter)) {
 
-                        String[] reporterNames = containReporterString.trim().split(new StringBuilder().append("\\").append(splitter).toString());
+                        String[] reporterNames = containReporterString.split(new StringBuilder().append("\\").append(splitter).toString());
 
                         reporterNameSet.addAll(Arrays.asList(reporterNames));
                         break;
