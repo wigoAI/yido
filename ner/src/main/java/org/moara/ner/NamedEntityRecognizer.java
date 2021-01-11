@@ -24,9 +24,9 @@ public interface NamedEntityRecognizer {
 
     /**
      * Corpus에 존재하는 개체명 추출
-     * @param corpus 개체명을 추출 할 Corpus
+     * @param text 개체명을 추출 할 Corpus
      * @return 개체명 배열
      */
-    NamedEntity[] recognize(String corpus);
+    NamedEntity[] recognize(String text);
 
 }
