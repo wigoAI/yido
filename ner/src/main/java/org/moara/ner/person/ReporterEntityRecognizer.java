@@ -22,20 +22,21 @@ import java.util.*;
 /**
  * 사람 개체명 인식기
  *
- * TODO 1. [조승현 **전문 기자]와 같은 유형 체크
  * @author wjrmffldrhrl
  */
 class ReporterEntityRecognizer extends PersonNamedEntityRecognizer {
 
 
-    ReporterEntityRecognizer(String targetWord, String[] exceptionWords) {
-        super(targetWord, exceptionWords, new String[]{"·", "?", "/"});
+    ReporterEntityRecognizer(String[] targetWords, String[] exceptionWords) {
+        super(targetWords, exceptionWords, new String[]{"·", "?", "/"});
     }
 
     @Override
     protected String textPreprocessing(String text) {
-        for (String multipleSymbol : multipleSymbols) {
-            text = text.replace(targetWord + multipleSymbol, targetWord + " ");
+        for (String targetWord : targetWords) {
+            for (String multipleSymbol : multipleSymbols) {
+                text = text.replace(targetWord + multipleSymbol, targetWord + " ");
+            }
         }
 
         text = text.replaceAll("[^가-힣" + multipleSymbolRegx + "]", " ")
@@ -45,11 +46,12 @@ class ReporterEntityRecognizer extends PersonNamedEntityRecognizer {
     }
 
     @Override
-    protected List<NamedEntity> recognizeEntities(String text) {
+    protected Set<NamedEntity> recognizeEntities(String text) {
 
-        List<NamedEntity> personNamedEntities = getEntities(text, " " + targetWord + " ");
-        personNamedEntities.addAll(getEntities(text, targetWord + " "));
-        personNamedEntities.addAll(getEntities(text, " " + targetWord + "입니다 "));
+        Set<NamedEntity> personNamedEntities = new HashSet<>();
+        for (String targetWord : targetWords) {
+            personNamedEntities.addAll(getEntities(text, targetWord));
+        }
 
         return personNamedEntities;
 

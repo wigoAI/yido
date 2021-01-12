@@ -1,5 +1,6 @@
 package org.moara.ner.person;
 
+import org.moara.filemanager.FileManager;
 import org.moara.ner.NamedEntityRecognizer;
 import org.moara.ner.NamedEntityRecognizerManager;
 import org.moara.ner.exception.RecognizerNotFoundException;
@@ -43,8 +44,9 @@ public class PersonNamedEntityRecognizerManager implements NamedEntityRecognizer
 
     private void createRecognizer(String id) {
         if (id.equals("reporter")) {
+            String[] targetWords = FileManager.readFile("target_words/reporter.dic").toArray(new String[]{});
             String[] exceptionWords = {"엄마", "취재", "인턴", "촬영", "전문", "선임", "객원", "신문", "일보", "경제"};
-            namedEntityRecognizerMap.put(id, new ReporterEntityRecognizer("기자", exceptionWords));
+            namedEntityRecognizerMap.put(id, new ReporterEntityRecognizer(targetWords, exceptionWords));
         } else {
             throw new RecognizerNotFoundException(id);
         }

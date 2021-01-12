@@ -103,6 +103,13 @@ public class NamedEntityRecognizerTest {
         ReporterEntity answer = new ReporterEntity("지환", 115, 117);
         NamedEntity[] namedEntities = namedEntityRecognizer.recognize(text);
 
+        for (NamedEntity namedEntity : namedEntities) {
+            System.out.println(namedEntity.getText());
+            System.out.println(namedEntity.getBegin());
+            System.out.println(namedEntity.getEnd());
+
+        }
+
         Assertions.assertEquals(1, namedEntities.length);
 
         for (NamedEntity namedEntity : namedEntities) {
