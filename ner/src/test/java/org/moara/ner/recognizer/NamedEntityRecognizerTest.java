@@ -111,21 +111,23 @@ public class NamedEntityRecognizerTest {
 
     }
 
+
     @Test
-    public void test() {
-        String text = "상훈△영업·마케팅담당 △여론독자부 선임기자 최보식△경제부 국제경제 전문기자 최원석\\n\\n■디지틀조선일보 ";
+    public void testNoSpaceAtFront() {
+        String text = "강지원 기자\\r\\n‘\\r\\n\\r\\n강지원 기자 stylo@hankookilbo.com";
+
         NamedEntityRecognizer namedEntityRecognizer = PersonNamedEntityRecognizerManager.getInstance().getNamedEntityRecognizer("reporter");
 
-        List<ReporterEntity> answerList = Arrays.asList(new ReporterEntity("최보식", 24,27),
-                new ReporterEntity("최원석", 42, 45));
+        List<ReporterEntity> answerList = Arrays.asList(new ReporterEntity("강지원", 0,3),
+                new ReporterEntity("강지원", 19, 22));
 
         NamedEntity[] namedEntities = namedEntityRecognizer.recognize(text);
 
         Assertions.assertEquals(answerList.size(), namedEntities.length);
 
         Assertions.assertTrue(answerList.containsAll(Arrays.asList(namedEntities.clone())));
-
-
     }
+
+
 
 }

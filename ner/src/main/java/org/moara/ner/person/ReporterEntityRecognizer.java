@@ -37,6 +37,7 @@ class ReporterEntityRecognizer extends PersonNamedEntityRecognizer {
     protected String textPreprocessing(String text) {
         text = text.replaceAll("[^가-힣" + splitterStr + "]", " ");
         text = text.replaceAll("[" + splitterStr + "]", "S");
+
         return text;
     }
 
@@ -52,6 +53,10 @@ class ReporterEntityRecognizer extends PersonNamedEntityRecognizer {
     }
 
     private List<NamedEntity> getEntities(String text, String targetWord) {
+
+        // 가장 앞에 기자 이름이 붙어있는 경우 해결
+        text = " " + text + " ";
+
         List<NamedEntity> personNamedEntities = new ArrayList<>();
         int targetIndex = 0;
         while (targetIndex < text.length()) {
@@ -62,24 +67,37 @@ class ReporterEntityRecognizer extends PersonNamedEntityRecognizer {
                 break;
             }
 
-            //
             int entityBegin = text.substring(0, targetIndex).lastIndexOf(" ") + 1;
 
+
             if (entityBegin == 0 || entityBegin == targetIndex) {
-                break;
+                targetIndex++;
+                continue;
             }
 
             String[] names = text.substring(entityBegin, targetIndex).split("S");
 
+
+            nameLoop:
             for (String name : names) {
                 int entityEnd = entityBegin + name.length();
 
-                ReporterEntity reporterEntity = new ReporterEntity(name, entityBegin, entityEnd);
+                ReporterEntity reporterEntity = new ReporterEntity(name, entityBegin - 1, entityEnd - 1);
                 entityBegin = entityEnd + 1;
 
-                if (name.length() == 0 || Arrays.asList(exceptionWords).contains(name)) {
+                if (name.length() < 2 || name.length() > 4) {
                     continue;
                 }
+//                if (name.length() != 3) {
+//                    continue;
+//                }
+
+                for (String exceptionWord : exceptionWords) {
+                    if (name.contains(exceptionWord)) {
+                        continue nameLoop;
+                    }
+                }
+
 
                 personNamedEntities.add(reporterEntity);
 

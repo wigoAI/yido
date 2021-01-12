@@ -44,7 +44,7 @@ public class PersonNamedEntityRecognizerManager implements NamedEntityRecognizer
 
     private void createRecognizer(String id) {
         if (id.equals("reporter")) {
-            String[] exceptionWords = {"엄마", "취재", "인턴", "촬영"};
+            String[] exceptionWords = {"엄마", "취재", "인턴", "촬영", "전문", "선임", "객원", "신문", "일보", "경제"};
             namedEntityRecognizerMap.put(id, new ReporterEntityRecognizer("기자", exceptionWords));
         } else {
             throw new RecognizerNotFoundException(id);
