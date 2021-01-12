@@ -16,7 +16,6 @@
 package org.moara.ner.person;
 
 import org.moara.ner.NamedEntity;
-import org.moara.ner.NamedEntityRecognizer;
 
 import java.util.*;
 
@@ -35,8 +34,12 @@ class ReporterEntityRecognizer extends PersonNamedEntityRecognizer {
 
     @Override
     protected String textPreprocessing(String text) {
-        text = text.replaceAll("[^가-힣" + splitterStr + "]", " ");
-        text = text.replaceAll("[" + splitterStr + "]", "S");
+        for (String multipleSymbol : multipleSymbols) {
+            text = text.replace(targetWord + multipleSymbol, targetWord + " ");
+        }
+
+        text = text.replaceAll("[^가-힣" + multipleSymbolRegx + "]", " ")
+                .replaceAll("[" + multipleSymbolRegx + "]", "M");
 
         return text;
     }
@@ -67,6 +70,7 @@ class ReporterEntityRecognizer extends PersonNamedEntityRecognizer {
                 break;
             }
 
+
             int entityBegin = text.substring(0, targetIndex).lastIndexOf(" ") + 1;
 
 
@@ -75,7 +79,7 @@ class ReporterEntityRecognizer extends PersonNamedEntityRecognizer {
                 continue;
             }
 
-            String[] names = text.substring(entityBegin, targetIndex).split("S");
+            String[] names = text.substring(entityBegin, targetIndex).split("M");
 
 
             nameLoop:

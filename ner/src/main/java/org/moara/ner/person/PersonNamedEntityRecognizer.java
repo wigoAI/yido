@@ -10,22 +10,24 @@ abstract class PersonNamedEntityRecognizer implements NamedEntityRecognizer {
 
     protected final String targetWord;
     protected final String[] exceptionWords;
-    protected final String splitterStr;
+    protected final String[] multipleSymbols;
+    protected final String multipleSymbolRegx;
 
     /**
      * 사람 개체명 인식기 생성자
      * @param targetWord 객체를 가리키는 단어 (e.g: 직업 -> 기자, 리포터, 앵커) 해당 단어를 기준으로 사람 이름을 인식한다.
      * @param exceptionWords 인식된 개체명 중 예외 개체명
      */
-    public PersonNamedEntityRecognizer(String targetWord, String[] exceptionWords, String[] splitters) {
+    public PersonNamedEntityRecognizer(String targetWord, String[] exceptionWords, String[] multipleSymbols) {
         this.targetWord = targetWord;
         this.exceptionWords = exceptionWords;
+        this.multipleSymbols = multipleSymbols;
 
         StringBuilder stringBuilder = new StringBuilder();
-        for (String splitter : splitters) {
+        for (String splitter : multipleSymbols) {
             stringBuilder.append("\\").append(splitter);
         }
-        this.splitterStr = stringBuilder.toString();
+        this.multipleSymbolRegx = stringBuilder.toString();
     }
 
 

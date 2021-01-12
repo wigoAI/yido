@@ -128,6 +128,20 @@ public class NamedEntityRecognizerTest {
         Assertions.assertTrue(answerList.containsAll(Arrays.asList(namedEntities.clone())));
     }
 
+    @Test
+    public void testNearSplitWord() {
+        String text = "35~50세 “지자체 예산과 조례로 운영하고 있어 현금성 지원책에 대해 강제력은 없는 상황”이라고 설명했다.\\r\\n\\r\\n김유진 기자/kacaew@heraldcorp.com\\r\\n";
+
+        NamedEntityRecognizer namedEntityRecognizer = PersonNamedEntityRecognizerManager.getInstance().getNamedEntityRecognizer("reporter");
+
+        List<ReporterEntity> answerList = Arrays.asList(new ReporterEntity("김유진", 68, 71));
+
+        NamedEntity[] namedEntities = namedEntityRecognizer.recognize(text);
+
+        Assertions.assertEquals(answerList.size(), namedEntities.length);
+
+        Assertions.assertTrue(answerList.containsAll(Arrays.asList(namedEntities.clone())));
+    }
 
 
 }
