@@ -45,9 +45,6 @@ public class PersonNamedEntityRecognizerManager implements NamedEntityRecognizer
         if (id.equals("reporter")) {
             String[] exceptionWords = {"엄마", "취재", "인턴", "촬영", "전문", "선임", "객원", "신문", "일보", "경제"};
             namedEntityRecognizerMap.put(id, new ReporterEntityRecognizer("기자", exceptionWords));
-        } else if(id.equals("reporter_token")){
-            String[] exceptionWords = {"기자회견", "연기자", "포기자", "특기자", "생기자", "간담회"};
-            namedEntityRecognizerMap.put(id, new PersonTokenRecognizer("기자", exceptionWords));
         } else {
             throw new RecognizerNotFoundException(id);
         }

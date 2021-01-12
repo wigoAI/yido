@@ -5,6 +5,34 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/../FileManager" />
+        <option name="gradleHome" value="$PROJECT_DIR$/../../../Program Files/gradle-6.7.1" />
+        <option name="gradleJvm" value="#JAVA_HOME" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/../FileManager" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/../file-manager" />
+        <option name="gradleHome" value="$PROJECT_DIR$/../../../Program Files/gradle-6.7.1" />
+        <option name="gradleJvm" value="#JAVA_HOME" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/../../evaluation/classification" />
+            <option value="$PROJECT_DIR$/.." />
+            <option value="$PROJECT_DIR$/../file-manager" />
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/../splitter" />
+            <option value="$PROJECT_DIR$/../text-mining" />
+            <option value="$PROJECT_DIR$/../tokenizer" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleHome" value="$PROJECT_DIR$/../../../Program Files/gradle-6.7.1" />
         <option name="gradleJvm" value="#JAVA_HOME" />
@@ -12,6 +40,7 @@
           <set>
             <option value="$PROJECT_DIR$/../../evaluation/classification" />
             <option value="$PROJECT_DIR$/.." />
+            <option value="$PROJECT_DIR$/../file-manager" />
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/../splitter" />
             <option value="$PROJECT_DIR$/../text-mining" />

@@ -13,19 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.splitter.utils.file;
+package org.moara.filemanager;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.seomse.commons.config.Config;
-import org.moara.splitter.Splitter;
 
 import java.io.*;
-import java.io.FileWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -35,7 +32,7 @@ import java.util.Collection;
  *
  */
 public class FileManager {
-    protected static final String ABSTRACT_PATH = Config.getConfig("yido.splitter.data.path", "data") + "/";
+    protected static final String ABSTRACT_PATH = Config.getConfig("yido.file.manager.path", "data") + "/";
 
     /**
      * 경로를 포함한 파일 명으로 파일을 읽어온다.
