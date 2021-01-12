@@ -17,7 +17,7 @@ package org.moara.splitter.manager;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import org.moara.splitter.utils.file.FileManager;
+import org.moara.filemanager.FileManager;
 
 import java.util.regex.Pattern;
 

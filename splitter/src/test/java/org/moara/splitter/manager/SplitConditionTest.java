@@ -2,10 +2,10 @@ package org.moara.splitter.manager;
 
 import com.google.gson.JsonIOException;
 import org.junit.*;
+import org.moara.filemanager.FileManager;
 import org.moara.splitter.TestFileInitializer;
 import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.utils.Validation;
-import org.moara.splitter.utils.file.FileManager;
 
 import java.util.*;
 

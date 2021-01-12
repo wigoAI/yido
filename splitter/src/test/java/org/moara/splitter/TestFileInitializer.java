@@ -1,6 +1,7 @@
 package org.moara.splitter;
 
-import org.moara.splitter.utils.file.FileManager;
+
+import org.moara.filemanager.FileManager;
 
 import java.io.File;
 import java.util.Collections;

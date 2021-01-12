@@ -5,11 +5,11 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moara.filemanager.FileManager;
 import org.moara.splitter.Splitter;
 import org.moara.splitter.SplitterManager;
 import org.moara.splitter.TestFileInitializer;
 import org.moara.splitter.exception.SplitterNotFoundException;
-import org.moara.splitter.utils.file.FileManager;
 
 import java.util.Arrays;
 import java.util.Collections;

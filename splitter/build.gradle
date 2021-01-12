@@ -6,7 +6,6 @@ plugins {
 
 jacoco {
     toolVersion = '0.8.5'
-
 }
 test {
     finalizedBy jacocoTestReport // report is always generated after tests run
@@ -24,6 +23,7 @@ repositories {
 dependencies {
 
     implementation project(path: ':classification')
+    implementation project(path: ':file-manager')
 
     implementation 'com.seomse.commons:seomse-commons:1.2.3'
     implementation 'commons-io:commons-io:2.5'

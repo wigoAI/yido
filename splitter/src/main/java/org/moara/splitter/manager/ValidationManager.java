@@ -15,9 +15,9 @@
  */
 package org.moara.splitter.manager;
 
+import org.moara.filemanager.FileManager;
 import org.moara.splitter.utils.RuleProperty;
 import org.moara.splitter.utils.Validation;
-import org.moara.splitter.utils.file.FileManager;
 import java.util.ArrayList;
 import java.util.List;
 

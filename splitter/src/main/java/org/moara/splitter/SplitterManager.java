@@ -21,6 +21,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.seomse.commons.config.Config;
+import org.moara.filemanager.FileManager;
 import org.moara.splitter.exception.SplitterNotFoundException;
 import org.moara.splitter.processor.BracketAreaProcessor;
 import org.moara.splitter.processor.ConditionTerminatorProcessor;
@@ -28,7 +29,6 @@ import org.moara.splitter.processor.ExceptionAreaProcessor;
 import org.moara.splitter.processor.TerminatorProcessor;
 import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.manager.SplitConditionManager;
-import org.moara.splitter.utils.file.FileManager;
 
 import java.io.FileNotFoundException;
 import java.util.*;

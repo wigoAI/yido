@@ -18,10 +18,10 @@ package org.moara.splitter.manager;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
+import org.moara.filemanager.FileManager;
 import org.moara.splitter.utils.RuleProperty;
 import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.utils.Validation;
-import org.moara.splitter.utils.file.FileManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
