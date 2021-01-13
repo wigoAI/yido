@@ -28,9 +28,10 @@ import java.util.Map;
  */
 public class NamedEntityRecognizerManager {
 
-    Map<String, NamedEntityRecognizer> namedEntityRecognizerMap = new HashMap<>();
+    private Map<String, NamedEntityRecognizer> namedEntityRecognizerMap = new HashMap<>();
 
     /**
+     *
      * Manager Instance 반환 메서드
      * @return NamedEntityRecognizerManager
      */
@@ -61,9 +62,10 @@ public class NamedEntityRecognizerManager {
 
 
     private void createRecognizer(String id) {
-        if (id.equals("reporter")) {
-            namedEntityRecognizerMap.put(id, PersonNamedEntityRecognizerFactory.REPORTER.create());
-        } else {
+        try {
+            NamedEntityRecognizer namedEntityRecognizer = PersonNamedEntityRecognizerFactory.valueOf(id.toUpperCase()).create();
+            namedEntityRecognizerMap.put(id, namedEntityRecognizer);
+        } catch (IllegalArgumentException e) {
             throw new RecognizerNotFoundException(id);
         }
     }

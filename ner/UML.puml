@@ -1,0 +1,28 @@
+@startuml
+
+Interface NamedEntity{
+    String getText()
+    String getType()
+}
+
+Interface NamedEntityRecognizer{
+    NamedEntity[] recognize(String text)
+}
+Class NamedEntityRecognizerManager
+Abstract PersonNamedEntityRecognizer
+Class PersonEntity
+Enum PersonNamedEntityRecognizerFactory{
+    REPORTER
+
+}
+
+PersonNamedEntityRecognizer ...> PersonEntity : return
+PersonNamedEntityRecognizerFactory ---> PersonNamedEntityRecognizer : return
+NamedEntity <... NamedEntityRecognizer : return
+NamedEntity <|... PersonEntity
+NamedEntityRecognizerManager *--- PersonNamedEntityRecognizer
+NamedEntityRecognizer <... NamedEntityRecognizerManager: return
+NamedEntityRecognizer <|... PersonNamedEntityRecognizer
+
+
+@enduml

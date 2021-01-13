@@ -2,17 +2,17 @@ package org.moara.ner.entity;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.moara.ner.person.ReporterEntity;
+import org.moara.ner.person.PersonEntity;
 
 public class EntityTest {
 
     @Test
     public void testEquals() {
-        ReporterEntity reporterEntity = new ReporterEntity("김경민", 4, 7);
-        ReporterEntity equalsEntity = new ReporterEntity("김경민", 4, 7);
-        ReporterEntity notEqualsEntity1 = new ReporterEntity("김민경", 4, 7);
-        ReporterEntity notEqualsEntity2 = new ReporterEntity("김경민", 5, 7);
-        ReporterEntity notEqualsEntity3 = new ReporterEntity("김경민", 4, 8);
+        PersonEntity reporterEntity = new PersonEntity("김경민","REPORTER" , 4, 7);
+        PersonEntity equalsEntity = new PersonEntity("김경민","REPORTER", 4, 7);
+        PersonEntity notEqualsEntity1 = new PersonEntity("김민경","REPORTER", 4, 7);
+        PersonEntity notEqualsEntity2 = new PersonEntity("김경민","REPORTER", 5, 7);
+        PersonEntity notEqualsEntity3 = new PersonEntity("김경민","REPORTER", 4, 8);
 
 
         Assertions.assertTrue(reporterEntity.equals(reporterEntity));
@@ -25,11 +25,11 @@ public class EntityTest {
 
     @Test
     public void testHashcode() {
-        ReporterEntity reporterEntity = new ReporterEntity("김경민", 4, 7);
-        ReporterEntity equalsEntity = new ReporterEntity("김경민", 4, 7);
-        ReporterEntity notEqualsEntity1 = new ReporterEntity("김민경", 4, 7);
-        ReporterEntity notEqualsEntity2 = new ReporterEntity("김경민", 5, 7);
-        ReporterEntity notEqualsEntity3 = new ReporterEntity("김경민", 4, 8);
+        PersonEntity reporterEntity = new PersonEntity("김경민","REPORTER", 4, 7);
+        PersonEntity equalsEntity = new PersonEntity("김경민","REPORTER", 4, 7);
+        PersonEntity notEqualsEntity1 = new PersonEntity("김민경","REPORTER", 4, 7);
+        PersonEntity notEqualsEntity2 = new PersonEntity("김경민","REPORTER", 5, 7);
+        PersonEntity notEqualsEntity3 = new PersonEntity("김경민","REPORTER", 4, 8);
 
         Assertions.assertEquals(reporterEntity.hashCode(), reporterEntity.hashCode());
         Assertions.assertEquals(reporterEntity.hashCode(), equalsEntity.hashCode());
