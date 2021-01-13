@@ -27,7 +27,7 @@ import java.util.List;
  * @author wjrmffldrhrl
  */
 public class ValidationManager {
-    protected static String stringGroupPath = "/string_group/";
+    protected static String stringGroupPath = "splitter/string_group/";
 
     /**
      * 유효성 반환

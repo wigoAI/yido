@@ -1,0 +1,8 @@
+{
+  "id": "test_no_condition",
+  "name": "test_no_condition",
+  "minimum_split_length": 5,
+  "contain_split_condition": true,
+  "conditions": ["test_no_condition"],
+  "exceptions": ["test"]
+}

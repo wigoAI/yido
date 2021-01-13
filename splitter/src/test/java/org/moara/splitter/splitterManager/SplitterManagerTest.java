@@ -120,7 +120,7 @@ public class SplitterManagerTest {
 
         String stringGroup = "다.";
 
-        FileManager.writeFile("string_group/test_reload_string_group.dic", Collections.singletonList(stringGroup));
+        FileManager.writeFile("splitter/string_group/test_reload_string_group.dic", Collections.singletonList(stringGroup));
 
         int[] beginAnswers2 = {0, 13, 24};
         int[] endAnswers2 = {12, 23, 48};

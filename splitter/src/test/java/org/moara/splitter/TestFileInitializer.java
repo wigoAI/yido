@@ -173,63 +173,63 @@ public class TestFileInitializer {
     public static String testEvaluation = "apple.\n" + "orange.\n" + "banana.\n" + "melon.";
 
     public static void initialize() {
-        createTestFiles("condition/test.json", testCondition);
-        createTestFiles("condition/test_front_split_position.json", testFrontSplitPosition);
-        createTestFiles("condition/test_public_validation.json", testPublicValidation);
-        createTestFiles("condition/test_invalid_properties.json", testInvalidProperties);
-        createTestFiles("condition/test_invalid_public_option.json", testInvalidPublicOption);
-        createTestFiles("condition/test_condition_with_validations.json", testConditionWithFrontValidations);
-        createTestFiles("condition/test_no_condition.json", testNoValueCondition);
-        createTestFiles("condition/test_regx.json", testRegxCondition);
-        createTestFiles("condition/test_reload_condition.json", testReloadCondition);
+        createTestFiles("splitter/condition/test.json", testCondition);
+        createTestFiles("splitter/condition/test_front_split_position.json", testFrontSplitPosition);
+        createTestFiles("splitter/condition/test_public_validation.json", testPublicValidation);
+        createTestFiles("splitter/condition/test_invalid_properties.json", testInvalidProperties);
+        createTestFiles("splitter/condition/test_invalid_public_option.json", testInvalidPublicOption);
+        createTestFiles("splitter/condition/test_condition_with_validations.json", testConditionWithFrontValidations);
+        createTestFiles("splitter/condition/test_no_condition.json", testNoValueCondition);
+        createTestFiles("splitter/condition/test_regx.json", testRegxCondition);
+        createTestFiles("splitter/condition/test_reload_condition.json", testReloadCondition);
 
-        createTestFiles("string_group/test_connective.dic", testConnectiveDic);
-        createTestFiles("string_group/test_terminator.dic", testTerminator);
-        createTestFiles("string_group/test_front_validation.dic", testFrontValidation);
-        createTestFiles("string_group/test_back_validation.dic", testBackValidation);
-        createTestFiles("string_group/test_no_condition.dic", "removed");
-        createTestFiles("string_group/regx_test.dic", testRegxString);
-        createTestFiles("string_group/test_reload_string_group.dic", testReloadStringGroup);
+        createTestFiles("splitter/string_group/test_connective.dic", testConnectiveDic);
+        createTestFiles("splitter/string_group/test_terminator.dic", testTerminator);
+        createTestFiles("splitter/string_group/test_front_validation.dic", testFrontValidation);
+        createTestFiles("splitter/string_group/test_back_validation.dic", testBackValidation);
+        createTestFiles("splitter/string_group/test_no_condition.dic", "removed");
+        createTestFiles("splitter/string_group/regx_test.dic", testRegxString);
+        createTestFiles("splitter/string_group/test_reload_string_group.dic", testReloadStringGroup);
 
-        createTestFiles("splitter/test.json", testSplitter);
-        createTestFiles("splitter/test_regx.json", testRegxSplitter);
-        createTestFiles("splitter/test_invalid1.json", testInvalidJson1);
-        createTestFiles("splitter/test_invalid2.json", testInvalidJson2);
-        createTestFiles("splitter/test_no_condition.json", testNoConditionSplitter);
-        createTestFiles("splitter/test_no_condition.json", testNoConditionSplitter);
-        createTestFiles("splitter/test_rule_loop.json", testRuleLoopSplitter);
-        createTestFiles("splitter/test_reload_splitter.json", testReloadSplitter);
+        createTestFiles("splitter/splitter/test.json", testSplitter);
+        createTestFiles("splitter/splitter/test_regx.json", testRegxSplitter);
+        createTestFiles("splitter/splitter/test_invalid1.json", testInvalidJson1);
+        createTestFiles("splitter/splitter/test_invalid2.json", testInvalidJson2);
+        createTestFiles("splitter/splitter/test_no_condition.json", testNoConditionSplitter);
+        createTestFiles("splitter/splitter/test_no_condition.json", testNoConditionSplitter);
+        createTestFiles("splitter/splitter/test_rule_loop.json", testRuleLoopSplitter);
+        createTestFiles("splitter/splitter/test_reload_splitter.json", testReloadSplitter);
 
-        createTestFiles("exception/test.json", testException);
-        createTestFiles("evaluation/test_answer.txt", testEvaluation);
+        createTestFiles("splitter/exception/test.json", testException);
+        createTestFiles("splitter/evaluation/test_answer.txt", testEvaluation);
 
     }
 
     public static void tearDown() {
-        FileManager.deleteFile("condition/test.json");
-        FileManager.deleteFile("condition/test_front_split_position.json");
-        FileManager.deleteFile("condition/test_public_validation.json");
-        FileManager.deleteFile("condition/test_invalid_properties.json");
-        FileManager.deleteFile("condition/test_invalid_public_option.json");
-        FileManager.deleteFile("condition/test_condition_with_validations.json");
-        FileManager.deleteFile("condition/test_regx.json");
-        FileManager.deleteFile("condition/test_no_condition.json");
-        FileManager.deleteFile("splitter/test.json");
-        FileManager.deleteFile("splitter/test_invalid1.json");
-        FileManager.deleteFile("splitter/test_invalid2.json");
-        FileManager.deleteFile("splitter/test_no_condition.json");
-        FileManager.deleteFile("splitter/test_rule_loop.json");
-        FileManager.deleteFile("splitter/test_regx.json");
-        FileManager.deleteFile("string_group/test_connective.dic");
-        FileManager.deleteFile("string_group/test_terminator.dic");
-        FileManager.deleteFile("string_group/test_back_validation.dic");
-        FileManager.deleteFile("string_group/test_front_validation.dic");
-        FileManager.deleteFile("string_group/regx_test.dic");
-        FileManager.deleteFile("exception/test.json");
-        FileManager.deleteFile("evaluation/test_answer.txt");
-        FileManager.deleteFile("splitter/test_reload_splitter.json");
-        FileManager.deleteFile("string_group/test_reload_string_group.dic");
-        FileManager.deleteFile("condition/test_reload_condition.json");
+        FileManager.deleteFile("splitter/condition/test.json");
+        FileManager.deleteFile("splitter/condition/test_front_split_position.json");
+        FileManager.deleteFile("splitter/condition/test_public_validation.json");
+        FileManager.deleteFile("splitter/condition/test_invalid_properties.json");
+        FileManager.deleteFile("splitter/condition/test_invalid_public_option.json");
+        FileManager.deleteFile("splitter/condition/test_condition_with_validations.json");
+        FileManager.deleteFile("splitter/condition/test_regx.json");
+        FileManager.deleteFile("splitter/condition/test_no_condition.json");
+        FileManager.deleteFile("splitter/splitter/test.json");
+        FileManager.deleteFile("splitter/splitter/test_invalid1.json");
+        FileManager.deleteFile("splitter/splitter/test_invalid2.json");
+        FileManager.deleteFile("splitter/splitter/test_no_condition.json");
+        FileManager.deleteFile("splitter/splitter/test_rule_loop.json");
+        FileManager.deleteFile("splitter/splitter/test_regx.json");
+        FileManager.deleteFile("splitter/string_group/test_connective.dic");
+        FileManager.deleteFile("splitter/string_group/test_terminator.dic");
+        FileManager.deleteFile("splitter/string_group/test_back_validation.dic");
+        FileManager.deleteFile("splitter/string_group/test_front_validation.dic");
+        FileManager.deleteFile("splitter/string_group/regx_test.dic");
+        FileManager.deleteFile("splitter/exception/test.json");
+        FileManager.deleteFile("splitter/evaluation/test_answer.txt");
+        FileManager.deleteFile("splitter/splitter/test_reload_splitter.json");
+        FileManager.deleteFile("splitter/string_group/test_reload_string_group.dic");
+        FileManager.deleteFile("splitter/condition/test_reload_condition.json");
     }
     private static void createTestFiles(String fileName, String value) {
         FileManager.writeFile(fileName, Collections.singletonList(value));

@@ -143,7 +143,7 @@ public class SplitterManager {
     private JsonObject getSplitterJson(String id) {
         JsonObject splitterJson;
         try {
-            splitterJson = FileManager.getJsonObjectByFile("splitter/" + id + ".json");
+            splitterJson = FileManager.getJsonObjectByFile("splitter/splitter/" + id + ".json");
         } catch (RuntimeException e) {
             System.out.println("splitter not found exception");
             throw new SplitterNotFoundException(id);

@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  * @author wjrmffldrhrl
  */
 public class ExceptionRuleManager {
-    protected static final String rulePath = "/exception/";
+    protected static final String rulePath = "splitter/exception/";
     private static final String differentSideBracketRuleName = "bracket_exception.json";
     private static final String sameSideBracketRuleName = "same_bracket_exception.json";
 

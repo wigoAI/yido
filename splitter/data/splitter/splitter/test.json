@@ -1,0 +1,8 @@
+{
+  "id": "test",
+  "name": "test",
+  "minimum_split_length": 5,
+  "contain_split_condition": true,
+  "conditions": ["test"],
+  "exceptions": ["bracket_exception"]
+}

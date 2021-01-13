@@ -13,7 +13,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class SplitterEvaluatorTest {
-    String filePath = "./data/evaluation/test_answer.txt";
+    String filePath = "./data/splitter/evaluation/test_answer.txt";
 
     String[] answerSheet = {"apple.", "orange.", "banana.", "melon."};
     String[] splitterSheetWrongCount3 = {"apple.", "orange.b", "anana.", "melo", "n."};
