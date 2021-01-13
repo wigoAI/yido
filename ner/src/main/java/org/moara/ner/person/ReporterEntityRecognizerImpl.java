@@ -20,14 +20,15 @@ import org.moara.ner.NamedEntity;
 import java.util.*;
 
 /**
- * 사람 개체명 인식기
+ * 사람 개체명 인식기 구현체
  *
+ * {@code PersonNamedEntityRecognizerFactory}에서만 접근 가능
  * @author wjrmffldrhrl
  */
-class ReporterEntityRecognizer extends PersonNamedEntityRecognizer {
+class ReporterEntityRecognizerImpl extends PersonNamedEntityRecognizer {
 
 
-    ReporterEntityRecognizer(String[] targetWords, String[] exceptionWords) {
+    ReporterEntityRecognizerImpl(String[] targetWords, String[] exceptionWords) {
         super(targetWords, exceptionWords, new String[]{"·", "?", "/"});
     }
 
@@ -59,7 +60,7 @@ class ReporterEntityRecognizer extends PersonNamedEntityRecognizer {
 
     private List<NamedEntity> getEntities(String text, String targetWord) {
 
-        // 가장 앞에 기자 이름이 붙어있는 경우 해결
+        // 개체나 targetWord 가 맨 앞이나 뒤에 뭍어있는 경우 처리
         text = " " + text + " ";
 
         List<NamedEntity> personNamedEntities = new ArrayList<>();

@@ -10,8 +10,8 @@ repositories {
 }
 
 dependencies {
-    implementation project(path: ':file-manager')
 
+    implementation project(path: ':file-manager')
 
     implementation 'com.seomse.commons:seomse-commons:1.2.3'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'

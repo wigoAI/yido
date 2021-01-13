@@ -18,10 +18,8 @@ package org.moara.ner.person;
 
 import org.moara.ner.NamedEntity;
 
-import java.util.Objects;
-
 /**
- * 사람 개체명
+ * 사람 개체
  *
  * @author wjrmffldrhrl
  */

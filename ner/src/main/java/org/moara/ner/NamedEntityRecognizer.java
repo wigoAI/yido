@@ -23,8 +23,8 @@ package org.moara.ner;
 public interface NamedEntityRecognizer {
 
     /**
-     * Corpus에 존재하는 개체명 추출
-     * @param text 개체명을 추출 할 Corpus
+     * text에 존재하는 개체명 추출
+     * @param text 개체명을 추출 할 텍스트
      * @return 개체명 배열
      */
     NamedEntity[] recognize(String text);
