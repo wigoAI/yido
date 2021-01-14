@@ -1,6 +1,6 @@
 # NER
 ## Named Entity Recognizer
-용자는 원하는 인식기의 id를 통해 NamedEntityRecognizerManager로부터 NamedEntityRecognizer의 인스턴스를 얻을 수 있다.  
+사용자는 원하는 인식기의 id를 통해 NamedEntityRecognizerManager로부터 NamedEntityRecognizer의 인스턴스를 얻을 수 있다.  
   
 이 둘은 모두 추상체로써 큰 범주마다 구현체가 존재한다.  
   
