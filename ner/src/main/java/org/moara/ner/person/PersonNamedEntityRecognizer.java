@@ -29,12 +29,14 @@ import java.util.*;
  */
 class PersonNamedEntityRecognizer implements NamedEntityRecognizer {
 
-    private final String[] targetWords;
-    private final String[] exceptionWords;
-    private final String[] multipleSymbols;
-    private final String multipleSymbolRegx;
-    private final String entityType;
+    protected final String[] targetWords;
+    protected final String[] exceptionWords;
+    protected final String[] multipleSymbols;
+    protected final String multipleSymbolRegx;
+    protected final String entityType;
 
+    private final int minEntityLength = 2;
+    private final int maxEntityLength = 4;
     /**
      * 사람 개체명 인식기 생성자
      * @param targetWords 개체명을 가리키는 단어들 (e.g: 직업 -> 기자, 리포터, 앵커) 해당 단어를 기준으로 사람 이름을 인식한다.
@@ -67,7 +69,7 @@ class PersonNamedEntityRecognizer implements NamedEntityRecognizer {
     }
     
 
-    private String textPreprocessing(String text) {
+    protected String textPreprocessing(String text) {
         // 개체나 targetWord 가 맨 앞이나 뒤에 뭍어있는 경우 처리
         text = " " + text + " ";
 
@@ -87,7 +89,7 @@ class PersonNamedEntityRecognizer implements NamedEntityRecognizer {
         return text;
     }
 
-    private Set<NamedEntity> recognizeEntities(String text) {
+    protected Set<NamedEntity> recognizeEntities(String text) {
 
         Set<NamedEntity> personNamedEntities = new HashSet<>();
         for (String targetWord : targetWords) {
@@ -127,7 +129,7 @@ class PersonNamedEntityRecognizer implements NamedEntityRecognizer {
                 PersonEntity personEntity = new PersonEntity(name, entityType, entityBegin - 1, entityEnd - 1);
                 entityBegin = entityEnd + 1;
 
-                if (name.length() < 2 || name.length() > 4) {
+                if (name.length() < minEntityLength || name.length() > maxEntityLength) {
                     continue;
                 }
 

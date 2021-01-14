@@ -15,77 +15,25 @@
  */
 package org.moara.ner.person;
 
-
-import org.moara.ner.NamedEntity;
+import org.moara.ner.NamedEntityImpl;
 
 /**
- * 사람 개체
+ * 사람 개체명
  *
  * @author wjrmffldrhrl
  */
-public class PersonEntity implements NamedEntity {
+public class PersonEntity extends NamedEntityImpl {
 
-    private final String text;
-    private final String type;
-    private final int begin;
-    private final int end;
-
+    /**
+     * 사람 개체명 생성자
+     *
+     * @param text 개체명 내용
+     * @param subType 사람 개체명의 세부 범주
+     * @param begin 사람 개체명이 시작하는 위치
+     * @param end 사람 개체명이 끝나는 위치
+     */
     public PersonEntity(String text, String subType, int begin, int end) {
-        this.text = text;
-        this.type = "PS_" + subType;
-        this.begin = begin;
-        this.end = end;
+        super(text, "PS_" + subType, begin, end);
     }
 
-    @Override
-    public boolean equals(Object o) {
-
-        if (this == o) {
-            return true;
-        }
-
-        if (!(o instanceof PersonEntity)) {
-            return false;
-        }
-
-        PersonEntity personEntity = (PersonEntity) o;
-        return this.text.equals((personEntity.getText())) && this.getType().equals(personEntity.getType())
-                && this.getBegin() == personEntity.getBegin() && this.getEnd() == personEntity.getEnd();
-
-    }
-
-    @Override
-    public String getText() {
-        return text;
-    }
-
-    @Override
-    public String getType() {
-        return type;
-    }
-
-    @Override
-    public int getBegin() {
-        return begin;
-    }
-
-    @Override
-    public int getEnd() {
-        return end;
-    }
-
-    @Override
-    public String toString() {
-        return "PersonEntity{" +
-                "text='" + text + '\'' +
-                ", type='" + type + '\'' +
-                ", begin=" + begin +
-                ", end=" + end +
-                '}';
-    }
-
-    @Override
-    public int hashCode() {
-        return toString().hashCode();
-    }
 }

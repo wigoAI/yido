@@ -145,4 +145,24 @@ public class NamedEntityRecognizerTest {
     }
 
 
+    @Test
+    public void testTokenRecognize() {
+        String text = "홍천군 올 한해 기부건수 6122건, 기부총액은 6억5100여만 원.\\n\\n전년 총액 3억9300만원 대비 65% 증가한 규모\\n\\n【파이낸셜뉴스 강원=서정욱 기자】 코로나19 장기화로 지역경제가 어려운 가운데에도 불구하고 홍천군의 올 한 해 기부 규모가 전년대비 65% 증가한 것으로 나타났다.\\n\\n30일 허필홍 홍천군수는 기자 브리핑을 통해 \\\"올 한 해 기부건수는 6122건, 기부총액은 6억5100여만 원으로 전년 총액 3억9300만원 대비 65% 증가한 규모이다.\\\"고 밝혔다. 아울러, “우리는 코로나19 사태 속에서 더불어 사는 공동체’의 소중함을 경험했다”며 “소외된 이웃을 향한 아름다운 동행에 동참해 주신 분들에게 감사드린다.\\\"고 밝혔다.사진=서정욱 기자\\n\\n30일 허필홍 홍천군수는 기자 브리핑을 통해 \\\"올 한 해 기부건수는 6122건, 기부총액은 6억5100여만 원으로 전년 총액 3억9300만원 대비 65% 증가한 규모이다.\\\"고 밝혔다.\\n\\n특히 올 한 해 기부는 코로나19 장기화로 지역경제가 어려운 상황에서도 소외된 이웃을 위한 온정의 손길과 기부행렬이 이어져 지역사회에 훈훈한 감동을 주고 있다.\\n\\n홍천군 관계자는 “지난 몇 달 동안 어려운 이웃을 돕기 위해 기부에 나선 군민들 가운데는 코로나19로 생계가 더욱 막막해진 취약계층을 돕기 위한 성금기탁에서부터 , 현금 대신 방역마스크, 손 소독제 등의 구호물품과 쌀, 돼지고기, 소고기, 연탄, 이불, 홍삼 제품 등 각종 생필품을 기부해 영하로 뚝떨어진 추운 겨울을 훈훈하게 해 주고 있다.” 고 말했다.\\n\\n허필홍 홍천군수는 “우리는 코로나19 사태 속에서 더불어 사는 공동체’의 소중함을 경험했다”며 “소외된 이웃을 향한 아름다운 동행에 동참해 주신 분들에게 감사드리며, 군민들께서 정성으로 모아준 기부금이 어려운 이웃을 위해 가장 효과적으로 쓰일 수 있도록 최선을 다하겠다”고 말했다.";
+
+        NamedEntityRecognizer namedEntityRecognizer = NamedEntityRecognizerManager.getInstance().getNamedEntityRecognizer("token");
+
+//        List<PersonEntity> answerList = Arrays.asList(new PersonEntity("김유진", "REPORTER", 68, 71));
+
+        NamedEntity[] namedEntities = namedEntityRecognizer.recognize(text);
+
+        for (NamedEntity namedEntity : namedEntities) {
+            System.out.println(namedEntity.getText());
+        }
+
+//        Assertions.assertEquals(answerList.size(), namedEntities.length);
+//
+//        Assertions.assertTrue(answerList.containsAll(Arrays.asList(namedEntities.clone())));
+    }
+
+
 }

@@ -28,7 +28,8 @@ import java.util.Map;
  */
 public class NamedEntityRecognizerManager {
 
-    private Map<String, NamedEntityRecognizer> namedEntityRecognizerMap = new HashMap<>();
+    // key = id, value = NamedEntityRecognizer instance
+    final private Map<String, NamedEntityRecognizer> namedEntityRecognizerMap = new HashMap<>();
 
     /**
      *

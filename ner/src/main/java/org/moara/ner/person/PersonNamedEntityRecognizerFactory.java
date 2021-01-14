@@ -30,10 +30,21 @@ import java.util.regex.Pattern;
  * 싱글턴으로 유지한다.
  *
  * 동작이 다른 {@code create()} 메서드가 필요한 경우 override 하면 된다.
+ *
  * @author wjrmffldrhrl
  **/
 public enum PersonNamedEntityRecognizerFactory {
     REPORTER("reporter", "REPORTER"),
+    TOKEN("token", "TOKEN"){
+        @Override
+        public NamedEntityRecognizer create() {
+
+            String[] targetWords = FileManager.readFile(TARGET_WORDS_PATH + "token.dic").stream()
+                    .map(line -> line.replaceAll("[\\[\\]]", "")).toArray(String[]::new);
+            String[] exceptionWords = FileManager.readFile(EXCEPTION_WORDS_PATH + "token.dic").toArray(new String[]{});
+            return new PersonTokenRecognizer(targetWords, exceptionWords);
+        }
+    },
     EMAIL("email", "EMAIL") {
         @Override
         public NamedEntityRecognizer create() {
