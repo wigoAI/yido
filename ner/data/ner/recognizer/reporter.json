@@ -1,0 +1,9 @@
+{
+  "id": "reporter",
+  "entity_length": {
+    "min": 2,
+    "max": 4
+  },
+  "target": "reporter",
+  "exception": "reporter"
+}

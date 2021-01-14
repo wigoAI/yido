@@ -17,6 +17,7 @@ package org.moara.ner.person;
 
 import org.moara.ner.NamedEntity;
 import org.moara.ner.NamedEntityRecognizer;
+import org.moara.splitter.utils.Area;
 
 import java.util.*;
 
@@ -35,8 +36,8 @@ class PersonNamedEntityRecognizer implements NamedEntityRecognizer {
     protected final String multipleSymbolRegx;
     protected final String entityType;
 
-    private final int minEntityLength = 2;
-    private final int maxEntityLength = 4;
+    private final int minEntityLength;
+    private final int maxEntityLength;
     /**
      * 사람 개체명 인식기 생성자
      * @param targetWords 개체명을 가리키는 단어들 (e.g: 직업 -> 기자, 리포터, 앵커) 해당 단어를 기준으로 사람 이름을 인식한다.
@@ -44,11 +45,14 @@ class PersonNamedEntityRecognizer implements NamedEntityRecognizer {
      * @param multipleSymbols 개체명이 여러개가 동시에 등장할 때 해당 개체명들을 나누는 구분 기호들
      *                        e.g.) 김승현/조승현/박승현 기자 -> {@code multipleSymbol = "/"}
      */
-    public PersonNamedEntityRecognizer(String[] targetWords, String[] exceptionWords, String[] multipleSymbols, String entityType) {
+    public PersonNamedEntityRecognizer(String[] targetWords, String[] exceptionWords, String[] multipleSymbols, String entityType, Area entityLength) {
         this.targetWords = targetWords;
         this.exceptionWords = exceptionWords;
         this.multipleSymbols = multipleSymbols;
         this.entityType = entityType;
+
+        this.minEntityLength = entityLength.getBegin();
+        this.maxEntityLength = entityLength.getEnd();
 
         StringBuilder stringBuilder = new StringBuilder();
         for (String splitter : multipleSymbols) {

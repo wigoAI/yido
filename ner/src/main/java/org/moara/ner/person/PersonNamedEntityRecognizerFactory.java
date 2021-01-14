@@ -15,9 +15,11 @@
  */
 package org.moara.ner.person;
 
+import com.google.gson.JsonObject;
 import org.moara.filemanager.FileManager;
 import org.moara.ner.NamedEntity;
 import org.moara.ner.NamedEntityRecognizer;
+import org.moara.splitter.utils.Area;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +55,6 @@ public enum PersonNamedEntityRecognizerFactory {
                 String emailFindRegx = "[0-9a-zA-Z][0-9a-zA-Z\\_\\-\\.]+[0-9a-zA-Z]@[0-9a-zA-Z][0-9a-zA-Z\\_\\-\\.]*[0-9a-zA-Z]";
                 Matcher matcher = Pattern.compile(emailFindRegx).matcher(text);
 
-
                 while (matcher.find()) {
                     emailEntities.add(new PersonEntity(matcher.group(), "EMAIL", matcher.start(), matcher.end()));
                 }
@@ -68,17 +69,33 @@ public enum PersonNamedEntityRecognizerFactory {
 
     private final static String TARGET_WORDS_PATH = "ner/target/";
     private final static String EXCEPTION_WORDS_PATH = "ner/exception/";
+    private final static String RECOGNIZER_OPTION_PATH = "ner/recognizer/";
 
     PersonNamedEntityRecognizerFactory(String id, String entityType) {
+        System.out.println("init enum");
         this.id = id;
         this.entityType = entityType;
     }
 
     public NamedEntityRecognizer create() {
-        String[] targetWords = FileManager.readFile(TARGET_WORDS_PATH + this.id + ".dic").stream()
-                .map(line -> line.replaceAll("[\\[\\]]", "")).toArray(String[]::new);
-        String[] exceptionWords = FileManager.readFile(EXCEPTION_WORDS_PATH + this.id + ".dic").toArray(new String[]{});
+        JsonObject recognizerOption = FileManager.getJsonObjectByFile(RECOGNIZER_OPTION_PATH + this.id + ".json");
 
-        return new PersonNamedEntityRecognizer(targetWords, exceptionWords,  new String[]{"·", "?", "/"}, entityType);
+        String targetWordsDicName = recognizerOption.get("target").getAsString();
+        String exceptionWordsDicName = recognizerOption.get("exception").getAsString();
+
+        Area entityLength = getEntityLength(recognizerOption);
+
+        String[] targetWords = FileManager.readFile(TARGET_WORDS_PATH + targetWordsDicName + ".dic").stream()
+                .map(line -> line.replaceAll("[\\[\\]]", "")).toArray(String[]::new);
+        String[] exceptionWords = FileManager.readFile(EXCEPTION_WORDS_PATH + exceptionWordsDicName + ".dic").toArray(new String[]{});
+        return new PersonNamedEntityRecognizer(targetWords, exceptionWords,  new String[]{"·", "?", "/"}, entityType, entityLength);
+    }
+
+    private Area getEntityLength(JsonObject recognizerOption) {
+        JsonObject entityLengthJson = recognizerOption.getAsJsonObject("entity_length");
+        int min = entityLengthJson.get("min").getAsInt();
+        int max = entityLengthJson.get("max").getAsInt();
+
+        return new Area(min, max);
     }
 }

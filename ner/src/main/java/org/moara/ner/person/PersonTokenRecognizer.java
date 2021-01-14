@@ -1,6 +1,8 @@
 package org.moara.ner.person;
 
 import org.moara.ner.NamedEntity;
+import org.moara.splitter.utils.Area;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -16,7 +18,7 @@ public class PersonTokenRecognizer extends PersonNamedEntityRecognizer {
      * @param exceptionWords 인식된 개체명 중 예외 개체명
      */
     public PersonTokenRecognizer(String[] targetWord, String[] exceptionWords) {
-        super(targetWord, exceptionWords, new String[]{"·", "?", "/"}, "TOKEN");
+        super(targetWord, exceptionWords, new String[]{"·", "?", "/"}, "TOKEN", new Area(4, 99));
     }
 
     @Override
@@ -30,7 +32,7 @@ public class PersonTokenRecognizer extends PersonNamedEntityRecognizer {
 
         for (String targetWord : targetWords) {
 
-            String tokenBoundary = "[^가-힣 " + multipleSymbolRegx + "]*";
+            String tokenBoundary = "[가-힣 " + multipleSymbolRegx + "]*";
             String tokenRegx = tokenBoundary + targetWord + tokenBoundary;
             Pattern pattern = Pattern.compile(tokenRegx);
             Matcher matcher = pattern.matcher(text);
@@ -42,7 +44,6 @@ public class PersonTokenRecognizer extends PersonNamedEntityRecognizer {
                         continue matcherFindLoop;
                     }
                 }
-
 
                 if (matcher.group().length() > targetWord.length()) {
                     PersonEntity personToken = new PersonEntity(matcher.group(), "TOKEN", matcher.start(), matcher.end());
