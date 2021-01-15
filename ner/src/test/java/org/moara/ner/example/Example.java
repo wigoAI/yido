@@ -3,6 +3,7 @@ package org.moara.ner.example;
 import org.moara.ner.NamedEntity;
 import org.moara.ner.NamedEntityRecognizer;
 import org.moara.ner.NamedEntityRecognizerManager;
+import org.moara.ner.RecognizeResult;
 
 public class Example {
     public static void main(String[] args) {
@@ -12,11 +13,14 @@ public class Example {
 
 
         // Named entity recognize with default recognizers
-        NamedEntity[] namedEntities = namedEntityRecognizerManager.recognize(text);
+        RecognizeResult[] results = namedEntityRecognizerManager.recognize(text);
 
         System.out.println("Named entity recognize with default recognizers");
-        for (NamedEntity namedEntity : namedEntities) {
-            System.out.println(namedEntity);
+        for (RecognizeResult result : results) {
+            for (NamedEntity namedEntity : result.getEntities()) {
+                System.out.println(namedEntity);
+            }
+
         }
         /*
          * PersonEntity{text='지환', type='PS_REPORTER', begin=115, end=117}
@@ -33,15 +37,15 @@ public class Example {
          * - email
          */
         NamedEntityRecognizer reporterEntityRecognizer = namedEntityRecognizerManager.getNamedEntityRecognizer("ps_reporter");
-        NamedEntity[] reporterEntities = reporterEntityRecognizer.recognize(text);
+        RecognizeResult result = reporterEntityRecognizer.recognize(text);
 
         System.out.println("Use reporter entity recognizer");
-        for (NamedEntity namedEntity : reporterEntities) {
+        for (NamedEntity namedEntity : result.getEntities()) {
             System.out.println(namedEntity);
         }
         // PersonEntity{text='지환', type='PS_REPORTER', begin=115, end=117}
 
-        
+
 
 
     }
