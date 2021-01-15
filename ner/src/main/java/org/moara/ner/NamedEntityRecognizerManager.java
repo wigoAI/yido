@@ -18,8 +18,10 @@ package org.moara.ner;
 import com.google.gson.JsonObject;
 import com.seomse.commons.config.Config;
 
-import com.seomse.commons.data.BeginEnd;
 import org.moara.filemanager.FileManager;
+import org.moara.ner.entity.NamedEntity;
+import org.moara.ner.entity.NamedEntityImpl;
+import org.moara.ner.entity.RecognizeResult;
 import org.moara.ner.exception.RecognizerNotFoundException;
 import org.moara.splitter.utils.Area;
 
@@ -29,7 +31,7 @@ import java.util.regex.Pattern;
 
 /**
  * 개체명 인식기 관리자 구현체
- * <p>
+ *
  * TODO 1. JSON 파일 유효성 체크
  *
  * @author wjrmffldrhrl
@@ -44,7 +46,6 @@ public class NamedEntityRecognizerManager {
     private final static String RECOGNIZER_OPTION_PATH = "ner/recognizer/";
 
     private final String[] defaultRecognizerIds;
-    private static String sortBy = Config.getConfig("yido.ner.default.sort", "index");
 
     private NamedEntityRecognizerManager() {
         this.defaultRecognizerIds = Arrays.stream(defaultRecognizerIdStr.split(","))
@@ -113,7 +114,7 @@ public class NamedEntityRecognizerManager {
             namedEntityRecognizers[i] = getNamedEntityRecognizer(recognizerIds[i]);
         }
 
-        RecognizeResult[] results = new RecognizeResultImpl[namedEntityRecognizers.length];
+        RecognizeResult[] results = new RecognizeResult[namedEntityRecognizers.length];
 
         int recognizerIndex = 0;
         for (NamedEntityRecognizer namedEntityRecognizer : namedEntityRecognizers) {
@@ -167,7 +168,7 @@ public class NamedEntityRecognizerManager {
                 }
             }
 
-            return new RecognizeResultImpl(emailEntities.toArray(new NamedEntity[0]));
+            return new RecognizeResult(emailEntities.toArray(new NamedEntity[0]));
         };
 
     }

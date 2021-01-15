@@ -1,50 +1,17 @@
 @startuml
+interface NamedEntityRecognizer
+class NamedEntityRecognizerManager
+class PersonNamedEntityRecognizer
+class TokenRecognizer
 
-Interface NamedEntity{
-    String getText()
-    String getType()
-}
+interface NamedEntity
+class NamedEntityImpl
+class RecognizerResult
 
-Interface NamedEntityRecognizer{
-    NamedEntity[] recognize(String text)
-}
-
-Class NamedEntityRecognizerManager{
-
-    NamedEntityRecognizer getRecognizer(String id)
-    Map<NamedEntityRecognizer> namedEntityRecognizerMap = new HashMap<>();
-}
-
-class NamedEntityImpl{
-    String getText()
-    String getType()
-}
-Class PersonEntity{
-    String getText()
-    String getType()
-}
-Class PersonNamedEntityRecognizer{
-    NamedEntity[] recognize(String text);
-}
-Enum PersonNamedEntityRecognizerFactory{
-    REPORTER
-    EMAIL
-}
-NamedEntityRecognizer ...> NamedEntity: return
-NamedEntityRecognizer <|.. PersonNamedEntityRecognizer
-NamedEntityRecognizerManager o--- PersonNamedEntityRecognizer
+NamedEntityRecognizerManager ...> NamedEntityRecognizer : return
+NamedEntityRecognizer <|... PersonNamedEntityRecognizer
+PersonNamedEntityRecognizer <|--- TokenRecognizer
+NamedEntityRecognizer ....> RecognizerResult : return
+RecognizerResult o--- NamedEntity
 NamedEntity <|... NamedEntityImpl
-NamedEntityImpl <|-- PersonEntity
-
-PersonNamedEntityRecognizerFactory ..> NamedEntityRecognizer:create
-PersonNamedEntityRecognizerFactory <.. NamedEntityRecognizerManager
-'PersonNamedEntityRecognizer ...> PersonEntity : return
-'PersonNamedEntityRecognizerFactory ---> PersonNamedEntityRecognizer : return
-'
-'NamedEntity <|... PersonEntity
-
-'NamedEntityRecognizer <... NamedEntityRecognizerManager: return
-'NamedEntityRecognizer <|... PersonNamedEntityRecognizer
-
-
 @enduml

@@ -3,8 +3,8 @@ package org.moara.ner.test.manager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import org.moara.ner.NamedEntity;
-import org.moara.ner.RecognizeResult;
+import org.moara.ner.entity.NamedEntity;
+import org.moara.ner.entity.RecognizeResult;
 import org.moara.ner.exception.RecognizerNotFoundException;
 import org.moara.ner.NamedEntityRecognizerManager;
 

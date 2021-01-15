@@ -1,9 +1,11 @@
 package org.moara.ner.test.recognizer;
 
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.moara.ner.*;
+import org.moara.ner.entity.NamedEntity;
+import org.moara.ner.entity.NamedEntityImpl;
+import org.moara.ner.entity.RecognizeResult;
 
 import java.util.Arrays;
 import java.util.List;
@@ -46,8 +48,6 @@ public class NamedEntityRecognizerTest {
         Assertions.assertTrue(answerList.containsAll(Arrays.asList(result.getEntities().clone())));
 
 
-
-
         text = "직접 챙기는 상황이면 아무래도 밑에선 휴가를 다녀오기 부담스럽다\\\"며 \\\"단체장이 휴가를 미루는 바람에 덩달아 일정을 미루는 직원들도 있다\\\"고 말했다.   \\r\\n \\r\\n최모란·최은경·심석용 기자,[전국종합] moran@joongang.co.kr \\r\\n\\r\\n";
         namedEntityRecognizer = NamedEntityRecognizerManager.getInstance().getNamedEntityRecognizer("ps_reporter");
 
@@ -62,11 +62,11 @@ public class NamedEntityRecognizerTest {
         Assertions.assertTrue(answerList.containsAll(Arrays.asList(result.getEntities().clone())));
 
 
-
         text = " 다시 효율적으로 (수사) 할 수 있을 방안을 찾겠다”고 밝혔다.  \\r\\n \\r\\n김민상?박사라?박태인 기자 kim.minsang@joongang.co.kr\\r\\n\\r\\n ■ 영장 기각 사유(박정길 영장전담";
-        namedEntityRecognizer = NamedEntityRecognizerManager.getInstance().getNamedEntityRecognizer("ps_reporter");;
+        namedEntityRecognizer = NamedEntityRecognizerManager.getInstance().getNamedEntityRecognizer("ps_reporter");
+        ;
 
-        answerList = Arrays.asList(new NamedEntityImpl("김민상", "PS_REPORTER", 47,50),
+        answerList = Arrays.asList(new NamedEntityImpl("김민상", "PS_REPORTER", 47, 50),
                 new NamedEntityImpl("박사라", "PS_REPORTER", 51, 54),
                 new NamedEntityImpl("박태인", "PS_REPORTER", 55, 58));
 
@@ -82,7 +82,8 @@ public class NamedEntityRecognizerTest {
     @Test
     public void testNoSpaceReporterRecognize() {
         String text = "이번 행사는 코로나19 관련 방역수칙 준수하에 진행됐다.\\n\\n/이태규기자 classic@sedaily.com\\n\\n▶ 엄마 기자 취재수첩 [서지혜의 건강한 육아]\\n\\n▶ 中투자 알짜정보만 쏙쏙  [니하오 중국증시]\\n\\n▶ 네이버 채널에서 '서울경제' 구독해주세요!\\n\\n저작권자 ⓒ 서울경제, 무단 전재 및 재배포 금지";
-        NamedEntityRecognizer namedEntityRecognizer = NamedEntityRecognizerManager.getInstance().getNamedEntityRecognizer("ps_reporter");;
+        NamedEntityRecognizer namedEntityRecognizer = NamedEntityRecognizerManager.getInstance().getNamedEntityRecognizer("ps_reporter");
+        ;
 
 
         NamedEntity answer = new NamedEntityImpl("이태규", "PS_REPORTER", 36, 39);
@@ -121,7 +122,7 @@ public class NamedEntityRecognizerTest {
 
         NamedEntityRecognizer namedEntityRecognizer = NamedEntityRecognizerManager.getInstance().getNamedEntityRecognizer("ps_reporter");
 
-        List<NamedEntity> answerList = Arrays.asList(new NamedEntityImpl("강지원", "PS_REPORTER", 0,3),
+        List<NamedEntity> answerList = Arrays.asList(new NamedEntityImpl("강지원", "PS_REPORTER", 0, 3),
                 new NamedEntityImpl("강지원", "PS_REPORTER", 19, 22));
 
         RecognizeResult result = namedEntityRecognizer.recognize(text);
@@ -145,7 +146,6 @@ public class NamedEntityRecognizerTest {
 
         Assertions.assertTrue(answerList.containsAll(Arrays.asList(result.getEntities().clone())));
     }
-
 
 
 }

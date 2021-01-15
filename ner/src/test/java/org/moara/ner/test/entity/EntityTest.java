@@ -2,8 +2,8 @@ package org.moara.ner.test.entity;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.moara.ner.NamedEntity;
-import org.moara.ner.NamedEntityImpl;
+import org.moara.ner.entity.NamedEntity;
+import org.moara.ner.entity.NamedEntityImpl;
 
 public class EntityTest {
 

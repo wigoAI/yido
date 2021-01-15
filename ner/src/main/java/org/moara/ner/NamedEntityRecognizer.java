@@ -15,6 +15,8 @@
  */
 package org.moara.ner;
 
+import org.moara.ner.entity.RecognizeResult;
+
 /**
  * 개체명 인식기 추상체
  *
