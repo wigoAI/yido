@@ -2,17 +2,18 @@ package org.moara.ner.test.entity;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.moara.ner.person.PersonEntity;
+import org.moara.ner.NamedEntity;
+import org.moara.ner.NamedEntityImpl;
 
 public class EntityTest {
 
     @Test
     public void testEquals() {
-        PersonEntity reporterEntity = new PersonEntity("김경민","REPORTER" , 4, 7);
-        PersonEntity equalsEntity = new PersonEntity("김경민","REPORTER", 4, 7);
-        PersonEntity notEqualsEntity1 = new PersonEntity("김민경","REPORTER", 4, 7);
-        PersonEntity notEqualsEntity2 = new PersonEntity("김경민","REPORTER", 5, 7);
-        PersonEntity notEqualsEntity3 = new PersonEntity("김경민","REPORTER", 4, 8);
+        NamedEntity reporterEntity = new NamedEntityImpl("김경민","PS_REPORTER" , 4, 7);
+        NamedEntity equalsEntity = new NamedEntityImpl("김경민","PS_REPORTER", 4, 7);
+        NamedEntity notEqualsEntity1 = new NamedEntityImpl("김민경","PS_REPORTER", 4, 7);
+        NamedEntity notEqualsEntity2 = new NamedEntityImpl("김경민","PS_REPORTER", 5, 7);
+        NamedEntity notEqualsEntity3 = new NamedEntityImpl("김경민","PS_REPORTER", 4, 8);
 
 
         Assertions.assertTrue(reporterEntity.equals(reporterEntity));
@@ -25,11 +26,11 @@ public class EntityTest {
 
     @Test
     public void testHashcode() {
-        PersonEntity reporterEntity = new PersonEntity("김경민","REPORTER", 4, 7);
-        PersonEntity equalsEntity = new PersonEntity("김경민","REPORTER", 4, 7);
-        PersonEntity notEqualsEntity1 = new PersonEntity("김민경","REPORTER", 4, 7);
-        PersonEntity notEqualsEntity2 = new PersonEntity("김경민","REPORTER", 5, 7);
-        PersonEntity notEqualsEntity3 = new PersonEntity("김경민","REPORTER", 4, 8);
+        NamedEntity reporterEntity = new NamedEntityImpl("김경민","PS_REPORTER", 4, 7);
+        NamedEntity equalsEntity = new NamedEntityImpl("김경민","PS_REPORTER", 4, 7);
+        NamedEntity notEqualsEntity1 = new NamedEntityImpl("김민경","PS_REPORTER", 4, 7);
+        NamedEntity notEqualsEntity2 = new NamedEntityImpl("김경민","PS_REPORTER", 5, 7);
+        NamedEntity notEqualsEntity3 = new NamedEntityImpl("김경민","PS_REPORTER", 4, 8);
 
         Assertions.assertEquals(reporterEntity.hashCode(), reporterEntity.hashCode());
         Assertions.assertEquals(reporterEntity.hashCode(), equalsEntity.hashCode());
