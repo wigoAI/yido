@@ -1,4 +1,4 @@
-package org.moara.ner.manager;
+package org.moara.ner.test.manager;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

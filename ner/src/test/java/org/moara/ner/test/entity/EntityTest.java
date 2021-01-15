@@ -1,4 +1,4 @@
-package org.moara.ner.entity;
+package org.moara.ner.test.entity;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

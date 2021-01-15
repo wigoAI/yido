@@ -1,6 +1,7 @@
-package org.moara.ner.person;
+package org.moara.ner;
 
 import org.moara.ner.NamedEntity;
+import org.moara.ner.PersonNamedEntityRecognizer;
 import org.moara.splitter.utils.Area;
 
 import java.util.HashSet;
@@ -8,7 +9,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PersonTokenRecognizer extends PersonNamedEntityRecognizer {
+public class TokenRecognizer extends PersonNamedEntityRecognizer {
 
 
     /**
@@ -17,8 +18,8 @@ public class PersonTokenRecognizer extends PersonNamedEntityRecognizer {
      * @param targetWord     객체를 가리키는 단어 (e.g: 직업 -> 기자, 리포터, 앵커) 해당 단어를 기준으로 사람 이름을 인식한다.
      * @param exceptionWords 인식된 개체명 중 예외 개체명
      */
-    public PersonTokenRecognizer(String[] targetWord, String[] exceptionWords) {
-        super(targetWord, exceptionWords, new String[]{"·", "?", "/"}, "TOKEN", new Area(4, 99));
+    public TokenRecognizer(String[] targetWord, String[] exceptionWords, String entityType) {
+        super(targetWord, exceptionWords, new String[]{"·", "?", "/"}, entityType, new Area(4, 99));
     }
 
     @Override
@@ -46,8 +47,8 @@ public class PersonTokenRecognizer extends PersonNamedEntityRecognizer {
                 }
 
                 if (matcher.group().length() > targetWord.length()) {
-                    PersonEntity personToken = new PersonEntity(matcher.group(), "TOKEN", matcher.start(), matcher.end());
-                    personTokens.add(personToken);
+                    NamedEntityImpl token = new NamedEntityImpl(matcher.group(), "TOKEN", matcher.start(), matcher.end());
+                    personTokens.add(token);
                 }
             }
         }

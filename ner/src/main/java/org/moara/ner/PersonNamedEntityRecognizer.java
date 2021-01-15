@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moara.ner.person;
+package org.moara.ner;
 
 import org.moara.ner.NamedEntity;
 import org.moara.ner.NamedEntityRecognizer;
@@ -130,7 +130,7 @@ class PersonNamedEntityRecognizer implements NamedEntityRecognizer {
             for (String name : names) {
                 int entityEnd = entityBegin + name.length();
 
-                PersonEntity personEntity = new PersonEntity(name, entityType, entityBegin - 1, entityEnd - 1);
+                NamedEntityImpl personEntity = new NamedEntityImpl(name, entityType, entityBegin - 1, entityEnd - 1);
                 entityBegin = entityEnd + 1;
 
                 if (name.length() < minEntityLength || name.length() > maxEntityLength) {

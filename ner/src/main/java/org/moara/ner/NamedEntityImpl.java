@@ -15,8 +15,6 @@
  */
 package org.moara.ner;
 
-import org.moara.ner.person.PersonEntity;
-
 /**
  * 개체명 구현체
  *
@@ -49,13 +47,13 @@ public class NamedEntityImpl implements NamedEntity {
             return true;
         }
 
-        if (!(o instanceof PersonEntity)) {
+        if (!(o instanceof NamedEntityImpl)) {
             return false;
         }
 
-        PersonEntity personEntity = (PersonEntity) o;
-        return this.text.equals((personEntity.getText())) && this.getType().equals(personEntity.getType())
-                && this.getBegin() == personEntity.getBegin() && this.getEnd() == personEntity.getEnd();
+        NamedEntityImpl namedEntity = (NamedEntityImpl) o;
+        return this.text.equals((namedEntity.getText())) && this.getType().equals(namedEntity.getType())
+                && this.getBegin() == namedEntity.getBegin() && this.getEnd() == namedEntity.getEnd();
 
     }
 

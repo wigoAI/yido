@@ -1,4 +1,4 @@
-package org.moara.ner.recognizer;
+package org.moara.ner.test.recognizer;
 
 
 import org.junit.jupiter.api.Assertions;
@@ -7,7 +7,6 @@ import org.moara.ner.NamedEntity;
 import org.moara.ner.NamedEntityRecognizer;
 import org.moara.ner.NamedEntityRecognizerManager;
 import org.moara.ner.person.PersonEntity;
-import org.moara.ner.person.PersonNamedEntityRecognizerFactory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,6 +19,11 @@ public class NamedEntityRecognizerTest {
         NamedEntityRecognizer namedEntityRecognizer = NamedEntityRecognizerManager.getInstance().getNamedEntityRecognizer("reporter");
 
         NamedEntity[] namedEntities = namedEntityRecognizer.recognize(text);
+
+        for (NamedEntity namedEntity : namedEntities) {
+            System.out.println(namedEntity);
+        }
+
         List<PersonEntity> answerList = Arrays.asList(new PersonEntity("박종우", "REPORTER", 8, 11), new PersonEntity("김경목", "REPORTER", 139, 142));
         Assertions.assertEquals(answerList.size(), namedEntities.length);
 
