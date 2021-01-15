@@ -16,7 +16,7 @@ public class TokenRecognizer extends PersonNamedEntityRecognizer {
      * @param targetWord     개체를 가리키는 단어
      * @param exceptionWords 인식된 개체명 중 예외 개체명
      */
-    public TokenRecognizer(String[] targetWord, String[] exceptionWords, String entityType, Area entityLength) {
+    TokenRecognizer(String[] targetWord, String[] exceptionWords, String entityType, Area entityLength) {
         super(targetWord, exceptionWords, new String[]{"·", "?", "/"}, entityType, entityLength);
     }
 

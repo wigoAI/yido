@@ -25,8 +25,8 @@ public interface NamedEntityRecognizer {
     /**
      * {@code text}에 존재하는 개체명 추출
      * @param text 개체명을 추출 할 텍스트
-     * @return 개체명 배열
+     * @return 개체 인식 결과
      */
-    NamedEntity[] recognize(String text);
+    RecognizeResult recognize(String text);
 
 }

@@ -3,10 +3,7 @@ package org.moara.ner.test.recognizer;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.moara.ner.NamedEntity;
-import org.moara.ner.NamedEntityImpl;
-import org.moara.ner.NamedEntityRecognizer;
-import org.moara.ner.NamedEntityRecognizerManager;
+import org.moara.ner.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,16 +15,16 @@ public class NamedEntityRecognizerTest {
 
         NamedEntityRecognizer namedEntityRecognizer = NamedEntityRecognizerManager.getInstance().getNamedEntityRecognizer("ps_reporter");
 
-        NamedEntity[] namedEntities = namedEntityRecognizer.recognize(text);
+        RecognizeResult result = namedEntityRecognizer.recognize(text);
 
-        for (NamedEntity namedEntity : namedEntities) {
+        for (NamedEntity namedEntity : result.getEntities()) {
             System.out.println(namedEntity);
         }
 
         List<NamedEntity> answerList = Arrays.asList(new NamedEntityImpl("박종우", "PS_REPORTER", 8, 11), new NamedEntityImpl("김경목", "PS_REPORTER", 139, 142));
-        Assertions.assertEquals(answerList.size(), namedEntities.length);
+        Assertions.assertEquals(answerList.size(), result.size());
 
-        Assertions.assertTrue(answerList.containsAll(Arrays.asList(namedEntities.clone())));
+        Assertions.assertTrue(answerList.containsAll(Arrays.asList(result.getEntities().clone())));
 
     }
 
@@ -41,12 +38,12 @@ public class NamedEntityRecognizerTest {
                 new NamedEntityImpl("안원준", "PS_REPORTER", 56, 59),
                 new NamedEntityImpl("장영태", "PS_REPORTER", 60, 63),
                 new NamedEntityImpl("김동욱", "PS_REPORTER", 64, 67));
-        NamedEntity[] namedEntities = namedEntityRecognizer.recognize(text);
+        RecognizeResult result = namedEntityRecognizer.recognize(text);
 
-        Assertions.assertEquals(answerList.size(), namedEntities.length);
+        Assertions.assertEquals(answerList.size(), result.size());
 
 
-        Assertions.assertTrue(answerList.containsAll(Arrays.asList(namedEntities.clone())));
+        Assertions.assertTrue(answerList.containsAll(Arrays.asList(result.getEntities().clone())));
 
 
 
@@ -58,11 +55,11 @@ public class NamedEntityRecognizerTest {
                 new NamedEntityImpl("최은경", "PS_REPORTER", 101, 104),
                 new NamedEntityImpl("심석용", "PS_REPORTER", 105, 108));
 
-        namedEntities = namedEntityRecognizer.recognize(text);
+        result = namedEntityRecognizer.recognize(text);
 
-        Assertions.assertEquals(answerList.size(), namedEntities.length);
+        Assertions.assertEquals(answerList.size(), result.size());
 
-        Assertions.assertTrue(answerList.containsAll(Arrays.asList(namedEntities.clone())));
+        Assertions.assertTrue(answerList.containsAll(Arrays.asList(result.getEntities().clone())));
 
 
 
@@ -73,11 +70,11 @@ public class NamedEntityRecognizerTest {
                 new NamedEntityImpl("박사라", "PS_REPORTER", 51, 54),
                 new NamedEntityImpl("박태인", "PS_REPORTER", 55, 58));
 
-        namedEntities = namedEntityRecognizer.recognize(text);
+        result = namedEntityRecognizer.recognize(text);
 
-        Assertions.assertEquals(answerList.size(), namedEntities.length);
+        Assertions.assertEquals(answerList.size(), result.size());
 
-        Assertions.assertTrue(answerList.containsAll(Arrays.asList(namedEntities.clone())));
+        Assertions.assertTrue(answerList.containsAll(Arrays.asList(result.getEntities().clone())));
 
 
     }
@@ -89,11 +86,11 @@ public class NamedEntityRecognizerTest {
 
 
         NamedEntity answer = new NamedEntityImpl("이태규", "PS_REPORTER", 36, 39);
-        NamedEntity[] namedEntities = namedEntityRecognizer.recognize(text);
+        RecognizeResult result = namedEntityRecognizer.recognize(text);
 
-        Assertions.assertEquals(1, namedEntities.length);
+        Assertions.assertEquals(1, result.size());
 
-        for (NamedEntity namedEntity : namedEntities) {
+        for (NamedEntity namedEntity : result.getEntities()) {
             Assertions.assertEquals(answer, namedEntity);
         }
 
@@ -106,12 +103,12 @@ public class NamedEntityRecognizerTest {
         NamedEntityRecognizer namedEntityRecognizer = NamedEntityRecognizerManager.getInstance().getNamedEntityRecognizer("ps_reporter");
 
         NamedEntity answer = new NamedEntityImpl("지환", "PS_REPORTER", 115, 117);
-        
-        NamedEntity[] namedEntities = namedEntityRecognizer.recognize(text);
 
-        Assertions.assertEquals(1, namedEntities.length);
+        RecognizeResult result = namedEntityRecognizer.recognize(text);
 
-        for (NamedEntity namedEntity : namedEntities) {
+        Assertions.assertEquals(1, result.size());
+
+        for (NamedEntity namedEntity : result.getEntities()) {
             Assertions.assertEquals(answer, namedEntity);
         }
 
@@ -127,11 +124,11 @@ public class NamedEntityRecognizerTest {
         List<NamedEntity> answerList = Arrays.asList(new NamedEntityImpl("강지원", "PS_REPORTER", 0,3),
                 new NamedEntityImpl("강지원", "PS_REPORTER", 19, 22));
 
-        NamedEntity[] namedEntities = namedEntityRecognizer.recognize(text);
+        RecognizeResult result = namedEntityRecognizer.recognize(text);
 
-        Assertions.assertEquals(answerList.size(), namedEntities.length);
+        Assertions.assertEquals(answerList.size(), result.size());
 
-        Assertions.assertTrue(answerList.containsAll(Arrays.asList(namedEntities.clone())));
+        Assertions.assertTrue(answerList.containsAll(Arrays.asList(result.getEntities().clone())));
     }
 
     @Test
@@ -142,11 +139,11 @@ public class NamedEntityRecognizerTest {
 
         List<NamedEntity> answerList = Arrays.asList(new NamedEntityImpl("김유진", "PS_REPORTER", 68, 71));
 
-        NamedEntity[] namedEntities = namedEntityRecognizer.recognize(text);
+        RecognizeResult result = namedEntityRecognizer.recognize(text);
 
-        Assertions.assertEquals(answerList.size(), namedEntities.length);
+        Assertions.assertEquals(answerList.size(), result.size());
 
-        Assertions.assertTrue(answerList.containsAll(Arrays.asList(namedEntities.clone())));
+        Assertions.assertTrue(answerList.containsAll(Arrays.asList(result.getEntities().clone())));
     }
 
 

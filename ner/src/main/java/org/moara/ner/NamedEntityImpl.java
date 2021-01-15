@@ -87,8 +87,12 @@ public class NamedEntityImpl implements NamedEntity {
                 '}';
     }
 
+
+
     @Override
     public int hashCode() {
         return toString().hashCode();
     }
+
+
 }

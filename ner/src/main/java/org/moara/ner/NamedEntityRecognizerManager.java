@@ -18,6 +18,7 @@ package org.moara.ner;
 import com.google.gson.JsonObject;
 import com.seomse.commons.config.Config;
 
+import com.seomse.commons.data.BeginEnd;
 import org.moara.filemanager.FileManager;
 import org.moara.ner.exception.RecognizerNotFoundException;
 import org.moara.splitter.utils.Area;
@@ -37,11 +38,13 @@ public class NamedEntityRecognizerManager {
 
     // key = id, value = NamedEntityRecognizer instance
     private final  Map<String, NamedEntityRecognizer> namedEntityRecognizerMap = new HashMap<>();
-    private final static String defaultRecognizerIdStr = Config.getConfig("yido.ner.default.id", "ps_reporter,tm_email,token");
+    private final static String defaultRecognizerIdStr = Config.getConfig("yido.ner.default.id", "ps_reporter,tmi_email,token");
     private final static String TARGET_WORDS_PATH = "ner/target/";
     private final static String EXCEPTION_WORDS_PATH = "ner/exception/";
     private final static String RECOGNIZER_OPTION_PATH = "ner/recognizer/";
+
     private final String[] defaultRecognizerIds;
+    private static String sortBy = Config.getConfig("yido.ner.default.sort", "index");
 
     private NamedEntityRecognizerManager() {
         this.defaultRecognizerIds = Arrays.stream(defaultRecognizerIdStr.split(","))
@@ -93,7 +96,7 @@ public class NamedEntityRecognizerManager {
      * @param text 개체명 인식을 수행 할 문자열
      * @return 인식된 개체명
      */
-    public NamedEntity[] recognize(String text) {
+    public RecognizeResult[] recognize(String text) {
         return recognize(text, defaultRecognizerIds);
     }
 
@@ -103,21 +106,21 @@ public class NamedEntityRecognizerManager {
      * @param recognizerIds 개체명 인식을 수행할 개체명 인식기
      * @return 인식된 개체명
      */
-    public NamedEntity[] recognize(String text, String[] recognizerIds) {
+    public RecognizeResult[] recognize(String text, String[] recognizerIds) {
         NamedEntityRecognizer[] namedEntityRecognizers = new NamedEntityRecognizer[recognizerIds.length];
 
         for (int i = 0; i < recognizerIds.length; i++) {
             namedEntityRecognizers[i] = getNamedEntityRecognizer(recognizerIds[i]);
         }
 
-        NamedEntity[][] entities = new NamedEntity[namedEntityRecognizers.length][];
+        RecognizeResult[] results = new RecognizeResultImpl[namedEntityRecognizers.length];
 
         int recognizerIndex = 0;
         for (NamedEntityRecognizer namedEntityRecognizer : namedEntityRecognizers) {
-            entities[recognizerIndex++] = namedEntityRecognizer.recognize(text);
+            results[recognizerIndex++] = namedEntityRecognizer.recognize(text);
         }
 
-        return Arrays.stream(entities).flatMap(Arrays::stream).toArray(NamedEntity[]::new);
+        return results;
     }
 
     private void createRecognizer(String id) {
@@ -127,7 +130,7 @@ public class NamedEntityRecognizerManager {
             namedEntityRecognizer = createNamedEntityRecognizer(id);
         } else if (id.startsWith("token")) {
             namedEntityRecognizer = getTokenRecognizer(id);
-        } else if (id.startsWith("tm_")) {
+        } else if (id.startsWith("tmi_")) {
             namedEntityRecognizer = getRegxRecognizer(id);
         } else {
             throw new RecognizerNotFoundException(id);
@@ -164,7 +167,7 @@ public class NamedEntityRecognizerManager {
                 }
             }
 
-            return emailEntities.toArray(new NamedEntity[0]);
+            return new RecognizeResultImpl(emailEntities.toArray(new NamedEntity[0]));
         };
 
     }
