@@ -17,7 +17,7 @@ package org.moara.splitter.manager;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import org.moara.filemanager.FileManager;
+import org.moara.splitter.utils.FileReader;
 
 import java.util.regex.Pattern;
 
@@ -27,8 +27,8 @@ import java.util.regex.Pattern;
  */
 public class ExceptionRuleManager {
     protected static final String rulePath = "splitter/exception/";
-    private static final String differentSideBracketRuleName = "bracket_exception.json";
-    private static final String sameSideBracketRuleName = "same_bracket_exception.json";
+    private static final String DIFFERENT_SIDE_BRACKET_RULE_NAME = "bracket_exception";
+    private static final String SAME_SIDE_BRACKET_RULE_NAME = "same_bracket_exception";
 
     /**
      * 괄호의 좌우 방향이 다른 괄호에 대한 패턴 찾기
@@ -36,7 +36,7 @@ public class ExceptionRuleManager {
      * @return Pattern
      */
     public static Pattern getDifferentSideBracketPattern() {
-        JsonObject metaJson = FileManager.getJsonObjectByFile(rulePath + differentSideBracketRuleName);
+        JsonObject metaJson = FileReader.getJsonObjectByFile(rulePath + DIFFERENT_SIDE_BRACKET_RULE_NAME);
         JsonArray dataArray = metaJson.get("value").getAsJsonArray();
 
         StringBuilder left = new StringBuilder("[]+");
@@ -66,7 +66,7 @@ public class ExceptionRuleManager {
      * @return Pattern
      */
     public static Pattern getSameSideBracketPattern() {
-        JsonObject metaJson = FileManager.getJsonObjectByFile(rulePath + sameSideBracketRuleName);
+        JsonObject metaJson = FileReader.getJsonObjectByFile(rulePath + SAME_SIDE_BRACKET_RULE_NAME);
         JsonArray dataArray = metaJson.get("value").getAsJsonArray();
 
         StringBuilder left = new StringBuilder("[]+");

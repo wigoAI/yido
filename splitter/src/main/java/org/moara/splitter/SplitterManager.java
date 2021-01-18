@@ -21,16 +21,15 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.seomse.commons.config.Config;
-import org.moara.filemanager.FileManager;
 import org.moara.splitter.exception.SplitterNotFoundException;
 import org.moara.splitter.processor.BracketAreaProcessor;
 import org.moara.splitter.processor.ConditionTerminatorProcessor;
 import org.moara.splitter.processor.ExceptionAreaProcessor;
 import org.moara.splitter.processor.TerminatorProcessor;
+import org.moara.splitter.utils.FileReader;
 import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.manager.SplitConditionManager;
 
-import java.io.FileNotFoundException;
 import java.util.*;
 
 /**
@@ -143,7 +142,7 @@ public class SplitterManager {
     private JsonObject getSplitterJson(String id) {
         JsonObject splitterJson;
         try {
-            splitterJson = FileManager.getJsonObjectByFile("splitter/splitter/" + id + ".json");
+            splitterJson = FileReader.getJsonObjectByFile("splitter/splitter/" + id);
         } catch (RuntimeException e) {
             System.out.println("splitter not found exception");
             throw new SplitterNotFoundException(id);

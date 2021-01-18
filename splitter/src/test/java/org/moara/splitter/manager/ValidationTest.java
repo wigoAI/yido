@@ -4,8 +4,8 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.moara.filemanager.FileManager;
 import org.moara.splitter.TestFileInitializer;
+import org.moara.splitter.utils.FileReader;
 import org.moara.splitter.utils.Validation;
 
 import java.util.Collection;
@@ -44,7 +44,7 @@ public class ValidationTest {
 
 
         int validationIndex = 0;
-        for (String data : FileManager.readFile("/string_group/test_connective.dic")) {
+        for (String data : FileReader.readDictionary("/string_group/test_connective")) {
             Validation validation = validations.get(validationIndex++);
             Assert.assertEquals(data, validation.getValue());
             Assert.assertFalse(validation.getMatchFlag());

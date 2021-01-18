@@ -15,7 +15,7 @@
  */
 package org.moara.splitter.manager;
 
-import org.moara.filemanager.FileManager;
+import org.moara.splitter.utils.FileReader;
 import org.moara.splitter.utils.RuleProperty;
 import org.moara.splitter.utils.Validation;
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public class ValidationManager {
 
         List<Validation> validations = new ArrayList<>();
         if (dicName.startsWith("SG_", 2)) {
-            for (String ruleData : FileManager.readFile(stringGroupPath + dicName.substring(5) + ".dic")) {
+            for (String ruleData : FileReader.readDictionary(stringGroupPath + dicName.substring(5))) {
                 if (ruleData.contains("\\s")) {
                     ruleData = ruleData.replace("\\s", " ");
                 }

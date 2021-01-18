@@ -15,15 +15,18 @@
  */
 package org.moara.ner;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.seomse.commons.config.Config;
 
-import org.moara.filemanager.FileManager;
 import org.moara.ner.entity.NamedEntity;
 import org.moara.ner.entity.NamedEntityImpl;
 import org.moara.ner.exception.RecognizerNotFoundException;
 import org.moara.splitter.utils.Area;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,6 +43,7 @@ public class NamedEntityRecognizerManager {
     // key = id, value = NamedEntityRecognizer instance
     private final  Map<String, NamedEntityRecognizer> namedEntityRecognizerMap = new HashMap<>();
     private final static String defaultRecognizerIdStr = Config.getConfig("yido.ner.default.id", "ps_reporter,tmi_email,token");
+    private final static String ABSTRACT_PATH = Config.getConfig("yido.ner.data.path", "data") + "/";
     private final static String TARGET_WORDS_PATH = "ner/target/";
     private final static String EXCEPTION_WORDS_PATH = "ner/exception/";
     private final static String RECOGNIZER_OPTION_PATH = "ner/recognizer/";
@@ -141,14 +145,14 @@ public class NamedEntityRecognizerManager {
 
     private NamedEntityRecognizer getRegxRecognizer(String id) {
 
-        JsonObject recognizerOption = FileManager.getJsonObjectByFile(RECOGNIZER_OPTION_PATH + id + ".json");
+        JsonObject recognizerOption = getJsonObjectByFile(RECOGNIZER_OPTION_PATH + id);
 
         String targetWordsDicName = recognizerOption.get("target").getAsString();
         String exceptionWordsDicName = recognizerOption.get("exception").getAsString();
         String entityType = recognizerOption.get("id").getAsString();
         Area entityLength = getEntityLength(recognizerOption);
 
-        String[] regxArray = FileManager.readFile(TARGET_WORDS_PATH + targetWordsDicName + ".dic").toArray(new String[0]);
+        String[] regxArray = readDictionary(TARGET_WORDS_PATH + targetWordsDicName).toArray(new String[0]);
         Pattern[] patternArray = new Pattern[regxArray.length];
         for (int i = 0; i < regxArray.length; i++) {
              patternArray[i] = Pattern.compile(regxArray[i]);
@@ -176,9 +180,9 @@ public class NamedEntityRecognizerManager {
         String[] exceptionWords;
         String[] targetWords;
         NamedEntityRecognizer namedEntityRecognizer;
-        targetWords = FileManager.readFile(TARGET_WORDS_PATH + id + ".dic").stream()
+        targetWords = readDictionary(TARGET_WORDS_PATH + id).stream()
                 .map(line -> line.replaceAll("[\\[\\]]", "")).toArray(String[]::new);
-        exceptionWords = FileManager.readFile(EXCEPTION_WORDS_PATH + id + ".dic").toArray(new String[]{});
+        exceptionWords = readDictionary(EXCEPTION_WORDS_PATH + id).toArray(new String[]{});
         namedEntityRecognizer = new TokenRecognizer(targetWords, exceptionWords, "TOKEN", new Area(4, 99));
         return namedEntityRecognizer;
     }
@@ -187,16 +191,16 @@ public class NamedEntityRecognizerManager {
         String[] exceptionWords;
         String[] targetWords;
         NamedEntityRecognizer namedEntityRecognizer;
-        JsonObject recognizerOption = FileManager.getJsonObjectByFile(RECOGNIZER_OPTION_PATH + id + ".json");
+        JsonObject recognizerOption = getJsonObjectByFile(RECOGNIZER_OPTION_PATH + id);
 
         String targetWordsDicName = recognizerOption.get("target").getAsString();
         String exceptionWordsDicName = recognizerOption.get("exception").getAsString();
         String entityType = recognizerOption.get("id").getAsString();
         Area entityLength = getEntityLength(recognizerOption);
 
-        targetWords = FileManager.readFile(TARGET_WORDS_PATH + targetWordsDicName + ".dic").stream()
+        targetWords = readDictionary(TARGET_WORDS_PATH + targetWordsDicName).stream()
                 .map(line -> line.replaceAll("[\\[\\]]", "")).toArray(String[]::new);
-        exceptionWords = FileManager.readFile(EXCEPTION_WORDS_PATH + exceptionWordsDicName + ".dic").toArray(new String[]{});
+        exceptionWords = readDictionary(EXCEPTION_WORDS_PATH + exceptionWordsDicName).toArray(new String[]{});
         namedEntityRecognizer = new PersonNamedEntityRecognizer(targetWords, exceptionWords, new String[]{"·", "?", "/"}, entityType, entityLength);
         return namedEntityRecognizer;
     }
@@ -209,6 +213,40 @@ public class NamedEntityRecognizerManager {
         return new Area(min, max);
     }
 
+    private JsonObject getJsonObjectByFile(String fileName) {
+        JsonElement element;
+
+        try {
+            element = JsonParser.parseReader(new FileReader(ABSTRACT_PATH + fileName + ".json"));
+        } catch (FileNotFoundException e) {
+            System.out.println("file not found");
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+
+        return element.getAsJsonObject();
+    }
+
+    public Collection<String> readDictionary(String fileName){
+        Collection<String> file = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(
+                new InputStreamReader(new FileInputStream(ABSTRACT_PATH + fileName + ".dic"), StandardCharsets.UTF_8))) {
+
+            while (true) {
+                String line = br.readLine();
+                if (line == null) {
+                    break;
+                }
+                file.add(line);
+            }
+
+        }catch (IOException e) {
+            e.printStackTrace();
+
+        }
 
 
+        return file;
+    }
 }

@@ -3,7 +3,6 @@ include 'splitter'
 include 'tokenizer'
 include 'text-mining'
 include 'ner'
-include 'file-manager'
 
 include ':classification'
 project(':classification').projectDir = new File(settingsDir,'../evaluation/classification')

@@ -18,7 +18,7 @@ package org.moara.splitter.manager;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
-import org.moara.filemanager.FileManager;
+import org.moara.splitter.utils.FileReader;
 import org.moara.splitter.utils.RuleProperty;
 import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.utils.Validation;
@@ -66,13 +66,13 @@ public class SplitConditionManager {
 
     private static List<SplitCondition> getSplitConditionsByRule(String splitConditionRuleName) {
         List<SplitCondition> splitConditions = new ArrayList<>();
-        JsonObject conditionRuleJson = FileManager.getJsonObjectByFile(conditionPath + splitConditionRuleName + ".json");
+        JsonObject conditionRuleJson = FileReader.getJsonObjectByFile(conditionPath + splitConditionRuleName);
 
         checkConditionJsonValidation(conditionRuleJson);
         List<Validation> validations = getValidations(conditionRuleJson);
 
         String conditionValueName = conditionRuleJson.get("value").getAsString();
-        Collection<String> conditionValues = FileManager.readFile("splitter/string_group/" + conditionValueName + ".dic");
+        Collection<String> conditionValues = FileReader.readDictionary("splitter/string_group/" + conditionValueName);
 
         for (String conditionValue : conditionValues) {
 

@@ -2,8 +2,8 @@ package org.moara.splitter.manager;
 
 import com.google.gson.JsonIOException;
 import org.junit.*;
-import org.moara.filemanager.FileManager;
 import org.moara.splitter.TestFileInitializer;
+import org.moara.splitter.utils.FileReader;
 import org.moara.splitter.utils.SplitCondition;
 import org.moara.splitter.utils.Validation;
 
@@ -73,7 +73,7 @@ public class SplitConditionTest {
 
 
         int splitConditionIndex = 0;
-        for (String data : FileManager.readFile("/string_group/test_terminator.dic")) {
+        for (String data : FileReader.readDictionary("/string_group/test_terminator")) {
             SplitCondition splitCondition = splitConditions.get(splitConditionIndex++);
             Assert.assertEquals(data, splitCondition.getValue());
             Assert.assertFalse(splitCondition.getUsePublicValidation());
@@ -87,7 +87,7 @@ public class SplitConditionTest {
 
 
             int validationIndex = 0;
-            for (String validationData : FileManager.readFile("/string_group/test_connective.dic")) {
+            for (String validationData : FileReader.readDictionary("/string_group/test_connective")) {
                 Validation validation = validations.get(validationIndex++);
                 Assert.assertEquals(validationData, validation.getValue());
                 Assert.assertFalse(validation.getMatchFlag());

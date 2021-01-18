@@ -20,7 +20,6 @@ repositories {
 }
 
 dependencies {
-    implementation project(path: ':file-manager')
     implementation project(path: ':splitter')
 
     implementation 'com.seomse.commons:seomse-commons:1.2.3'

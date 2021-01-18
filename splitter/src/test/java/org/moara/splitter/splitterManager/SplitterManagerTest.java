@@ -1,19 +1,15 @@
 package org.moara.splitter.splitterManager;
 
 import com.seomse.commons.data.BeginEnd;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.moara.filemanager.FileManager;
 import org.moara.splitter.Splitter;
 import org.moara.splitter.SplitterManager;
 import org.moara.splitter.TestFileInitializer;
 import org.moara.splitter.exception.SplitterNotFoundException;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 
 public class SplitterManagerTest {
@@ -110,6 +106,10 @@ public class SplitterManagerTest {
 
         BeginEnd[] beginEnds = splitter.split(data);
 
+        for (BeginEnd beginEnd : beginEnds) {
+            System.out.println(beginEnd);
+        }
+
         Assert.assertEquals(beginAnswers.length, beginEnds.length);
 
         int index = 0;
@@ -118,9 +118,10 @@ public class SplitterManagerTest {
             Assert.assertEquals(endAnswers[index++], beginEnd.getEnd());
         }
 
+        String testFileName = "splitter/string_group/test_reload_string_group.dic";
         String stringGroup = "다.";
 
-        FileManager.writeFile("splitter/string_group/test_reload_string_group.dic", Collections.singletonList(stringGroup));
+        TestFileInitializer.createTestFiles(testFileName, stringGroup);
 
         int[] beginAnswers2 = {0, 13, 24};
         int[] endAnswers2 = {12, 23, 48};
@@ -135,6 +136,8 @@ public class SplitterManagerTest {
             Assert.assertEquals(beginAnswers2[index], beginEnd.getBegin());
             Assert.assertEquals(endAnswers2[index++], beginEnd.getEnd());
         }
+
+        TestFileInitializer.deleteFile(testFileName);
 
     }
 

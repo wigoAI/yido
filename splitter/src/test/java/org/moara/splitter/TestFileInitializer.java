@@ -1,9 +1,13 @@
 package org.moara.splitter;
 
 
-import org.moara.filemanager.FileManager;
 
+import org.moara.splitter.utils.FileReader;
+
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Collections;
 
 public class TestFileInitializer {
@@ -206,32 +210,50 @@ public class TestFileInitializer {
     }
 
     public static void tearDown() {
-        FileManager.deleteFile("splitter/condition/test.json");
-        FileManager.deleteFile("splitter/condition/test_front_split_position.json");
-        FileManager.deleteFile("splitter/condition/test_public_validation.json");
-        FileManager.deleteFile("splitter/condition/test_invalid_properties.json");
-        FileManager.deleteFile("splitter/condition/test_invalid_public_option.json");
-        FileManager.deleteFile("splitter/condition/test_condition_with_validations.json");
-        FileManager.deleteFile("splitter/condition/test_regx.json");
-        FileManager.deleteFile("splitter/condition/test_no_condition.json");
-        FileManager.deleteFile("splitter/splitter/test.json");
-        FileManager.deleteFile("splitter/splitter/test_invalid1.json");
-        FileManager.deleteFile("splitter/splitter/test_invalid2.json");
-        FileManager.deleteFile("splitter/splitter/test_no_condition.json");
-        FileManager.deleteFile("splitter/splitter/test_rule_loop.json");
-        FileManager.deleteFile("splitter/splitter/test_regx.json");
-        FileManager.deleteFile("splitter/string_group/test_connective.dic");
-        FileManager.deleteFile("splitter/string_group/test_terminator.dic");
-        FileManager.deleteFile("splitter/string_group/test_back_validation.dic");
-        FileManager.deleteFile("splitter/string_group/test_front_validation.dic");
-        FileManager.deleteFile("splitter/string_group/regx_test.dic");
-        FileManager.deleteFile("splitter/exception/test.json");
-        FileManager.deleteFile("splitter/evaluation/test_answer.txt");
-        FileManager.deleteFile("splitter/splitter/test_reload_splitter.json");
-        FileManager.deleteFile("splitter/string_group/test_reload_string_group.dic");
-        FileManager.deleteFile("splitter/condition/test_reload_condition.json");
+        deleteFile("splitter/condition/test.json");
+        deleteFile("splitter/condition/test_front_split_position.json");
+        deleteFile("splitter/condition/test_public_validation.json");
+        deleteFile("splitter/condition/test_invalid_properties.json");
+        deleteFile("splitter/condition/test_invalid_public_option.json");
+        deleteFile("splitter/condition/test_condition_with_validations.json");
+        deleteFile("splitter/condition/test_regx.json");
+        deleteFile("splitter/condition/test_no_condition.json");
+        deleteFile("splitter/splitter/test.json");
+        deleteFile("splitter/splitter/test_invalid1.json");
+        deleteFile("splitter/splitter/test_invalid2.json");
+        deleteFile("splitter/splitter/test_no_condition.json");
+        deleteFile("splitter/splitter/test_rule_loop.json");
+        deleteFile("splitter/splitter/test_regx.json");
+        deleteFile("splitter/string_group/test_connective.dic");
+        deleteFile("splitter/string_group/test_terminator.dic");
+        deleteFile("splitter/string_group/test_back_validation.dic");
+        deleteFile("splitter/string_group/test_front_validation.dic");
+        deleteFile("splitter/string_group/regx_test.dic");
+        deleteFile("splitter/exception/test.json");
+        deleteFile("splitter/evaluation/test_answer.txt");
+        deleteFile("splitter/splitter/test_reload_splitter.json");
+        deleteFile("splitter/string_group/test_reload_string_group.dic");
+        deleteFile("splitter/condition/test_reload_condition.json");
     }
-    private static void createTestFiles(String fileName, String value) {
-        FileManager.writeFile(fileName, Collections.singletonList(value));
+
+
+    public static void createTestFiles(String fileName, String value) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FileReader.ABSTRACT_PATH + fileName))){
+            bw.write(value + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * File 삭제
+     * @param fileName 삭제 할 파일 이름
+     * @return 파일 삭제 성공 여부
+     */
+    public static void deleteFile(String fileName) {
+        File file = new File(FileReader.ABSTRACT_PATH + fileName);
+
+        file.delete();
+
     }
 }
