@@ -1,5 +1,5 @@
 {
-  "id": "TMI_EMAIL",
+  "id": "tmi_email",
   "entity_length": {
     "min": 3,
     "max": 99

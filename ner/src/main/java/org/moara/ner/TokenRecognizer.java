@@ -15,9 +15,8 @@
  */
 package org.moara.ner;
 
+import com.seomse.commons.data.BeginEnd;
 import org.moara.ner.entity.NamedEntity;
-import org.moara.ner.entity.NamedEntityImpl;
-import org.moara.splitter.utils.Area;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -37,7 +36,7 @@ public class TokenRecognizer extends PersonNamedEntityRecognizer {
      * @param targetWord     개체를 가리키는 단어
      * @param exceptionWords 인식된 개체명 중 예외 개체명
      */
-    TokenRecognizer(String[] targetWord, String[] exceptionWords, String entityType, Area entityLength) {
+    TokenRecognizer(String[] targetWord, String[] exceptionWords, String entityType, BeginEnd entityLength) {
         super(targetWord, exceptionWords, new String[]{"·", "?", "/"}, entityType, entityLength);
     }
 
@@ -66,7 +65,7 @@ public class TokenRecognizer extends PersonNamedEntityRecognizer {
                 }
 
                 if (matcher.group().length() > targetWord.length()) {
-                    NamedEntityImpl token = new NamedEntityImpl(text.substring(matcher.start(), matcher.end()), "TOKEN", matcher.start(), matcher.end());
+                    NamedEntity token = new NamedEntity(text.substring(matcher.start(), matcher.end()), "token", matcher.start(), matcher.end());
                     personTokens.add(token);
                 }
             }

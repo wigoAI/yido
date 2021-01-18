@@ -4,7 +4,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.moara.classification.binary.BinaryClassificationEvaluation;
+import org.moara.evaluation.classification.binary.BinaryClassificationEvaluation;
 import org.moara.splitter.TestFileInitializer;
 import org.moara.splitter.evaluator.SplitterEvaluator;
 
@@ -13,7 +13,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class SplitterEvaluatorTest {
-    String filePath = "./data/splitter/evaluation/test_answer.txt";
+    String filePath = "./dic/splitter/evaluation/test_answer.txt";
 
     String[] answerSheet = {"apple.", "orange.", "banana.", "melon."};
     String[] splitterSheetWrongCount3 = {"apple.", "orange.b", "anana.", "melo", "n."};

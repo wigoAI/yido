@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  * @author wjrmffldrhrl
  */
 public class ExceptionRuleManager {
-    protected static final String rulePath = "splitter/exception/";
+    protected static final String RULE_PATH = "exception/";
     private static final String DIFFERENT_SIDE_BRACKET_RULE_NAME = "bracket_exception";
     private static final String SAME_SIDE_BRACKET_RULE_NAME = "same_bracket_exception";
 
@@ -36,7 +36,7 @@ public class ExceptionRuleManager {
      * @return Pattern
      */
     public static Pattern getDifferentSideBracketPattern() {
-        JsonObject metaJson = FileReader.getJsonObjectByFile(rulePath + DIFFERENT_SIDE_BRACKET_RULE_NAME);
+        JsonObject metaJson = FileReader.getJsonObjectByFile(RULE_PATH + DIFFERENT_SIDE_BRACKET_RULE_NAME);
         JsonArray dataArray = metaJson.get("value").getAsJsonArray();
 
         StringBuilder left = new StringBuilder("[]+");
@@ -66,7 +66,7 @@ public class ExceptionRuleManager {
      * @return Pattern
      */
     public static Pattern getSameSideBracketPattern() {
-        JsonObject metaJson = FileReader.getJsonObjectByFile(rulePath + SAME_SIDE_BRACKET_RULE_NAME);
+        JsonObject metaJson = FileReader.getJsonObjectByFile(RULE_PATH + SAME_SIDE_BRACKET_RULE_NAME);
         JsonArray dataArray = metaJson.get("value").getAsJsonArray();
 
         StringBuilder left = new StringBuilder("[]+");

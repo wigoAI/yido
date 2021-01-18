@@ -17,8 +17,6 @@ package org.moara.ner;
 
 import com.seomse.commons.data.BeginEnd;
 import org.moara.ner.entity.NamedEntity;
-import org.moara.ner.entity.NamedEntityImpl;
-import org.moara.splitter.utils.Area;
 
 import java.util.*;
 
@@ -46,7 +44,7 @@ class PersonNamedEntityRecognizer implements NamedEntityRecognizer {
      * @param multipleSymbols 개체명이 여러개가 동시에 등장할 때 해당 개체명들을 나누는 구분 기호들
      *                        e.g.) 김승현/조승현/박승현 기자 -> {@code multipleSymbol = "/"}
      */
-    PersonNamedEntityRecognizer(String[] targetWords, String[] exceptionWords, String[] multipleSymbols, String entityType, Area entityLength) {
+    PersonNamedEntityRecognizer(String[] targetWords, String[] exceptionWords, String[] multipleSymbols, String entityType, BeginEnd entityLength) {
         this.targetWords = targetWords;
         this.exceptionWords = exceptionWords;
         this.multipleSymbols = multipleSymbols;
@@ -131,7 +129,7 @@ class PersonNamedEntityRecognizer implements NamedEntityRecognizer {
             for (String name : names) {
                 int entityEnd = entityBegin + name.length();
 
-                NamedEntityImpl personEntity = new NamedEntityImpl(name, entityType, entityBegin - 1, entityEnd - 1);
+                NamedEntity personEntity = new NamedEntity(name, entityType, entityBegin - 1, entityEnd - 1);
                 entityBegin = entityEnd + 1;
 
                 if (name.length() < minEntityLength || name.length() > maxEntityLength) {

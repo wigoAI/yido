@@ -20,10 +20,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.seomse.commons.config.Config;
 
+import com.seomse.commons.data.BeginEnd;
 import org.moara.ner.entity.NamedEntity;
-import org.moara.ner.entity.NamedEntityImpl;
 import org.moara.ner.exception.RecognizerNotFoundException;
-import org.moara.splitter.utils.Area;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -43,10 +42,10 @@ public class NamedEntityRecognizerManager {
     // key = id, value = NamedEntityRecognizer instance
     private final  Map<String, NamedEntityRecognizer> namedEntityRecognizerMap = new HashMap<>();
     private final static String defaultRecognizerIdStr = Config.getConfig("yido.ner.default.id", "ps_reporter,tmi_email,token");
-    private final static String ABSTRACT_PATH = Config.getConfig("yido.ner.data.path", "data") + "/";
-    private final static String TARGET_WORDS_PATH = "ner/target/";
-    private final static String EXCEPTION_WORDS_PATH = "ner/exception/";
-    private final static String RECOGNIZER_OPTION_PATH = "ner/recognizer/";
+    private final static String ABSTRACT_PATH = Config.getConfig("yido.ner.data.path", "dic/ner/");
+    private final static String TARGET_WORDS_PATH = "target/";
+    private final static String EXCEPTION_WORDS_PATH = "exception/";
+    private final static String RECOGNIZER_OPTION_PATH = "recognizer/";
 
     private final String[] defaultRecognizerIds;
 
@@ -150,7 +149,7 @@ public class NamedEntityRecognizerManager {
         String targetWordsDicName = recognizerOption.get("target").getAsString();
         String exceptionWordsDicName = recognizerOption.get("exception").getAsString();
         String entityType = recognizerOption.get("id").getAsString();
-        Area entityLength = getEntityLength(recognizerOption);
+        BeginEnd entityLength = getEntityLength(recognizerOption);
 
         String[] regxArray = readDictionary(TARGET_WORDS_PATH + targetWordsDicName).toArray(new String[0]);
         Pattern[] patternArray = new Pattern[regxArray.length];
@@ -167,7 +166,7 @@ public class NamedEntityRecognizerManager {
                             || matcher.group().length() > entityLength.getEnd()) {
                         continue;
                     }
-                    emailEntities.add(new NamedEntityImpl(matcher.group(), entityType, matcher.start(), matcher.end()));
+                    emailEntities.add(new NamedEntity(matcher.group(), entityType, matcher.start(), matcher.end()));
                 }
             }
 
@@ -180,10 +179,17 @@ public class NamedEntityRecognizerManager {
         String[] exceptionWords;
         String[] targetWords;
         NamedEntityRecognizer namedEntityRecognizer;
-        targetWords = readDictionary(TARGET_WORDS_PATH + id).stream()
+        JsonObject recognizerOption = getJsonObjectByFile(RECOGNIZER_OPTION_PATH + id);
+
+        String targetWordsDicName = recognizerOption.get("target").getAsString();
+        String exceptionWordsDicName = recognizerOption.get("exception").getAsString();
+        String entityType = recognizerOption.get("id").getAsString();
+        BeginEnd entityLengthLimit = getEntityLength(recognizerOption);
+
+        targetWords = readDictionary(TARGET_WORDS_PATH + targetWordsDicName).stream()
                 .map(line -> line.replaceAll("[\\[\\]]", "")).toArray(String[]::new);
-        exceptionWords = readDictionary(EXCEPTION_WORDS_PATH + id).toArray(new String[]{});
-        namedEntityRecognizer = new TokenRecognizer(targetWords, exceptionWords, "TOKEN", new Area(4, 99));
+        exceptionWords = readDictionary(EXCEPTION_WORDS_PATH + exceptionWordsDicName).toArray(new String[]{});
+        namedEntityRecognizer = new TokenRecognizer(targetWords, exceptionWords, entityType, entityLengthLimit);
         return namedEntityRecognizer;
     }
 
@@ -196,21 +202,31 @@ public class NamedEntityRecognizerManager {
         String targetWordsDicName = recognizerOption.get("target").getAsString();
         String exceptionWordsDicName = recognizerOption.get("exception").getAsString();
         String entityType = recognizerOption.get("id").getAsString();
-        Area entityLength = getEntityLength(recognizerOption);
+        BeginEnd entityLengthLimit = getEntityLength(recognizerOption);
 
         targetWords = readDictionary(TARGET_WORDS_PATH + targetWordsDicName).stream()
                 .map(line -> line.replaceAll("[\\[\\]]", "")).toArray(String[]::new);
         exceptionWords = readDictionary(EXCEPTION_WORDS_PATH + exceptionWordsDicName).toArray(new String[]{});
-        namedEntityRecognizer = new PersonNamedEntityRecognizer(targetWords, exceptionWords, new String[]{"·", "?", "/"}, entityType, entityLength);
+        namedEntityRecognizer = new PersonNamedEntityRecognizer(targetWords, exceptionWords, new String[]{"·", "?", "/"}, entityType, entityLengthLimit);
         return namedEntityRecognizer;
     }
 
-    private Area getEntityLength(JsonObject recognizerOption) {
+    private BeginEnd getEntityLength(JsonObject recognizerOption) {
         JsonObject entityLengthJson = recognizerOption.getAsJsonObject("entity_length");
         int min = entityLengthJson.get("min").getAsInt();
         int max = entityLengthJson.get("max").getAsInt();
 
-        return new Area(min, max);
+        return new BeginEnd(){
+            @Override
+            public int getBegin() {
+                return min;
+            }
+
+            @Override
+            public int getEnd() {
+                return max;
+            }
+        };
     }
 
     private JsonObject getJsonObjectByFile(String fileName) {

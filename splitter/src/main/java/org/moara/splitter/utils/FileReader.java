@@ -12,7 +12,7 @@ import java.util.Collection;
 
 public class FileReader {
 
-    public static final String ABSTRACT_PATH = Config.getConfig("yido.splitter.data.path", "data") + "/";
+    public static final String ABSTRACT_PATH = Config.getConfig("yido.splitter.data.path", "dic/splitter/");
 
     /**
      * json 파일로부터 json object 생성

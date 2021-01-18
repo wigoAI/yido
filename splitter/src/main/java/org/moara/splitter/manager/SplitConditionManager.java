@@ -32,7 +32,7 @@ import java.util.List;
  * @author wjrmffldrhrl
  */
 public class SplitConditionManager {
-    protected static final String conditionPath = "splitter/condition/";
+    protected static final String CONDITION_PATH = "condition/";
 
     /**
      * 문장 구분시에 사용할 구분 조건이 명시된 json 파일 이름을 넘겨받는다.
@@ -66,13 +66,13 @@ public class SplitConditionManager {
 
     private static List<SplitCondition> getSplitConditionsByRule(String splitConditionRuleName) {
         List<SplitCondition> splitConditions = new ArrayList<>();
-        JsonObject conditionRuleJson = FileReader.getJsonObjectByFile(conditionPath + splitConditionRuleName);
+        JsonObject conditionRuleJson = FileReader.getJsonObjectByFile(CONDITION_PATH + splitConditionRuleName);
 
         checkConditionJsonValidation(conditionRuleJson);
         List<Validation> validations = getValidations(conditionRuleJson);
 
         String conditionValueName = conditionRuleJson.get("value").getAsString();
-        Collection<String> conditionValues = FileReader.readDictionary("splitter/string_group/" + conditionValueName);
+        Collection<String> conditionValues = FileReader.readDictionary("string_group/" + conditionValueName);
 
         for (String conditionValue : conditionValues) {
 

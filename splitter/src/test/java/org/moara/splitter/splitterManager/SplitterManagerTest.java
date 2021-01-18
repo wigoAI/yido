@@ -118,7 +118,7 @@ public class SplitterManagerTest {
             Assert.assertEquals(endAnswers[index++], beginEnd.getEnd());
         }
 
-        String testFileName = "splitter/string_group/test_reload_string_group.dic";
+        String testFileName = "string_group/test_reload_string_group.dic";
         String stringGroup = "다.";
 
         TestFileInitializer.createTestFiles(testFileName, stringGroup);

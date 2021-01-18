@@ -1,7 +1,0 @@
-{
-  "id": "test_rule_loop",
-  "name": "test_rule_loop",
-  "minimum_split_length": 5,
-  "contain_split_condition": true,
-  "conditions": ["terminator", "sns_terminator", "test_regx"],
-  "exceptions": ["bracket_exception"]}

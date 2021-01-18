@@ -1,8 +1,8 @@
 package org.moara.ner.example;
 
-import org.moara.ner.entity.NamedEntity;
 import org.moara.ner.NamedEntityRecognizer;
 import org.moara.ner.NamedEntityRecognizerManager;
+import org.moara.ner.entity.NamedEntity;
 
 public class Example {
     public static void main(String[] args) {
@@ -21,9 +21,9 @@ public class Example {
             }
         }
         /*
-         * PersonEntity{text='지환', type='PS_REPORTER', begin=115, end=117}
+         * PersonEntity{text='지환', type='ps_reporter', begin=115, end=117}
          * PersonEntity{text='haji@ytn.co.kr', type='TM_EMAIL', begin=947, end=961}
-         * PersonEntity{text='지환 기자입니다', type='TOKEN', begin=115, end=123}
+         * PersonEntity{text='지환 기자입니다', type='token', begin=115, end=123}
          */
 
         // Named entity recognize with selected recognizers
@@ -51,7 +51,7 @@ public class Example {
         for (NamedEntity namedEntity : result) {
             System.out.println(namedEntity);
         }
-        // PersonEntity{text='지환', type='PS_REPORTER', begin=115, end=117}
+        // PersonEntity{text='지환', type='ps_reporter', begin=115, end=117}
 
 
 

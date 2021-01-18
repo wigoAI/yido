@@ -1,8 +1,0 @@
-{
-  "id": "test_invalid1",
-  "name": "test",
-  "minimum_spngth": 5,
-"contain_split_condition": true,
-  "conditions": ["test"],
-  "exceptions": ["test"]
-}

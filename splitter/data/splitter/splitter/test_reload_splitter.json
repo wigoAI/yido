@@ -1,8 +1,0 @@
-{
-  "id": "test_reload_splitter",
-  "name": "test_reload_splitter",
-  "minimum_split_length": 5,
-  "contain_split_condition": true,
-  "conditions": ["test_reload_condition"],
-  "exceptions": ["bracket_exception"]
-}

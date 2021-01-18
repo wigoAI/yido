@@ -16,7 +16,8 @@
 package org.moara.splitter.evaluator;
 
 
-import org.moara.classification.binary.BinaryClassificationEvaluation;
+import org.moara.evaluation.classification.binary.BinaryClassificationEvaluation;
+import org.moara.splitter.utils.FileReader;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -139,7 +140,7 @@ public class SplitterEvaluator {
     private List<String> getSheetByFile(String fileName) {
         List<String> sheet = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(
-                new InputStreamReader(new FileInputStream("./data/splitter/" + fileName + ".txt"), StandardCharsets.UTF_8))) {
+                new InputStreamReader(new FileInputStream(FileReader.ABSTRACT_PATH + fileName + ".txt"), StandardCharsets.UTF_8))) {
 
             while (true) {
                 String line = br.readLine();
