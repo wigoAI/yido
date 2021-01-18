@@ -108,10 +108,6 @@ public class SplitterManagerTest {
 
         BeginEnd[] beginEnds = splitter.split(data);
 
-        for (BeginEnd beginEnd : beginEnds) {
-            System.out.println(beginEnd);
-        }
-
         assertEquals(beginAnswers.length, beginEnds.length);
 
         int index = 0;
