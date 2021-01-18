@@ -21,7 +21,6 @@ import com.seomse.commons.config.Config;
 import org.moara.filemanager.FileManager;
 import org.moara.ner.entity.NamedEntity;
 import org.moara.ner.entity.NamedEntityImpl;
-import org.moara.ner.entity.RecognizeResult;
 import org.moara.ner.exception.RecognizerNotFoundException;
 import org.moara.splitter.utils.Area;
 
@@ -97,7 +96,7 @@ public class NamedEntityRecognizerManager {
      * @param text 개체명 인식을 수행 할 문자열
      * @return 인식된 개체명
      */
-    public RecognizeResult[] recognize(String text) {
+    public NamedEntity[][] recognize(String text) {
         return recognize(text, defaultRecognizerIds);
     }
 
@@ -107,14 +106,14 @@ public class NamedEntityRecognizerManager {
      * @param recognizerIds 개체명 인식을 수행할 개체명 인식기
      * @return 인식된 개체명
      */
-    public RecognizeResult[] recognize(String text, String[] recognizerIds) {
+    public NamedEntity[][] recognize(String text, String[] recognizerIds) {
         NamedEntityRecognizer[] namedEntityRecognizers = new NamedEntityRecognizer[recognizerIds.length];
 
         for (int i = 0; i < recognizerIds.length; i++) {
             namedEntityRecognizers[i] = getNamedEntityRecognizer(recognizerIds[i]);
         }
 
-        RecognizeResult[] results = new RecognizeResult[namedEntityRecognizers.length];
+        NamedEntity[][] results = new NamedEntity[namedEntityRecognizers.length][];
 
         int recognizerIndex = 0;
         for (NamedEntityRecognizer namedEntityRecognizer : namedEntityRecognizers) {
@@ -168,7 +167,7 @@ public class NamedEntityRecognizerManager {
                 }
             }
 
-            return new RecognizeResult(emailEntities.toArray(new NamedEntity[0]));
+            return emailEntities.toArray(new NamedEntity[0]);
         };
 
     }

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.moara.ner.*;
 import org.moara.ner.entity.NamedEntity;
 import org.moara.ner.entity.NamedEntityImpl;
-import org.moara.ner.entity.RecognizeResult;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,16 +16,12 @@ public class NamedEntityRecognizerTest {
 
         NamedEntityRecognizer namedEntityRecognizer = NamedEntityRecognizerManager.getInstance().getNamedEntityRecognizer("ps_reporter");
 
-        RecognizeResult result = namedEntityRecognizer.recognize(text);
-
-        for (NamedEntity namedEntity : result.getEntities()) {
-            System.out.println(namedEntity);
-        }
+        NamedEntity[] result = namedEntityRecognizer.recognize(text);
 
         List<NamedEntity> answerList = Arrays.asList(new NamedEntityImpl("박종우", "PS_REPORTER", 8, 11), new NamedEntityImpl("김경목", "PS_REPORTER", 139, 142));
-        Assertions.assertEquals(answerList.size(), result.size());
+        Assertions.assertEquals(answerList.size(), result.length);
 
-        Assertions.assertTrue(answerList.containsAll(Arrays.asList(result.getEntities().clone())));
+        Assertions.assertTrue(answerList.containsAll(Arrays.asList(result.clone())));
 
     }
 
@@ -40,12 +35,12 @@ public class NamedEntityRecognizerTest {
                 new NamedEntityImpl("안원준", "PS_REPORTER", 56, 59),
                 new NamedEntityImpl("장영태", "PS_REPORTER", 60, 63),
                 new NamedEntityImpl("김동욱", "PS_REPORTER", 64, 67));
-        RecognizeResult result = namedEntityRecognizer.recognize(text);
+        NamedEntity[] result = namedEntityRecognizer.recognize(text);
 
-        Assertions.assertEquals(answerList.size(), result.size());
+        Assertions.assertEquals(answerList.size(), result.length);
 
 
-        Assertions.assertTrue(answerList.containsAll(Arrays.asList(result.getEntities().clone())));
+        Assertions.assertTrue(answerList.containsAll(Arrays.asList(result.clone())));
 
 
         text = "직접 챙기는 상황이면 아무래도 밑에선 휴가를 다녀오기 부담스럽다\\\"며 \\\"단체장이 휴가를 미루는 바람에 덩달아 일정을 미루는 직원들도 있다\\\"고 말했다.   \\r\\n \\r\\n최모란·최은경·심석용 기자,[전국종합] moran@joongang.co.kr \\r\\n\\r\\n";
@@ -57,9 +52,9 @@ public class NamedEntityRecognizerTest {
 
         result = namedEntityRecognizer.recognize(text);
 
-        Assertions.assertEquals(answerList.size(), result.size());
+        Assertions.assertEquals(answerList.size(), result.length);
 
-        Assertions.assertTrue(answerList.containsAll(Arrays.asList(result.getEntities().clone())));
+        Assertions.assertTrue(answerList.containsAll(Arrays.asList(result.clone())));
 
 
         text = " 다시 효율적으로 (수사) 할 수 있을 방안을 찾겠다”고 밝혔다.  \\r\\n \\r\\n김민상?박사라?박태인 기자 kim.minsang@joongang.co.kr\\r\\n\\r\\n ■ 영장 기각 사유(박정길 영장전담";
@@ -72,9 +67,9 @@ public class NamedEntityRecognizerTest {
 
         result = namedEntityRecognizer.recognize(text);
 
-        Assertions.assertEquals(answerList.size(), result.size());
+        Assertions.assertEquals(answerList.size(), result.length);
 
-        Assertions.assertTrue(answerList.containsAll(Arrays.asList(result.getEntities().clone())));
+        Assertions.assertTrue(answerList.containsAll(Arrays.asList(result.clone())));
 
 
     }
@@ -87,11 +82,11 @@ public class NamedEntityRecognizerTest {
 
 
         NamedEntity answer = new NamedEntityImpl("이태규", "PS_REPORTER", 36, 39);
-        RecognizeResult result = namedEntityRecognizer.recognize(text);
+        NamedEntity[] result = namedEntityRecognizer.recognize(text);
 
-        Assertions.assertEquals(1, result.size());
+        Assertions.assertEquals(1, result.length);
 
-        for (NamedEntity namedEntity : result.getEntities()) {
+        for (NamedEntity namedEntity : result) {
             Assertions.assertEquals(answer, namedEntity);
         }
 
@@ -105,11 +100,11 @@ public class NamedEntityRecognizerTest {
 
         NamedEntity answer = new NamedEntityImpl("지환", "PS_REPORTER", 115, 117);
 
-        RecognizeResult result = namedEntityRecognizer.recognize(text);
+        NamedEntity[] result = namedEntityRecognizer.recognize(text);
 
-        Assertions.assertEquals(1, result.size());
+        Assertions.assertEquals(1, result.length);
 
-        for (NamedEntity namedEntity : result.getEntities()) {
+        for (NamedEntity namedEntity : result) {
             Assertions.assertEquals(answer, namedEntity);
         }
 
@@ -125,11 +120,11 @@ public class NamedEntityRecognizerTest {
         List<NamedEntity> answerList = Arrays.asList(new NamedEntityImpl("강지원", "PS_REPORTER", 0, 3),
                 new NamedEntityImpl("강지원", "PS_REPORTER", 19, 22));
 
-        RecognizeResult result = namedEntityRecognizer.recognize(text);
+        NamedEntity[] result = namedEntityRecognizer.recognize(text);
 
-        Assertions.assertEquals(answerList.size(), result.size());
+        Assertions.assertEquals(answerList.size(), result.length);
 
-        Assertions.assertTrue(answerList.containsAll(Arrays.asList(result.getEntities().clone())));
+        Assertions.assertTrue(answerList.containsAll(Arrays.asList(result.clone())));
     }
 
     @Test
@@ -140,11 +135,11 @@ public class NamedEntityRecognizerTest {
 
         List<NamedEntity> answerList = Arrays.asList(new NamedEntityImpl("김유진", "PS_REPORTER", 68, 71));
 
-        RecognizeResult result = namedEntityRecognizer.recognize(text);
+        NamedEntity[] result = namedEntityRecognizer.recognize(text);
 
-        Assertions.assertEquals(answerList.size(), result.size());
+        Assertions.assertEquals(answerList.size(), result.length);
 
-        Assertions.assertTrue(answerList.containsAll(Arrays.asList(result.getEntities().clone())));
+        Assertions.assertTrue(answerList.containsAll(Arrays.asList(result.clone())));
     }
 
 

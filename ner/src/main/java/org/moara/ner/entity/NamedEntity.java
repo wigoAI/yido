@@ -24,7 +24,6 @@ import com.seomse.commons.data.BeginEnd;
  */
 public interface NamedEntity extends BeginEnd {
 
-
     /**
      * 개체명 값 반환
      * @return 개체 정보

@@ -18,7 +18,6 @@ package org.moara.ner;
 import com.seomse.commons.data.BeginEnd;
 import org.moara.ner.entity.NamedEntity;
 import org.moara.ner.entity.NamedEntityImpl;
-import org.moara.ner.entity.RecognizeResult;
 import org.moara.splitter.utils.Area;
 
 import java.util.*;
@@ -66,12 +65,12 @@ class PersonNamedEntityRecognizer implements NamedEntityRecognizer {
 
 
     @Override
-    public RecognizeResult recognize(String text) {
+    public NamedEntity[] recognize(String text) {
         String preprocessedText = textPreprocessing(text);
 
         Set<NamedEntity> personNamedEntities = new HashSet<>(recognizeEntities(preprocessedText));
-        return new RecognizeResult(personNamedEntities.stream()
-                .sorted(Comparator.comparingInt(BeginEnd::getBegin)).toArray(NamedEntity[]::new));
+        return personNamedEntities.stream()
+                .sorted(Comparator.comparingInt(BeginEnd::getBegin)).toArray(NamedEntity[]::new);
     }
     
 

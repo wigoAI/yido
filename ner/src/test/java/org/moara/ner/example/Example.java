@@ -3,7 +3,6 @@ package org.moara.ner.example;
 import org.moara.ner.entity.NamedEntity;
 import org.moara.ner.NamedEntityRecognizer;
 import org.moara.ner.NamedEntityRecognizerManager;
-import org.moara.ner.entity.RecognizeResult;
 
 public class Example {
     public static void main(String[] args) {
@@ -13,11 +12,11 @@ public class Example {
 
 
         // Named entity recognize with default recognizers
-        RecognizeResult[] results1 = namedEntityRecognizerManager.recognize(text);
+        NamedEntity[][] results1 = namedEntityRecognizerManager.recognize(text);
 
         System.out.println("Named entity recognize with default recognizers");
-        for (RecognizeResult result : results1) {
-            for (NamedEntity namedEntity : result.getEntities()) {
+        for (NamedEntity[] result : results1) {
+            for (NamedEntity namedEntity : result) {
                 System.out.println(namedEntity);
             }
         }
@@ -29,11 +28,11 @@ public class Example {
 
         // Named entity recognize with selected recognizers
         String[] selectedRecognizerIds = {"tmi_email", "ps_reporter"};
-        RecognizeResult[] results2 = namedEntityRecognizerManager.recognize(text, selectedRecognizerIds);
+        NamedEntity[][] results2 = namedEntityRecognizerManager.recognize(text, selectedRecognizerIds);
 
         System.out.println("Named entity recognize with selected recognizers");
-        for (RecognizeResult result : results2) {
-            for (NamedEntity namedEntity : result.getEntities()) {
+        for (NamedEntity[] result : results2) {
+            for (NamedEntity namedEntity : result) {
                 System.out.println(namedEntity);
             }
         }
@@ -46,10 +45,10 @@ public class Example {
          * - email
          */
         NamedEntityRecognizer reporterEntityRecognizer = namedEntityRecognizerManager.getNamedEntityRecognizer("ps_reporter");
-        RecognizeResult result = reporterEntityRecognizer.recognize(text);
+        NamedEntity[] result = reporterEntityRecognizer.recognize(text);
 
         System.out.println("Use reporter entity recognizer");
-        for (NamedEntity namedEntity : result.getEntities()) {
+        for (NamedEntity namedEntity : result) {
             System.out.println(namedEntity);
         }
         // PersonEntity{text='지환', type='PS_REPORTER', begin=115, end=117}

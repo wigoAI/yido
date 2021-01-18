@@ -15,7 +15,7 @@
  */
 package org.moara.ner;
 
-import org.moara.ner.entity.RecognizeResult;
+import org.moara.ner.entity.NamedEntity;
 
 /**
  * 개체명 인식기 추상체
@@ -24,11 +24,12 @@ import org.moara.ner.entity.RecognizeResult;
  */
 public interface NamedEntityRecognizer {
 
+
     /**
      * {@code text}에 존재하는 개체명 추출
      * @param text 개체명을 추출 할 텍스트
      * @return 개체 인식 결과
      */
-    RecognizeResult recognize(String text);
+    NamedEntity[] recognize(String text);
 
 }
