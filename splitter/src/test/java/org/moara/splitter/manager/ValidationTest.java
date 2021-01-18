@@ -1,9 +1,8 @@
 package org.moara.splitter.manager;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.moara.splitter.TestFileInitializer;
 import org.moara.splitter.utils.FileReader;
 import org.moara.splitter.utils.Validation;
@@ -11,16 +10,18 @@ import org.moara.splitter.utils.Validation;
 import java.util.Collection;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class ValidationTest {
 
 
 
-    @Before
+    @BeforeEach
     public void initializeTest() {
         TestFileInitializer.initialize();
     }
 
-    @After
+    @AfterEach
     public void tearDownTest() {
         TestFileInitializer.tearDown();
     }
@@ -29,9 +30,9 @@ public class ValidationTest {
     @Test
     public void testCreateValidationObject() {
         Validation validation = new Validation("면", false, 'B');
-        Assert.assertEquals("면", validation.getValue());
-        Assert.assertFalse(validation.getMatchFlag());
-        Assert.assertEquals('B', validation.getComparePosition());
+        assertEquals("면", validation.getValue());
+        assertFalse(validation.getMatchFlag());
+        assertEquals('B', validation.getComparePosition());
     }
 
     @Test
@@ -39,16 +40,16 @@ public class ValidationTest {
 
         List<Validation> validations = ValidationManager.getValidations("NBSG_test_connective");
 
-        Assert.assertNotEquals(0, validations.size());
+        assertNotEquals(0, validations.size());
 
 
 
         int validationIndex = 0;
         for (String data : FileReader.readDictionary("/string_group/test_connective")) {
             Validation validation = validations.get(validationIndex++);
-            Assert.assertEquals(data, validation.getValue());
-            Assert.assertFalse(validation.getMatchFlag());
-            Assert.assertEquals('B', validation.getComparePosition());
+            assertEquals(data, validation.getValue());
+            assertFalse(validation.getMatchFlag());
+            assertEquals('B', validation.getComparePosition());
         }
 
     }
@@ -76,8 +77,8 @@ public class ValidationTest {
         } catch (RuntimeException e) {
             dataTypeException = true;
         }
-        Assert.assertTrue(matchFlagException);
-        Assert.assertTrue(comparePositionException);
-        Assert.assertTrue(dataTypeException);
+        assertTrue(matchFlagException);
+        assertTrue(comparePositionException);
+        assertTrue(dataTypeException);
     }
 }

@@ -22,7 +22,7 @@ public class Example {
         }
         /*
          * PersonEntity{text='지환', type='ps_reporter', begin=115, end=117}
-         * PersonEntity{text='haji@ytn.co.kr', type='TM_EMAIL', begin=947, end=961}
+         * PersonEntity{text='haji@ytn.co.  kr', type='TM_EMAIL', begin=947, end=961}
          * PersonEntity{text='지환 기자입니다', type='token', begin=115, end=123}
          */
 

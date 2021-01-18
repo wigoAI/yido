@@ -1,9 +1,8 @@
 package org.moara.splitter.evaluation;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.moara.evaluation.classification.binary.BinaryClassificationEvaluation;
 import org.moara.splitter.TestFileInitializer;
 import org.moara.splitter.evaluator.SplitterEvaluator;
@@ -11,6 +10,9 @@ import org.moara.splitter.evaluator.SplitterEvaluator;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SplitterEvaluatorTest {
     String filePath = "./dic/splitter/evaluation/test_answer.txt";
@@ -23,12 +25,12 @@ public class SplitterEvaluatorTest {
     String[] notSameStringWithAnswerSheet = {"apple.", "ornage.", "banana.", "melon."};
     String[] sameStringWithAnswerSheet = {"app  le.", "orange.    ", "ban", "a na.", "me  lon."};
 
-    @Before
+    @BeforeEach
     public void initializeTest() {
         TestFileInitializer.initialize();
     }
 
-    @After
+    @AfterEach
     public void tearDownTest() {
         TestFileInitializer.tearDown();
     }
@@ -48,7 +50,7 @@ public class SplitterEvaluatorTest {
 
         int index = 0;
         for (String answer : answerSheet) {
-            Assert.assertEquals(answer, splitterEvaluator.getAnswerSheet().get(index++));
+            assertEquals(answer, splitterEvaluator.getAnswerSheet().get(index++));
 
         }
     }
@@ -60,14 +62,14 @@ public class SplitterEvaluatorTest {
 
         int index = 0;
         for (String sheet : splitterSheetWrongCount3) {
-            Assert.assertEquals(sheet, splitterEvaluator.getSplitterSheet().get(index++));
+            assertEquals(sheet, splitterEvaluator.getSplitterSheet().get(index++));
         }
 
         splitterEvaluator.initSplitterSheet("evaluation/test_answer");
 
         index = 0;
         for (String sheet : answerSheet) {
-            Assert.assertEquals(sheet, splitterEvaluator.getSplitterSheet().get(index++));
+            assertEquals(sheet, splitterEvaluator.getSplitterSheet().get(index++));
         }
 
     }
@@ -84,7 +86,7 @@ public class SplitterEvaluatorTest {
 
         BinaryClassificationEvaluation binaryClassificationEvaluation = splitterEvaluator.answerCheck();
 
-        Assert.assertEquals(answer[0], binaryClassificationEvaluation.toString());
+        assertEquals(answer[0], binaryClassificationEvaluation.toString());
 
 
 
@@ -92,19 +94,19 @@ public class SplitterEvaluatorTest {
 
         binaryClassificationEvaluation = splitterEvaluator.answerCheck();
 
-        Assert.assertEquals(answer[1], binaryClassificationEvaluation.toString());
+        assertEquals(answer[1], binaryClassificationEvaluation.toString());
 
         splitterEvaluator.initSplitterSheet(splitterSheetWrongCount5);
 
         binaryClassificationEvaluation = splitterEvaluator.answerCheck();
 
-        Assert.assertEquals(answer[2], binaryClassificationEvaluation.toString());
+        assertEquals(answer[2], binaryClassificationEvaluation.toString());
 
 
         splitterEvaluator.initSplitterSheet(splitterSheetWrongCount6);
         binaryClassificationEvaluation = splitterEvaluator.answerCheck();
 
-        Assert.assertEquals(answer[3], binaryClassificationEvaluation.toString());
+        assertEquals(answer[3], binaryClassificationEvaluation.toString());
 
 
     }
@@ -127,7 +129,7 @@ public class SplitterEvaluatorTest {
             notSameStringFlag = true;
         }
 
-        Assert.assertTrue(sameStringFlag);
-        Assert.assertTrue(notSameStringFlag);
+        assertTrue(sameStringFlag);
+        assertTrue(notSameStringFlag);
     }
 }

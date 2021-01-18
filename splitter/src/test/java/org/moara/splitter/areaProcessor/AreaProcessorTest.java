@@ -1,9 +1,8 @@
 package org.moara.splitter.areaProcessor;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.moara.splitter.TestFileInitializer;
 import org.moara.splitter.processor.BracketAreaProcessor;
 import org.moara.splitter.processor.ConditionTerminatorProcessor;
@@ -16,16 +15,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 
 public class AreaProcessorTest {
 
-    @Before
+    @BeforeEach
     public void initializeTest() {
         TestFileInitializer.initialize();
     }
 
-    @After
+    @AfterEach
     public void tearDownTest() {
         TestFileInitializer.tearDown();
     }
@@ -43,8 +44,9 @@ public class AreaProcessorTest {
 
         int index = 0;
         for (Area area : exceptionAreaProcessor.find(inputData)) {
-            Assert.assertEquals(area.getBegin(), answerStart[index]);
-            Assert.assertEquals(area.getEnd(), answerEnd[index++]);
+            assertEquals(area.getBegin(), answerStart[index]);
+
+            assertEquals(area.getEnd(), answerEnd[index++]);
         }
 
     }
@@ -96,7 +98,7 @@ public class AreaProcessorTest {
         int[] answer = {12, 25};
         int answerIndex = 0;
         for (int splitPoint : conditionTerminatorProcessor.find(inputData, new ArrayList<>())) {
-            Assert.assertEquals(splitPoint, answer[answerIndex++]);
+            assertEquals(splitPoint, answer[answerIndex++]);
         }
 
     }

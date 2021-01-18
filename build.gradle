@@ -7,7 +7,10 @@ description =  "Korean natural language processing"
 allprojects {
     group 'org.moara.yido'
     repositories {
-                mavenCentral()
+        mavenCentral()
     }
 }
 
+test {
+    useJUnitPlatform()
+}

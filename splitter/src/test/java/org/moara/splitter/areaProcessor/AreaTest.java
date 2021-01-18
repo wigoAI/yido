@@ -1,29 +1,31 @@
 package org.moara.splitter.areaProcessor;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.moara.splitter.utils.Area;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class AreaTest {
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void TestNegativeIndex() {
-        new Area(-1 , 4);
+        assertThrows(IllegalArgumentException.class, () -> new Area(-1, 4));
+
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testInputInvalidIndex() {
-        new Area(6, 4);
+        assertThrows(IllegalArgumentException.class, () -> new Area(6, 4));
     }
 
     @Test
     public void testCreateAreaWithString() {
         Area area = new Area("5", "9");
-        Assert.assertEquals(area.getBegin(), 5);
-        Assert.assertEquals(area.getEnd(), 9);
+        assertEquals(area.getBegin(), 5);
+        assertEquals(area.getEnd(), 9);
     }
 
     @Test
@@ -35,8 +37,8 @@ public class AreaTest {
         while (matcher.find()) {
             Area area = new Area(matcher);
 
-            Assert.assertEquals(area.getBegin(), 12);
-            Assert.assertEquals(area.getEnd(), 17);
+            assertEquals(area.getBegin(), 12);
+            assertEquals(area.getEnd(), 17);
         }
 
 
@@ -50,11 +52,11 @@ public class AreaTest {
         Area rightArea = new Area(6,9);
         Area otherArea = new Area(9,13);
 
-        Assert.assertTrue(leftArea.isOverlap(centerArea));
-        Assert.assertTrue(rightArea.isOverlap(centerArea));
-        Assert.assertTrue(centerArea.isOverlap(smallCenterArea));
-        Assert.assertTrue(smallCenterArea.isOverlap(centerArea));
-        Assert.assertFalse(rightArea.isOverlap(otherArea));
+        assertTrue(leftArea.isOverlap(centerArea));
+        assertTrue(rightArea.isOverlap(centerArea));
+        assertTrue(centerArea.isOverlap(smallCenterArea));
+        assertTrue(smallCenterArea.isOverlap(centerArea));
+        assertFalse(rightArea.isOverlap(otherArea));
 
     }
 
@@ -65,10 +67,10 @@ public class AreaTest {
 
         Area a3 = new Area(1,2);
 
-        Assert.assertEquals(a1, a1);
-        Assert.assertEquals(a2, a2);
-        Assert.assertEquals(a1, a2);
-        Assert.assertNotEquals(a1, a3);
+        assertEquals(a1, a1);
+        assertEquals(a2, a2);
+        assertEquals(a1, a2);
+        assertNotEquals(a1, a3);
     }
 
     @Test
@@ -79,10 +81,10 @@ public class AreaTest {
         int point3 = 2;
         int point4 = 9;
 
-        Assert.assertTrue(area.contains(point1));
-        Assert.assertTrue(area.contains(point2));
-        Assert.assertFalse(area.contains(point3));
-        Assert.assertFalse(area.contains(point4));
+        assertTrue(area.contains(point1));
+        assertTrue(area.contains(point2));
+        assertFalse(area.contains(point3));
+        assertFalse(area.contains(point4));
 
     }
 
@@ -92,8 +94,8 @@ public class AreaTest {
         Area area2 = new Area(5, 8);
         Area area3 = new Area(8, 9);
 
-        Assert.assertEquals(area1.hashCode(), area2.hashCode());
-        Assert.assertNotEquals(area3.hashCode(), area2.hashCode());
+        assertEquals(area1.hashCode(), area2.hashCode());
+        assertNotEquals(area3.hashCode(), area2.hashCode());
     }
 
 }

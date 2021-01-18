@@ -1,10 +1,12 @@
 package org.moara.splitter.manager;
 
-import org.junit.Assert;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MetaTest {
 
@@ -21,10 +23,10 @@ public class MetaTest {
 
         int findCount = 0;
         while (matcher.find()) {
-            Assert.assertEquals("x", matcher.group().substring(1,2));
+            assertEquals("x", matcher.group().substring(1,2));
             findCount++;
         }
-        Assert.assertEquals(6, findCount);
+        assertEquals(6, findCount);
 
 
         pattern = ExceptionRuleManager.getSameSideBracketPattern();
@@ -32,9 +34,9 @@ public class MetaTest {
 
         findCount = 0;
         while (matcher.find()) {
-            Assert.assertEquals("x", matcher.group().substring(1,2));
+            assertEquals("x", matcher.group().substring(1,2));
             findCount++;
         }
-        Assert.assertEquals(2, findCount);
+        assertEquals(2, findCount);
     }
 }

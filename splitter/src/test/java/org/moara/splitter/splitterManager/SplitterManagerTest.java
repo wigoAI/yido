@@ -1,9 +1,8 @@
 package org.moara.splitter.splitterManager;
 
 import com.seomse.commons.data.BeginEnd;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.moara.splitter.Splitter;
 import org.moara.splitter.SplitterManager;
 import org.moara.splitter.TestFileInitializer;
@@ -11,11 +10,14 @@ import org.moara.splitter.exception.SplitterNotFoundException;
 
 import java.util.Collections;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class SplitterManagerTest {
     String text = "안녕하세요 반갑습니다. 조승현입니다.";
 
-    @Before
+    @BeforeEach
     public void initializeTest() {
         TestFileInitializer.initialize();
     }
@@ -36,8 +38,8 @@ public class SplitterManagerTest {
         BeginEnd[] splitResults = splitter.split(text);
 
         for (BeginEnd splitResult : splitResults) {
-            Assert.assertEquals(beginAnswer[index], splitResult.getBegin());
-            Assert.assertEquals(endAnswer[index++], splitResult.getEnd());
+            assertEquals(beginAnswer[index], splitResult.getBegin());
+            assertEquals(endAnswer[index++], splitResult.getEnd());
         }
 
     }
@@ -53,8 +55,8 @@ public class SplitterManagerTest {
         int[] endAnswer = {12, 20};
         int index = 0;
         for (BeginEnd splitResult : splitResults) {
-            Assert.assertEquals(beginAnswer[index], splitResult.getBegin());
-            Assert.assertEquals(endAnswer[index++], splitResult.getEnd());
+            assertEquals(beginAnswer[index], splitResult.getBegin());
+            assertEquals(endAnswer[index++], splitResult.getEnd());
         }
     }
 
@@ -91,10 +93,10 @@ public class SplitterManagerTest {
             notFoundFlag = true;
         }
 
-        Assert.assertTrue(normalJsonFlag);
-        Assert.assertTrue(invalidJsonFlag1);
-        Assert.assertTrue(invalidJsonFlag2);
-        Assert.assertTrue(notFoundFlag);
+        assertTrue(normalJsonFlag);
+        assertTrue(invalidJsonFlag1);
+        assertTrue(invalidJsonFlag2);
+        assertTrue(notFoundFlag);
     }
 
     @Test
@@ -110,12 +112,12 @@ public class SplitterManagerTest {
             System.out.println(beginEnd);
         }
 
-        Assert.assertEquals(beginAnswers.length, beginEnds.length);
+        assertEquals(beginAnswers.length, beginEnds.length);
 
         int index = 0;
         for (BeginEnd beginEnd : beginEnds) {
-            Assert.assertEquals(beginAnswers[index], beginEnd.getBegin());
-            Assert.assertEquals(endAnswers[index++], beginEnd.getEnd());
+            assertEquals(beginAnswers[index], beginEnd.getBegin());
+            assertEquals(endAnswers[index++], beginEnd.getEnd());
         }
 
         String testFileName = "string_group/test_reload_string_group.dic";
@@ -129,12 +131,12 @@ public class SplitterManagerTest {
         SplitterManager.getInstance().reloadSplitter("test_reload_splitter");
 
         beginEnds = SplitterManager.getInstance().getSplitter("test_reload_splitter").split(data);
-        Assert.assertEquals(beginAnswers2.length, beginEnds.length);
+        assertEquals(beginAnswers2.length, beginEnds.length);
 
         index = 0;
         for (BeginEnd beginEnd : beginEnds) {
-            Assert.assertEquals(beginAnswers2[index], beginEnd.getBegin());
-            Assert.assertEquals(endAnswers2[index++], beginEnd.getEnd());
+            assertEquals(beginAnswers2[index], beginEnd.getBegin());
+            assertEquals(endAnswers2[index++], beginEnd.getEnd());
         }
 
         TestFileInitializer.deleteFile(testFileName);
