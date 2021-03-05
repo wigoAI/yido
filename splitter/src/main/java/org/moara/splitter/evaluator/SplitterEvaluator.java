@@ -16,7 +16,7 @@
 package org.moara.splitter.evaluator;
 
 
-import org.moara.evaluation.classification.binary.BinaryClassificationEvaluation;
+import org.moara.classification.binary.BinaryClassificationEvaluation;
 import org.moara.splitter.utils.FileReader;
 
 import java.io.BufferedReader;

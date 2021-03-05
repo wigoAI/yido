@@ -3,5 +3,5 @@ include 'splitter'
 include 'tokenizer'
 include 'text-mining'
 include 'ner'
-
+include 'classification'
 

@@ -3,7 +3,7 @@ package org.moara.splitter.evaluation;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.moara.evaluation.classification.binary.BinaryClassificationEvaluation;
+import org.moara.classification.binary.BinaryClassificationEvaluation;
 import org.moara.splitter.TestFileInitializer;
 import org.moara.splitter.evaluator.SplitterEvaluator;
 

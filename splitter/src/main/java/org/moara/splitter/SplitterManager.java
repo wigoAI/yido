@@ -54,7 +54,6 @@ public class SplitterManager {
     }
 
     private static class Singleton {
-
         private static final SplitterManager instance = new SplitterManager();
     }
 
