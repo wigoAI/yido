@@ -22,9 +22,9 @@ public class ManagerTest {
 
         NamedEntity[][] results = NamedEntityRecognizerManager.getInstance().recognize(text);
 
-        String[] answers = {"PersonEntity{text='지환', type='ps_reporter', begin=115, end=117}",
-                "PersonEntity{text='haji@ytn.co.kr', type='tmi_email', begin=947, end=961}",
-                "PersonEntity{text='지환 기자입니다', type='token', begin=115, end=123}"};
+        String[] answers = {"PersonEntity{text='지환', type='PS_REPORTER', begin=115, end=117}",
+                "PersonEntity{text='haji@ytn.co.kr', type='TMI_EMAIL', begin=947, end=961}",
+                "PersonEntity{text='지환 기자입니다', type='TOKEN', begin=115, end=123}"};
 
 
         int answerIndex = 0;

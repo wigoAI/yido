@@ -65,7 +65,7 @@ public class TokenRecognizer extends PersonNamedEntityRecognizer {
                 }
 
                 if (matcher.group().length() > targetWord.length()) {
-                    NamedEntity token = new NamedEntity(text.substring(matcher.start(), matcher.end()), "token", matcher.start(), matcher.end());
+                    NamedEntity token = new NamedEntity(text.substring(matcher.start(), matcher.end()), "TOKEN", matcher.start(), matcher.end());
                     personTokens.add(token);
                 }
             }

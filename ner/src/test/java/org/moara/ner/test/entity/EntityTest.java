@@ -8,11 +8,11 @@ public class EntityTest {
 
     @Test
     public void testEquals() {
-        NamedEntity reporterEntity = new NamedEntity("김경민","ps_reporter" , 4, 7);
-        NamedEntity equalsEntity = new NamedEntity("김경민","ps_reporter", 4, 7);
-        NamedEntity notEqualsEntity1 = new NamedEntity("김민경","ps_reporter", 4, 7);
-        NamedEntity notEqualsEntity2 = new NamedEntity("김경민","ps_reporter", 5, 7);
-        NamedEntity notEqualsEntity3 = new NamedEntity("김경민","ps_reporter", 4, 8);
+        NamedEntity reporterEntity = new NamedEntity("김경민","PS_REPORTER" , 4, 7);
+        NamedEntity equalsEntity = new NamedEntity("김경민","PS_REPORTER", 4, 7);
+        NamedEntity notEqualsEntity1 = new NamedEntity("김민경","PS_REPORTER", 4, 7);
+        NamedEntity notEqualsEntity2 = new NamedEntity("김경민","PS_REPORTER", 5, 7);
+        NamedEntity notEqualsEntity3 = new NamedEntity("김경민","PS_REPORTER", 4, 8);
 
 
         Assertions.assertTrue(reporterEntity.equals(reporterEntity));
@@ -25,11 +25,11 @@ public class EntityTest {
 
     @Test
     public void testHashcode() {
-        NamedEntity reporterEntity = new NamedEntity("김경민","ps_reporter", 4, 7);
-        NamedEntity equalsEntity = new NamedEntity("김경민","ps_reporter", 4, 7);
-        NamedEntity notEqualsEntity1 = new NamedEntity("김민경","ps_reporter", 4, 7);
-        NamedEntity notEqualsEntity2 = new NamedEntity("김경민","ps_reporter", 5, 7);
-        NamedEntity notEqualsEntity3 = new NamedEntity("김경민","ps_reporter", 4, 8);
+        NamedEntity reporterEntity = new NamedEntity("김경민","PS_REPORTER", 4, 7);
+        NamedEntity equalsEntity = new NamedEntity("김경민","PS_REPORTER", 4, 7);
+        NamedEntity notEqualsEntity1 = new NamedEntity("김민경","PS_REPORTER", 4, 7);
+        NamedEntity notEqualsEntity2 = new NamedEntity("김경민","PS_REPORTER", 5, 7);
+        NamedEntity notEqualsEntity3 = new NamedEntity("김경민","PS_REPORTER", 4, 8);
 
         Assertions.assertEquals(reporterEntity.hashCode(), reporterEntity.hashCode());
         Assertions.assertEquals(reporterEntity.hashCode(), equalsEntity.hashCode());

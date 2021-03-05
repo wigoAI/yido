@@ -41,7 +41,7 @@ public class NamedEntityRecognizerManager {
 
     // key = id, value = NamedEntityRecognizer instance
     private final  Map<String, NamedEntityRecognizer> namedEntityRecognizerMap = new HashMap<>();
-    private final static String defaultRecognizerIdStr = Config.getConfig("yido.ner.default.id", "ps_reporter,tmi_email,token");
+    private final static String defaultRecognizerIdStr = Config.getConfig("yido.ner.default.id", "PS_REPORTER,TMI_EMAIL,TOKEN");
     private final static String ABSTRACT_PATH = Config.getConfig("yido.ner.data.path", "dic/ner/");
     private final static String TARGET_WORDS_PATH = "target/";
     private final static String EXCEPTION_WORDS_PATH = "exception/";
@@ -129,11 +129,11 @@ public class NamedEntityRecognizerManager {
     private void createRecognizer(String id) {
         NamedEntityRecognizer namedEntityRecognizer;
 
-        if (id.startsWith("ps_")) {
+        if (id.startsWith("PS_")) {
             namedEntityRecognizer = createNamedEntityRecognizer(id);
-        } else if (id.startsWith("token")) {
+        } else if (id.startsWith("TOKEN")) {
             namedEntityRecognizer = getTokenRecognizer(id);
-        } else if (id.startsWith("tmi_")) {
+        } else if (id.startsWith("TMI_")) {
             namedEntityRecognizer = getRegxRecognizer(id);
         } else {
             throw new RecognizerNotFoundException(id);

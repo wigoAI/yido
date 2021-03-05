@@ -21,13 +21,13 @@ public class Example {
             }
         }
         /*
-         * PersonEntity{text='지환', type='ps_reporter', begin=115, end=117}
+         * PersonEntity{text='지환', type='PS_REPORTER', begin=115, end=117}
          * PersonEntity{text='haji@ytn.co.  kr', type='TM_EMAIL', begin=947, end=961}
          * PersonEntity{text='지환 기자입니다', type='token', begin=115, end=123}
          */
 
         // Named entity recognize with selected recognizers
-        String[] selectedRecognizerIds = {"tmi_email", "ps_reporter"};
+        String[] selectedRecognizerIds = {"TMI_EMAIL", "PS_REPORTER"};
         NamedEntity[][] results2 = namedEntityRecognizerManager.recognize(text, selectedRecognizerIds);
 
         System.out.println("Named entity recognize with selected recognizers");
@@ -44,14 +44,14 @@ public class Example {
          * - token
          * - email
          */
-        NamedEntityRecognizer reporterEntityRecognizer = namedEntityRecognizerManager.getNamedEntityRecognizer("ps_reporter");
+        NamedEntityRecognizer reporterEntityRecognizer = namedEntityRecognizerManager.getNamedEntityRecognizer("PS_REPORTER");
         NamedEntity[] result = reporterEntityRecognizer.recognize(text);
 
         System.out.println("Use reporter entity recognizer");
         for (NamedEntity namedEntity : result) {
             System.out.println(namedEntity);
         }
-        // PersonEntity{text='지환', type='ps_reporter', begin=115, end=117}
+        // PersonEntity{text='지환', type='PS_REPORTER', begin=115, end=117}
 
 
 
