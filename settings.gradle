@@ -1,7 +1,12 @@
 rootProject.name = 'yido'
 include 'splitter'
+project(':splitter').projectDir = new File(settingsDir,'modules/splitter')
 include 'tokenizer'
+project(':tokenizer').projectDir = new File(settingsDir,'modules/tokenizer')
 include 'text-mining'
+project(':text-mining').projectDir = new File(settingsDir,'modules/text-mining')
 include 'ner'
+project(':ner').projectDir = new File(settingsDir,'modules/ner')
 include 'classification'
+project(':classification').projectDir = new File(settingsDir,'modules/classification')
 
