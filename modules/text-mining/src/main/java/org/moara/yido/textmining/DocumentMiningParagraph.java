@@ -17,7 +17,7 @@
 package org.moara.yido.textmining;
 
 import com.seomse.commons.data.BeginEnd;
-import org.moara.splitter.Splitter;
+import org.moara.yido.splitter.Splitter;
 import org.moara.yido.textmining.sentence.ContentsSentence;
 import org.moara.yido.textmining.sentence.SentenceSplitter;
 
