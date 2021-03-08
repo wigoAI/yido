@@ -26,6 +26,10 @@ NamedEntity[] namedEntities = namedEntityRecognizer.recognize(corpus);
 |PLANT(PT)|PT_TREE|나무 이름|
 
 
+# gradle
+implementation 'org.moara.yido:ner:0.1.0'
+- etc
+    - https://mvnrepository.com/artifact/org.moara.yido/ner/0.1.0
 
 
 # Version

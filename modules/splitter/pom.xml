@@ -117,7 +117,7 @@
     <dependency>
       <groupId>com.seomse.commons</groupId>
       <artifactId>seomse-commons</artifactId>
-      <version>1.2.3</version>
+      <version>1.2.5</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -134,8 +134,8 @@
     </dependency>
     <dependency>
       <groupId>org.moara.yido</groupId>
-      <artifactId>classification</artifactId>
-      <version>1.0</version>
+      <artifactId>evaluation</artifactId>
+      <version>0.1.0</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>

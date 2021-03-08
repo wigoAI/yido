@@ -1,6 +1,12 @@
 # Evaluation
 모델 성능 평가 지표
 
+
+# gradle
+implementation 'org.moara.yido:evaluation:0.1.0'
+- etc
+  - https://mvnrepository.com/artifact/org.moara.yido/evaluation/0.1.0
+
 # 이진 분류
 ## 평가 기준
 이진 분류에서 성능 지표로 잘 활용되는 오차행렬 사용

@@ -58,3 +58,8 @@ SplitterManager는 내부적으로 매개변수로 받아오는 splitter id의 �
 
 # Data
 구분기에 사용되는 사전 데이터는 `dic`디렉터리 내부에 존재하지만, 이후 업데이트 여부에 따라 변경되거나 제거될 수 있다.
+
+# gradle
+implementation 'org.moara.yido:splitter:0.1.0'
+- etc
+    - https://mvnrepository.com/artifact/org.moara.yido/splitter/0.1.0

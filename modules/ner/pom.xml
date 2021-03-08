@@ -5,6 +5,11 @@
   <groupId>org.moara.yido</groupId>
   <artifactId>ner</artifactId>
   <version>0.1.0</version>
+  <packaging>jar</packaging>
+
+  <name>ner</name>
+  <description>Named Entity Recognizer</description>
+  <url>https://github.com/wigoAI/yido</url>
 
   <licenses>
     <license>

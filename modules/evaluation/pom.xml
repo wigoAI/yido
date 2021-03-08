@@ -5,6 +5,11 @@
   <groupId>org.moara.yido</groupId>
   <artifactId>evaluation</artifactId>
   <version>0.1.0</version>
+  <packaging>jar</packaging>
+
+  <name>yido-evaluation</name>
+  <description>evaluation</description>
+  <url>https://github.com/wigoAI/yido</url>
 
   <licenses>
     <license>

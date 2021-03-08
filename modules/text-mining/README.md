@@ -8,8 +8,9 @@
 # 사용법
 - 정리 예정
 # gradle
-- 등록 예정
-
+implementation 'org.moara.yido:text-mining:0.1.0'
+- etc
+   - https://mvnrepository.com/artifact/org.moara.yido/text-mining/0.1.0
 # communication
 ### blog, homepage
  - https://wigo.ai/
