@@ -24,7 +24,7 @@ repositories {
 
 dependencies {
 
-    implementation 'com.seomse.commons:seomse-commons:1.2.3'
+    implementation 'com.seomse.commons:seomse-commons:1.2.5'
     implementation 'com.google.code.gson:gson:2.8.6'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
