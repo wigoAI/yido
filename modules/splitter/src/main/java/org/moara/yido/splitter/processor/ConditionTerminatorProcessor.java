@@ -48,6 +48,7 @@ public class ConditionTerminatorProcessor implements TerminatorProcessor{
      *
      * @param splitConditions 구분 조건
      * @param minResultLength 설정값
+     *
      */
     public ConditionTerminatorProcessor(List<SplitCondition> splitConditions, int minResultLength) {
         this.minResultLength = minResultLength;
