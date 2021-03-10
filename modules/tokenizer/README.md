@@ -15,12 +15,13 @@
 # 사용법
 - 0.1 버젼은 내부적으로 mecab을 사용하기때문에 사전관리는 mecab 사전관리 방법에 따름니다
     - https://github.com/Pusnow/mecab-ko-dic-msvc/tree/master/user-dic
-
+    - mecab의 성능이 좋고 많은곳에서 사용되고 있기 때문에 기존에 개발된 tokenizer 보다 mecab을 사용하는게 좋을 수 있어서 이후개발은 mecab을 연동하는 식으로 진행될 가능성도 높습니다. 
 - mecab 테스트 결과 프로세스가 실행중 사전 교체는 안됩니다.
     - 프로세스 restart 해야만 적용 됩니다
     - 관련 방법이 있으면 공유 부탁 드립니다.
 
 - 자세한 사용법은 위에있는 문서페이를 참조해 주세요.
+
 ```java
 import org.moara.yido.tokenizer.Token;
 import org.moara.yido.tokenizer.TokenizerManager;
@@ -49,7 +50,7 @@ public class TokenizerExample {
 ```
 
 # 품사
-품사 태그표는 세종품사테그를 표준으로 정하고 mecab 에서 쓰이는 품사중 더 세분화한 부분이 있을경우 세분화 한다
+품사 태그표는 세종품사테그를 표준으로 정하고 mecab 에서 쓰이는 품사중 더 세분화한 부분이 있을 경우 세분화 한다
 
 - NNG	일반 명사
 - NNP	고유 명사
