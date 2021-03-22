@@ -20,14 +20,16 @@ public class FileReader {
      * @return JsonObject
      */
     public static JsonObject getJsonObjectByFile(String fileName) {
-        JsonElement element;
+        JsonElement element = null;
 
-        try {
-            element = JsonParser.parseReader(new java.io.FileReader(ABSTRACT_PATH + fileName + ".json"));
+        try (java.io.FileReader fileReader = new java.io.FileReader(ABSTRACT_PATH + fileName + ".json")){
+            element = JsonParser.parseReader(fileReader);
         } catch (FileNotFoundException e) {
             System.out.println("file not found");
             e.printStackTrace();
             throw new RuntimeException(e);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return element.getAsJsonObject();

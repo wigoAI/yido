@@ -1,13 +1,5 @@
-/.idea/
-/splitter/target/
-/splitter/splitter.iml
-/splitter/.idea/
-/splitter/src/main/resources/META-INF/
-/splitter/.gradle
 build
 .gradle
 .idea
 out
 *.puml
-*test*.json
-*test*.dic
