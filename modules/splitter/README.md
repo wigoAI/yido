@@ -1,7 +1,7 @@
 # Splitter
 한글 문서 데이터를 문단 또는 문장 단위로 구분해주는 구분기
 
-#Usage
+# Usage
 ## Get Splitter
 모든 구분기는 단 한개만 생성되며 키값과 함께 SplitterManager내부의 HashMap 에서 관리된다.
 
