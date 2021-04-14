@@ -16,6 +16,20 @@
 
 package org.moara.tokenizer.rest;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import org.moara.common.util.ExceptionUtil;
+import org.moara.yido.tokenizer.Token;
+import org.moara.yido.tokenizer.TokenizerManager;
+import org.moara.yido.tokenizer.word.WordToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -25,6 +39,46 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Controller {
 
+    private static final Logger logger = LoggerFactory.getLogger(Controller.class);
+
+
+    @RequestMapping(value = "/keyword/analysis" , method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE)
+    public String tokenize(@RequestBody final String jsonValue) {
+
+        try{
+            Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
+            JsonObject request = gson.fromJson(jsonValue, JsonObject.class);
+
+            String tokenizerId = request.get("tokenizer_id").getAsString();
+            String text = request.get("text").getAsString();
+
+            JsonArray response = new JsonArray();
+
+            Token[] tokens = TokenizerManager.getInstance().getTokenizer(tokenizerId).getTokens(text);
+            for(Token token : tokens){
+                WordToken wordToken = (WordToken) token;
+
+                JsonObject jsonToken = new JsonObject();
+                jsonToken.addProperty("text", wordToken.getText());
+                jsonToken.addProperty("part_of_speech", wordToken.getPartOfSpeech());
+                jsonToken.addProperty("begin", wordToken.getBegin());
+                jsonToken.addProperty("end", wordToken.getEnd());
+
+                response.add(jsonToken);
+
+            }
+
+
+            return gson.toJson(response);
+
+        }catch(Exception e){
+            logger.error(ExceptionUtil.getStackTrace(e));
+        }
+
+
+
+        return "[]";
+    }
 
 
 

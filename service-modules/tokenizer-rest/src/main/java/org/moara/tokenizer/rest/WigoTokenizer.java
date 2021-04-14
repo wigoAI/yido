@@ -16,9 +16,18 @@
 
 package org.moara.tokenizer.rest;
 
+import org.moara.Moara;
+import org.moara.ara.datamining.textmining.dictionary.word.WordDictionary;
+import org.moara.ara.datamining.textmining.dictionary.word.element.WordClassDetail;
+import org.moara.ara.datamining.textmining.dictionary.word.extract.ExtractWord;
+import org.moara.ara.datamining.textmining.dictionary.word.extract.WordExtractResult;
+import org.moara.ara.datamining.textmining.dictionary.word.extract.ko.WordExtract_KO;
 import org.moara.yido.tokenizer.Token;
 import org.moara.yido.tokenizer.Tokenizer;
 import org.moara.yido.tokenizer.TokenizerInitializer;
+import org.moara.yido.tokenizer.word.WordToken;
+
+import java.util.List;
 
 /**
  * @author macle
@@ -26,7 +35,16 @@ import org.moara.yido.tokenizer.TokenizerInitializer;
 @TokenizerInitializer
 public class WigoTokenizer implements Tokenizer {
 
+    private final WordDictionary wordDictionary = WordDictionary.getInstance();
 
+    private final WordExtract_KO wordExtract = new WordExtract_KO();
+
+    /**
+     * 사전 로드 추가
+     */
+    public WigoTokenizer(){
+        Moara.initMeta();
+    }
 
     @Override
     public String getId() {
@@ -35,6 +53,35 @@ public class WigoTokenizer implements Tokenizer {
 
     @Override
     public Token[] getTokens(String text) {
-        return new Token[0];
+
+
+        WordExtractResult result = wordExtract.extract(text, "SNS", wordDictionary, false);
+        List<ExtractWord> wordList =  result.getExtractWordList();
+
+        Token [] tokens = new Token[wordList.size()];
+
+        for (int i = 0; i <tokens.length ; i++) {
+
+            ExtractWord extractWord = wordList.get(i);
+
+            String partOfSpeech;
+
+            WordClassDetail detail = extractWord.getWordClassDetail();
+            if(detail != null){
+                partOfSpeech = detail.toString();
+            }else{
+                partOfSpeech = extractWord.getWordClass().toString();
+            }
+
+            WordToken wordToken = new WordToken(extractWord.getWordCode(), extractWord.getSyllableValue("KO")
+            , partOfSpeech, extractWord.getStartIndex(), extractWord.getEndIndex()+1);
+            
+
+            tokens[i] =wordToken;
+        }
+        
+        
+        
+        return tokens;
     }
 }
