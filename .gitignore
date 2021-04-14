@@ -3,3 +3,11 @@ build
 .idea
 out
 *.puml
+
+# moara stuff
+/config/
+moara_meta
+word.versions
+/dic-moara/debug/
+*.debug
+/bin/

@@ -9,4 +9,6 @@ include 'ner'
 project(':ner').projectDir = new File(settingsDir,'modules/ner')
 include 'evaluation'
 project(':evaluation').projectDir = new File(settingsDir,'modules/evaluation')
+include 'service-modules:tokenizer-rest'
+findProject(':service-modules:tokenizer-rest')?.name = 'tokenizer-rest'
 
