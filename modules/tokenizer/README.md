@@ -99,9 +99,9 @@ public class TokenizerExample {
 - SN	숫자
 
 # gradle
-implementation 'org.moara.yido:tokenizer:0.1.2'
+implementation 'org.moara.yido:tokenizer:0.1.3'
 - etc 
-    - https://mvnrepository.com/artifact/org.moara.yido/tokenizer/0.1.2
+    - https://mvnrepository.com/artifact/org.moara.yido/tokenizer/0.1.3
 
 # communication
 ### blog, homepage

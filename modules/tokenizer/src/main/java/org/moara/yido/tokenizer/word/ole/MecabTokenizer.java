@@ -20,6 +20,7 @@ import com.seomse.commons.utils.ExceptionUtil;
 import org.chasen.mecab.Tagger;
 import org.moara.yido.tokenizer.Token;
 import org.moara.yido.tokenizer.Tokenizer;
+import org.moara.yido.tokenizer.TokenizerInitializer;
 import org.moara.yido.tokenizer.word.CompoundToken;
 import org.moara.yido.tokenizer.word.WordToken;
 import org.slf4j.Logger;
@@ -28,6 +29,7 @@ import org.slf4j.LoggerFactory;
  * mecab을 활용한 tokenizer
  * @author macle
  */
+@TokenizerInitializer
 public class MecabTokenizer implements Tokenizer {
 
     private static final Logger logger = LoggerFactory.getLogger(MecabTokenizer.class);

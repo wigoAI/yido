@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Wigo Inc.
+ * Copyright (C) 2021 Wigo Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,31 +14,15 @@
  * limitations under the License.
  */
 
-package org.moara.yido.tokenizer;
+package org.moara.yido.tokenizer.word.dictionary;
 
 /**
- * token 기본형
+ * 문자별 단어 모음
+ * 문자에 해당하는 단어정보 관리
+ * 동음 이의어 동음 다품사등 다양한 형태
+ *
+ * 토크나이져 구현에 사용 될 부분
  * @author macle
  */
-public interface Token {
-
-
-    /**
-     * 토근 텍스트
-     * @return token text
-     */
-    String getText();
-
-    /**
-     * 시작위치
-     * @return begin index
-     */
-    int getBegin();
-
-    /**
-     * 끝위치
-     * @return end index + 1  substring(begin,end)
-     */
-    int getEnd();
-
+public class TextWords {
 }

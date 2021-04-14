@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Wigo Inc.
+ * Copyright (C) 2021 Wigo Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,33 +14,16 @@
  * limitations under the License.
  */
 
-package org.moara.yido.tokenizer;
+package org.moara.yido.tokenizer.word.dictionary;
 
-import org.moara.yido.tokenizer.word.ole.MecabTokenizer;
+import org.moara.yido.tokenizer.word.PartOfSpeech;
 
 /**
- * Tokenizer 생성기
+ * 단어
+ * 토크나이져 구현에 사용 될 부분
  * @author macle
  */
-public class TokenizerFactory {
-
-    /**
-     * 생성자 막음
-     */
-    private TokenizerFactory(){
-        
-    }
-    
-    /**
-     * tokenizer 생성
-     * @param id tokenizer id
-     * @return Tokenizer
-     */
-    static Tokenizer newTokenizer(String id){
-        if(id.equals("mecab")){
-            return new MecabTokenizer();
-        }
-        throw new TokenizerNotFoundException(id);
-    }
-
+public class Word {
+    String text;
+    PartOfSpeech partOfSpeech ;
 }

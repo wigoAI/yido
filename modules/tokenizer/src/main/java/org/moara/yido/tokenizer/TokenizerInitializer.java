@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Wigo Inc.
+ * Copyright (C) 2021 Wigo Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,29 +16,16 @@
 
 package org.moara.yido.tokenizer;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
- * token 기본형
  * @author macle
  */
-public interface Token {
-
-
-    /**
-     * 토근 텍스트
-     * @return token text
-     */
-    String getText();
-
-    /**
-     * 시작위치
-     * @return begin index
-     */
-    int getBegin();
-
-    /**
-     * 끝위치
-     * @return end index + 1  substring(begin,end)
-     */
-    int getEnd();
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface TokenizerInitializer {
 
 }

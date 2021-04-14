@@ -20,6 +20,13 @@ import com.seomse.commons.config.Config;
 import com.seomse.commons.config.ConfigInfo;
 import com.seomse.commons.config.ConfigObserver;
 import com.seomse.commons.utils.ExceptionUtil;
+import org.reflections.Reflections;
+import org.reflections.scanners.ResourcesScanner;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.scanners.TypeAnnotationsScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,9 +65,32 @@ public class TokenizerManager {
      */
     private TokenizerManager(){
 
-        String [] initTokenizerIds = Config.getConfig("yido.tokenizer.init.ids","mecab").split(",");
-        for(String initTokenizerId : initTokenizerIds){
-            tokenizerMap.put(initTokenizerId,  TokenizerFactory.newTokenizer(initTokenizerId));
+        String initializerPackagesValue = Config.getConfig("yido.tokenizer.initializer.packages", "org.moara");
+        String [] initializerPackages = initializerPackagesValue.split(",");
+
+        for(String initializerPackage : initializerPackages){
+            logger.info("initializerPackage path : " + initializerPackage);
+//            Reflections ref = new Reflections(initializerPackage);
+
+            Reflections ref = new Reflections(new ConfigurationBuilder()
+                    .setScanners(new SubTypesScanner(false), new ResourcesScanner(), new TypeAnnotationsScanner())
+                    .setUrls(ClasspathHelper.forPackage(initializerPackage))
+                    .filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(initializerPackage))));
+
+            for (Class<?> cl : ref.getTypesAnnotatedWith(TokenizerInitializer.class)) {
+                try {
+
+
+                    Tokenizer tokenizer = (Tokenizer) cl.newInstance();
+                    tokenizerMap.put(tokenizer.getId(), tokenizer);
+
+                    logger.info("init tokenizer: " + tokenizer.getId());
+
+
+                } catch (Exception e) {
+                    logger.error(ExceptionUtil.getStackTrace(e));
+                }
+            }
         }
 
         final String defaultKey = "yido.tokenizer.default.id";
@@ -94,10 +124,20 @@ public class TokenizerManager {
         return defaultTokenizer;
     }
 
-
-
     private final Object tokenizerLock = new Object();
-    
+
+    /**
+     * 토크나이저 추가
+     * 초기화에 사용되지 않은 토크나이져를 추가로 등록할때
+     * @param tokenizer 토크나이져
+     */
+    public void putTokenizer (Tokenizer tokenizer){
+
+        synchronized (tokenizerLock){
+            tokenizerMap.put(tokenizer.getId(), tokenizer);
+        }
+
+    }
 
     /**
      * tokenizer 얻기
@@ -105,24 +145,8 @@ public class TokenizerManager {
      * @return Tokenizer
      */
     public Tokenizer getTokenizer(String tokenizerId){
-
-        Tokenizer tokenizer = tokenizerMap.get(tokenizerId);
-
-        if(tokenizer == null){
-            synchronized (tokenizerLock){
-                tokenizer = tokenizerMap.get(tokenizerId);
-                //lock 구간에서 한번더 체크
-                if(tokenizer == null){
-                    tokenizer = TokenizerFactory.newTokenizer(tokenizerId);
-                    tokenizerMap.put(tokenizerId, tokenizer);
-                }
-            }
-        }
-
-        return tokenizer;
+        return tokenizerMap.get(tokenizerId);
 
     }
-
-
 
 }
