@@ -6,6 +6,8 @@ out
 
 # moara stuff
 config/
+conf/
+data/
 moara_meta
 word.versions
 dic-moara/debug/

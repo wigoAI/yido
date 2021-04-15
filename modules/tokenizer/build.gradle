@@ -6,6 +6,7 @@ plugins {
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -20,5 +21,13 @@ dependencies {
     //서비스도중 사전변경 테스트
     testImplementation 'com.seomse.api:seomse-api:1.0.8'
 
+    //코모란 사용할때
+    implementation 'com.github.shin285:KOMORAN:3.3.4'
+
+    //okt (twitter) 사용할때
+    implementation 'org.openkoreantext:open-korean-text:2.1.0'
+
+
+    implementation fileTree (dir: 'dependencies/tokenizers', include: ['/**/*.jar'])
 
 }

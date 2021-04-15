@@ -18,6 +18,11 @@ package org.moara.tokenizer.rest;
 
 import org.moara.Moara;
 import org.moara.yido.tokenizer.TokenizerManager;
+import org.moara.yido.tokenizer.word.ole.HnnTokenizer;
+import org.moara.yido.tokenizer.word.ole.KKmaTokenizer;
+import org.moara.yido.tokenizer.word.ole.KomoranTokenizer;
+import org.moara.yido.tokenizer.word.ole.OktTokenizer;
+import org.snu.ids.kkma.ma.MorphemeAnalyzer;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -52,10 +57,18 @@ public class ApiStart {
 
         try {
 
+
+
             //사용할 메모리 정보 load
             Moara.initMeta();
-            //noinspection ResultOfMethodCallIgnored
-            TokenizerManager.getInstance();
+            TokenizerManager tokenizerManager = TokenizerManager.getInstance();
+            tokenizerManager.putTokenizer(new WigoTokenizer());
+            tokenizerManager.putTokenizer(new HnnTokenizer());
+            tokenizerManager.putTokenizer(new KomoranTokenizer());
+            tokenizerManager.putTokenizer(new OktTokenizer());
+
+            new MorphemeAnalyzer();
+            tokenizerManager.putTokenizer(new KKmaTokenizer());
 
             HashMap<String, Object> props = new HashMap<>();
             props.put("server.port", Integer.parseInt( new String(Files.readAllBytes(Paths.get("config/port_number"))).trim() )  );

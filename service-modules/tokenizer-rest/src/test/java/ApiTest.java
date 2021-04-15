@@ -32,15 +32,16 @@ public class ApiTest {
 
         JsonObject request = new JsonObject();
 
-        request.addProperty("tokenizer_id", "mecab");
+        request.addProperty("tokenizer_id", "wigo");
         request.addProperty("text", "김용수는 모아라에 다닌다");
 
 
         String requestValue = gson.toJson(request);
 
-        String response = RestCall.postJson("http://localhost:" + new String(Files.readAllBytes(Paths.get("config/port_number"))) + "/v1/tokenize"
-                , requestValue);
+        String response = RestCall.postJson("http://localhost:" + new String(Files.readAllBytes(Paths.get("config/port_number"))) + "/v1/tokenize", requestValue);
 
+
+//        String response = RestCall.postJson("http://10.10.1.138:9110/v1/tokenize", requestValue);
 
         System.out.println(requestValue);
         System.out.println(response);

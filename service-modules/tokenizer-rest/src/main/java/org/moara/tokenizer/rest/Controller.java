@@ -60,7 +60,7 @@ public class Controller {
 
                 JsonObject jsonToken = new JsonObject();
                 jsonToken.addProperty("text", wordToken.getText());
-                jsonToken.addProperty("part_of_speech", wordToken.getPartOfSpeech());
+                jsonToken.addProperty("pos", wordToken.getPartOfSpeech());
                 jsonToken.addProperty("begin", wordToken.getBegin());
                 jsonToken.addProperty("end", wordToken.getEnd());
 
