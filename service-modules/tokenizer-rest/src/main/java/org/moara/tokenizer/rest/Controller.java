@@ -42,7 +42,7 @@ public class Controller {
     private static final Logger logger = LoggerFactory.getLogger(Controller.class);
 
 
-    @RequestMapping(value = "/keyword/analysis" , method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/v1/tokenize" , method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE)
     public String tokenize(@RequestBody final String jsonValue) {
 
         try{

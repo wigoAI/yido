@@ -16,7 +16,7 @@
 
 package org.moara.tokenizer.rest;
 
-import org.moara.ara.datamining.textmining.dictionary.word.WordDictionary;
+import org.moara.Moara;
 import org.moara.yido.tokenizer.TokenizerManager;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -53,8 +53,7 @@ public class ApiStart {
         try {
 
             //사용할 메모리 정보 load
-            //noinspection ResultOfMethodCallIgnored
-            WordDictionary.getInstance();
+            Moara.initMeta();
             //noinspection ResultOfMethodCallIgnored
             TokenizerManager.getInstance();
 

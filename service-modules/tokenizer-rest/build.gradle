@@ -21,6 +21,8 @@ dependencies {
 
     //---------------- 이하 moara-core 의존성-------------------
     implementation fileTree (dir: 'dependencies/moara', include: ['/**/*.jar'])
+
+    implementation group: 'com.oracle.ojdbc', name: 'ojdbc8', version: '19.3.0.0'
     //connection pool
     implementation group: 'com.zaxxer', name: 'HikariCP', version: '3.4.5'
     implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.30.1'
@@ -30,6 +32,10 @@ dependencies {
     implementation 'commons-pool:commons-pool:1.4'
     implementation 'org.apache.commons:commons-lang3:3.8'
     implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.4'
+    implementation group: 'org.json', name: 'json', version: '20201115'
+
+
+    testImplementation fileTree (dir: 'dependencies/moara-test', include: ['/**/*.jar'])
 }
 
 test {

@@ -5,9 +5,9 @@ out
 *.puml
 
 # moara stuff
-/config/
+config/
 moara_meta
 word.versions
-/dic-moara/debug/
+dic-moara/debug/
 *.debug
 /bin/
