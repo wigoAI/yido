@@ -22,6 +22,12 @@
 
 - 자세한 사용법은 위에있는 문서페이를 참조해 주세요.
 
+multi tokenizer 기능에 업데이트 되었습니다. multi tokeziner 에서 maven central 에 올라가 있지 않은 프로젝트 들로 인해서 버전업 작업은 진행하지 못하였습니다 
+
+https://github.com/wigoAI/yido/tree/master/service-modules/tokenizer-rest
+
+구현내용은 위 경로 참고 바랍니다.
+
 ```java
 import org.moara.yido.tokenizer.Token;
 import org.moara.yido.tokenizer.TokenizerManager;
@@ -99,9 +105,9 @@ public class TokenizerExample {
 - SN	숫자
 
 # gradle
-implementation 'org.moara.yido:tokenizer:0.1.3'
+implementation 'org.moara.yido:tokenizer:0.1.2'
 - etc 
-    - https://mvnrepository.com/artifact/org.moara.yido/tokenizer/0.1.3
+    - https://mvnrepository.com/artifact/org.moara.yido/tokenizer/0.1.2
 
 # communication
 ### blog, homepage
