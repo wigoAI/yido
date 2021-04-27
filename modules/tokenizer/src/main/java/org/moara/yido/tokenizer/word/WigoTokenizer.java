@@ -24,8 +24,8 @@ import org.moara.ara.datamining.textmining.dictionary.word.extract.WordExtractRe
 import org.moara.ara.datamining.textmining.dictionary.word.extract.ko.WordExtract_KO;
 import org.moara.yido.tokenizer.Token;
 import org.moara.yido.tokenizer.Tokenizer;
-import org.moara.yido.tokenizer.TokenizerInitializer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -69,17 +69,16 @@ public class WigoTokenizer implements Tokenizer {
         WordExtractResult result = wordExtract.extract(text, "SNS", wordDictionary, false);
         List<ExtractWord> wordList =  result.getExtractWordList();
 
-        Token [] tokens = new Token[wordList.size()];
+        List<Token> tokens = new ArrayList<>();
 
-        for (int i = 0; i <tokens.length ; i++) {
 
-            ExtractWord extractWord = wordList.get(i);
+        for (ExtractWord extractWord : wordList) {
 
-            if(!isRelationWordExtract && !extractWord.isExtractOriginal()){
+            if (!isRelationWordExtract && !extractWord.isExtractOriginal()) {
                 continue;
             }
 
-            if(!isUnknownExtract && extractWord.getWordClassDetail() == WordClassDetail.UNDEFINED){
+            if (!isUnknownExtract && extractWord.getWordClassDetail() == WordClassDetail.UNDEFINED) {
                 continue;
             }
 
@@ -87,21 +86,21 @@ public class WigoTokenizer implements Tokenizer {
             String partOfSpeech;
 
             WordClassDetail detail = extractWord.getWordClassDetail();
-            if(detail != null){
+            if (detail != null) {
                 partOfSpeech = detail.toString();
-            }else{
+            } else {
                 partOfSpeech = extractWord.getWordClass().toString();
             }
 
             WordToken wordToken = new WordToken(extractWord.getWordCode(), extractWord.getSyllableValue("KO")
-            , partOfSpeech, extractWord.getStartIndex(), extractWord.getEndIndex()+1);
-            
+                    , partOfSpeech, extractWord.getStartIndex(), extractWord.getEndIndex() + 1);
 
-            tokens[i] =wordToken;
+
+            tokens.add(wordToken);
         }
         
         
         
-        return tokens;
+        return tokens.toArray(new Token[0]);
     }
 }
