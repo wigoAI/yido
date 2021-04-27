@@ -45,6 +45,19 @@ public class WigoTokenizer implements Tokenizer {
         Moara.initMeta();
     }
 
+
+    private boolean isRelationWordExtract = true;
+    //관계어 추출여부
+    public void setRelationWordExtract(boolean relationWordExtract) {
+        isRelationWordExtract = relationWordExtract;
+    }
+
+    private boolean isUnknownExtract = false;
+
+    public void setUnknownExtract(boolean unknownExtract) {
+        isUnknownExtract = unknownExtract;
+    }
+
     @Override
     public String getId() {
         return "wigo";
@@ -61,6 +74,15 @@ public class WigoTokenizer implements Tokenizer {
         for (int i = 0; i <tokens.length ; i++) {
 
             ExtractWord extractWord = wordList.get(i);
+
+            if(!isRelationWordExtract && !extractWord.isExtractOriginal()){
+                continue;
+            }
+
+            if(!isUnknownExtract && extractWord.getWordClassDetail() == WordClassDetail.UNDEFINED){
+                continue;
+            }
+
 
             String partOfSpeech;
 
